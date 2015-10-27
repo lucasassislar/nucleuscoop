@@ -312,6 +312,19 @@ namespace SplitPlayPC
                             {
                                 screen.type++;
                             }
+
+                            // invalidate all players inside screen
+                            for (int j = 0; j < players.Count; j++)
+                            {
+                                // return to default position
+                                PlayerInfo p = players[j];
+                                if (p.screenIndex == i)
+                                {
+                                    p.editBounds = getDefaultBounds(j);
+                                    p.screenIndex = -1;
+                                }
+                            }
+
                             Invalidate();
                             return;
                         }
@@ -343,7 +356,6 @@ namespace SplitPlayPC
                      e.Button == MouseButtons.Middle)
             {
                 // if over a player on a screen, change the type
-                return;
                 for (int i = 0; i < players.Count; i++)
                 {
                     PlayerInfo p = players[i];
@@ -360,13 +372,58 @@ namespace SplitPlayPC
                                 if (bounds.Width == screen.monitorBounds.Width / 2 &&
                                     bounds.Height == screen.monitorBounds.Height / 2)
                                 {
-                                    // go to full width half height if possible
-                                    if (bounds.X != screen.monitorBounds.X)
+                                    bool hasLeftRightSpace = true;
+                                    bool hasTopBottomSpace = true;
+
+                                    // check if we have something left/right or top/bottom
+                                    for (int j = 0; j < players.Count; j++)
                                     {
-                                        //Rectangle newBounds = new Rectangle(
-                                        bounds.X = screen.monitorBounds.X;
-                                        bounds.Width *= 2;
+                                        if (i == j)
+                                        {
+                                            break;
+                                        }
+
+                                        PlayerInfo other = players[j];
+                                        if (other.screenIndex != p.screenIndex)
+                                        {
+                                            continue;
+                                        }
+
+                                        if (other.monitorBounds.Y == p.monitorBounds.Y)
+                                        {
+                                            hasLeftRightSpace = false;
+                                        }
+                                        if (other.monitorBounds.X == p.monitorBounds.X)
+                                        {
+                                            hasTopBottomSpace = false;
+                                        }
                                     }
+
+                                    if (hasLeftRightSpace)
+                                    {
+                                        bounds.Width *= 2;
+                                        p.monitorBounds = bounds;
+                                        Rectangle edit = p.editBounds;
+                                        edit.Width *= 2;
+                                        p.editBounds = edit;
+
+                                        Invalidate();
+                                    }
+
+                                }
+                                else
+                                {
+                                    bounds.Width = screen.monitorBounds.Width / 2;
+                                    bounds.Height = screen.monitorBounds.Height / 2;
+                                    p.monitorBounds = bounds;
+
+                                    Rectangle edit = p.editBounds;
+                                    edit.Width = screen.bounds.Width / 2;
+                                    edit.Height = screen.bounds.Height / 2;
+                                    p.editBounds = edit;
+
+                                    Invalidate();
+
                                 }
 
 
