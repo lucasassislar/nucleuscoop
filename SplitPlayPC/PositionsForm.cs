@@ -15,12 +15,17 @@ namespace SplitPlayPC
     {
         // array of users's screens
         private UserScreen[] screens;
-        
+
         // the factor to scale all screens to match the edit area
         private float scale;
 
         // data for game configuration
         private GameConfig config;
+
+        private Font playerFont;
+        private Font playerTextFont;
+
+        private RectangleF playersArea;
 
         public PositionsForm()
         {
@@ -28,14 +33,19 @@ namespace SplitPlayPC
 
             InitializeComponent();
 
+            playerFont = new Font("Segoe UI", 40);
+            playerTextFont = new Font("Segoe UI", 20);
+
             RemoveFlicker();
 
             float playersWidth = this.Width * 0.5f;
 
-            int playerCount = 3;
+            int playerCount = 4;
             float playerWidth = (playersWidth * 0.9f) / (float)playerCount;
             float playerHeight = playerWidth * 0.5625f;
             float offset = (playersWidth * 0.1f) / (float)playerCount;
+            playersArea = new RectangleF(50, 100, playersWidth, playerHeight);
+
 
             for (int i = 0; i < playerCount; i++)
             {
@@ -48,7 +58,24 @@ namespace SplitPlayPC
             screens = ScreensUtil.AllScreens();
             Rectangle totalBounds = RectangleUtil.Union(ScreensUtil.AllScreensRec());
 
-            if (totalBounds.Width > totalBounds.Height)
+            // see if most screens are either vertical or horizontal
+            int vertical = 0;
+            int horizontal = 0;
+            for (int i = 0; i < screens.Length; i++)
+            {
+                UserScreen s = screens[i];
+                if (s.bounds.Width > s.bounds.Height)
+                {
+                    horizontal++;
+                }
+                else
+                {
+                    vertical++;
+                }
+            }
+
+
+            if (horizontal > vertical)
             {
                 // horizontal setup
                 scale = (this.Width * 0.9f) / (float)totalBounds.Width;
@@ -56,7 +83,8 @@ namespace SplitPlayPC
             else
             {
                 // vertical setup
-                scale = (this.Height * 0.9f) / (float)totalBounds.Height;
+                scale = (this.Height * 0.6f) / (float)totalBounds.Height;
+                //scale = (this.Width * 0.9f) / (float)totalBounds.Width;
             }
 
             totalBounds = new Rectangle(
@@ -66,7 +94,7 @@ namespace SplitPlayPC
                 (int)(totalBounds.Height * scale));
             int offsetViewsX = totalBounds.X;
             int offsetViewsY = totalBounds.Y;
-            totalBounds = RectangleUtil.Center(totalBounds, new Rectangle(0, 0, this.Width, this.Height));
+            totalBounds = RectangleUtil.Center(totalBounds, new Rectangle(0, (int)(this.Height * 0.25f), this.Width, (int)(this.Height * 0.7f)));
 
             for (int i = 0; i < screens.Length; i++)
             {
@@ -272,14 +300,32 @@ namespace SplitPlayPC
                             for (int y = 0; y < 2; y++)
                             {
                                 Rectangle area = new Rectangle(bounds.X + (halfw * x), bounds.Y + (halfh * y), halfw, halfh);
-                                if (!areaUsed.Contains(area))
+
+                                bool goNext = false;
+                                // check if there's any player with the area's x,y coord
+                                for (int i = 0; i < players.Count; i++)
                                 {
-                                    monitorBounds = area;
-                                    int halfwe = (int)(ebounds.Width / 2.0f);
-                                    int halfhe = (int)(ebounds.Height / 2.0f);
-                                    editorBounds = new Rectangle(ebounds.X + (halfwe * x), ebounds.Y + (halfhe * y), halfwe, halfhe);
-                                    return;
+                                    PlayerInfo p = players[i];
+                                    if (p.screenIndex == screenIndex)
+                                    {
+                                        if (p.monitorBounds.X == area.X &&
+                                            p.monitorBounds.Y == area.Y)
+                                        {
+                                            goNext = true;
+                                            break;
+                                        }
+                                    }
                                 }
+
+                                if (goNext)
+                                {
+                                    continue;
+                                }
+                                monitorBounds = area;
+                                int halfwe = (int)(ebounds.Width / 2.0f);
+                                int halfhe = (int)(ebounds.Height / 2.0f);
+                                editorBounds = new Rectangle(ebounds.X + (halfwe * x), ebounds.Y + (halfhe * y), halfwe, halfhe);
+                                return;
                             }
                         }
                     }
@@ -365,12 +411,15 @@ namespace SplitPlayPC
                         if (p.screenIndex != -1)
                         {
                             UserScreen screen = screens[p.screenIndex];
+                            int halfWidth = screen.monitorBounds.Width / 2;
+                            int halfHeight = screen.monitorBounds.Height / 2;
+
                             Rectangle bounds = p.monitorBounds;
                             if (screen.type == UserScreenType.FourPlayers)
                             {
                                 // check if the size is 1/4th of screen
-                                if (bounds.Width == screen.monitorBounds.Width / 2 &&
-                                    bounds.Height == screen.monitorBounds.Height / 2)
+                                if (bounds.Width == halfWidth &&
+                                    bounds.Height == halfHeight)
                                 {
                                     bool hasLeftRightSpace = true;
                                     bool hasTopBottomSpace = true;
@@ -380,7 +429,7 @@ namespace SplitPlayPC
                                     {
                                         if (i == j)
                                         {
-                                            break;
+                                            continue;
                                         }
 
                                         PlayerInfo other = players[j];
@@ -397,19 +446,47 @@ namespace SplitPlayPC
                                         {
                                             hasTopBottomSpace = false;
                                         }
+
+                                        if (other.monitorBounds.X == screen.monitorBounds.X + halfWidth &&
+                                            other.monitorBounds.Height == screen.monitorBounds.Height)
+                                        {
+                                            hasLeftRightSpace = false;
+                                        }
+                                        if (other.monitorBounds.X == screen.monitorBounds.X &&
+                                            other.monitorBounds.Width == screen.monitorBounds.Width)
+                                        {
+                                            hasTopBottomSpace = false;
+                                        }
                                     }
 
                                     if (hasLeftRightSpace)
                                     {
+                                        Rectangle edit = p.editBounds;
+                                        if (bounds.X == screen.monitorBounds.X + bounds.Width)
+                                        {
+                                            bounds.X -= bounds.Width;
+                                            edit.X -= edit.Width;
+                                        }
+
                                         bounds.Width *= 2;
+                                        edit.Width *= 2;
+
+                                        p.editBounds = edit;
+                                        p.monitorBounds = bounds;
+
+
+                                        Invalidate();
+                                    }
+                                    else if (hasTopBottomSpace)
+                                    {
+                                        bounds.Height *= 2;
                                         p.monitorBounds = bounds;
                                         Rectangle edit = p.editBounds;
-                                        edit.Width *= 2;
+                                        edit.Height *= 2;
                                         p.editBounds = edit;
 
                                         Invalidate();
                                     }
-
                                 }
                                 else
                                 {
@@ -423,10 +500,7 @@ namespace SplitPlayPC
                                     p.editBounds = edit;
 
                                     Invalidate();
-
                                 }
-
-
                             }
                         }
                     }
@@ -450,6 +524,8 @@ namespace SplitPlayPC
                         p.screenIndex = draggingScreen;
                         p.monitorBounds = draggingScreenBounds;
                         p.editBounds = draggingScreenRec;
+
+                        draggingScreen = -1;
                     }
                     else
                     {
@@ -457,6 +533,25 @@ namespace SplitPlayPC
                         p.editBounds = getDefaultBounds(draggingIndex);
                         p.screenIndex = -1;
                     }
+
+
+                    bool allReady = true;
+                    for (int i = 0; i < config.Players.Count; i++)
+                    {
+                        PlayerInfo player = config.Players[i];
+                        if (player.screenIndex == -1)
+                        {
+                            allReady = false;
+                            //btnNext.Visible = false;
+                            break;
+                        }
+                    }
+
+                    if (allReady)
+                    {
+                        //btnNext.Visible = true;
+                    }
+                    
 
                     Invalidate();
                 }
@@ -515,12 +610,24 @@ namespace SplitPlayPC
                 {
                     g.DrawRectangle(Pens.Green, s);
                 }
+
+                string str = (i + 1).ToString();
+                SizeF size = g.MeasureString(str, playerFont);
+                PointF loc = RectangleUtil.Center(size, s);
+                g.DrawString((i + 1).ToString(), playerFont, Brushes.White, loc);
             }
 
             if (dragging && draggingScreen != -1)
             {
                 g.DrawRectangle(Pens.Red, draggingScreenRec);
             }
+
+            g.DrawString("Drag each player to\ntheir respective screen", playerTextFont, Brushes.White, new PointF(520, 100));
+            g.DrawString("Players", playerTextFont, Brushes.White, new PointF(50, 50));
+
+            g.DrawString("Right click player to change size", playerTextFont, Brushes.White, new PointF(20, 500));
+            g.DrawString("Click on screen's top-left corner to change players on that screen", playerTextFont, Brushes.White, new PointF(20, 540));
+            //g.DrawRectangle(Pens.Red, playersArea.X, playersArea.Y, playersArea.Width, playersArea.Height);
         }
     }
 }

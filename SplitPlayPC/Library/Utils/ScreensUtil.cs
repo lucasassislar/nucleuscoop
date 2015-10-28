@@ -20,6 +20,16 @@ namespace SplitPlayPC
             };
         }
 
+        public static Rectangle[] GetSetup_Triple4kVertical()
+        {
+            return new Rectangle[] 
+            {
+                new Rectangle(0, 0, 2160, 3840),
+                new Rectangle(2160, 0, 2160, 3840),
+                new Rectangle(4320, 0, 2160, 3840)
+            };
+        }
+
         public static Rectangle[] GetSetup_Four1080pHorizontal()
         {
             return new Rectangle[] 

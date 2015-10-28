@@ -17,7 +17,6 @@ namespace SplitPlayPC
             {
                 r = Rectangle.Union(r, rects[i]);
             }
-
             return r;
         }
 
@@ -30,10 +29,23 @@ namespace SplitPlayPC
             float parentHeight = parent.Height / 2.0f;
 
             return new Rectangle(
-                (int)(parentWidth - rectWidth),
-                (int)(parentHeight - rectHeight),
+                (int)(parentWidth - rectWidth) + parent.X,
+                (int)(parentHeight - rectHeight) + parent.Y,
                 rect.Width,
                 rect.Height);
+        }
+
+        public static PointF Center(SizeF rect, Rectangle parent)
+        {
+            float rectWidth = rect.Width / 2.0f;
+            float rectHeight = rect.Height / 2.0f;
+
+            float parentWidth = parent.Width / 2.0f;
+            float parentHeight = parent.Height / 2.0f;
+
+            return new PointF(
+                (parentWidth - rectWidth) + parent.X,
+                (parentHeight - rectHeight) + parent.Y);
         }
 
         /// <summary>

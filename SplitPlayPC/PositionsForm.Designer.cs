@@ -34,7 +34,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(821, 596);
+            this.ClientSize = new System.Drawing.Size(824, 601);
             this.Name = "PositionsForm";
             this.Text = "Positions";
             this.ResumeLayout(false);
@@ -42,5 +42,6 @@
         }
 
         #endregion
+
     }
 }
