@@ -11,8 +11,17 @@ using System.Windows.Forms;
 
 namespace SplitPlayPC
 {
-    public partial class PositionsForm : BaseForm
+    public partial class PositionsForm : BaseForm, IUserInputForm
     {
+        public bool CanProceed
+        {
+            get
+            {
+                return canProceed;
+            }
+        }
+        private bool canProceed;
+
         // array of users's screens
         private UserScreen[] screens;
 
@@ -542,14 +551,14 @@ namespace SplitPlayPC
                         if (player.screenIndex == -1)
                         {
                             allReady = false;
-                            //btnNext.Visible = false;
+                            canProceed = false;
                             break;
                         }
                     }
 
                     if (allReady)
                     {
-                        //btnNext.Visible = true;
+                        canProceed = true;
                     }
                     
 
