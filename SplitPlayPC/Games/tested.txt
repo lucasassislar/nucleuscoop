@@ -1,0 +1,28 @@
+﻿Games Tested
+
+Borderlands 2 - Working
+	Issues:
+
+Dead Island - Given Up
+	Why
+	1. Steam won't let me open 2 instances. 
+	2. The crack won't let me open 2 instances.
+	3. The game probably will conflict if open twice.
+
+	Why Could be:
+	1. Monitor Profile is text file, easy to modify
+
+
+Gears of War - Not tested
+	Why
+	1. Don't have game, neither money to buy
+
+Saints Row 3 - Given up
+	Why: 
+	1. Steam won't let me open 2 instances. 
+	2. The SKIDROW crack won't let us open 2 instances of Saints Row 3. 
+	3. Would need to combine Skidrow with a INJECTOR on the Saints Row executable, 
+	   making it think it's not running a secondary format. 
+	3. Saints Row's save format is BINARY.
+	4. The profile (which probably contains the resolution) is not described on the internet,
+	   so I'd need to reverse engineer it (something I really don't like).

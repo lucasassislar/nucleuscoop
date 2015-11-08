@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3F7C8608-41B3-4831-9351-980BC4499FFB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Games</RootNamespace>
+    <AssemblyName>Games</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>GamesKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TestDebug|AnyCPU'">
+    <OutputPath>bin\TestDebug\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Borderlands2\Borderlands2Handler.cs" />
+    <Compile Include="Borderlands2\Borderlands2Info.cs" />
+    <Compile Include="BorderlandsPreSequel\BorderlandsPreSequelHandler.cs" />
+    <Compile Include="BorderlandsPreSequel\BorderlandsPreSequelInfo.cs" />
+    <Compile Include="Borderlands\BorderlandsHandler.cs" />
+    <Compile Include="Borderlands\BorderlandsInfo.cs" />
+    <Compile Include="GamesResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GamesResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Left4Dead2\L4D2GameMode.cs" />
+    <Compile Include="Left4Dead2\L4D2Level.cs" />
+    <Compile Include="Left4Dead2\Left4Dead2Handler.cs" />
+    <Compile Include="Left4Dead2\Left4Dead2Info.cs" />
+    <Compile Include="Left4Dead2\Left4Dead2LevelSelection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Left4Dead2\Left4Dead2LevelSelection.Designer.cs">
+      <DependentUpon>Left4Dead2LevelSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Left4Dead2\Left4Dead2ModeSelection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Left4Dead2\Left4Dead2ModeSelection.Designer.cs">
+      <DependentUpon>Left4Dead2ModeSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Left4Dead2\resources\L4D2Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>L4D2Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Left4Dead2\SourceCfgFile.cs" />
+    <Compile Include="PlayerID.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resident Evil 5\RE5Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RE5Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resident Evil 5\ResidentEvil5Handler.cs" />
+    <Compile Include="Resident Evil 5\ResidentEvil5Info.cs" />
+    <Compile Include="ScreenData.cs" />
+    <Compile Include="TeamFortress2\TeamFortress2Info.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NucleusGaming\NucleusGaming.csproj">
+      <Project>{223DBDAE-E362-452C-9455-F518D002B154}</Project>
+      <Name>NucleusGaming</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ThirdParty\WindowScrape\WindowScrape.csproj">
+      <Project>{d9716550-921d-44e8-a289-c297950db1f7}</Project>
+      <Name>WindowScrape</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TheHooker.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="GamesKey.snk" />
+    <None Include="Resident Evil 5\resources\Splitscreen Mod PC RE5.zip" />
+    <None Include="Resident Evil 5\resources\Splitscreen Mod PC RE5\re5ssmod\splitscreen.cfg" />
+    <None Include="Resources\d3d9.dll" />
+    <None Include="Left4Dead2\resources\backup\bloodharvest.jpg" />
+    <None Include="Left4Dead2\resources\backup\crashcourse.jpg" />
+    <None Include="Left4Dead2\resources\backup\darkcarnival.png" />
+    <None Include="Left4Dead2\resources\backup\deadair.jpg" />
+    <None Include="Left4Dead2\resources\backup\deadcenter.jpg" />
+    <None Include="Left4Dead2\resources\backup\deathabroad.jpg" />
+    <None Include="Left4Dead2\resources\backup\deathtoll.jpg" />
+    <None Include="Left4Dead2\resources\backup\hardrain.jpg" />
+    <None Include="Left4Dead2\resources\backup\nomercy.jpg" />
+    <None Include="Left4Dead2\resources\backup\swampfever.JPG" />
+    <None Include="Left4Dead2\resources\backup\theparish.jpg" />
+    <Content Include="Left4Dead2\resources\bloodharvest.jpg" />
+    <Content Include="Left4Dead2\resources\crashcourse.jpg" />
+    <None Include="Left4Dead2\resources\darkcarnival.jpg" />
+    <Content Include="Left4Dead2\resources\deadair.jpg" />
+    <Content Include="Left4Dead2\resources\deadcenter.jpg" />
+    <None Include="Left4Dead2\resources\deathaboard.jpg" />
+    <Content Include="Left4Dead2\resources\deathtoll.jpg" />
+    <Content Include="Left4Dead2\resources\hardrain.jpg" />
+    <Content Include="Left4Dead2\resources\nomercy.jpg" />
+    <Content Include="Left4Dead2\resources\swampfever.JPG" />
+    <Content Include="Left4Dead2\resources\theparish.jpg" />
+    <None Include="Resident Evil 5\resources\Source.txt" />
+    <None Include="Resident Evil 5\resources\Splitscreen Mod PC RE5\re5ssmod\splitscreen.dll" />
+    <None Include="Resident Evil 5\resources\Splitscreen Mod PC RE5\re5ssmod\splitscreen.exe" />
+    <Content Include="ReadMe.txt" />
+    <None Include="Resources\2_xinput1_3.dll" />
+    <None Include="Resources\3_xinput1_3.dll" />
+    <None Include="Resources\4_xinput1_3.dll" />
+    <None Include="Resources\1_xinput1_3.dll" />
+    <Content Include="tested.txt" />
+    <None Include="TheHooker.lib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GamesResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GamesResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Left4Dead2\Left4Dead2LevelSelection.resx">
+      <DependentUpon>Left4Dead2LevelSelection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Left4Dead2\Left4Dead2ModeSelection.resx">
+      <DependentUpon>Left4Dead2ModeSelection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Left4Dead2\resources\L4D2Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>L4D2Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resident Evil 5\RE5Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>RE5Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CustomXInput\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
