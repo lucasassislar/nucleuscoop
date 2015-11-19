@@ -125,11 +125,15 @@ namespace Nucleus.Gaming
             // Type we are looking for (GameInfo)
             Type infoType = typeof(GameInfo);
 
-            Assembly ass = Assembly.Load("Games, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b32a3a2685d86215");
+            Assembly ass = Assembly.Load(new AssemblyName("Nucleus.Coop.Games"));
 
             // I used to hate working with assembly, and that's why it has that name :D
             Type objType = typeof(object);
-            if (ass != null)
+            if (ass == null)
+            {
+                // shit's null yo
+            }
+            else
             {
                 Type[] t = ass.GetTypes();
                 for (int x = 0; x < t.Length; x++)
