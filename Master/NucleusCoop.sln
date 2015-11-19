@@ -29,7 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InputSimulator", "InputSimu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckDiff", "CheckDiff\CheckDiff.csproj", "{B7D753A9-793B-45F1-8208-E2B7F112D187}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartGame", "StartGame\StartGame.csproj", "{91298ADA-5999-41D4-8A7B-51F28094AB5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nucleus.Coop.StartGame", "StartGame\Nucleus.Coop.StartGame.csproj", "{91298ADA-5999-41D4-8A7B-51F28094AB5B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetFolderFileList", "GetFolderFileList\GetFolderFileList.csproj", "{43DB75E9-EAE0-43D1-8AF6-4F3C31FEF60A}"
 EndProject
