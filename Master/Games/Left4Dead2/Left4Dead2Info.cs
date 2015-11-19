@@ -69,7 +69,7 @@ namespace Games
 
         public override Type HandlerType
         {
-            get { return typeof(Left4Dead2Handler); }
+            get { return typeof(object); }
         }
 
         public override int MaxPlayers
@@ -109,16 +109,6 @@ namespace Games
         public override string GUID
         {
             get { return "E82367CC-29DC-4BF6-BBA5-96A2AF601354"; }
-        }
-
-        public override SplitScreenType SupportedTypes
-        {
-            get { return SplitScreenType.LeftRight | SplitScreenType.TopBottom | SplitScreenType.Fullscreen; }
-        }
-
-        public override bool NeedPositioning
-        {
-            get { return true; }
         }
 
         public override int MaxPlayersOneMonitor

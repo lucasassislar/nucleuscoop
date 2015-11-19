@@ -58,9 +58,9 @@
   <ItemGroup>
     <Compile Include="Borderlands2\Borderlands2Handler.cs" />
     <Compile Include="Borderlands2\Borderlands2Info.cs" />
-    <Compile Include="BorderlandsPreSequel\BorderlandsPreSequelHandler.cs" />
+    <None Include="BorderlandsPreSequel\BorderlandsPreSequelHandler.cs" />
     <Compile Include="BorderlandsPreSequel\BorderlandsPreSequelInfo.cs" />
-    <Compile Include="Borderlands\BorderlandsHandler.cs" />
+    <None Include="Borderlands\BorderlandsHandler.cs" />
     <Compile Include="Borderlands\BorderlandsInfo.cs" />
     <Compile Include="GamesResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -69,7 +69,7 @@
     </Compile>
     <Compile Include="Left4Dead2\L4D2GameMode.cs" />
     <Compile Include="Left4Dead2\L4D2Level.cs" />
-    <Compile Include="Left4Dead2\Left4Dead2Handler.cs" />
+    <None Include="Left4Dead2\Left4Dead2Handler.cs" />
     <Compile Include="Left4Dead2\Left4Dead2Info.cs" />
     <Compile Include="Left4Dead2\Left4Dead2LevelSelection.cs">
       <SubType>Component</SubType>
@@ -96,7 +96,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RE5Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resident Evil 5\ResidentEvil5Handler.cs" />
+    <None Include="Resident Evil 5\ResidentEvil5Handler.cs" />
     <Compile Include="Resident Evil 5\ResidentEvil5Info.cs" />
     <Compile Include="ScreenData.cs" />
     <Compile Include="TeamFortress2\TeamFortress2Info.cs" />

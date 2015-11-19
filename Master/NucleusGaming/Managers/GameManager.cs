@@ -5,15 +5,33 @@ using System.Text;
 using System.IO;
 using System.Reflection;
 using Nucleus.Gaming.Interop;
+using Newtonsoft.Json;
+using System.Threading;
 
 namespace Nucleus.Gaming
 {
     /// <summary>
-    /// Manages games information, so we can know what games are supported and how to support it
+    /// Manages games information, 
+    /// so we can know what games are supported 
+    /// and how to support it
     /// </summary>
     public class GameManager
     {
-        protected Dictionary<string, GameInfo> games;
+        private static GameManager instance;
+        private Dictionary<string, GameInfo> games;
+        private UserProfile user;
+        private List<BackupFile> backupFiles;
+
+        /// <summary>
+        /// object instance so we can thread-safe save the user profile
+        /// </summary>
+        private object saving = new object();
+
+        public bool IsSaving
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// A dictionary containing GameInfos. The key is the game executable
@@ -23,14 +41,12 @@ namespace Nucleus.Gaming
             get { return games; }
         }
 
-        protected UserProfile user;
         public UserProfile User
         {
             get { return user; }
             set { user = value; }
         }
 
-        private static GameManager instance;
         public static GameManager Instance
         {
             get { return instance; }
@@ -39,46 +55,95 @@ namespace Nucleus.Gaming
         public GameManager()
         {
             instance = this;
-
             games = new Dictionary<string, GameInfo>();
+
             Initialize();
             LoadUser();
         }
 
-        #region Initialize
-        public virtual void End()
+        public void WaitSave()
         {
-            User32.ShowTaskBar();
+            while (IsSaving)
+            {
+            }
         }
 
+        #region Initialize
+        public void End()
+        {
+            //User32.ShowTaskBar();
+        }
+
+        private string GetAppDataPath()
+        {
+            string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            return Path.Combine(appData, "Nucleus Coop");
+        }
         protected string GetUserProfilePath()
         {
-            // search for user file
-            string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string split = Path.Combine(appData, "SplitPlayPC");
-            return split + "\\userprofile.nsplit";
+            return Path.Combine(GetAppDataPath(), "userprofile.json");
         }
 
         public int Compare(UserGameInfo x, UserGameInfo y)
         {
-            return x.GameName.CompareTo(y.GameName);
+            return x.Game.GameName.CompareTo(y.Game.GameName);
         }
 
-        public virtual void UpdateUserProfile()
+        public UserGameInfo AddGame(GameInfo game, string exePath)
+        {
+            UserGameInfo gInfo = new UserGameInfo();
+            gInfo.InitializeDefault(game, exePath);
+            user.Games.Add(gInfo);
+
+            UpdateUserProfile();
+
+            return gInfo;
+        }
+
+        public void StartBackup(GameInfo game)
+        {
+            string appData = GetAppDataPath();
+            string gamePath = Path.Combine(appData, game.GUID);
+            Directory.CreateDirectory(gamePath);
+
+            backupFiles = new List<BackupFile>();
+        }
+
+        public BackupFile BackupFile(GameInfo game, string path)
+        {
+            string appData = GetAppDataPath();
+            string gamePath = Path.Combine(appData, game.GUID);
+            string destination = Path.Combine(gamePath, Path.GetFileName(path));
+            File.Copy(path, destination);
+
+            BackupFile bkp = new BackupFile(path, destination); 
+            backupFiles.Add(bkp);
+
+            return bkp;
+        }
+
+        public void ExecuteBackup(GameInfo game)
+        {
+            string appData = GetAppDataPath();
+            string gamePath = Path.Combine(appData, game.GUID);
+
+            for (int i = 0; i < backupFiles.Count; i++)
+            {
+                BackupFile bkp = backupFiles[i];
+                File.Delete(bkp.Source);
+                File.Move(bkp.BackupPath, bkp.Source);
+            }
+        }
+
+        private void UpdateUserProfile()
         {
             user.Games.Sort(Compare);
 
             string userProfile = GetUserProfilePath();
-
-            using (FileStream stream = new FileStream(userProfile, FileMode.Create))
-            {
-                BinaryWriter writer = new BinaryWriter(stream);
-                UserProfile.Write(writer, user);
-                writer.Flush();
-            }
+            asyncSaveUser(userProfile);
         }
 
-        protected virtual void LoadUser()
+        private void LoadUser()
         {
             string userProfile = GetUserProfilePath();
 
@@ -88,7 +153,17 @@ namespace Nucleus.Gaming
                 {
                     using (FileStream stream = new FileStream(userProfile, FileMode.Open))
                     {
-                        user = UserProfile.Read(new BinaryReader(stream));
+                        using (StreamReader reader = new StreamReader(stream))
+                        {
+                            string json = reader.ReadToEnd();
+                            user = JsonConvert.DeserializeObject<UserProfile>(json);
+
+                            if (user.Games == null)
+                            {
+                                // json doesn't save empty lists, and user didn't add any game
+                                user.InitializeDefault();
+                            }
+                        }
                     }
                 }
                 catch
@@ -104,6 +179,9 @@ namespace Nucleus.Gaming
 
         private void makeDefaultUserFile()
         {
+            user = new UserProfile();
+            user.InitializeDefault();
+
             string userProfile = GetUserProfilePath();
             string split = Path.GetDirectoryName(userProfile);
             if (!Directory.Exists(split))
@@ -111,16 +189,35 @@ namespace Nucleus.Gaming
                 Directory.CreateDirectory(split);
             }
 
-            using (FileStream stream = new FileStream(userProfile, FileMode.Create))
+            saveUser(userProfile);
+        }
+
+        private void asyncSaveUser(string path)
+        {
+            IsSaving = true;
+            ThreadPool.QueueUserWorkItem(saveUser, path);
+        }
+
+        private void saveUser(object p)
+        {
+            lock (saving)
             {
-                user = new UserProfile();
-                BinaryWriter writer = new BinaryWriter(stream);
-                UserProfile.Write(writer, user);
-                writer.Flush();
+                IsSaving = true;
+                string path = (string)p;
+                using (FileStream stream = new FileStream(path, FileMode.Create))
+                {
+                    using (StreamWriter writer = new StreamWriter(stream))
+                    {
+                        string json = JsonConvert.SerializeObject(user); 
+                        writer.Write(json);
+                        stream.Flush();
+                    }
+                }
+                IsSaving = false;
             }
         }
 
-        protected virtual void Initialize()
+        private void Initialize()
         {
             // Type we are looking for (GameInfo)
             Type infoType = typeof(GameInfo);
@@ -158,12 +255,12 @@ namespace Nucleus.Gaming
         }
         #endregion
 
-        public virtual void Play(IGameHandler handler)
+        public void Play(IGameHandler handler)
         {
-            if (handler.HideTaskBar)
-            {
-                User32.HideTaskbar();
-            }
+            //if (handler.HideTaskBar)
+            //{
+            //    User32.HideTaskbar();
+            //}
         }
     }
 }

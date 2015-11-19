@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Nucleus.Gaming;
 
 namespace SplitTool
 {
@@ -120,11 +121,13 @@ namespace SplitTool
             //byte[] d = BitConverter.GetBytes(i);
 
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GamesViewer());
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new GamesViewer());
             //Application.Run(new L4D2Form());
             //p.Kill();
+
+            GameManager manager = new GameManager();
         }
     }
 }

@@ -9,14 +9,12 @@ namespace Nucleus.Gaming
 {
     public class PlayerInfo
     {
-        public int Player;
-        public int ScreenIndex;
-        public ScreenType ScreenType;
+        public Rectangle monitorBounds;
+        public int screenIndex = -1;
+
+        public Rectangle editBounds;
 
         public object Tag;
-
-        public Size Size;
-
         public Process Process;
     }
 }

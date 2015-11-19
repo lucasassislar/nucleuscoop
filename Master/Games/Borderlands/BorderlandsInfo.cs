@@ -28,7 +28,7 @@ namespace Games
 
         public override Type HandlerType
         {
-            get { return typeof(BorderlandsHandler); }
+            get { return typeof(object); }
         }
 
         public override int MaxPlayers
@@ -61,16 +61,6 @@ namespace Games
         public override string GUID
         {
             get { return "5FC5EE6C-9327-46EB-83FB-F53E025E518E"; }
-        }
-
-        public override SplitScreenType SupportedTypes
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override bool NeedPositioning
-        {
-            get { return true; }
         }
 
         public override int MaxPlayersOneMonitor

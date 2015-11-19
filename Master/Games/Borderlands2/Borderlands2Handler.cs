@@ -17,7 +17,6 @@ using Nucleus.Gaming.Interop;
 
 namespace Games
 {
-
     public class Borderlands2Handler : IGameHandler
     {
         protected string executablePlace;
@@ -35,6 +34,50 @@ namespace Games
 
         public void End()
         {
+        }
+
+        private GameProfile profile;
+        private bool end;
+
+        public bool Initialize(UserGameInfo game, GameProfile profile)
+        {
+            this.executablePlace = game.ExePath;
+            this.profile = profile;
+
+            delayTime = (int)options["delay"].Value * 1000;
+
+            // Let's search for the save file
+            string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string myGames = Path.Combine(documents, @"My Games\Borderlands 2\WillowGame\Config");
+            string willowEngine = Path.Combine(myGames, "WillowEngine.ini");
+
+            if (File.Exists(willowEngine))
+            {
+                saveFile = willowEngine;
+            }
+            else
+            {
+                MessageBox.Show("Could not find WillowEngine.ini file!");
+
+                using (OpenFileDialog open = new OpenFileDialog())
+                {
+                    open.Filter = "WillowEngine.ini file|WillowEngine.ini";
+                    if (open.ShowDialog() == DialogResult.OK)
+                    {
+                        saveFile = open.FileName;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            // backup the WillowEngine ini
+            GameManager.Instance.StartBackup(game.Game);
+            GameManager.Instance.BackupFile(game.Game, willowEngine);
+
+            return true;
         }
 
         public bool Initialize(string gameFilename, List<PlayerInfo> players, Dictionary<string, GameOption> options, List<Control> addSteps, int titleHeight)
@@ -75,8 +118,6 @@ namespace Games
             return true;
         }
 
-        private bool end;
-
         public string Play()
         {
             if (!SteamUtil.IsSteamRunning())
@@ -106,14 +147,15 @@ namespace Games
             {
                 PlayerInfo player = playas[i];
                 // Set Borderlands 2 Resolution and stuff to run
-                Screen screen = all[player.ScreenIndex];
+                //Screen screen = all[player.ScreenIndex];
+                Screen screen = all[0];
                 int width = 0;
                 int height = 0;
                 Rectangle bounds = screen.Bounds;
 
                 Point location = new Point();
 
-                ViewportUtil.GetPlayerViewport(player, titleHeight, out width, out height, out location);
+                //ViewportUtil.GetPlayerViewport(player, titleHeight, out width, out height, out location);
 
                 if (width == fbounds.Width &&
                     height == fbounds.Height)

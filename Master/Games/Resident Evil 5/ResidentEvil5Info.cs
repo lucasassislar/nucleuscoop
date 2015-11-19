@@ -24,7 +24,7 @@ namespace Games
 
         public override Type HandlerType
         {
-            get { return typeof(ResidentEvil5Handler); }
+            get { return typeof(object); }
         }
 
         public override int MaxPlayers
@@ -38,14 +38,6 @@ namespace Games
             get { return options; }
         }
 
-        public override SplitScreenType SupportedTypes
-        {
-            get
-            {
-                return SplitScreenType.TopBottom;
-            }
-        }
-
         public ResidentEvil5Info()
         {
             options = new Dictionary<string, GameOption>();
@@ -57,11 +49,6 @@ namespace Games
         public override string GUID
         {
             get { return "1D4433B0-D555-462A-A225-9AF71C65B7CB"; }
-        }
-
-        public override bool NeedPositioning
-        {
-            get { return false; }
         }
 
         public override bool SupportsKeyboard

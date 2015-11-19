@@ -45,6 +45,9 @@
     <OutputPath>bin\TestDebug\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -107,11 +110,16 @@
     <Compile Include="Controls\TextMessageBox.Designer.cs">
       <DependentUpon>TextMessageBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="GameOption.cs" />
-    <Compile Include="IGameHandler.cs" />
-    <Compile Include="IGameInfo.cs" />
-    <Compile Include="IniFile.cs" />
-    <Compile Include="Interop\Interceptor\RemoteHooking.cs" />
+    <Compile Include="Coop\GameOption.cs" />
+    <Compile Include="Coop\GameProfile.cs" />
+    <Compile Include="Coop\IGameHandler.cs" />
+    <Compile Include="Coop\GameInfo.cs" />
+    <Compile Include="Coop\UserGameInfo.cs" />
+    <Compile Include="Coop\UserProfile.cs" />
+    <Compile Include="Coop\UserScreen.cs" />
+    <Compile Include="Coop\UserScreenType.cs" />
+    <Compile Include="IO\BackupFile.cs" />
+    <Compile Include="IO\IniFile.cs" />
     <Compile Include="Interop\Interceptor\Win32.cs" />
     <Compile Include="Interop\Interceptor\Win32EnumWindows.cs" />
     <Compile Include="Interop\Interceptor\Win32Messages.cs" />
@@ -122,15 +130,11 @@
     <Compile Include="Interop\Win32Api.cs" />
     <Compile Include="Interop\WindowShowStyle.cs" />
     <Compile Include="Managers\GameManager.cs" />
-    <Compile Include="Managers\SerializationUtil.cs" />
-    <Compile Include="Managers\SplitScreenType.cs" />
-    <Compile Include="Player\DuetPlayerInfo.cs" />
+    <Compile Include="New\IUserInputForm.cs" />
+    <Compile Include="New\Utils\RectangleUtil.cs" />
+    <Compile Include="New\Utils\ScreenUtil.cs" />
     <Compile Include="Player\PlayerInfo.cs" />
-    <Compile Include="Player\ScreenType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="User\Games\UserGameInfo.cs" />
-    <Compile Include="User\Games\UserGameProfile.cs" />
-    <Compile Include="User\UserProfile.cs" />
     <Compile Include="Util\CmdUtil.cs" />
     <Compile Include="Util\FileUtil.cs" />
     <Compile Include="Util\FormUtil.cs" />
@@ -157,6 +161,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="GamingKey.snk" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="User\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
