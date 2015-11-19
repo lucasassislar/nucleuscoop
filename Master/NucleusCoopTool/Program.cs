@@ -24,18 +24,11 @@ namespace SplitTool
     }
     static class Program
     { 
-        static void ProcessWindow1(IntPtr hwnd)
-        {
-        }
-
-
         [DllImport("TheHooker.dll")]
         static extern bool InstallHook(uint id);
 
         [DllImport("TheHooker.dll")]
         static extern bool RemoveHook();
-
-
 
         static WindowInterceptor fuck;
         [DllImport("user32.dll")]
@@ -51,9 +44,6 @@ namespace SplitTool
         [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
         static extern System.IntPtr FindWindowByCaption(int ZeroOnly, string lpWindowName);
 
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {
@@ -81,14 +71,9 @@ namespace SplitTool
             //{
 
             //}
-
-
             //RemoveHook();
 
             //return;
-
-
-            
 
             //Thread.Sleep(10000);
 
@@ -96,9 +81,6 @@ namespace SplitTool
             //uint id = (uint)threads[0].Id;
             //Console.WriteLine("Thread ID: " + id);
             //uint id = GetWindowThreadProcessId(p.MainWindowHandle, IntPtr.Zero);
-
-
-           
 
             //fuck = new WindowInterceptor(hMod, threadID);
 
@@ -142,7 +124,6 @@ namespace SplitTool
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new GamesViewer());
             //Application.Run(new L4D2Form());
-
             //p.Kill();
         }
     }
