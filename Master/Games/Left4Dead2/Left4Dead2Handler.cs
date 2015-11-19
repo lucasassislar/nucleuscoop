@@ -301,19 +301,19 @@ namespace Games
                         switch (gamePadId)
                         {
                             case 0:
-                                xdata = GamesResources._1_xinput1_3;
+                                xdata = Nucleus.Coop.Games.GamesResources._1_xinput1_3;
                                 break;
                             case 1:
-                                xdata = GamesResources._2_xinput1_3;
+                                xdata = Nucleus.Coop.Games.GamesResources._2_xinput1_3;
                                 break;
                             case 2:
-                                xdata = GamesResources._3_xinput1_3;
+                                xdata = Nucleus.Coop.Games.GamesResources._3_xinput1_3;
                                 break;
                             case 3:
-                                xdata = GamesResources._4_xinput1_3;
+                                xdata = Nucleus.Coop.Games.GamesResources._4_xinput1_3;
                                 break;
                             default:
-                                xdata = GamesResources._4_xinput1_3;
+                                xdata = Nucleus.Coop.Games.GamesResources._4_xinput1_3;
                                 break;
                         }
                         string xinputPath = Path.Combine(l4dBinFolder, "xinput1_3.dll");
@@ -423,7 +423,7 @@ namespace Games
                 // Get the SoftTH stream
                 if (!File.Exists(d3d9Path))
                 {
-                    using (MemoryStream stream = new MemoryStream(GamesResources.d3d9))
+                    using (MemoryStream stream = new MemoryStream(Nucleus.Coop.Games.GamesResources.d3d9))
                     {
                         // write to bin folder
                         using (FileStream file = new FileStream(d3d9Path, FileMode.Create))

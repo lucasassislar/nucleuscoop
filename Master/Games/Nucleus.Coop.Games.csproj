@@ -8,8 +8,8 @@
     <ProjectGuid>{3F7C8608-41B3-4831-9351-980BC4499FFB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Games</RootNamespace>
-    <AssemblyName>Games</AssemblyName>
+    <RootNamespace>Nucleus.Coop.Games</RootNamespace>
+    <AssemblyName>NucleusCoop.Games</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
@@ -102,9 +102,9 @@
     <Compile Include="TeamFortress2\TeamFortress2Info.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NucleusGaming\NucleusGaming.csproj">
+    <ProjectReference Include="..\NucleusGaming\Nucleus.Gaming.csproj">
       <Project>{223DBDAE-E362-452C-9455-F518D002B154}</Project>
-      <Name>NucleusGaming</Name>
+      <Name>Nucleus.Gaming</Name>
     </ProjectReference>
     <ProjectReference Include="..\ThirdParty\WindowScrape\WindowScrape.csproj">
       <Project>{d9716550-921d-44e8-a289-c297950db1f7}</Project>

@@ -32,9 +32,9 @@ namespace Games
             string splitscreenDLL = folder + "\\splitscreen.dll";
             string splitscreenEXE = folder + "\\splitscreen.exe";
 
-            FileUtil.Write(Resident_Evil_5.RE5Resources.splitscreen_cfg, splitscreenCFG);
-            FileUtil.Write(Resident_Evil_5.RE5Resources.splitscreen_dll, splitscreenDLL);
-            FileUtil.Write(Resident_Evil_5.RE5Resources.splitscreen_exe, splitscreenEXE);
+            FileUtil.Write(Nucleus.Coop.Games.Resident_Evil_5.RE5Resources.splitscreen_cfg, splitscreenCFG);
+            FileUtil.Write(Nucleus.Coop.Games.Resident_Evil_5.RE5Resources.splitscreen_dll, splitscreenDLL);
+            FileUtil.Write(Nucleus.Coop.Games.Resident_Evil_5.RE5Resources.splitscreen_exe, splitscreenEXE);
 
             gameFileName = splitscreenEXE;
 

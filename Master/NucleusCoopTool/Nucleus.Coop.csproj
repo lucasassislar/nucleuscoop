@@ -186,13 +186,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Games\Games.csproj">
+    <ProjectReference Include="..\Games\Nucleus.Coop.Games.csproj">
       <Project>{3f7c8608-41b3-4831-9351-980bc4499ffb}</Project>
-      <Name>Games</Name>
+      <Name>Nucleus.Coop.Games</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NucleusGaming\NucleusGaming.csproj">
+    <ProjectReference Include="..\NucleusGaming\Nucleus.Gaming.csproj">
       <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
-      <Name>NucleusGaming</Name>
+      <Name>Nucleus.Gaming</Name>
     </ProjectReference>
     <ProjectReference Include="..\ThirdParty\WindowScrape\WindowScrape.csproj">
       <Project>{d9716550-921d-44e8-a289-c297950db1f7}</Project>

@@ -5,7 +5,7 @@ using System.Text;
 using Nucleus.Gaming;
 using Games.Left4Dead2;
 using System.Drawing;
-using Games.Left4Dead2.resources;
+using Nucleus.Coop.Games.Left4Dead2.resources;
 
 namespace Games
 {
