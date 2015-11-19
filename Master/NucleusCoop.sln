@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NucleusGaming", "NucleusGaming\NucleusGaming.csproj", "{223DBDAE-E362-452C-9455-F518D002B154}"
 EndProject
@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Games", "Games\Games.csproj
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThirdParty", "ThirdParty", "{EBED4BFC-5AC2-4601-9BEA-879206976057}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplitTool", "SplitTool\SplitTool.csproj", "{7818FD81-77A6-49F3-8571-A91B1B99E63F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NucleusCoopTool", "NucleusCoopTool\NucleusCoopTool.csproj", "{7818FD81-77A6-49F3-8571-A91B1B99E63F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3F7C8608-41B3-4831-9351-980BC4499FFB} = {3F7C8608-41B3-4831-9351-980BC4499FFB}
 	EndProjectSection
@@ -37,7 +37,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TheHooker", "TheHooker\TheH
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "x360ce", "x360ce", "{4F34266F-E332-4F57-99DC-F4D3CEDD17D9}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "x360ce_1", "x360ce\x360ce\x360ce\x360ce.vcxproj", "{303D4435-7541-4357-91B1-CC9DA7E0E926}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "x360ce", "x360ce\x360ce\x360ce\x360ce.vcxproj", "{303D4435-7541-4357-91B1-CC9DA7E0E926}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libMinHook", "x360ce\x360ce\3rdparty\libMinHook\libMinHook.vcxproj", "{65021938-D251-46FA-BC3D-85C385D4C06D}"
 EndProject
@@ -47,58 +47,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "x360ce_3", "x360ce\x360ce\x
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "x360ce_4", "x360ce\x360ce\x360ce\x360ce_4.vcxproj", "{4E3EC1F9-04DD-4A20-AFBC-E67391624144}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{F9BDD442-E97F-4DCA-8718-D5AB34E60EFB}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 14
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs32
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Games\\Games.csproj
-		SccProjectName1 = Games
-		SccLocalPath1 = Games
-		SccProjectUniqueName2 = NucleusGaming\\NucleusGaming.csproj
-		SccProjectName2 = NucleusGaming
-		SccLocalPath2 = NucleusGaming
-		SccProjectUniqueName3 = SplitTool\\SplitTool.csproj
-		SccProjectName3 = SplitTool
-		SccLocalPath3 = SplitTool
-		SccProjectUniqueName4 = ThirdParty\\WindowScrape\\WindowScrape.csproj
-		SccProjectTopLevelParentUniqueName4 = SplitPlay.sln
-		SccProjectName4 = ThirdParty/WindowScrape
-		SccLocalPath4 = ThirdParty\\WindowScrape
-		SccProjectUniqueName5 = CheckDiff\\CheckDiff.csproj
-		SccProjectName5 = CheckDiff
-		SccLocalPath5 = CheckDiff
-		SccProjectUniqueName6 = StartGame\\StartGame.csproj
-		SccProjectName6 = StartGame
-		SccLocalPath6 = StartGame
-		SccProjectUniqueName7 = GetFolderFileList\\GetFolderFileList.csproj
-		SccProjectName7 = GetFolderFileList
-		SccLocalPath7 = GetFolderFileList
-		SccProjectUniqueName8 = TheHooker\\TheHooker.vcxproj
-		SccProjectName8 = TheHooker
-		SccLocalPath8 = TheHooker
-		SccProjectUniqueName9 = x360ce\\x360ce\\3rdparty\\libMinHook\\libMinHook.vcxproj
-		SccProjectTopLevelParentUniqueName9 = SplitPlay.sln
-		SccProjectName9 = x360ce/x360ce/3rdparty/libMinHook
-		SccLocalPath9 = x360ce\\x360ce\\3rdparty\\libMinHook
-		SccProjectUniqueName10 = x360ce\\x360ce\\x360ce\\x360ce.vcxproj
-		SccProjectTopLevelParentUniqueName10 = SplitPlay.sln
-		SccProjectName10 = x360ce/x360ce/x360ce
-		SccLocalPath10 = x360ce\\x360ce\\x360ce
-		SccProjectUniqueName11 = x360ce\\x360ce\\x360ce\\x360ce_2.vcxproj
-		SccProjectTopLevelParentUniqueName11 = SplitPlay.sln
-		SccProjectName11 = x360ce/x360ce/x360ce
-		SccLocalPath11 = x360ce\\x360ce\\x360ce
-		SccProjectUniqueName12 = x360ce\\x360ce\\x360ce\\x360ce_3.vcxproj
-		SccProjectTopLevelParentUniqueName12 = SplitPlay.sln
-		SccProjectName12 = x360ce/x360ce/x360ce
-		SccLocalPath12 = x360ce\\x360ce\\x360ce
-		SccProjectUniqueName13 = x360ce\\x360ce\\x360ce\\x360ce_4.vcxproj
-		SccProjectTopLevelParentUniqueName13 = SplitPlay.sln
-		SccProjectName13 = x360ce/x360ce/x360ce
-		SccLocalPath13 = x360ce\\x360ce\\x360ce
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -431,6 +382,10 @@ Global
 		{D9716550-921D-44E8-A289-C297950DB1F7} = {EBED4BFC-5AC2-4601-9BEA-879206976057}
 		{525DCD74-FBC3-4842-8269-F9C83F0EE902} = {EBED4BFC-5AC2-4601-9BEA-879206976057}
 		{53E45AD0-DAA6-41D1-8493-9B3FF23C88C0} = {EBED4BFC-5AC2-4601-9BEA-879206976057}
+		{B7D753A9-793B-45F1-8208-E2B7F112D187} = {F9BDD442-E97F-4DCA-8718-D5AB34E60EFB}
+		{43DB75E9-EAE0-43D1-8AF6-4F3C31FEF60A} = {F9BDD442-E97F-4DCA-8718-D5AB34E60EFB}
+		{099D2E99-22A3-44DE-B673-49E80709B7E2} = {F9BDD442-E97F-4DCA-8718-D5AB34E60EFB}
+		{4F34266F-E332-4F57-99DC-F4D3CEDD17D9} = {EBED4BFC-5AC2-4601-9BEA-879206976057}
 		{303D4435-7541-4357-91B1-CC9DA7E0E926} = {4F34266F-E332-4F57-99DC-F4D3CEDD17D9}
 		{65021938-D251-46FA-BC3D-85C385D4C06D} = {4F34266F-E332-4F57-99DC-F4D3CEDD17D9}
 		{9425086A-70C5-43FA-B9AF-139924565FA0} = {4F34266F-E332-4F57-99DC-F4D3CEDD17D9}

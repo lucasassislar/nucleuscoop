@@ -1,7 +1,7 @@
 ﻿using Nucleus;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Controls;
-using SplitTool.Properties;
+using Nucleus.Coop.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

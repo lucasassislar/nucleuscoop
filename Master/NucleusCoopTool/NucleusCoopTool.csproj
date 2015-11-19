@@ -7,8 +7,8 @@
     <ProjectGuid>{7818FD81-77A6-49F3-8571-A91B1B99E63F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SplitTool</RootNamespace>
-    <AssemblyName>SplitTool</AssemblyName>
+    <RootNamespace>Nucleus.Coop</RootNamespace>
+    <AssemblyName>NucleusCoop</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>

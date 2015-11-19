@@ -113,7 +113,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::SplitTool.Properties.Resources.lupa;
+            this.pictureBox1.Image = global::Nucleus.Coop.Properties.Resources.lupa;
             this.pictureBox1.Location = new System.Drawing.Point(4, 4);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.pictureBox1.Name = "pictureBox1";
@@ -137,7 +137,7 @@
             this.btn_AddGame.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_AddGame.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_AddGame.ForeColor = System.Drawing.Color.DimGray;
-            this.btn_AddGame.Image = global::SplitTool.Properties.Resources.plus;
+            this.btn_AddGame.Image = global::Nucleus.Coop.Properties.Resources.plus;
             this.btn_AddGame.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_AddGame.Location = new System.Drawing.Point(8, 674);
             this.btn_AddGame.Name = "btn_AddGame";
@@ -154,7 +154,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.borderPanel1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
-            this.borderPanel1.BorderImage = global::SplitTool.Properties.Resources.border;
+            this.borderPanel1.BorderImage = global::Nucleus.Coop.Properties.Resources.border;
             this.borderPanel1.Controls.Add(this.btn_Presets);
             this.borderPanel1.Controls.Add(this.pic_Keyboard);
             this.borderPanel1.Controls.Add(this.label_title);
@@ -169,7 +169,7 @@
             this.borderPanel1.Controls.Add(this.label_GameName);
             this.borderPanel1.Controls.Add(this.game_Box);
             this.borderPanel1.Controls.Add(this.list_Games);
-            this.borderPanel1.EdgeImage = global::SplitTool.Properties.Resources.edge;
+            this.borderPanel1.EdgeImage = global::Nucleus.Coop.Properties.Resources.edge;
             this.borderPanel1.ForeColor = System.Drawing.Color.White;
             this.borderPanel1.Location = new System.Drawing.Point(8, 79);
             this.borderPanel1.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
@@ -198,7 +198,7 @@
             // pic_Keyboard
             // 
             this.pic_Keyboard.BackColor = System.Drawing.Color.Transparent;
-            this.pic_Keyboard.Image = global::SplitTool.Properties.Resources.keyboard;
+            this.pic_Keyboard.Image = global::Nucleus.Coop.Properties.Resources.keyboard;
             this.pic_Keyboard.Location = new System.Drawing.Point(351, 58);
             this.pic_Keyboard.Name = "pic_Keyboard";
             this.pic_Keyboard.Size = new System.Drawing.Size(35, 31);
@@ -263,7 +263,7 @@
             // pic_gamePad
             // 
             this.pic_gamePad.BackColor = System.Drawing.Color.Transparent;
-            this.pic_gamePad.Image = global::SplitTool.Properties.Resources.gamepad;
+            this.pic_gamePad.Image = global::Nucleus.Coop.Properties.Resources.gamepad;
             this.pic_gamePad.Location = new System.Drawing.Point(392, 58);
             this.pic_gamePad.Name = "pic_gamePad";
             this.pic_gamePad.Size = new System.Drawing.Size(35, 31);
@@ -280,7 +280,7 @@
             this.btn_Previous.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Previous.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Previous.ForeColor = System.Drawing.Color.White;
-            this.btn_Previous.Image = global::SplitTool.Properties.Resources.left_arrow;
+            this.btn_Previous.Image = global::Nucleus.Coop.Properties.Resources.left_arrow;
             this.btn_Previous.Location = new System.Drawing.Point(196, 96);
             this.btn_Previous.Name = "btn_Previous";
             this.btn_Previous.Size = new System.Drawing.Size(32, 32);
@@ -299,7 +299,7 @@
             this.btn_Next.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Next.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Next.ForeColor = System.Drawing.Color.White;
-            this.btn_Next.Image = global::SplitTool.Properties.Resources.right_arrow;
+            this.btn_Next.Image = global::Nucleus.Coop.Properties.Resources.right_arrow;
             this.btn_Next.Location = new System.Drawing.Point(234, 96);
             this.btn_Next.Name = "btn_Next";
             this.btn_Next.Size = new System.Drawing.Size(32, 32);
@@ -316,7 +316,7 @@
             this.button_Play.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_Play.Font = new System.Drawing.Font("Segoe UI Symbol", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_Play.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.button_Play.Image = global::SplitTool.Properties.Resources.play;
+            this.button_Play.Image = global::Nucleus.Coop.Properties.Resources.play;
             this.button_Play.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button_Play.Location = new System.Drawing.Point(270, 58);
             this.button_Play.Name = "button_Play";
@@ -341,7 +341,7 @@
             // 
             // game_Box
             // 
-            this.game_Box.Image = global::SplitTool.Properties.Resources.not_found;
+            this.game_Box.Image = global::Nucleus.Coop.Properties.Resources.not_found;
             this.game_Box.Location = new System.Drawing.Point(197, 25);
             this.game_Box.Margin = new System.Windows.Forms.Padding(2, 4, 2, 4);
             this.game_Box.Name = "game_Box";
