@@ -150,6 +150,18 @@ namespace WindowScrape.Static
         {
             SendMessage(hwnd, (uint)WM.BN_CLICKED, IntPtr.Zero, IntPtr.Zero);
         }
+        public static Point GetTitleBarSize(IntPtr hwnd)
+        {
+            RECT rcClient, rcWind;
+            GetClientRect(hwnd, out rcClient);
+            GetWindowRect(hwnd, out rcWind);
+
+            Point ptDiff = new Point();
+            ptDiff.X = (rcWind.Right - rcWind.Left) - rcClient.Right;
+            ptDiff.Y = (rcWind.Bottom - rcWind.Top) - rcClient.Bottom;
+            return ptDiff;
+        }
+
         #endregion
 
         #region lib
@@ -209,6 +221,11 @@ namespace WindowScrape.Static
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
+
 
         [DllImport("user32.dll")]
         private static extern bool CloseWindow(IntPtr hWnd);

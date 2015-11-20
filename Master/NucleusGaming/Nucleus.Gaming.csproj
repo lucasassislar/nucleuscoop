@@ -129,6 +129,7 @@
     <Compile Include="Interop\User32_WS.cs" />
     <Compile Include="Interop\Win32Api.cs" />
     <Compile Include="Interop\WindowShowStyle.cs" />
+    <Compile Include="IO\Logging\LogManager.cs" />
     <Compile Include="Managers\GameManager.cs" />
     <Compile Include="New\IUserInputForm.cs" />
     <Compile Include="New\Utils\RectangleUtil.cs" />

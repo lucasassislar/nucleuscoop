@@ -109,12 +109,30 @@ namespace Nucleus.Gaming
             backupFiles = new List<BackupFile>();
         }
 
+        public IGameHandler MakeHandler(GameInfo game)
+        {
+            return (IGameHandler)Activator.CreateInstance(game.HandlerType);
+        }
+
         public BackupFile BackupFile(GameInfo game, string path)
         {
             string appData = GetAppDataPath();
             string gamePath = Path.Combine(appData, game.GUID);
             string destination = Path.Combine(gamePath, Path.GetFileName(path));
-            File.Copy(path, destination);
+
+            if (!File.Exists(path) && File.Exists(destination))
+            {
+                // we fucked up and the backup exists
+                File.Copy(destination, path);
+            }
+            else
+            {
+                if (File.Exists(destination))
+                {
+                    File.Delete(destination);
+                }
+                File.Copy(path, destination);
+            }
 
             BackupFile bkp = new BackupFile(path, destination); 
             backupFiles.Add(bkp);
@@ -130,8 +148,11 @@ namespace Nucleus.Gaming
             for (int i = 0; i < backupFiles.Count; i++)
             {
                 BackupFile bkp = backupFiles[i];
-                File.Delete(bkp.Source);
-                File.Move(bkp.BackupPath, bkp.Source);
+                if (File.Exists(bkp.BackupPath))
+                {
+                    File.Delete(bkp.Source);
+                    File.Move(bkp.BackupPath, bkp.Source);
+                }
             }
         }
 

@@ -11,6 +11,13 @@ namespace Nucleus.Gaming.Interop
         public static void HideBorder(IntPtr handle)
         {
             uint lStyle = (uint)User32Interop.GetWindowLong(handle, User32_WS.GWL_STYLE);
+            uint customStyle = ~(User32_WS.WS_CAPTION | User32_WS.WS_BORDER | User32_WS.WS_DLGFRAME | User32_WS.WS_SIZEBOX | User32_WS.WS_THICKFRAME);
+
+            if ((lStyle & customStyle) == lStyle)
+            {
+                return;
+            }
+
             lStyle &= ~(User32_WS.WS_CAPTION | User32_WS.WS_BORDER | User32_WS.WS_DLGFRAME | User32_WS.WS_SIZEBOX | User32_WS.WS_THICKFRAME);
             User32Interop.SetWindowLong(handle, User32_WS.GWL_STYLE, (int)lStyle);
         }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using WindowScrape.Constants;
 using WindowScrape.Static;
-using Point=System.Drawing.Point;
+using Point = System.Drawing.Point;
 
 namespace WindowScrape.Types
 {
@@ -51,7 +51,14 @@ namespace WindowScrape.Types
         public Point Location
         {
             get { return HwndInterface.GetHwndPos(Hwnd); }
-            set {
+            set
+            {
+                Point location = HwndInterface.GetHwndPos(Hwnd);
+                if (location == value)
+                {
+                    return;
+                }
+
                 if (TopMost)
                 {
                     HwndInterface.SetHwndPosTopMost(Hwnd, (int)value.X, (int)value.Y);
@@ -71,7 +78,15 @@ namespace WindowScrape.Types
         public Size Size
         {
             get { return HwndInterface.GetHwndSize(Hwnd); }
-            set { HwndInterface.SetHwndSize(Hwnd, (int)value.Width, (int)value.Height); }
+            set
+            {
+                Size current = HwndInterface.GetHwndSize(Hwnd);
+                if (current == value)
+                {
+                    return;
+                }
+                HwndInterface.SetHwndSize(Hwnd, (int)value.Width, (int)value.Height);
+            }
         }
 
         /// <summary>
@@ -201,35 +216,35 @@ namespace WindowScrape.Types
         }
 
         #region Operators
-        public static bool operator ==(HwndObject a, HwndObject b)
-        {
-            return (a.Hwnd == b.Hwnd);
-        }
+        //public static bool operator ==(HwndObject a, HwndObject b)
+        //{
+        //    return a == null || b == null || (a.Hwnd == b.Hwnd);
+        //}
 
-        public static bool operator !=(HwndObject a, HwndObject b)
-        {
-            return !(a == b);
-        }
+        //public static bool operator !=(HwndObject a, HwndObject b)
+        //{
+        //    return !(a == b);
+        //}
 
-        public bool Equals(HwndObject obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.Hwnd.Equals(Hwnd);
-        }
+        //public bool Equals(HwndObject obj)
+        //{
+        //    if (ReferenceEquals(null, obj)) return false;
+        //    if (ReferenceEquals(this, obj)) return true;
+        //    return obj.Hwnd.Equals(Hwnd);
+        //}
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof(HwndObject)) return false;
-            return Equals((HwndObject)obj);
-        }
+        //public override bool Equals(object obj)
+        //{
+        //    if (ReferenceEquals(null, obj)) return false;
+        //    if (ReferenceEquals(this, obj)) return true;
+        //    if (obj.GetType() != typeof(HwndObject)) return false;
+        //    return Equals((HwndObject)obj);
+        //}
 
-        public override int GetHashCode()
-        {
-            return Hwnd.GetHashCode();
-        }
+        //public override int GetHashCode()
+        //{
+        //    return Hwnd.GetHashCode();
+        //}
         #endregion
     }
 }

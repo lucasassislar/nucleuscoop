@@ -28,7 +28,7 @@ namespace Games
 
         public override Type HandlerType
         {
-            get { return typeof(object); }
+            get { return typeof(Borderlands2Handler); }
         }
 
         public override int MaxPlayers
