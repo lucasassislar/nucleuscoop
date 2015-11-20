@@ -84,54 +84,77 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\MonitorControl.cs">
+    <None Include="Controls\MonitorControl.cs">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\MonitorControl.Designer.cs">
+    </None>
+    <None Include="Controls\MonitorControl.Designer.cs">
       <DependentUpon>MonitorControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PlayerControl.cs">
+    </None>
+    <None Include="Controls\PlayerControl.cs">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\PlayerControl.Designer.cs">
+    </None>
+    <None Include="Controls\PlayerControl.Designer.cs">
       <DependentUpon>PlayerControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PlayerCount.cs">
+    </None>
+    <None Include="Controls\PlayerCount.cs">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\PlayerCount.Designer.cs">
+    </None>
+    <None Include="Controls\PlayerCount.Designer.cs">
       <DependentUpon>PlayerCount.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PlayerOptions.cs">
+    </None>
+    <None Include="Controls\PlayerOptions.cs">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\PlayerOptions.Designer.cs">
+    </None>
+    <None Include="Controls\PlayerOptions.Designer.cs">
       <DependentUpon>PlayerOptions.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ScreenControl.cs">
+    </None>
+    <None Include="Controls\ScreenControl.cs">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\ScreenControl.Designer.cs">
+    </None>
+    <None Include="Controls\ScreenControl.Designer.cs">
       <DependentUpon>ScreenControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ScreenHolder.cs" />
-    <Compile Include="FindGameForm.cs">
+    </None>
+    <None Include="FindGameForm.cs">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FindGameForm.Designer.cs">
+    </None>
+    <None Include="FindGameForm.Designer.cs">
       <DependentUpon>FindGameForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GamesViewer.cs">
+    </None>
+    <None Include="GamesViewer.cs">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GamesViewer.Designer.cs">
+    </None>
+    <None Include="GamesViewer.Designer.cs">
       <DependentUpon>GamesViewer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PresetsForm.cs">
+    </None>
+    <None Include="PresetsForm.cs">
+      <SubType>Form</SubType>
+    </None>
+    <None Include="PresetsForm.Designer.cs">
+      <DependentUpon>PresetsForm.cs</DependentUpon>
+    </None>
+    <Compile Include="New\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PresetsForm.Designer.cs">
-      <DependentUpon>PresetsForm.cs</DependentUpon>
+    <Compile Include="New\BaseForm.Designer.cs">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="New\GameList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="New\GameList.Designer.cs">
+      <DependentUpon>GameList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="New\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="New\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="New\PositionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="New\PositionsForm.Designer.cs">
+      <DependentUpon>PositionsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -155,6 +178,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GamesViewer.resx">
       <DependentUpon>GamesViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="New\BaseForm.resx">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="New\GameList.resx">
+      <DependentUpon>GameList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="New\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="New\PositionsForm.resx">
+      <DependentUpon>PositionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PresetsForm.resx">
       <DependentUpon>PresetsForm.cs</DependentUpon>

@@ -141,6 +141,7 @@
     <Compile Include="Util\FormUtil.cs" />
     <Compile Include="Util\MathUtil.cs" />
     <Compile Include="Util\ProcessUtil.cs" />
+    <Compile Include="Util\ScreensUtil.cs" />
     <Compile Include="Util\StartGameUtil.cs" />
     <Compile Include="Util\SteamUtil.cs" />
     <Compile Include="Util\StringUtil.cs" />

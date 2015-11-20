@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SplitPlayPC
+namespace Nucleus.Gaming
 {
     public enum UserScreenType
     {
