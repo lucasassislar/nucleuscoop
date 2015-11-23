@@ -1,5 +1,4 @@
 ﻿using Nucleus.Gaming;
-using SplitPlayPC.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -136,7 +135,7 @@ namespace Nucleus.Coop
 
             if (dragging)
             {
-                var players = config.Players;
+                var players = profile.PlayerData;
 
                 PlayerInfo player = players[draggingIndex];
                 Rectangle p = player.editBounds;
@@ -154,7 +153,7 @@ namespace Nucleus.Coop
                             float offset = s.Width * 0.05f;
 
                             // check if there's space available on this screen
-                            var playas = config.Players;
+                            var playas = profile.PlayerData;
                             Rectangle? editor;
                             Rectangle? monitor;
                             GetFreeSpace(i, out editor, out monitor);
@@ -191,7 +190,7 @@ namespace Nucleus.Coop
             editorBounds = null;
             monitorBounds = null;
 
-            var players = config.Players;
+            var players = profile.PlayerData;
             UserScreen screen = screens[screenIndex];
             Rectangle bounds = screen.monitorBounds;
             Rectangle ebounds = screen.bounds;
@@ -346,7 +345,7 @@ namespace Nucleus.Coop
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
-            var players = config.Players;
+            var players = profile.PlayerData;
 
             if (e.Button == MouseButtons.Left)
             {
@@ -395,7 +394,7 @@ namespace Nucleus.Coop
                             draggingIndex = i;
                             draggingOffset = new Point(r.X - e.X, r.Y - e.Y);
                             Rectangle newBounds = getDefaultBounds(draggingIndex);
-                            config.Players[draggingIndex].editBounds = newBounds;
+                            profile.PlayerData[draggingIndex].editBounds = newBounds;
 
                             if (draggingOffset.X < -newBounds.Width ||
                                 draggingOffset.Y < -newBounds.Height)
@@ -526,7 +525,7 @@ namespace Nucleus.Coop
             {
                 if (dragging)
                 {
-                    PlayerInfo p = config.Players[draggingIndex];
+                    PlayerInfo p = profile.PlayerData[draggingIndex];
                     dragging = false;
 
                     if (draggingScreen != -1)
@@ -546,9 +545,9 @@ namespace Nucleus.Coop
 
 
                     bool allReady = true;
-                    for (int i = 0; i < config.Players.Count; i++)
+                    for (int i = 0; i < profile.PlayerData.Count; i++)
                     {
-                        PlayerInfo player = config.Players[i];
+                        PlayerInfo player = profile.PlayerData[i];
                         if (player.screenIndex == -1)
                         {
                             allReady = false;
@@ -571,9 +570,9 @@ namespace Nucleus.Coop
         private Rectangle getDefaultBounds(int index)
         {
             float playersWidth = this.Width * 0.5f;
-            float playerWidth = (playersWidth * 0.9f) / (float)config.Players.Count;
+            float playerWidth = (playersWidth * 0.9f) / (float)profile.PlayerData.Count;
             float playerHeight = playerWidth * 0.5625f;
-            float offset = (playersWidth * 0.1f) / (float)config.Players.Count;
+            float offset = (playersWidth * 0.1f) / (float)profile.PlayerData.Count;
             return new Rectangle((int)(50 + ((playerWidth + offset) * index)), 100, (int)playerWidth, (int)playerHeight);
         }
 
@@ -592,21 +591,21 @@ namespace Nucleus.Coop
                 switch (s.type)
                 {
                     case UserScreenType.FullScreen:
-                        g.DrawImage(Resources.fullscreen, s.swapTypeRect);
+                        //g.DrawImage(Resources.fullscreen, s.swapTypeRect);
                         break;
                     case UserScreenType.DualHorizontal:
-                        g.DrawImage(Resources.horizontal, s.swapTypeRect);
+                        //g.DrawImage(Resources.horizontal, s.swapTypeRect);
                         break;
                     case UserScreenType.DualVertical:
-                        g.DrawImage(Resources.vertical, s.swapTypeRect);
+                        //g.DrawImage(Resources.vertical, s.swapTypeRect);
                         break;
                     case UserScreenType.FourPlayers:
-                        g.DrawImage(Resources._4players, s.swapTypeRect);
+                        //g.DrawImage(Resources._4players, s.swapTypeRect);
                         break;
                 }
             }
 
-            var players = config.Players;
+            var players = profile.PlayerData;
             for (int i = 0; i < players.Count; i++)
             {
                 PlayerInfo info = players[i];

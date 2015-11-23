@@ -15,7 +15,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Nucleus.Gaming;
 
-namespace SplitTool
+namespace Nucleus.Coop
 {
     internal static class NativeMethods
     {
@@ -121,13 +121,15 @@ namespace SplitTool
             //byte[] d = BitConverter.GetBytes(i);
 
 
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new GamesViewer());
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm());
+            //Application.Run(new SelectDisksForm());
+
             //Application.Run(new L4D2Form());
             //p.Kill();
 
-            GameManager manager = new GameManager();
+            //GameManager manager = new GameManager();
         }
     }
 }

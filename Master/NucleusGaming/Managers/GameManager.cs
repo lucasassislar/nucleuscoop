@@ -19,6 +19,7 @@ namespace Nucleus.Gaming
     {
         private static GameManager instance;
         private Dictionary<string, GameInfo> games;
+        private Dictionary<string, GameInfo> gameInfos;
         private UserProfile user;
         private List<BackupFile> backupFiles;
 
@@ -34,11 +35,16 @@ namespace Nucleus.Gaming
         }
 
         /// <summary>
-        /// A dictionary containing GameInfos. The key is the game executable
+        /// A dictionary containing GameInfos. The key is the game's info guid
         /// </summary>
         public Dictionary<string, GameInfo> Games
         {
             get { return games; }
+        }
+
+        public Dictionary<string, GameInfo> GameInfos
+        {
+            get { return gameInfos; }
         }
 
         public UserProfile User
@@ -56,6 +62,7 @@ namespace Nucleus.Gaming
         {
             instance = this;
             games = new Dictionary<string, GameInfo>();
+            gameInfos = new Dictionary<string, GameInfo>();
 
             Initialize();
             LoadUser();
@@ -95,7 +102,7 @@ namespace Nucleus.Gaming
             gInfo.InitializeDefault(game, exePath);
             user.Games.Add(gInfo);
 
-            UpdateUserProfile();
+            SaveUserProfile();
 
             return gInfo;
         }
@@ -156,7 +163,7 @@ namespace Nucleus.Gaming
             }
         }
 
-        private void UpdateUserProfile()
+        public  void SaveUserProfile()
         {
             user.Games.Sort(Compare);
 
@@ -187,7 +194,7 @@ namespace Nucleus.Gaming
                         }
                     }
                 }
-                catch
+                catch (Exception wtf)
                 {
                     makeDefaultUserFile();
                 }
@@ -216,6 +223,7 @@ namespace Nucleus.Gaming
         private void asyncSaveUser(string path)
         {
             IsSaving = true;
+            LogManager.Log("> Saving user profile....");
             ThreadPool.QueueUserWorkItem(saveUser, path);
         }
 
@@ -234,6 +242,7 @@ namespace Nucleus.Gaming
                         stream.Flush();
                     }
                 }
+                LogManager.Log("Saved user profile");
                 IsSaving = false;
             }
         }
@@ -269,7 +278,11 @@ namespace Nucleus.Gaming
                     {
                         // Found!
                         GameInfo info = (GameInfo)Activator.CreateInstance(ty);
+                        LogManager.Log("Found game info: " + info.GameName);
+
+
                         games.Add(info.GUID, info);
+                        gameInfos.Add(info.ExecutableName, info);
                     }
                 }
             }

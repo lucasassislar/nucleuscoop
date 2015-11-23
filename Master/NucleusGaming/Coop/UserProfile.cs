@@ -12,6 +12,7 @@ namespace Nucleus.Gaming
         public List<UserGameInfo> Games
         {
             get { return games; }
+            set { games = value; }
         }
 
         public UserProfile()

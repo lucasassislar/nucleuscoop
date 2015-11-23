@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace Nucleus.Gaming
 {
@@ -21,12 +22,11 @@ namespace Nucleus.Gaming
             }
         }
 
-
         public LogManager()
         {
             instance = this;
             logPath = GetLogPath();
-            logStream = File.OpenWrite(logPath);
+            logStream = new FileStream(logPath, FileMode.Create, FileAccess.Write, FileShare.Read);
             writer = new StreamWriter(logStream);
         }
         private string logPath;
@@ -46,20 +46,36 @@ namespace Nucleus.Gaming
         public void PLog(string str)
         {
             Console.WriteLine(str);
+            ThreadPool.QueueUserWorkItem(doLog, str);
+        }
 
-            try
-            {
-                writer.WriteLine(str);
-                //logStream.Flush();
-            }
-            catch
-            {
-            }
+        private void doLog(object s)
+        {
+            string str = (string)s;
+            writer.WriteLine(str);
+            writer.Flush();
         }
 
         public static void Log(string str)
         {
             Instance.PLog(str);
+        }
+
+        public static void Log(string str, object par1)
+        {
+            Instance.PLog(string.Format(str, par1));
+        }
+        public static void Log(string str, object par1, object par2)
+        {
+            Instance.PLog(string.Format(str, par1, par2));
+        }
+        public static void Log(string str, object par1, object par2, object par3)
+        {
+            Instance.PLog(string.Format(str, par1, par2, par3));
+        }
+        public static void Log(string str, params object[] pars)
+        {
+            Instance.PLog(string.Format(str, pars));
         }
     }
 }
