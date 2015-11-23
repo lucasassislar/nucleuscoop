@@ -12,6 +12,8 @@ namespace Nucleus.Coop
 {
     public partial class GameControl : UserControl, IHighlightControl
     {
+        public UserGameInfo Game { get; set; }
+
         public GameControl()
         {
             InitializeComponent();

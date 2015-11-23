@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -44,6 +45,7 @@ namespace Nucleus.Coop
                 UserGameInfo game = games[i];
 
                 GameControl con = new GameControl();
+                con.Game = game;
                 con.Width = list_Games.Width;
 
                 controls.Add(game, con);
@@ -72,6 +74,7 @@ namespace Nucleus.Coop
         public void ScanExes()
         {
             DriveInfo[] drives = DriveInfo.GetDrives();
+            Stopwatch stop = new Stopwatch();
 
             for (int i = 0; i < drives.Length; i++)
             {
@@ -83,6 +86,9 @@ namespace Nucleus.Coop
                 }
 
                 LogManager.Log("> Searching drive {0} for game executables", d.Name);
+
+                stop.Reset();
+                stop.Start();
 
                 Dictionary<ulong, FileNameAndParentFrn> mDict = new Dictionary<ulong, FileNameAndParentFrn>();
                 MFTReader mft = new MFTReader();
@@ -107,10 +113,21 @@ namespace Nucleus.Coop
                         gameManager.User.Games.Add(info);
                     }
                 }
+
+                stop.Stop();
+                LogManager.Log("> Took {0} seconds to search drive {1}", stop.Elapsed.TotalSeconds.ToString("0.00"), d.Name);
             }
 
             gameManager.SaveUserProfile();
             gameManager.WaitSave();
         }
+
+        private void list_Games_SelectedChanged(object arg1, Control arg2)
+        {
+            GameControl game = (GameControl)arg1;
+            this.label_GameTitle.Text = game.Game.Game.GameName;
+            this.pic_Game.Image = game.Game.Icon;
+        }
+
     }
 }

@@ -30,11 +30,11 @@
         {
             this.StepPanel = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label_GameTitle = new System.Windows.Forms.Label();
+            this.pic_Game = new System.Windows.Forms.PictureBox();
             this.list_Games = new Nucleus.Gaming.ControlListBox();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pic_Game)).BeginInit();
             this.SuspendLayout();
             // 
             // StepPanel
@@ -53,30 +53,31 @@
             this.panel1.AutoSize = true;
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.pictureBox1);
+            this.panel1.Controls.Add(this.label_GameTitle);
+            this.panel1.Controls.Add(this.pic_Game);
             this.panel1.Location = new System.Drawing.Point(242, 12);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(194, 46);
             this.panel1.TabIndex = 1;
             // 
-            // label1
+            // label_GameTitle
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 18F);
-            this.label1.Location = new System.Drawing.Point(49, 6);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(142, 32);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Borderlands";
+            this.label_GameTitle.AutoSize = true;
+            this.label_GameTitle.Font = new System.Drawing.Font("Segoe UI", 18F);
+            this.label_GameTitle.Location = new System.Drawing.Point(49, 6);
+            this.label_GameTitle.Name = "label_GameTitle";
+            this.label_GameTitle.Size = new System.Drawing.Size(142, 32);
+            this.label_GameTitle.TabIndex = 1;
+            this.label_GameTitle.Text = "Borderlands";
             // 
-            // pictureBox1
+            // pic_Game
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(40, 40);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.pic_Game.Location = new System.Drawing.Point(3, 3);
+            this.pic_Game.Name = "pic_Game";
+            this.pic_Game.Size = new System.Drawing.Size(40, 40);
+            this.pic_Game.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pic_Game.TabIndex = 0;
+            this.pic_Game.TabStop = false;
             // 
             // list_Games
             // 
@@ -86,6 +87,7 @@
             this.list_Games.Offset = new System.Drawing.Size(0, 2);
             this.list_Games.Size = new System.Drawing.Size(224, 678);
             this.list_Games.TabIndex = 2;
+            this.list_Games.SelectedChanged += new System.Action<object, System.Windows.Forms.Control>(this.list_Games_SelectedChanged);
             // 
             // MainForm
             // 
@@ -100,7 +102,7 @@
             this.Text = "Nucleus Coop";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pic_Game)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -110,8 +112,8 @@
 
         private System.Windows.Forms.Panel StepPanel;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.PictureBox pic_Game;
+        private System.Windows.Forms.Label label_GameTitle;
         private Gaming.ControlListBox list_Games;
     }
 }

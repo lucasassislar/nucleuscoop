@@ -12,7 +12,7 @@ namespace Nucleus.Gaming
 {
     public partial class ControlListBox : Panel
     {
-        public event Action OnSelectedChanged;
+        public event Action<object, Control> SelectedChanged;
         public Size Offset { get; set; }
 
 
@@ -127,10 +127,10 @@ namespace Nucleus.Gaming
             if (parent != null &&
                 parent != SelectedControl)
             {
-                if (this.OnSelectedChanged != null)
+                if (this.SelectedChanged != null)
                 {
                     SelectedControl = parent;
-                    this.OnSelectedChanged();
+                    this.SelectedChanged(SelectedControl, this);
                 }
             }
 
