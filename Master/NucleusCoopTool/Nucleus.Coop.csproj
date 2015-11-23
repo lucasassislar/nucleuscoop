@@ -138,6 +138,12 @@
     <Compile Include="New\BaseForm.Designer.cs">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="New\GameControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="New\GameControl.Designer.cs">
+      <DependentUpon>GameControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="New\GameList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -181,6 +187,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="New\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="New\GameControl.resx">
+      <DependentUpon>GameControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="New\GameList.resx">
       <DependentUpon>GameList.cs</DependentUpon>

@@ -32,7 +32,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.list_Games = new System.Windows.Forms.ListBox();
+            this.list_Games = new Nucleus.Gaming.ControlListBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -80,16 +80,10 @@
             // 
             // list_Games
             // 
-            this.list_Games.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.list_Games.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.list_Games.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.list_Games.ForeColor = System.Drawing.Color.White;
-            this.list_Games.FormattingEnabled = true;
-            this.list_Games.IntegralHeight = false;
-            this.list_Games.ItemHeight = 21;
+            this.list_Games.AutoScroll = true;
             this.list_Games.Location = new System.Drawing.Point(12, 12);
             this.list_Games.Name = "list_Games";
+            this.list_Games.Offset = new System.Drawing.Size(0, 2);
             this.list_Games.Size = new System.Drawing.Size(224, 678);
             this.list_Games.TabIndex = 2;
             // 
@@ -118,6 +112,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ListBox list_Games;
+        private Gaming.ControlListBox list_Games;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -16,7 +17,13 @@ namespace Nucleus.Gaming
         public GameInfo Game
         {
             get { return game; }
-            private set { game = value; }
+        }
+
+        [JsonIgnore]
+        public Bitmap Icon
+        {
+            get;
+            set;
         }
 
         public string GameGuid
@@ -31,13 +38,13 @@ namespace Nucleus.Gaming
         public List<GameProfile> Profiles
         {
             get { return profiles; }
-            private set { profiles = value; }
+            set { profiles = value; }
         }
 
         public string ExePath
         {
             get { return exePath; }
-            private set { exePath = value; }
+            set { exePath = value; }
         }
 
         public UserGameInfo()

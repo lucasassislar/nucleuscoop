@@ -13,6 +13,8 @@ namespace Nucleus.Gaming
     public partial class ControlListBox : Panel
     {
         public event Action OnSelectedChanged;
+        public Size Offset { get; set; }
+
 
         public ControlListBox()
         {
@@ -66,7 +68,7 @@ namespace Nucleus.Gaming
 
                     int index = this.Controls.IndexOf(c);
                     Size s = c.Size;
-                    c.Location = new Point(0, s.Height * index);
+                    c.Location = new Point(0, (s.Height * index) + (Offset.Height * index));
                 }
             }
         }
