@@ -174,16 +174,12 @@ namespace Games
                 startInfo.WorkingDirectory = Path.GetDirectoryName(executablePlace);
 
                 Process proc = Process.Start(startInfo);
-                HwndObject hwnd = new HwndObject(proc.Handle);
 
                 ScreenData data = new ScreenData();
                 data.Position = new Point(playerBounds.X, playerBounds.Y);
-                data.HWND = hwnd;
                 data.Size = new Size(playerBounds.Width, playerBounds.Height);
                 player.Process = proc;
                 player.Tag = data;
-
-                //Thread.Sleep(delayTime);
             }
 
             return string.Empty;

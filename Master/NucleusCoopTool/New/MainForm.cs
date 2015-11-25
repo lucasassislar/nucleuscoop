@@ -201,6 +201,14 @@ namespace Nucleus.Coop
 
         }
 
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+
+            formClosing = true;
+        }
+
+        private bool formClosing;
         private IGameHandler handler;
 
         private void btn_Play_Click(object sender, EventArgs e)
@@ -217,11 +225,28 @@ namespace Nucleus.Coop
             timer1.Enabled = true; 
 
             gameManager.Play(handler);
+
+            Thread t = new Thread(UpdateGameManager);
+            t.Start();
+        }
+
+        private void UpdateGameManager(object state)
+        {
+            for (; ; )
+            {
+                if (gameManager == null || formClosing)
+                {
+                    break;
+                }
+
+                handler.Update(handler.TimerInterval);
+                Thread.Sleep(handler.TimerInterval);
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            handler.Update(timer1.Interval);
+            //handler.Update(timer1.Interval);
         }
 
     }
