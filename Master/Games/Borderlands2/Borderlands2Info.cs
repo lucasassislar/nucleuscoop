@@ -24,6 +24,10 @@ namespace Games
                 };
             }
         }
+        public override string ExecutableContext
+        {
+            get { return ""; }
+        }
         public override string ExecutableName
         {
             get { return "borderlands2.exe"; }

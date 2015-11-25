@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.StepPanel = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label_GameTitle = new System.Windows.Forms.Label();
@@ -36,7 +35,8 @@
             this.list_Games = new Nucleus.Gaming.ControlListBox();
             this.label_StepTitle = new System.Windows.Forms.Label();
             this.btn_Play = new System.Windows.Forms.Button();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.arrow_Next = new Nucleus.Gaming.ImageButton();
+            this.arrow_Back = new Nucleus.Gaming.ImageButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Game)).BeginInit();
             this.SuspendLayout();
@@ -114,15 +114,35 @@
             this.btn_Play.UseVisualStyleBackColor = true;
             this.btn_Play.Click += new System.EventHandler(this.btn_Play_Click);
             // 
-            // timer1
+            // arrow_Next
             // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.arrow_Next.Image = global::Nucleus.Coop.Properties.Resources.right_arrow;
+            this.arrow_Next.ImageDisabled = global::Nucleus.Coop.Properties.Resources.right_arrow_disabled;
+            this.arrow_Next.ImageHover = global::Nucleus.Coop.Properties.Resources.right_arrow_hover;
+            this.arrow_Next.ImagePressed = global::Nucleus.Coop.Properties.Resources.right_arrow_press;
+            this.arrow_Next.Location = new System.Drawing.Point(1007, 62);
+            this.arrow_Next.Name = "arrow_Next";
+            this.arrow_Next.Size = new System.Drawing.Size(35, 33);
+            this.arrow_Next.TabIndex = 5;
+            // 
+            // arrow_Back
+            // 
+            this.arrow_Back.Image = global::Nucleus.Coop.Properties.Resources.left_arrow;
+            this.arrow_Back.ImageDisabled = global::Nucleus.Coop.Properties.Resources.left_arrow_disabled;
+            this.arrow_Back.ImageHover = global::Nucleus.Coop.Properties.Resources.left_arrow_hover;
+            this.arrow_Back.ImagePressed = global::Nucleus.Coop.Properties.Resources.left_arrow_press;
+            this.arrow_Back.Location = new System.Drawing.Point(966, 62);
+            this.arrow_Back.Name = "arrow_Back";
+            this.arrow_Back.Size = new System.Drawing.Size(35, 33);
+            this.arrow_Back.TabIndex = 6;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1054, 702);
+            this.Controls.Add(this.arrow_Back);
+            this.Controls.Add(this.arrow_Next);
             this.Controls.Add(this.btn_Play);
             this.Controls.Add(this.label_StepTitle);
             this.Controls.Add(this.list_Games);
@@ -148,6 +168,7 @@
         private Gaming.ControlListBox list_Games;
         private System.Windows.Forms.Label label_StepTitle;
         private System.Windows.Forms.Button btn_Play;
-        private System.Windows.Forms.Timer timer1;
+        private Gaming.ImageButton arrow_Next;
+        private Gaming.ImageButton arrow_Back;
     }
 }

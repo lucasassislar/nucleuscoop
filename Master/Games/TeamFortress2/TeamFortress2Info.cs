@@ -8,6 +8,10 @@ namespace Games
 {
     public class TeamFortress2Info : GameInfo
     {
+        public override string ExecutableContext
+        {
+            get { return ""; }
+        }
         public override bool SupportsKeyboard
         {
             get { return true; }

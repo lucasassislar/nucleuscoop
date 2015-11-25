@@ -12,6 +12,10 @@ namespace Games
         {
             get { return null; }
         }
+        public override string ExecutableContext
+        {
+            get { return ""; }
+        }
         public override string ExecutableName
         {
             get { return "re5dx9.exe|re5dx10.exe"; }

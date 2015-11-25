@@ -313,6 +313,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
+    <None Include="Resources\left_arrow_press.png" />
+    <None Include="Resources\left_arrow_hover.png" />
+    <None Include="Resources\right_arrow_press.png" />
+    <None Include="Resources\right_arrow_hover.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UI\" />

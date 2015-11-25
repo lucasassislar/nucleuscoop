@@ -22,6 +22,11 @@ namespace Games
             get { return steps; }
         }
 
+        public override string ExecutableContext
+        {
+            get { return ""; }
+        }
+
         // Default Levels
         public static readonly L4D2Level[] Levels = new L4D2Level[]
         {

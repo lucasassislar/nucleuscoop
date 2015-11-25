@@ -241,14 +241,24 @@ namespace Games
 
             if (exited == players.Count)
             {
-                end = true;
-                GameManager.Instance.ExecuteBackup(this.userGame.Game);
+                if (!end)
+                {
+                    end = true;
+                    GameManager.Instance.ExecuteBackup(this.userGame.Game);
+
+                    if (Ended != null)
+                    {
+                        Ended();
+                    }
+                }
             }
         }
-
-        public bool Ended
+        
+        public bool HasEnded
         {
             get { return end; }
         }
+
+        public event Action Ended;
     }
 }

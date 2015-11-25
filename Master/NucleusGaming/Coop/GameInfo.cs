@@ -20,9 +20,16 @@ namespace Nucleus.Gaming
         public abstract string ExecutableName { get; }
 
         /// <summary>
+        /// This string must be on the game's executable path for it to be considered
+        /// this game
+        /// </summary>
+        public abstract string ExecutableContext { get; }
+
+        /// <summary>
         /// The game's name
         /// </summary>
         public abstract string GameName { get; }
+
 
         /// <summary>
         /// The class to instantiate to handle the game's

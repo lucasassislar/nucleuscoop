@@ -27,6 +27,7 @@ namespace Nucleus.Gaming
 
         void End();
 
-        bool Ended { get; }
+        bool HasEnded { get; }
+        event Action Ended;
     }
 }

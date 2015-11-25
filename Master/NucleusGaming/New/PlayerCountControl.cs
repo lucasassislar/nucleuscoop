@@ -68,9 +68,10 @@ namespace Nucleus.Gaming
             int half = (int)Math.Round(maxPlayers / 2.0);
             int width = Size.Width / half;
             int height = Size.Height / 2;
-            int player = 1;
+            int player = 2;
 
-            for (int i = 0; i < half; i++)
+            width = Size.Width / (half - 1);
+            for (int i = 0; i < half - 1; i++)
             {
                 Button btn = MkButton();
                 btn.Text = player.ToString();

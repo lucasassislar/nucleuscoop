@@ -143,6 +143,9 @@ namespace Nucleus.Coop
             {
                 // can play
                 btn_Play.Enabled = true;
+
+                // remove the current step if there's one
+                KillCurrentStep();
             }
 
             currentProfile = new GameProfile();
@@ -158,6 +161,16 @@ namespace Nucleus.Coop
             }
         }
 
+        private void KillCurrentStep()
+        {
+            if (currentStep != null)
+            {
+                currentStep.Dispose();
+                this.StepPanel.Controls.Remove(currentStep);
+            }
+        }
+
+
         private void GoToStep(int step)
         {
             currentStepIndex = step;
@@ -166,11 +179,7 @@ namespace Nucleus.Coop
                 return;
             }
 
-            if (currentStep != null)
-            {
-                currentStep.Dispose();
-                this.StepPanel.Controls.Remove(currentStep);
-            }
+            KillCurrentStep();
 
             Type[] steps = currentGame.Steps;
 
@@ -220,14 +229,20 @@ namespace Nucleus.Coop
 
             handler = gameManager.MakeHandler(currentGame);
             handler.Initialize(currentGameInfo, currentProfile);
-
-            timer1.Interval = handler.TimerInterval;
-            timer1.Enabled = true; 
+            handler.Ended += handler_Ended;
 
             gameManager.Play(handler);
 
-            Thread t = new Thread(UpdateGameManager);
-            t.Start();
+            if (handler.TimerInterval > 0)
+            {
+                Thread t = new Thread(UpdateGameManager);
+                t.Start();
+            }
+        }
+
+        private void handler_Ended()
+        {
+            handler = null;
         }
 
         private void UpdateGameManager(object state)
@@ -243,11 +258,5 @@ namespace Nucleus.Coop
                 Thread.Sleep(handler.TimerInterval);
             }
         }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            //handler.Update(timer1.Interval);
-        }
-
     }
 }

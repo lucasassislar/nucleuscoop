@@ -140,6 +140,10 @@
     <Compile Include="IO\MFT\FileNameAndParentFrn.cs" />
     <Compile Include="IO\MFT\MFTReader.cs" />
     <Compile Include="Managers\GameManager.cs" />
+    <Compile Include="New\ImageButtonState.cs" />
+    <Compile Include="New\ImageButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="New\IUserInputForm.cs" />
     <Compile Include="New\PlayerCountControl.cs">
       <SubType>UserControl</SubType>
