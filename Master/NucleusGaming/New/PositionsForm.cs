@@ -65,7 +65,7 @@ namespace Nucleus.Coop
         public void Initialize(UserGameInfo game, GameProfile profile)
         {
             this.profile = profile;
-
+            profile.PlayerData.Clear();// reset profile
 
             playerFont = new Font("Segoe UI", 40);
             playerTextFont = new Font("Segoe UI", 18);
@@ -371,63 +371,62 @@ namespace Nucleus.Coop
             base.OnMouseDown(e);
             var players = profile.PlayerData;
 
+            if (dragging)
+            {
+                return;
+            }
+
             if (e.Button == MouseButtons.Left)
             {
-                if (dragging)
+                for (int i = 0; i < screens.Length; i++)
                 {
-                }
-                else
-                {
-                    for (int i = 0; i < screens.Length; i++)
+                    UserScreen screen = screens[i];
+                    if (screen.swapTypeRect.Contains(e.Location))
                     {
-                        UserScreen screen = screens[i];
-                        if (screen.swapTypeRect.Contains(e.Location))
+                        if (screen.type == UserScreenType.FourPlayers)
                         {
-                            if (screen.type == UserScreenType.FourPlayers)
-                            {
-                                screen.type = 0;
-                            }
-                            else
-                            {
-                                screen.type++;
-                            }
-
-                            // invalidate all players inside screen
-                            for (int j = 0; j < players.Count; j++)
-                            {
-                                // return to default position
-                                PlayerInfo p = players[j];
-                                if (p.screenIndex == i)
-                                {
-                                    p.editBounds = getDefaultBounds(j);
-                                    p.screenIndex = -1;
-                                }
-                            }
-
-                            Invalidate();
-                            return;
+                            screen.type = 0;
                         }
+                        else
+                        {
+                            screen.type++;
+                        }
+
+                        // invalidate all players inside screen
+                        for (int j = 0; j < players.Count; j++)
+                        {
+                            // return to default position
+                            PlayerInfo p = players[j];
+                            if (p.screenIndex == i)
+                            {
+                                p.editBounds = getDefaultBounds(j);
+                                p.screenIndex = -1;
+                            }
+                        }
+
+                        Invalidate();
+                        return;
                     }
+                }
 
-                    for (int i = 0; i < players.Count; i++)
+                for (int i = 0; i < players.Count; i++)
+                {
+                    Rectangle r = players[i].editBounds;
+                    if (r.Contains(e.Location))
                     {
-                        Rectangle r = players[i].editBounds;
-                        if (r.Contains(e.Location))
+                        dragging = true;
+                        draggingIndex = i;
+                        draggingOffset = new Point(r.X - e.X, r.Y - e.Y);
+                        Rectangle newBounds = getDefaultBounds(draggingIndex);
+                        profile.PlayerData[draggingIndex].editBounds = newBounds;
+
+                        if (draggingOffset.X < -newBounds.Width ||
+                            draggingOffset.Y < -newBounds.Height)
                         {
-                            dragging = true;
-                            draggingIndex = i;
-                            draggingOffset = new Point(r.X - e.X, r.Y - e.Y);
-                            Rectangle newBounds = getDefaultBounds(draggingIndex);
-                            profile.PlayerData[draggingIndex].editBounds = newBounds;
-
-                            if (draggingOffset.X < -newBounds.Width ||
-                                draggingOffset.Y < -newBounds.Height)
-                            {
-                                draggingOffset = new Point(0, 0);
-                            }
-
-                            break;
+                            draggingOffset = new Point(0, 0);
                         }
+
+                        break;
                     }
                 }
             }
@@ -588,7 +587,7 @@ namespace Nucleus.Coop
                             Proceed();
                         }
                     }
-                    
+
 
                     Invalidate();
                 }
@@ -668,6 +667,6 @@ namespace Nucleus.Coop
         }
 
 
-        
+
     }
 }

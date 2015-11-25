@@ -17,34 +17,33 @@ using Nucleus.Gaming.Interop;
 
 namespace Games
 {
-
     public class BorderlandsPreSequelHandler : IGameHandler
     {
         protected string executablePlace;
-        protected List<PlayerInfo> playas;
-        protected Dictionary<string, GameOption> options;
         protected string saveFile;
         protected int delayTime;
         protected int titleHeight;
+        private UserGameInfo userGame;
 
         public int TimerInterval
         {
-            get { return 33; }
+            get { return 1000; }
         }
-        public bool HideTaskBar { get { return true; } }
 
         public void End()
         {
         }
 
-        public bool Initialize(string gameFilename, List<PlayerInfo> players, Dictionary<string, GameOption> options, List<Control> addSteps, int titleHeight)
-        {
-            this.executablePlace = gameFilename;
-            this.playas = players;
-            this.options = options;
-            this.titleHeight = titleHeight - 5;
+        private GameProfile profile;
+        private bool end;
 
-            delayTime = (int)options["delay"].Value * 1000;
+        public bool Initialize(UserGameInfo game, GameProfile profile)
+        {
+            this.executablePlace = game.ExePath;
+            this.profile = profile;
+            this.userGame = game;
+
+            delayTime = (int)((double)profile.Options["delay"] * 1000);
 
             // Let's search for the save file
             string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -72,10 +71,13 @@ namespace Games
                     }
                 }
             }
+
+            // backup the WillowEngine ini
+            GameManager.Instance.StartBackup(game.Game);
+            GameManager.Instance.BackupFile(game.Game, willowEngine);
+
             return true;
         }
-
-        private bool end;
 
         public string Play()
         {
@@ -83,6 +85,9 @@ namespace Games
             {
                 MessageBox.Show("If you own the Steam Version, please open Steam, then click OK");
             }
+
+            var options = profile.Options;
+            bool playerKeyboard = (bool)profile.Options["keyboardPlayer"];
 
             IniFile file = new IniFile(saveFile);
             file.IniWriteValue("SystemSettings", "WindowedFullscreen", "False");
@@ -93,36 +98,55 @@ namespace Games
             file.IniWriteValue("WillowGame.WillowGameEngine", "bMuteAudioWhenNotInFocus", "False");
 
             Screen[] all = Screen.AllScreens;
-            Screen first = all[0];
-            Rectangle fbounds = first.Bounds;
 
             // minimize everything
-            User32.MinimizeEverything();
+            //User32.MinimizeEverything();
+            List<PlayerInfo> players = profile.PlayerData;
 
-            object playerKey = options["keyboardPlayer"].Value;
-            bool playerKeyboard = (bool)playerKey;
-
-            for (int i = 0; i < playas.Count; i++)
+            for (int i = 0; i < players.Count; i++)
             {
-                PlayerInfo player = playas[i];
+                PlayerInfo player = players[i];
                 // Set Borderlands 2 Resolution and stuff to run
-                Screen screen = all[player.ScreenIndex];
-                int width = 0;
-                int height = 0;
-                Rectangle bounds = screen.Bounds;
 
-                Point location = new Point();
+                Rectangle playerBounds = player.monitorBounds;
 
-                ViewportUtil.GetPlayerViewport(player, titleHeight, out width, out height, out location);
-
-                if (width == fbounds.Width &&
-                    height == fbounds.Height)
+                // find the monitor that has this screen
+                Screen owner = null;
+                for (int j = 0; j < all.Length; j++)
                 {
-                    file.IniWriteValue("SystemSettings", "WindowedFullscreen", "True");
+                    Screen s = all[j];
+                    if (s.Bounds.Contains(playerBounds))
+                    {
+                        owner = s;
+                        break;
+                    }
+                }
+
+                int width = playerBounds.Width;
+                int height = playerBounds.Height;
+
+                if (owner == null)
+                {
+                    // log
+                    // screen doesn't exist
+                    //continue;
                 }
                 else
                 {
-                    file.IniWriteValue("SystemSettings", "WindowedFullscreen", "False");
+                    Rectangle ob = owner.Bounds;
+                    if (playerBounds.X == ob.X &&
+                        playerBounds.Y == ob.Y &&
+                        playerBounds.Width == ob.Width &&
+                        playerBounds.Height == ob.Height)
+                    {
+                        // borderlands 2 has a limitation for max-screen size, we can't go up to the monitor's bounds
+                        // in windowed mode
+                        file.IniWriteValue("SystemSettings", "WindowedFullscreen", "True");
+                    }
+                    else
+                    {
+                        file.IniWriteValue("SystemSettings", "WindowedFullscreen", "False");
+                    }
                 }
 
                 file.IniWriteValue("SystemSettings", "ResX", width.ToString(CultureInfo.InvariantCulture));
@@ -133,9 +157,9 @@ namespace Games
                 startInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
                 // NEW
-                object option = options["saveid" + i].Value;
+                object option = options["saveid" + i];
+                //object option = 11;
                 int id = (int)option;
-
 
                 if (playerKeyboard)
                 {
@@ -150,60 +174,91 @@ namespace Games
                 startInfo.WorkingDirectory = Path.GetDirectoryName(executablePlace);
 
                 Process proc = Process.Start(startInfo);
-                HwndObject hwnd = new HwndObject(proc.Handle);
 
                 ScreenData data = new ScreenData();
-                data.Position = location;
-                data.HWND = hwnd;
-                data.Size = new Size(width, height);
+                data.Position = new Point(playerBounds.X, playerBounds.Y);
+                data.Size = new Size(playerBounds.Width, playerBounds.Height);
                 player.Process = proc;
                 player.Tag = data;
-
-                Thread.Sleep(delayTime);
             }
 
             return string.Empty;
         }
 
-        private int delay;
+        private int timer;
         public void Update(int delayMS)
         {
-            delay += delayMS;
-            if (delay > this.delayTime)
+            if (profile == null)
             {
-                int exited = 0;
-                for (int i = 0; i < playas.Count; i++)
+                return;
+            }
+
+            int exited = 0;
+            List<PlayerInfo> players = profile.PlayerData;
+            timer += delayMS;
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                PlayerInfo p = players[i];
+                if (p.Tag == null)
                 {
-                    PlayerInfo p = playas[i];
-                    ScreenData data = (ScreenData)p.Tag;
-                    if (!data.Set)
+                    continue;
+                }
+                if (p.Process.HasExited)
+                {
+                    exited++;
+                    continue;
+                }
+
+                ScreenData data = (ScreenData)p.Tag;
+                if (!data.Set)
+                {
+                    p.Process.Refresh();
+
+                    if (data.HWND == null || data.HWND.Hwnd != p.Process.MainWindowHandle)
                     {
                         data.HWND = new HwndObject(p.Process.MainWindowHandle);
-                        data.HWND.Location = data.Position;
+                        Point pos = data.HWND.Location;
 
-                        User32.HideBorder(p.Process.MainWindowHandle);
-                        data.Set = true;
-                    }
+                        if (String.IsNullOrEmpty(data.HWND.Title) || data.HWND.Title.ToLower() == "splashscreen" || pos.X == -32000)
+                        {
+                            data.HWND = null;
+                        }
+                        else
+                        {
+                            Thread.Sleep(delayTime);
+                            Size s = data.Size;
 
-                    if (p.Process.HasExited)
-                    {
-                        exited++;
+                            data.Set = true;
+                            data.HWND.Size = data.Size;
+                            User32.HideBorder(p.Process.MainWindowHandle);
+                            data.HWND.Location = data.Position;
+                        }
                     }
                 }
 
-                if (exited == playas.Count)
+            }
+
+            if (exited == players.Count)
+            {
+                if (!end)
                 {
                     end = true;
+                    GameManager.Instance.ExecuteBackup(this.userGame.Game);
+
+                    if (Ended != null)
+                    {
+                        Ended();
+                    }
                 }
             }
         }
 
-
-
-
-        public bool Ended
+        public bool HasEnded
         {
             get { return end; }
         }
+
+        public event Action Ended;
     }
 }

@@ -146,6 +146,9 @@ namespace Nucleus.Coop
 
                 // remove the current step if there's one
                 KillCurrentStep();
+
+                arrow_Back.Enabled = false;
+                arrow_Next.Enabled = false;
             }
 
             currentProfile = new GameProfile();
@@ -166,16 +169,19 @@ namespace Nucleus.Coop
             if (currentStep != null)
             {
                 currentStep.Dispose();
-                this.StepPanel.Controls.Remove(currentStep);
+                this.StepPanel.Controls.Clear();
             }
         }
 
 
         private void GoToStep(int step)
         {
+            arrow_Back.Enabled = step > 0;
+
             currentStepIndex = step;
             if (step >= currentGame.Steps.Length)
             {
+                arrow_Next.Enabled = false;
                 return;
             }
 
@@ -194,6 +200,8 @@ namespace Nucleus.Coop
             currentInputStep.Proceed += inputs_Proceed;
 
             label_StepTitle.Text = currentInputStep.Title;
+
+            arrow_Next.Enabled = currentInputStep.CanPlay;
         }
 
         void inputs_Proceed()
@@ -257,6 +265,22 @@ namespace Nucleus.Coop
                 handler.Update(handler.TimerInterval);
                 Thread.Sleep(handler.TimerInterval);
             }
+        }
+
+        private void arrow_Back_Click(object sender, EventArgs e)
+        {
+            currentStepIndex--;
+            if (currentStepIndex < 0)
+            {
+                currentStepIndex = 0;
+                return;
+            }
+            GoToStep(currentStepIndex);
+        }
+
+        private void arrow_Next_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

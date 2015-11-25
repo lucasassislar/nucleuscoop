@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Nucleus.Gaming;
+using Nucleus.Coop;
 
 namespace Games
 {
@@ -14,7 +15,14 @@ namespace Games
         }
         public override Type[] Steps
         {
-            get { return null; }
+            get
+            {
+                return new Type[] 
+                {
+                    typeof(PlayerCountControl),
+                    typeof(PositionsForm)
+                };
+            }
         }
         public override string ExecutableContext
         {
@@ -32,7 +40,7 @@ namespace Games
 
         public override Type HandlerType
         {
-            get { return typeof(object); }
+            get { return typeof(BorderlandsPreSequelHandler); }
         }
 
         public override int MaxPlayers
