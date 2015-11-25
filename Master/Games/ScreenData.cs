@@ -13,5 +13,7 @@ namespace Games
         public HwndObject HWND;
         public Size Size;
         public bool Set;
+
+        public bool Register0;
     }
 }

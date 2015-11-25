@@ -28,11 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.StepPanel = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label_GameTitle = new System.Windows.Forms.Label();
             this.pic_Game = new System.Windows.Forms.PictureBox();
             this.list_Games = new Nucleus.Gaming.ControlListBox();
+            this.label_StepTitle = new System.Windows.Forms.Label();
+            this.btn_Play = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Game)).BeginInit();
             this.SuspendLayout();
@@ -42,10 +46,9 @@
             this.StepPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.StepPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.StepPanel.Location = new System.Drawing.Point(242, 64);
+            this.StepPanel.Location = new System.Drawing.Point(242, 101);
             this.StepPanel.Name = "StepPanel";
-            this.StepPanel.Size = new System.Drawing.Size(800, 626);
+            this.StepPanel.Size = new System.Drawing.Size(800, 589);
             this.StepPanel.TabIndex = 0;
             // 
             // panel1
@@ -89,11 +92,39 @@
             this.list_Games.TabIndex = 2;
             this.list_Games.SelectedChanged += new System.Action<object, System.Windows.Forms.Control>(this.list_Games_SelectedChanged);
             // 
+            // label_StepTitle
+            // 
+            this.label_StepTitle.AutoSize = true;
+            this.label_StepTitle.Font = new System.Drawing.Font("Segoe UI", 18F);
+            this.label_StepTitle.Location = new System.Drawing.Point(345, 65);
+            this.label_StepTitle.Name = "label_StepTitle";
+            this.label_StepTitle.Size = new System.Drawing.Size(61, 32);
+            this.label_StepTitle.TabIndex = 3;
+            this.label_StepTitle.Text = "Title";
+            // 
+            // btn_Play
+            // 
+            this.btn_Play.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btn_Play.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Play.Location = new System.Drawing.Point(242, 64);
+            this.btn_Play.Name = "btn_Play";
+            this.btn_Play.Size = new System.Drawing.Size(97, 31);
+            this.btn_Play.TabIndex = 4;
+            this.btn_Play.Text = "P L A Y";
+            this.btn_Play.UseVisualStyleBackColor = true;
+            this.btn_Play.Click += new System.EventHandler(this.btn_Play_Click);
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1054, 702);
+            this.Controls.Add(this.btn_Play);
+            this.Controls.Add(this.label_StepTitle);
             this.Controls.Add(this.list_Games);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.StepPanel);
@@ -115,5 +146,8 @@
         private System.Windows.Forms.PictureBox pic_Game;
         private System.Windows.Forms.Label label_GameTitle;
         private Gaming.ControlListBox list_Games;
+        private System.Windows.Forms.Label label_StepTitle;
+        private System.Windows.Forms.Button btn_Play;
+        private System.Windows.Forms.Timer timer1;
     }
 }

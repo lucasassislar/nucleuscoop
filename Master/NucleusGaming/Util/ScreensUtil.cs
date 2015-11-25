@@ -44,17 +44,17 @@ namespace Nucleus.Gaming
         public static UserScreen[] AllScreens()
         {
             Screen[] all = Screen.AllScreens;
-            //UserScreen[] rects = new UserScreen[all.Length];
+            UserScreen[] rects = new UserScreen[all.Length];
 
-            Rectangle[] test = GetSetup_Triple4kHorizontal();
-            UserScreen[] rects = new UserScreen[test.Length];
+            //Rectangle[] test = GetSetup_Triple4kHorizontal();
+            //UserScreen[] rects = new UserScreen[test.Length];
 
 
             for (int i = 0; i < rects.Length; i++)
             {
                 UserScreen u = new UserScreen();
-                //u.monitorBounds = all[i].Bounds;
-                u.monitorBounds = test[i];
+                u.monitorBounds = all[i].Bounds;
+                //u.monitorBounds = test[i];
                 u.bounds = u.monitorBounds;
                 rects[i] = u;
             }
@@ -64,8 +64,7 @@ namespace Nucleus.Gaming
 
         public static Rectangle[] AllScreensRec()
         {
-            return GetSetup_Triple4kHorizontal();
-
+            //return GetSetup_Triple4kHorizontal();
             Screen[] all = Screen.AllScreens;
             Rectangle[] rects = new Rectangle[all.Length];
 

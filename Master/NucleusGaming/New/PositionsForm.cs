@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +12,7 @@ using System.Windows.Forms;
 
 namespace Nucleus.Coop
 {
-    public partial class PositionsForm : BaseForm, IUserInputForm
+    public partial class PositionsForm : UserControl, IUserInputForm
     {
         public bool CanProceed
         {
@@ -20,6 +21,17 @@ namespace Nucleus.Coop
                 return canProceed;
             }
         }
+        public string Title
+        {
+            get { return "Position Players"; }
+        }
+        public bool CanPlay
+        {
+            get { return false; }
+        }
+        public event Action Proceed;
+
+
         private bool canProceed;
 
         // array of users's screens
@@ -36,11 +48,24 @@ namespace Nucleus.Coop
 
         private RectangleF playersArea;
 
+        public void RemoveFlicker()
+        {
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.UserPaint |
+                ControlStyles.DoubleBuffer,
+                true);
+        }
+
         public PositionsForm()
         {
-            profile = new GameProfile();//testcode
-
             InitializeComponent();
+        }
+
+        public void Initialize(UserGameInfo game, GameProfile profile)
+        {
+            this.profile = profile;
+
 
             playerFont = new Font("Segoe UI", 40);
             playerTextFont = new Font("Segoe UI", 18);
@@ -49,12 +74,11 @@ namespace Nucleus.Coop
 
             float playersWidth = this.Width * 0.5f;
 
-            int playerCount = 4;
+            int playerCount = profile.PlayerCount;
             float playerWidth = (playersWidth * 0.9f) / (float)playerCount;
             float playerHeight = playerWidth * 0.5625f;
             float offset = (playersWidth * 0.1f) / (float)playerCount;
             playersArea = new RectangleF(50, 100, playersWidth, playerHeight);
-
 
             for (int i = 0; i < playerCount; i++)
             {
@@ -559,6 +583,10 @@ namespace Nucleus.Coop
                     if (allReady)
                     {
                         canProceed = true;
+                        if (Proceed != null)
+                        {
+                            Proceed();
+                        }
                     }
                     
 
@@ -591,16 +619,16 @@ namespace Nucleus.Coop
                 switch (s.type)
                 {
                     case UserScreenType.FullScreen:
-                        //g.DrawImage(Resources.fullscreen, s.swapTypeRect);
+                        g.DrawImage(Resources.fullscreen, s.swapTypeRect);
                         break;
                     case UserScreenType.DualHorizontal:
-                        //g.DrawImage(Resources.horizontal, s.swapTypeRect);
+                        g.DrawImage(Resources.horizontal, s.swapTypeRect);
                         break;
                     case UserScreenType.DualVertical:
-                        //g.DrawImage(Resources.vertical, s.swapTypeRect);
+                        g.DrawImage(Resources.vertical, s.swapTypeRect);
                         break;
                     case UserScreenType.FourPlayers:
-                        //g.DrawImage(Resources._4players, s.swapTypeRect);
+                        g.DrawImage(Resources._4players, s.swapTypeRect);
                         break;
                 }
             }
@@ -638,5 +666,8 @@ namespace Nucleus.Coop
             g.DrawString("Click on screen's top-left corner to change players on that screen", playerTextFont, Brushes.White, new PointF(20, 490));
             //g.DrawRectangle(Pens.Red, playersArea.X, playersArea.Y, playersArea.Width, playersArea.Height);
         }
+
+
+        
     }
 }

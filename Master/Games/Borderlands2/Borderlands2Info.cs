@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Nucleus.Gaming;
+using Nucleus.Coop;
 
 namespace Games
 {
@@ -14,7 +15,14 @@ namespace Games
         }
         public override Type[] Steps
         {
-            get { return null; }
+            get
+            {
+                return new Type[] 
+                {
+                    typeof(PlayerCountControl),
+                    typeof(PositionsForm)
+                };
+            }
         }
         public override string ExecutableName
         {
@@ -47,7 +55,7 @@ namespace Games
             options = new Dictionary<string, GameOption>();
 
             options.Add("keyboardPlayer", new GameOption("Keyboard Player", "If Player 1 should be using keyboard", false));
-            options.Add("delay", new GameOption("Delay Time", "Time to wait for the game to load (in seconds)", 10));
+            options.Add("delay", new GameOption("Delay Time", "Time to wait for the game to load (in seconds)", 0.5));
             options.Add("saveid0", new GameOption("Save ID - Player 1", "Save ID to use for Player 1 (default 0)", 0));
             options.Add("saveid1", new GameOption("Save ID - Player 2", "Save ID to use for Player 2 (default 1)", 1));
             options.Add("saveid2", new GameOption("Save ID - Player 3", "Save ID to use for Player 3 (default 2)", 2));

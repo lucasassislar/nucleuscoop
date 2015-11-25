@@ -9,5 +9,12 @@ namespace Nucleus.Gaming
     public interface IUserInputForm
     {
         bool CanProceed { get; }
+        bool CanPlay { get; }
+
+        event Action Proceed;
+
+        string Title { get; }
+
+        void Initialize(UserGameInfo game, GameProfile profile);
     }
 }

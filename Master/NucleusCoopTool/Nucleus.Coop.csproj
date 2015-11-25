@@ -156,12 +156,6 @@
     <Compile Include="New\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="New\PositionsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="New\PositionsForm.Designer.cs">
-      <DependentUpon>PositionsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\MonitorControl.resx">
@@ -196,9 +190,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="New\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="New\PositionsForm.resx">
-      <DependentUpon>PositionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PresetsForm.resx">
       <DependentUpon>PresetsForm.cs</DependentUpon>

@@ -122,11 +122,106 @@ namespace Nucleus.Coop
             gameManager.WaitSave();
         }
 
+        private GameControl currentControl;
+        private UserGameInfo currentGameInfo;
+        private GameInfo currentGame;
+        private GameProfile currentProfile;
+        private Control currentStep;
+        private int currentStepIndex;
+        private IUserInputForm currentInputStep;
+
         private void list_Games_SelectedChanged(object arg1, Control arg2)
         {
-            GameControl game = (GameControl)arg1;
-            this.label_GameTitle.Text = game.Game.Game.GameName;
-            this.pic_Game.Image = game.Game.Icon;
+            currentControl = (GameControl)arg1;
+            currentGameInfo = currentControl.Game;
+            currentGame = currentGameInfo.Game;
+
+            btn_Play.Enabled = false;
+
+            if (currentGame.Steps == null ||
+                currentStepIndex == currentGame.Steps.Length)
+            {
+                // can play
+                btn_Play.Enabled = true;
+            }
+
+            currentProfile = new GameProfile();
+            currentProfile.InitializeDefault(currentGame);
+
+            this.label_GameTitle.Text = currentGame.GameName;
+            this.pic_Game.Image = currentGameInfo.Icon;
+
+            Type[] steps = currentGame.Steps;
+            if (steps != null && steps.Length > 0)
+            {
+                GoToStep(0);
+            }
+        }
+
+        private void GoToStep(int step)
+        {
+            currentStepIndex = step;
+            if (step >= currentGame.Steps.Length)
+            {
+                return;
+            }
+
+            if (currentStep != null)
+            {
+                currentStep.Dispose();
+                this.StepPanel.Controls.Remove(currentStep);
+            }
+
+            Type[] steps = currentGame.Steps;
+
+            Type s = steps[step];
+            currentStep = (Control)Activator.CreateInstance(s);
+            this.StepPanel.Controls.Add(currentStep);
+
+            currentStep.Size = StepPanel.Size;
+
+            currentInputStep = (IUserInputForm)currentStep;
+            currentInputStep.Initialize(currentGameInfo, currentProfile);
+            currentInputStep.Proceed += inputs_Proceed;
+
+            label_StepTitle.Text = currentInputStep.Title;
+        }
+
+        void inputs_Proceed()
+        {
+            currentStepIndex++;
+            GoToStep(currentStepIndex);
+
+            if (currentStepIndex == currentGame.Steps.Length ||
+                currentInputStep.CanPlay)
+            {
+                // can play
+                btn_Play.Enabled = true;
+            }
+
+        }
+
+        private IGameHandler handler;
+
+        private void btn_Play_Click(object sender, EventArgs e)
+        {
+            if (handler != null)
+            {
+                return;
+            }
+
+            handler = gameManager.MakeHandler(currentGame);
+            handler.Initialize(currentGameInfo, currentProfile);
+
+            timer1.Interval = handler.TimerInterval;
+            timer1.Enabled = true; 
+
+            gameManager.Play(handler);
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            handler.Update(timer1.Interval);
         }
 
     }

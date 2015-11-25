@@ -141,10 +141,27 @@
     <Compile Include="IO\MFT\MFTReader.cs" />
     <Compile Include="Managers\GameManager.cs" />
     <Compile Include="New\IUserInputForm.cs" />
+    <Compile Include="New\PlayerCountControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="New\PlayerCountControl.Designer.cs">
+      <DependentUpon>PlayerCountControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="New\PositionsForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="New\PositionsForm.Designer.cs">
+      <DependentUpon>PositionsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="New\Utils\RectangleUtil.cs" />
     <Compile Include="New\Utils\ScreenUtil.cs" />
     <Compile Include="Player\PlayerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Util\CmdUtil.cs" />
     <Compile Include="Util\FileUtil.cs" />
     <Compile Include="Util\FormUtil.cs" />
@@ -169,6 +186,16 @@
     <EmbeddedResource Include="Controls\TextMessageBox.resx">
       <DependentUpon>TextMessageBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="New\PlayerCountControl.resx">
+      <DependentUpon>PlayerCountControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="New\PositionsForm.resx">
+      <DependentUpon>PositionsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="GamingKey.snk" />
@@ -176,6 +203,18 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="User\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\4players.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fullscreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\horizontal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vertical.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

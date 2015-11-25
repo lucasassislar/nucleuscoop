@@ -17,7 +17,7 @@ namespace Nucleus.Gaming
         /// </summary>
         int TimerInterval { get; }
 
-        bool Initialize(string gameFilename, List<PlayerInfo> players, Dictionary<string, GameOption> options, List<Control> addSteps, int titleHeight);
+        ///bool Initialize(string gameFilename, List<PlayerInfo> players, Dictionary<string, GameOption> options, List<Control> addSteps, int titleHeight);
 
         bool Initialize(UserGameInfo game, GameProfile profile);
 

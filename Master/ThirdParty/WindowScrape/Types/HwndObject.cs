@@ -53,12 +53,6 @@ namespace WindowScrape.Types
             get { return HwndInterface.GetHwndPos(Hwnd); }
             set
             {
-                Point location = HwndInterface.GetHwndPos(Hwnd);
-                if (location == value)
-                {
-                    return;
-                }
-
                 if (TopMost)
                 {
                     HwndInterface.SetHwndPosTopMost(Hwnd, (int)value.X, (int)value.Y);
@@ -80,11 +74,6 @@ namespace WindowScrape.Types
             get { return HwndInterface.GetHwndSize(Hwnd); }
             set
             {
-                Size current = HwndInterface.GetHwndSize(Hwnd);
-                if (current == value)
-                {
-                    return;
-                }
                 HwndInterface.SetHwndSize(Hwnd, (int)value.Width, (int)value.Height);
             }
         }

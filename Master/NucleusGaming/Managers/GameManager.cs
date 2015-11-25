@@ -295,6 +295,8 @@ namespace Nucleus.Gaming
             //{
             //    User32.HideTaskbar();
             //}
+
+            handler.Play();
         }
     }
 }

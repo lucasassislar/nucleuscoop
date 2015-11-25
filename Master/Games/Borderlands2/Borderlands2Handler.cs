@@ -27,7 +27,7 @@ namespace Games
 
         public int TimerInterval
         {
-            get { return 100; }
+            get { return 1000; }
         }
 
         public void End()
@@ -43,7 +43,7 @@ namespace Games
             this.profile = profile;
             this.userGame = game;
 
-            delayTime = (int)profile.Options["delay"] * 1000;
+            delayTime = (int)((double)profile.Options["delay"] * 1000);
 
             // Let's search for the save file
             string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -79,44 +79,6 @@ namespace Games
             return true;
         }
 
-        public bool Initialize(string gameFilename, List<PlayerInfo> players, Dictionary<string, GameOption> options, List<Control> addSteps, int titleHeight)
-        {
-            this.executablePlace = gameFilename;
-            //this.playas = players;
-            //this.options = options;
-            this.titleHeight = titleHeight - 5;
-
-            delayTime = (int)options["delay"].Value * 1000;
-
-            // Let's search for the save file
-            string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string myGames = Path.Combine(documents, @"My Games\Borderlands 2\WillowGame\Config");
-            string willowEngine = Path.Combine(myGames, "WillowEngine.ini");
-
-            if (File.Exists(willowEngine))
-            {
-                saveFile = willowEngine;
-            }
-            else
-            {
-                MessageBox.Show("Could not find WillowEngine.ini file!");
-
-                using (OpenFileDialog open = new OpenFileDialog())
-                {
-                    open.Filter = "WillowEngine.ini file|WillowEngine.ini";
-                    if (open.ShowDialog() == DialogResult.OK)
-                    {
-                        saveFile = open.FileName;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-
         public string Play()
         {
             if (!SteamUtil.IsSteamRunning())
@@ -124,6 +86,7 @@ namespace Games
                 MessageBox.Show("If you own the Steam Version, please open Steam, then click OK");
             }
 
+            var options = profile.Options;
             bool playerKeyboard = (bool)profile.Options["keyboardPlayer"];
 
             IniFile file = new IniFile(saveFile);
@@ -159,25 +122,43 @@ namespace Games
                     }
                 }
 
+                int width = playerBounds.Width;
+                int height = playerBounds.Height;
+
                 if (owner == null)
                 {
                     // log
                     // screen doesn't exist
                     //continue;
                 }
+                else
+                {
+                    Rectangle ob = owner.Bounds;
+                    if (playerBounds.X == ob.X &&
+                        playerBounds.Y == ob.Y &&
+                        playerBounds.Width == ob.Width &&
+                        playerBounds.Height == ob.Height)
+                    {
+                        // borderlands 2 has a limitation for max-screen size, we can't go up to the monitor's bounds
+                        // in windowed mode
+                        file.IniWriteValue("SystemSettings", "WindowedFullscreen", "True");
+                    }
+                    else
+                    {
+                        file.IniWriteValue("SystemSettings", "WindowedFullscreen", "False");
+                    }
+                }
 
-                file.IniWriteValue("SystemSettings", "WindowedFullscreen", "False");
-
-                file.IniWriteValue("SystemSettings", "ResX", playerBounds.Width.ToString(CultureInfo.InvariantCulture));
-                file.IniWriteValue("SystemSettings", "ResY", playerBounds.Height.ToString(CultureInfo.InvariantCulture));
+                file.IniWriteValue("SystemSettings", "ResX", width.ToString(CultureInfo.InvariantCulture));
+                file.IniWriteValue("SystemSettings", "ResY", height.ToString(CultureInfo.InvariantCulture));
 
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = executablePlace;
                 startInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
                 // NEW
-                //object option = options["saveid" + i].Value;
-                object option = 11;
+                object option = options["saveid" + i];
+                //object option = 11;
                 int id = (int)option;
 
                 if (playerKeyboard)
@@ -202,13 +183,13 @@ namespace Games
                 player.Process = proc;
                 player.Tag = data;
 
-                Thread.Sleep(delayTime);
+                //Thread.Sleep(delayTime);
             }
 
             return string.Empty;
         }
 
-        private int delay;
+        private int timer;
         public void Update(int delayMS)
         {
             if (profile == null)
@@ -218,7 +199,7 @@ namespace Games
 
             int exited = 0;
             List<PlayerInfo> players = profile.PlayerData;
-            delay += delayMS;
+            timer += delayMS;
 
             for (int i = 0; i < players.Count; i++)
             {
@@ -227,32 +208,39 @@ namespace Games
                 {
                     continue;
                 }
-
-                ScreenData data = (ScreenData)p.Tag;
-
-                if (data.HWND == null || data.HWND.Hwnd != p.Process.MainWindowHandle)
-                {
-                    data.HWND = new HwndObject(p.Process.MainWindowHandle);
-                }
-                data.HWND.Location = data.Position;
-
-                if (delay > this.delayTime)
-                {
-                    if (!data.Set)
-                    {
-                        Point size = HwndInterface.GetTitleBarSize(data.HWND.Hwnd);
-                        data.HWND.Size = new Size(data.Size.Width - size.X, data.Size.Height);
-                        // removing the x value removes Y too, this just works (wtf) ????
-
-                        User32.HideBorder(p.Process.MainWindowHandle);
-                        data.Set = true;
-                    }
-                }
-
                 if (p.Process.HasExited)
                 {
                     exited++;
+                    continue;
                 }
+
+                ScreenData data = (ScreenData)p.Tag;
+                if (!data.Set)
+                {
+                    p.Process.Refresh();
+
+                    if (data.HWND == null || data.HWND.Hwnd != p.Process.MainWindowHandle)
+                    {
+                        data.HWND = new HwndObject(p.Process.MainWindowHandle);
+                        Point pos = data.HWND.Location;
+
+                        if (String.IsNullOrEmpty(data.HWND.Title) || data.HWND.Title.ToLower() == "splashscreen" || pos.X == -32000)
+                        {
+                            data.HWND = null;
+                        }
+                        else
+                        {
+                            Thread.Sleep(delayTime);
+                            Size s = data.Size;
+
+                            data.Set = true;
+                            data.HWND.Size = data.Size;
+                            User32.HideBorder(p.Process.MainWindowHandle);
+                            data.HWND.Location = data.Position;
+                        }
+                    }
+                }
+
             }
 
             if (exited == players.Count)
