@@ -257,7 +257,7 @@ namespace Nucleus.Coop
         {
             for (; ; )
             {
-                if (gameManager == null || formClosing)
+                if (gameManager == null || formClosing || handler == null)
                 {
                     break;
                 }

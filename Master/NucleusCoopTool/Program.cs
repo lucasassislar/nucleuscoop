@@ -14,6 +14,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Nucleus.Gaming;
+using System.IO;
 
 namespace Nucleus.Coop
 {
@@ -48,6 +49,23 @@ namespace Nucleus.Coop
         [STAThread]
         static void Main()
         {
+            //string bkpPath = @"C:\Users\Lucas\AppData\Roaming\Nucleus Coop\720CE71B-FCBF-46C8-AC9D-C4B2BF3169E3";
+            //string dir = Path.Combine(bkpPath, "Instance0");
+            //string exePath = @"C:\Program Files (x86)\Steam\steamapps\common\Borderlands 2\Binaries\Win32\Borderlands2.exe";
+            //string binFolder = Path.GetDirectoryName(exePath);
+            //string rootFolder = Path.GetDirectoryName(Path.GetDirectoryName(binFolder));
+
+            //Directory.CreateDirectory(dir);
+            //int exitCode;
+            //CmdUtil.LinkDirectories(rootFolder, dir, out exitCode, "binaries");
+
+            //string linkBin = Path.Combine(dir, @"Binaries\Win32");
+            //Directory.CreateDirectory(linkBin);
+            //CmdUtil.LinkDirectories(binFolder, linkBin, out exitCode);
+            //CmdUtil.LinkFiles(binFolder, linkBin, out exitCode, "xinput");
+            
+            //return;
+
             //uint processHandle;
             ////IntPtr windowHandle = FindWindowByCaption(0, "Untitled - Notepad");
             ////uint threadID = GetWindowThreadProcessId(windowHandle, out processHandle);

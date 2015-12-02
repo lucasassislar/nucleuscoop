@@ -58,7 +58,7 @@ namespace Games
         {
             options = new Dictionary<string, GameOption>();
 
-            options.Add("keyboardPlayer", new GameOption("Keyboard Player", "If Player 1 should be using keyboard", false));
+            options.Add("keyboardPlayer", new GameOption("Keyboard Player", "The player that will be playing on keyboard and mouse", 1));
             options.Add("delay", new GameOption("Delay Time", "Time to wait for the game to load (in seconds)", 1.0));
             options.Add("saveid0", new GameOption("Save ID - Player 1", "Save ID to use for Player 1 (default 0)", 0));
             options.Add("saveid1", new GameOption("Save ID - Player 2", "Save ID to use for Player 2 (default 1)", 1));

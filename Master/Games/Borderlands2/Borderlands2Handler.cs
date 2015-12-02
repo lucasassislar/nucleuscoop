@@ -14,6 +14,8 @@ using System.Runtime.InteropServices;
 using WindowScrape.Static;
 using WindowScrape.Constants;
 using Nucleus.Gaming.Interop;
+using Nucleus;
+using Nucleus.Coop.Games.Properties;
 
 namespace Games
 {
@@ -87,7 +89,7 @@ namespace Games
             }
 
             var options = profile.Options;
-            bool playerKeyboard = (bool)profile.Options["keyboardPlayer"];
+            int playerKeyboard = (int)profile.Options["keyboardPlayer"] - 1;
 
             IniFile file = new IniFile(saveFile);
             file.IniWriteValue("SystemSettings", "WindowedFullscreen", "False");
@@ -103,8 +105,17 @@ namespace Games
             //User32.MinimizeEverything();
             List<PlayerInfo> players = profile.PlayerData;
 
+            string backupDir = GameManager.Instance.GetBackupFolder(this.userGame.Game);
+            string binFolder = Path.GetDirectoryName(executablePlace);
+            string rootFolder = Path.GetDirectoryName(
+                                    Path.GetDirectoryName(binFolder));
+
+            int gamePadId = 0;
+
             for (int i = 0; i < players.Count; i++)
             {
+                string linkFolder = Path.Combine(backupDir, "Instance" + i);
+
                 PlayerInfo player = players[i];
                 // Set Borderlands 2 Resolution and stuff to run
 
@@ -152,8 +163,23 @@ namespace Games
                 file.IniWriteValue("SystemSettings", "ResX", width.ToString(CultureInfo.InvariantCulture));
                 file.IniWriteValue("SystemSettings", "ResY", height.ToString(CultureInfo.InvariantCulture));
 
+                // Link-making
+                Directory.CreateDirectory(linkFolder);
+                int exitCode;
+                CmdUtil.LinkDirectories(rootFolder, linkFolder, out exitCode, "binaries");
+
+                string linkBin = Path.Combine(linkFolder, @"Binaries\Win32");
+                Directory.CreateDirectory(linkBin);
+                CmdUtil.LinkDirectories(binFolder, linkBin, out exitCode);
+                CmdUtil.LinkFiles(binFolder, linkBin, out exitCode, "xinput", "borderlands");
+
+                string exePath = Path.Combine(linkBin, this.userGame.Game.ExecutableName);
+                File.Copy(this.executablePlace, exePath, true);
+                // Link-end
+
+
                 ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = executablePlace;
+                startInfo.FileName = exePath;
                 startInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
                 // NEW
@@ -161,17 +187,43 @@ namespace Games
                 //object option = 11;
                 int id = (int)option;
 
-                if (playerKeyboard)
+                if (i == playerKeyboard)
                 {
-                    startInfo.Arguments = "-AlwaysFocus -NoController -ControllerOffset=" + (i - 1).ToString(CultureInfo.InvariantCulture) + " -SaveDataId=" + id.ToString(CultureInfo.InvariantCulture);
+                    startInfo.Arguments = "-AlwaysFocus -NoController -SaveDataId=" + id.ToString(CultureInfo.InvariantCulture);
                 }
                 else
                 {
-                    startInfo.Arguments = "-AlwaysFocus -ControllerOffset=" + i.ToString(CultureInfo.InvariantCulture) + " -SaveDataId=" + id.ToString(CultureInfo.InvariantCulture);
+                    byte[] xdata = null;
+                    switch (gamePadId)
+                    {
+                        case 0:
+                            xdata = Nucleus.Coop.Games.GamesResources._1_xinput1_3;
+                            break;
+                        case 1:
+                            xdata = Nucleus.Coop.Games.GamesResources._2_xinput1_3;
+                            break;
+                        case 2:
+                            xdata = Nucleus.Coop.Games.GamesResources._3_xinput1_3;
+                            break;
+                        case 3:
+                            xdata = Nucleus.Coop.Games.GamesResources._4_xinput1_3;
+                            break;
+                        default:
+                            xdata = Nucleus.Coop.Games.GamesResources._4_xinput1_3;
+                            break;
+                    }
+
+                    using (Stream str = File.OpenWrite(Path.Combine(linkBin, "xinput.dll")))
+                    {
+                        str.Write(xdata, 0, xdata.Length);
+                    }
+
+                    startInfo.Arguments = "-AlwaysFocus -SaveDataId=" + id.ToString(CultureInfo.InvariantCulture);
+                    gamePadId++;
                 }
 
                 startInfo.UseShellExecute = true;
-                startInfo.WorkingDirectory = Path.GetDirectoryName(executablePlace);
+                startInfo.WorkingDirectory = Path.GetDirectoryName(exePath);
 
                 Process proc = Process.Start(startInfo);
 
@@ -253,7 +305,7 @@ namespace Games
                 }
             }
         }
-        
+
         public bool HasEnded
         {
             get { return end; }

@@ -96,7 +96,7 @@
             // 
             this.label_StepTitle.AutoSize = true;
             this.label_StepTitle.Font = new System.Drawing.Font("Segoe UI", 18F);
-            this.label_StepTitle.Location = new System.Drawing.Point(345, 65);
+            this.label_StepTitle.Location = new System.Drawing.Point(242, 63);
             this.label_StepTitle.Name = "label_StepTitle";
             this.label_StepTitle.Size = new System.Drawing.Size(61, 32);
             this.label_StepTitle.TabIndex = 3;
@@ -106,7 +106,7 @@
             // 
             this.btn_Play.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btn_Play.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Play.Location = new System.Drawing.Point(242, 64);
+            this.btn_Play.Location = new System.Drawing.Point(945, 67);
             this.btn_Play.Name = "btn_Play";
             this.btn_Play.Size = new System.Drawing.Size(97, 31);
             this.btn_Play.TabIndex = 4;
@@ -120,7 +120,7 @@
             this.arrow_Next.ImageDisabled = global::Nucleus.Coop.Properties.Resources.right_arrow_disabled;
             this.arrow_Next.ImageHover = global::Nucleus.Coop.Properties.Resources.right_arrow_hover;
             this.arrow_Next.ImagePressed = global::Nucleus.Coop.Properties.Resources.right_arrow_press;
-            this.arrow_Next.Location = new System.Drawing.Point(1007, 62);
+            this.arrow_Next.Location = new System.Drawing.Point(906, 66);
             this.arrow_Next.Name = "arrow_Next";
             this.arrow_Next.Size = new System.Drawing.Size(35, 33);
             this.arrow_Next.TabIndex = 5;
@@ -132,7 +132,7 @@
             this.arrow_Back.ImageDisabled = global::Nucleus.Coop.Properties.Resources.left_arrow_disabled;
             this.arrow_Back.ImageHover = global::Nucleus.Coop.Properties.Resources.left_arrow_hover;
             this.arrow_Back.ImagePressed = global::Nucleus.Coop.Properties.Resources.left_arrow_press;
-            this.arrow_Back.Location = new System.Drawing.Point(968, 62);
+            this.arrow_Back.Location = new System.Drawing.Point(867, 66);
             this.arrow_Back.Name = "arrow_Back";
             this.arrow_Back.Size = new System.Drawing.Size(35, 33);
             this.arrow_Back.TabIndex = 6;

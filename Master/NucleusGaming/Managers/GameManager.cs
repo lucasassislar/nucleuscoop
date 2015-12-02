@@ -121,6 +121,12 @@ namespace Nucleus.Gaming
             return (IGameHandler)Activator.CreateInstance(game.HandlerType);
         }
 
+        public string GetBackupFolder(GameInfo game)
+        {
+            string appData = GetAppDataPath();
+            return Path.Combine(appData, game.GUID);
+        }
+
         public BackupFile BackupFile(GameInfo game, string path)
         {
             string appData = GetAppDataPath();
@@ -141,7 +147,7 @@ namespace Nucleus.Gaming
                 File.Copy(path, destination);
             }
 
-            BackupFile bkp = new BackupFile(path, destination); 
+            BackupFile bkp = new BackupFile(path, destination);
             backupFiles.Add(bkp);
 
             return bkp;
@@ -163,7 +169,7 @@ namespace Nucleus.Gaming
             }
         }
 
-        public  void SaveUserProfile()
+        public void SaveUserProfile()
         {
             user.Games.Sort(Compare);
 
@@ -237,7 +243,7 @@ namespace Nucleus.Gaming
                 {
                     using (StreamWriter writer = new StreamWriter(stream))
                     {
-                        string json = JsonConvert.SerializeObject(user); 
+                        string json = JsonConvert.SerializeObject(user);
                         writer.Write(json);
                         stream.Flush();
                     }
