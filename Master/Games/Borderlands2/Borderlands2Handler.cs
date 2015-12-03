@@ -219,7 +219,7 @@ namespace Games
                         str.Write(xdata, 0, xdata.Length);
                     }
 
-                    startInfo.Arguments = "-AlwaysFocus -SaveDataId=" + id.ToString(CultureInfo.InvariantCulture);
+                    startInfo.Arguments = "-AlwaysFocus -nostartupmovies -SaveDataId=" + id.ToString(CultureInfo.InvariantCulture);
                     gamePadId++;
                 }
 
