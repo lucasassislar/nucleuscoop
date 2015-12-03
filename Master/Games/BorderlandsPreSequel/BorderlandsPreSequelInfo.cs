@@ -5,7 +5,7 @@ using System.Text;
 using Nucleus.Gaming;
 using Nucleus.Coop;
 
-namespace Games
+namespace Games.Borderlands
 {
     public class BorderlandsPreSequelInfo : GameInfo
     {

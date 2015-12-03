@@ -15,7 +15,7 @@ using WindowScrape.Static;
 using WindowScrape.Constants;
 using Nucleus.Gaming.Interop;
 
-namespace Games
+namespace Games.Borderlands
 {
     public class BorderlandsPreSequelHandler : IGameHandler
     {

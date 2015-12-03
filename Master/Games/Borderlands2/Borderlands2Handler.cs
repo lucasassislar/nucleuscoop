@@ -17,7 +17,7 @@ using Nucleus.Gaming.Interop;
 using Nucleus;
 using Nucleus.Coop.Games.Properties;
 
-namespace Games
+namespace Games.Borderlands
 {
     public class Borderlands2Handler : IGameHandler
     {

@@ -36,9 +36,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
     <AssemblyOriginatorKeyFile>GamesKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TestDebug|AnyCPU'">
@@ -58,6 +55,15 @@
   <ItemGroup>
     <Compile Include="Borderlands2\Borderlands2Handler.cs" />
     <Compile Include="Borderlands2\Borderlands2Info.cs" />
+    <None Include="Borderlands2\BorderlandsSaveControl.cs">
+      <SubType>UserControl</SubType>
+    </None>
+    <None Include="Borderlands2\BorderlandsSaveManager.cs">
+      <SubType>UserControl</SubType>
+    </None>
+    <None Include="Borderlands2\BorderlandsSaveManager.Designer.cs">
+      <DependentUpon>BorderlandsSaveManager.cs</DependentUpon>
+    </None>
     <Compile Include="BorderlandsPreSequel\BorderlandsPreSequelHandler.cs" />
     <Compile Include="BorderlandsPreSequel\BorderlandsPreSequelInfo.cs" />
     <None Include="Borderlands\BorderlandsHandler.cs" />
@@ -164,6 +170,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Borderlands2\BorderlandsSaveManager.resx">
+      <DependentUpon>BorderlandsSaveManager.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GamesResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GamesResources.Designer.cs</LastGenOutput>
