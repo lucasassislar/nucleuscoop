@@ -145,6 +145,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="New\IUserInputForm.cs" />
+    <Compile Include="New\KeyboardPlayer.cs" />
     <Compile Include="New\PlayerCountControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

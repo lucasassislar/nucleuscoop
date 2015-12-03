@@ -89,7 +89,8 @@ namespace Games
             }
 
             var options = profile.Options;
-            int playerKeyboard = (int)profile.Options["keyboardPlayer"] - 1;
+            KeyboardPlayer playerKeyboard = (KeyboardPlayer)profile.Options["keyboardPlayer"];
+            int pKeyboard = (int)playerKeyboard;
 
             IniFile file = new IniFile(saveFile);
             file.IniWriteValue("SystemSettings", "WindowedFullscreen", "False");
@@ -187,7 +188,7 @@ namespace Games
                 //object option = 11;
                 int id = (int)option;
 
-                if (i == playerKeyboard)
+                if (i == pKeyboard)
                 {
                     startInfo.Arguments = "-AlwaysFocus -NoController -SaveDataId=" + id.ToString(CultureInfo.InvariantCulture);
                 }
@@ -197,10 +198,10 @@ namespace Games
                     switch (gamePadId)
                     {
                         case 0:
-                            xdata = Nucleus.Coop.Games.GamesResources._1_xinput1_3;
+                            xdata = Nucleus.Coop.Games.GamesResources.xinput1;
                             break;
                         case 1:
-                            xdata = Nucleus.Coop.Games.GamesResources._2_xinput1_3;
+                            xdata = Nucleus.Coop.Games.GamesResources.xinput2;
                             break;
                         case 2:
                             xdata = Nucleus.Coop.Games.GamesResources._3_xinput1_3;
@@ -213,7 +214,7 @@ namespace Games
                             break;
                     }
 
-                    using (Stream str = File.OpenWrite(Path.Combine(linkBin, "xinput.dll")))
+                    using (Stream str = File.OpenWrite(Path.Combine(linkBin, "xinput1_3.dll")))
                     {
                         str.Write(xdata, 0, xdata.Length);
                     }

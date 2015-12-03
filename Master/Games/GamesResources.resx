@@ -133,4 +133,10 @@
   <data name="_4_xinput1_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\4_xinput1_3.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="xinput1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\v2\xinput1.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="xinput2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\v2\xinput2.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

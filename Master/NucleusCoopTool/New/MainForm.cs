@@ -257,13 +257,17 @@ namespace Nucleus.Coop
         {
             for (; ; )
             {
-                if (gameManager == null || formClosing || handler == null)
+                try
                 {
-                    break;
-                }
+                    if (gameManager == null || formClosing || handler == null)
+                    {
+                        break;
+                    }
 
-                handler.Update(handler.TimerInterval);
-                Thread.Sleep(handler.TimerInterval);
+                    handler.Update(handler.TimerInterval);
+                    Thread.Sleep(handler.TimerInterval);
+                }
+                catch { }
             }
         }
 

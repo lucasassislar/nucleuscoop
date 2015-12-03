@@ -154,6 +154,8 @@
     <None Include="Resources\3_xinput1_3.dll" />
     <None Include="Resources\4_xinput1_3.dll" />
     <None Include="Resources\1_xinput1_3.dll" />
+    <None Include="Resources\v2\xinput1.dll" />
+    <None Include="Resources\v2\xinput2.dll" />
     <Content Include="tested.txt" />
     <None Include="TheHooker.lib">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -177,6 +179,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resident Evil 5\RE5Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
