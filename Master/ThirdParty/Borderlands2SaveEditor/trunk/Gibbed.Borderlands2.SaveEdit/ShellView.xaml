@@ -1,0 +1,190 @@
+﻿<!--
+/* Copyright (c) 2012 Rick (rick 'at' gibbed 'dot' us)
+ * 
+ * This software is provided 'as-is', without any express or implied
+ * warranty. In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * 
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 
+ * 1. The origin of this software must not be misrepresented; you must not
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would
+ *    be appreciated but is not required.
+ * 
+ * 2. Altered source versions must be plainly marked as such, and must not
+ *    be misrepresented as being the original software.
+ * 
+ * 3. This notice may not be removed or altered from any source
+ *    distribution.
+ */
+-->
+<UserControl x:Class="Gibbed.Borderlands2.SaveEdit.ShellView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d"
+             d:DesignWidth="720"
+             d:DesignHeight="480"
+             xmlns:my="clr-namespace:Gibbed.Borderlands2.SaveEdit">
+  <UserControl.Resources>
+    <my:NullToBooleanConverter x:Key="NullToBooleanConverter1" />
+  </UserControl.Resources>
+  <DockPanel>
+    <ToolBar Name="ButtonBar"
+             DockPanel.Dock="Top">
+<Menu Background="#00000000" Width="80" FontStyle="Normal">
+                <MenuItem Height="26" Header="New Save" Margin="0,5,0,0">
+                    <MenuItem Header="PC Save">
+                        <MenuItem x:Name="NewAssassin" Header="New Assassin"/>
+                        <MenuItem x:Name="NewSiren" Header="New Siren"/>
+                        <MenuItem x:Name="NewCommando" Header="New Commando"/>
+                        <MenuItem x:Name="NewGunzerker" Header="New Gunzerker"/>
+                        <MenuItem x:Name="NewMechro" Header="New Mechromancer"/>
+                    </MenuItem>
+                    <MenuItem Header="Xbox Save">
+                        <MenuItem x:Name="NewAssassin360" Header="New Assassin"/>
+                        <MenuItem x:Name="NewSiren360" Header="New Siren"/>
+                        <MenuItem x:Name="NewCommando360" Header="New Commando"/>
+                        <MenuItem x:Name="NewGunzerker360" Header="New Gunzerker"/>
+                        <MenuItem x:Name="NewMechro360" Header="New Mechromancer"/>
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+      <Button x:Name="ReadSave">
+        <StackPanel Orientation="Horizontal">
+          <Image Width="16"
+                 Height="16"
+                 Source="Resources\fugue\folder-open-document.png" />
+          <Label Content="Open" />
+        </StackPanel>
+      </Button>
+      <Button x:Name="WriteSave"
+              IsEnabled="{Binding Path=SaveFile, Converter={StaticResource NullToBooleanConverter1}, ConverterParameter=true}">
+        <StackPanel Orientation="Horizontal">
+          <Image Width="16"
+                 Height="16"
+                 Source="Resources\fugue\disk-black.png" />
+          <Label Content="Save" />
+        </StackPanel>
+      </Button>
+            <Button  x:Name="WriteSaveXbox"
+              IsEnabled="{Binding Path=SaveFile, Converter={StaticResource NullToBooleanConverter1}, ConverterParameter=true}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="16"
+                 Height="16"
+                 Source="Resources\fugue\disk-black.png" />
+                    <Label Content="Save for xbox" />
+                </StackPanel>
+            </Button>
+        </ToolBar>
+    <TabControl IsEnabled="{Binding Path=SaveFile, Converter={StaticResource NullToBooleanConverter1}, ConverterParameter=true}">
+      <TabItem>
+        <TabItem.Header>
+          <StackPanel Orientation="Horizontal">
+            <Image Height="24"
+                   Source="Resources\red skull.png" />
+            <Label VerticalAlignment="Center"
+                   Content="General" />
+          </StackPanel>
+        </TabItem.Header>
+        <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto">
+          <ContentControl x:Name="General" />
+        </ScrollViewer>
+      </TabItem>
+      <TabItem>
+        <TabItem.Header>
+          <StackPanel Orientation="Horizontal">
+            <Image Height="24"
+                   Source="Resources\pink seraph crystal.png" />
+            <Label VerticalAlignment="Center"
+                   Content="Currency" />
+          </StackPanel>
+        </TabItem.Header>
+        <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto">
+          <ContentControl x:Name="CurrencyOnHand" />
+        </ScrollViewer>
+      </TabItem>
+      <TabItem>
+        <TabItem.Header>
+          <StackPanel Orientation="Horizontal">
+            <Image Height="24"
+                   Source="Resources\fast travel.png" />
+            <Label VerticalAlignment="Center"
+                   Content="Fast Travel" />
+          </StackPanel>
+        </TabItem.Header>
+        <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto">
+          <ContentControl x:Name="FastTravel" />
+        </ScrollViewer>
+      </TabItem>
+      <TabItem>
+        <TabItem.Header>
+          <StackPanel Orientation="Horizontal">
+            <Image Height="24"
+                   Source="Resources\backpack.png" />
+            <Label VerticalAlignment="Center"
+                   Content="Backpack" />
+          </StackPanel>
+        </TabItem.Header>
+        <ContentControl x:Name="Backpack" />
+      </TabItem>
+      <TabItem>
+        <TabItem.Header>
+          <StackPanel Orientation="Horizontal">
+            <Image Height="24"
+                   Source="Resources\bank.png" />
+            <Label VerticalAlignment="Center"
+                   Content="Bank" />
+          </StackPanel>
+        </TabItem.Header>
+        <ContentControl x:Name="Bank" />
+      </TabItem>
+      <TabItem>
+        <TabItem.Header>
+          <StackPanel Orientation="Horizontal">
+            <Image Height="24"
+                   Source="Resources\fugue\document-binary.png" />
+            <Label VerticalAlignment="Center"
+                   Content="Raw" />
+          </StackPanel>
+        </TabItem.Header>
+        <xctk:PropertyGrid AutoGenerateProperties="True"
+                           SelectedObject="{Binding Path=SaveFile.SaveGame}"
+                           ShowTitle="False">
+          <xctk:PropertyGrid.EditorDefinitions>
+            <xctk:EditorDefinition>
+              <!-- Workaround for broken byte[] support in PropertyGrid. -->
+              <xctk:EditorDefinition.PropertiesDefinitions>
+                <xctk:PropertyDefinition Name="StatsData" />
+              </xctk:EditorDefinition.PropertiesDefinitions>
+              <xctk:EditorDefinition.EditorTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Value}" />
+                </DataTemplate>
+              </xctk:EditorDefinition.EditorTemplate>
+            </xctk:EditorDefinition>
+            <xctk:EditorDefinition>
+              <!-- Prevent editing of IsBadassMode -->
+              <xctk:EditorDefinition.PropertiesDefinitions>
+                <xctk:PropertyDefinition Name="IsBadassModeSaveGame" />
+              </xctk:EditorDefinition.PropertiesDefinitions>
+              <xctk:EditorDefinition.EditorTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Value}" />
+                </DataTemplate>
+              </xctk:EditorDefinition.EditorTemplate>
+            </xctk:EditorDefinition>
+          </xctk:PropertyGrid.EditorDefinitions>
+        </xctk:PropertyGrid>
+      </TabItem>
+    </TabControl>
+  </DockPanel>
+</UserControl>

@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{047857BA-DAA3-4CA7-AFB8-A1B082B28C6A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Gibbed.IO</RootNamespace>
+    <AssemblyName>Gibbed.IO</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ByteBufferReader.cs" />
+    <Compile Include="Endian.cs" />
+    <Compile Include="NumberHelpers\Align.cs" />
+    <Compile Include="NumberHelpers\BigEndian.cs" />
+    <Compile Include="NumberHelpers\LittleEndian.cs" />
+    <Compile Include="NumberHelpers\RotateLeft.cs" />
+    <Compile Include="NumberHelpers\RotateRight.cs" />
+    <Compile Include="NumberHelpers\Swap.cs" />
+    <Compile Include="StreamHelpers.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StreamHelpers\Aligned.cs" />
+    <Compile Include="StreamHelpers\Boolean.cs" />
+    <Compile Include="StreamHelpers\Enum.cs" />
+    <Compile Include="StreamHelpers\Guid.cs" />
+    <Compile Include="StreamHelpers\Numbers\F32.cs" />
+    <Compile Include="StreamHelpers\Numbers\F64.cs" />
+    <Compile Include="StreamHelpers\Numbers\S16.cs" />
+    <Compile Include="StreamHelpers\Numbers\S32.cs" />
+    <Compile Include="StreamHelpers\Numbers\S64.cs" />
+    <Compile Include="StreamHelpers\Numbers\S08.cs" />
+    <Compile Include="StreamHelpers\Numbers\U08.cs" />
+    <Compile Include="StreamHelpers\Numbers\U16.cs" />
+    <Compile Include="StreamHelpers\Numbers\U32.cs" />
+    <Compile Include="StreamHelpers\Numbers\U64.cs" />
+    <Compile Include="StreamHelpers\Strings\Default.cs" />
+    <Compile Include="StreamHelpers\Strings\Internal.cs" />
+    <Compile Include="StreamHelpers\Strings\Supplied.cs" />
+    <Compile Include="StreamHelpers\Structure.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

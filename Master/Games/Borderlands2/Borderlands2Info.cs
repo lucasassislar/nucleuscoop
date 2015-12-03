@@ -20,7 +20,8 @@ namespace Games
                 return new Type[] 
                 {
                     typeof(PlayerCountControl),
-                    typeof(PositionsForm)
+                    typeof(PositionsForm),
+                    typeof(PlayerOptions)
                 };
             }
         }
@@ -59,12 +60,10 @@ namespace Games
             options = new Dictionary<string, GameOption>();
 
             options.Add("keyboardPlayer", new GameOption("Keyboard Player", "The player that will be playing on keyboard and mouse", KeyboardPlayer.NoKeyboardPlayer));
-            options.Add("delay", new GameOption("Delay Time", "Time to wait for the game to load (in seconds)", 1.0));
             options.Add("saveid0", new GameOption("Save ID - Player 1", "Save ID to use for Player 1 (default 0)", 0));
             options.Add("saveid1", new GameOption("Save ID - Player 2", "Save ID to use for Player 2 (default 1)", 1));
             options.Add("saveid2", new GameOption("Save ID - Player 3", "Save ID to use for Player 3 (default 2)", 2));
             options.Add("saveid3", new GameOption("Save ID - Player 4", "Save ID to use for Player 4 (default 3)", 3));
-            options.Add("instructions", new GameOption("Instructions", @"Press A on sequence, from player 1 to player 4 to make sure the game starts up correctly.", "@NOVAR"));
         }
 
         /// <summary>

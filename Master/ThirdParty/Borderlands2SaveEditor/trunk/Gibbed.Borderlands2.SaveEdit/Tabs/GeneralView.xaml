@@ -1,0 +1,301 @@
+﻿<!--
+/* Copyright (c) 2012 Rick (rick 'at' gibbed 'dot' us)
+ * 
+ * This software is provided 'as-is', without any express or implied
+ * warranty. In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * 
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 
+ * 1. The origin of this software must not be misrepresented; you must not
+ *    claim that you wrote the original software. If you use this software
+ *    in a product, an acknowledgment in the product documentation would
+ *    be appreciated but is not required.
+ * 
+ * 2. Altered source versions must be plainly marked as such, and must not
+ *    be misrepresented as being the original software.
+ * 
+ * 3. This notice may not be removed or altered from any source
+ *    distribution.
+ */
+-->
+<UserControl x:Class="Gibbed.Borderlands2.SaveEdit.GeneralView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:SaveEdit="clr-namespace:Gibbed.Borderlands2.SaveEdit"
+             mc:Ignorable="d"
+             d:DesignWidth="720"
+             d:DesignHeight="480">
+  <UserControl.Resources>
+    <CollectionViewSource x:Key="GroupedHeadAssets"
+                          Source="{Binding Path=HeadAssets}">
+      <CollectionViewSource.GroupDescriptions>
+        <PropertyGroupDescription PropertyName="Group"></PropertyGroupDescription>
+      </CollectionViewSource.GroupDescriptions>
+    </CollectionViewSource>
+    <CollectionViewSource x:Key="GroupedSkinAssets"
+                          Source="{Binding Path=SkinAssets}">
+      <CollectionViewSource.GroupDescriptions>
+        <PropertyGroupDescription PropertyName="Group"></PropertyGroupDescription>
+      </CollectionViewSource.GroupDescriptions>
+    </CollectionViewSource>
+  </UserControl.Resources>
+  <StackPanel Orientation="Vertical">
+    <Expander Header="Save"
+              IsExpanded="True">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="0.50*" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0"
+               Grid.Column="0"
+               HorizontalContentAlignment="Right"
+               Content="Save Slot:" />
+        <xctk:IntegerUpDown Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="3"
+                            Value="{Binding Path=SaveGameId, UpdateSourceTrigger=PropertyChanged}" />
+        <Label Grid.Row="1"
+               Grid.Column="0"
+               HorizontalContentAlignment="Right"
+               Content="Endian:" />
+        <SaveEdit:MyComboBox Grid.Row="1"
+                             Grid.Column="1"
+                             ItemsSource="{Binding Path=Endians}"
+                             DisplayMemberPath="Name"
+                             SelectedValuePath="Value"
+                             SelectedValue="{Binding Path=Endian}"
+                             Margin="3" />
+      </Grid>
+    </Expander>
+    <Expander Header="Character"
+              IsExpanded="True">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="0.50*" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="1"
+               Grid.Column="0"
+               HorizontalContentAlignment="Right"
+               Content="Class:" />
+        <ComboBox Grid.Row="1"
+                  Grid.Column="1"
+                  Margin="3"
+                  ItemsSource="{Binding Path=PlayerClasses}"
+                  DisplayMemberPath="Name"
+                  SelectedValuePath="Path"
+                  SelectedValue="{Binding Path=PlayerClass}" />
+        <Label Grid.Row="2"
+               Grid.Column="0"
+               HorizontalContentAlignment="Right"
+               Content="Experience Level:" />
+        <DockPanel LastChildFill="True"
+                   Grid.Row="2"
+                   Grid.Column="1"
+                   Margin="3">
+          <Button x:Name="SynchronizeExpLevel"
+                  DockPanel.Dock="Right"
+                  ToolTip="Synchronize experience level from experience points">
+            Sync
+          </Button>
+          <xctk:IntegerUpDown HorizontalAlignment="Stretch"
+                              Minimum="1"
+                              Value="{Binding Path=ExpLevel, UpdateSourceTrigger=PropertyChanged}" />
+        </DockPanel>
+        <Label Grid.Row="3"
+               Grid.Column="0"
+               HorizontalContentAlignment="Right"
+               Content="Experience Points:" />
+        <DockPanel LastChildFill="True"
+                   Grid.Row="3"
+                   Grid.Column="1"
+                   Margin="3">
+          <Button x:Name="SynchronizeExpPoints"
+                  DockPanel.Dock="Right"
+                  ToolTip="Synchronize experience points from experience level">
+            Sync
+          </Button>
+          <xctk:IntegerUpDown Minimum="0"
+                              Value="{Binding Path=ExpPoints, UpdateSourceTrigger=PropertyChanged}" />
+        </DockPanel>
+        <Label Grid.Row="4"
+               Grid.Column="0"
+               HorizontalContentAlignment="Right"
+               Content="General Skill Points:" />
+        <xctk:IntegerUpDown Grid.Row="4"
+                            Grid.Column="1"
+                            Margin="3"
+                            Value="{Binding Path=GeneralSkillPoints, UpdateSourceTrigger=PropertyChanged}" />
+        <Label Grid.Row="5"
+               Grid.Column="0"
+               HorizontalContentAlignment="Right"
+               Content="Specialist Skill Points:" />
+        <xctk:IntegerUpDown Grid.Row="5"
+                            Grid.Column="1"
+                            Margin="3"
+                            Value="{Binding Path=SpecialistSkillPoints, UpdateSourceTrigger=PropertyChanged}" />
+      </Grid>
+    </Expander>
+    <Expander Header="Customization"
+              IsExpanded="True">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="0.50*" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0"
+               Grid.Column="0"
+               HorizontalContentAlignment="Right"
+               Content="Name:" />
+        <TextBox Grid.Row="0"
+                 Grid.Column="1"
+                 Margin="3"
+                 Text="{Binding Path=CharacterName, UpdateSourceTrigger=PropertyChanged}" />
+        <Label Grid.Row="1"
+               Grid.Column="0"
+               HorizontalContentAlignment="Right"
+               Content="Head:" />
+        <ComboBox x:Name="HeadComboBox"
+                  Grid.Row="1"
+                  Grid.Column="1"
+                  Margin="3"
+                  ItemsSource="{Binding Source={StaticResource GroupedHeadAssets}}"
+                  DisplayMemberPath="Name"
+                  SelectedValuePath="Path"
+                  SelectedValue="{Binding Path=SelectedHead}">
+          <ComboBox.GroupStyle>
+            <GroupStyle>
+              <GroupStyle.HeaderTemplate>
+                <DataTemplate>
+                  <TextBlock FontSize="15"
+                             FontWeight="Bold"
+                             Text="{Binding Path=Name}" />
+                </DataTemplate>
+              </GroupStyle.HeaderTemplate>
+            </GroupStyle>
+          </ComboBox.GroupStyle>
+        </ComboBox>
+        <Label Grid.Row="2"
+               Grid.Column="0"
+               HorizontalContentAlignment="Right"
+               Content="Skin:" />
+        <ComboBox x:Name="SkinComboBox"
+                  Grid.Row="2"
+                  Grid.Column="1"
+                  Margin="3"
+                  ItemsSource="{Binding Source={StaticResource GroupedSkinAssets}}"
+                  DisplayMemberPath="Name"
+                  SelectedValuePath="Path"
+                  SelectedValue="{Binding Path=SelectedSkin}">
+          <ComboBox.GroupStyle>
+            <GroupStyle>
+              <GroupStyle.HeaderTemplate>
+                <DataTemplate>
+                  <TextBlock FontSize="15"
+                             FontWeight="Bold"
+                             Text="{Binding Path=Name}" />
+                </DataTemplate>
+              </GroupStyle.HeaderTemplate>
+            </GroupStyle>
+          </ComboBox.GroupStyle>
+        </ComboBox>
+      </Grid>
+    </Expander>
+        <!--SPITFIRE1337 MODS-->
+        <Expander Header="Xbox 360 Rehash/Resigner"
+              IsExpanded="True" Height="134">
+            <Grid Height="88">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="0*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.50*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0"
+               Grid.Column="0"
+               HorizontalContentAlignment="Right"
+               Content="Profile ID:" />
+                <TextBox Name="myprofileid" Grid.Row="0"
+                 Grid.Column="1"
+                 Margin="3"
+                 Text="{Binding Path=Profileid, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Grid.Row="0" Grid.Column="0"  FlowDirection="RightToLeft" Margin="0,0,115,0" x:Name="importfromprofile">
+                    <Label Content="Import from profile"/>
+                </Button>
+                <Label Grid.Row="1"
+               Grid.Column="0"
+               HorizontalContentAlignment="Right"
+               Content="Profile Name:" />
+                <Label Grid.Row="2"
+               Grid.Column="0"
+               HorizontalContentAlignment="Right"
+               Content="Saved ID's:" />
+                <Button Grid.Row="1" Grid.Column="0" Margin="0,0,115,0" x:Name="saveprofiles">
+                    <Label Content="Save Id Sets"/>
+                </Button>
+                <TextBox Name="myprofilename" Grid.Row="1"
+                 Grid.Column="1"
+                 Margin="3"
+                 Text="{Binding Path=ProfileName, UpdateSourceTrigger=PropertyChanged}" />
+                <ComboBox Grid.Row="2" Grid.Column="1" Margin="3" Name="myprofiles" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <ComboBox.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock FontSize="15"
+                             FontWeight="Bold"
+                             Text="{Binding Path=Name}" />
+                                </DataTemplate>
+                            </GroupStyle.HeaderTemplate>
+                        </GroupStyle>
+                    </ComboBox.GroupStyle>
+                </ComboBox>
+            </Grid>
+        </Expander>
+        <!--END SPITFIRE1337 MODS-->
+    </StackPanel>
+</UserControl>

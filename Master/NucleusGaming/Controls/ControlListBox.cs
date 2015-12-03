@@ -36,13 +36,35 @@ namespace Nucleus.Gaming
 
         protected override void OnScroll(ScrollEventArgs se)
         {
-            int barSize = SystemInformation.VerticalScrollBarWidth;
+            if (se.ScrollOrientation == ScrollOrientation.VerticalScroll)
+            {
+                int barSize = SystemInformation.VerticalScrollBarWidth;
+                for (int i = 0; i < this.Controls.Count; i++)
+                {
+                    var con = Controls[i];
+                    con.Width = this.Width - barSize;
+                }
+            }
+            else if (se.ScrollOrientation == ScrollOrientation.HorizontalScroll)
+            {
+                int barSize = SystemInformation.HorizontalScrollBarHeight;
+                for (int i = 0; i < this.Controls.Count; i++)
+                {
+                    var con = Controls[i];
+                    con.Height = this.Height - barSize;
+                }
+            }
+            base.OnScroll(se);
+        }
+
+        protected void UpdateSizes()
+        {
+            //int barSize = SystemInformation.VerticalScrollBarWidth;
             for (int i = 0; i < this.Controls.Count; i++)
             {
                 var con = Controls[i];
-                con.Width = this.Width - barSize;
+                con.Width = this.Width;
             }
-            base.OnScroll(se);
         }
 
         protected override void OnControlAdded(ControlEventArgs e)

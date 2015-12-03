@@ -23,7 +23,6 @@ namespace Games
     {
         protected string executablePlace;
         protected string saveFile;
-        protected int delayTime;
         protected int titleHeight;
         private UserGameInfo userGame;
 
@@ -45,12 +44,21 @@ namespace Games
             this.profile = profile;
             this.userGame = game;
 
-            delayTime = (int)((double)profile.Options["delay"] * 1000);
-
             // Let's search for the save file
             string documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string myGames = Path.Combine(documents, @"My Games\Borderlands 2\WillowGame\Config");
-            string willowEngine = Path.Combine(myGames, "WillowEngine.ini");
+            string configFolder;
+
+            if (game.Game.GUID == "E1CCA90A-7B48-4F3A-8F19-FD61B32A0F83")
+            {
+                // borderlands pre-sequel
+                configFolder = Path.Combine(documents, @"My Games\Borderlands The Pre-Sequel\WillowGame\Config");
+            }
+            else
+            {
+                // borderlands 2
+                configFolder = Path.Combine(documents, @"My Games\Borderlands 2\WillowGame\Config");
+            }
+            string willowEngine = Path.Combine(configFolder, "WillowEngine.ini");
 
             if (File.Exists(willowEngine))
             {

@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{75063A4E-0024-4B68-BE6C-1B3D52FD4845}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Gibbed.Borderlands2.FileFormats</RootNamespace>
+    <AssemblyName>Gibbed.Borderlands2.FileFormats</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="protobuf-net">
+      <HintPath>..\other\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssetLibraryManagerHelpers.cs" />
+    <Compile Include="Items\BackpackDataHelper.cs" />
+    <Compile Include="Items\BackpackItem.cs" />
+    <Compile Include="Items\BackpackWeapon.cs" />
+    <Compile Include="BitReader.cs" />
+    <Compile Include="BitWriter.cs" />
+    <Compile Include="CRC32.cs" />
+    <Compile Include="Huffman\Decoder.cs" />
+    <Compile Include="Huffman\Encoder.cs" />
+    <Compile Include="Items\BaseDataHelper.cs" />
+    <Compile Include="Items\IBackpackSlot.cs" />
+    <Compile Include="Items\IBaseSlot.cs" />
+    <Compile Include="Items\IPackable.cs" />
+    <Compile Include="LZO.cs" />
+    <Compile Include="Items\BaseItem.cs" />
+    <Compile Include="Items\BaseWeapon.cs" />
+    <Compile Include="Items\PackedDataHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaveCorruptionException.cs" />
+    <Compile Include="SaveFile.cs" />
+    <Compile Include="SaveFormatException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Gibbed.Borderlands2.GameInfo\Gibbed.Borderlands2.GameInfo.csproj">
+      <Project>{9B42EE82-42E9-455C-A3DE-7B93F1FF2476}</Project>
+      <Name>Gibbed.Borderlands2.GameInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gibbed.Borderlands2.ProtoBufFormats\Gibbed.Borderlands2.ProtoBufFormats.csproj">
+      <Project>{17A51353-4224-43DC-91FE-A1407BD318EC}</Project>
+      <Name>Gibbed.Borderlands2.ProtoBufFormats</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gibbed.IO\Gibbed.IO.csproj">
+      <Project>{047857BA-DAA3-4CA7-AFB8-A1B082B28C6A}</Project>
+      <Name>Gibbed.IO</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\other\lzo_32.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\other\lzo_64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,444 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C605E071-337F-4310-B857-5303C185E951}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Gibbed.Borderlands2.SaveEdit</RootNamespace>
+    <AssemblyName>Gibbed.Borderlands2.SaveEdit</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <Utf8Output>true</Utf8Output>
+    <ExpressionBlendVersion>4.0.20525.0</ExpressionBlendVersion>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <PublishUrl>ftp://r2k-modz.net/borderlands 2 save editor/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <InstallUrl>http://r2k-modz.net/borderlands 2 save editor/</InstallUrl>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <ApplicationRevision>6</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Handsome Jack.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>9B6A128EE03230C95846CCB39CA140FEB100EE53</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Gibbed.Borderlands2.SaveEdit_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=1.3.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.1.3.1\lib\net40\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Contrib, Version=1.0.1.0, Culture=neutral, PublicKeyToken=23b8ce3a92a0a872, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\other\wpf\Caliburn.Micro.Contrib.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.1.3.1\lib\net40\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WPFToolkit.Extended, Version=1.7.4644.13122, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.1.7.0\lib\net40\WPFToolkit.Extended.dll</HintPath>
+    </Reference>
+    <Reference Include="X360">
+      <HintPath>..\..\..\X360.dll</HintPath>
+    </Reference>
+    <Reference Include="xPackage3">
+      <HintPath>..\..\..\xPackage3.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helpers\AssetCache.cs" />
+    <Compile Include="Helpers\MyClipboard.cs" />
+    <Compile Include="Helpers\MyMessageBox.cs" />
+    <Compile Include="Items\BackpackItemView.xaml.cs">
+      <DependentUpon>BackpackItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Items\BackpackItemViewModel.cs" />
+    <Compile Include="Items\IBaseSlotViewModel.cs" />
+    <Compile Include="Tabs\BackpackView.xaml.cs">
+      <DependentUpon>BackpackView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Items\BackpackWeaponView.xaml.cs">
+      <DependentUpon>BackpackWeaponView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Items\BackpackWeaponViewModel.cs" />
+    <Compile Include="Items\BaseItemViewModel.cs" />
+    <Compile Include="Items\BaseWeaponViewModel.cs" />
+    <Compile Include="Helpers\ContainsToVisiblityConverter.cs" />
+    <Compile Include="Tabs\BankView.xaml.cs">
+      <DependentUpon>BankView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\BankViewModel.cs" />
+    <Compile Include="Tabs\CurrencyOnHandView.xaml.cs">
+      <DependentUpon>CurrencyOnHandView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\CurrencyOnHandViewModel.cs" />
+    <Compile Include="Helpers\AssetDisplay.cs" />
+    <Compile Include="Items\IBackpackSlotViewModel.cs" />
+    <Compile Include="Helpers\MyOpenFileResult.cs" />
+    <Compile Include="Helpers\MySaveFileResult.cs" />
+    <Compile Include="Helpers\NullToBooleanConverter.cs" />
+    <Compile Include="Items\BaseItemView.xaml.cs">
+      <DependentUpon>BaseItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Items\BaseWeaponView.xaml.cs">
+      <DependentUpon>BaseWeaponView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\MyComboBox.cs" />
+    <Compile Include="Tabs\FastTravelViewModel.cs" />
+    <Compile Include="Tabs\GeneralView.xaml.cs">
+      <DependentUpon>GeneralView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\PropertyProxy.cs" />
+    <Compile Include="ShellView.xaml.cs">
+      <DependentUpon>ShellView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Validators\AssetLibrarySetIdValidationRule.cs" />
+    <Compile Include="Validators\AssetValidationRule.cs" />
+    <Compile Include="Validators\BalanceValidationRule.cs" />
+    <Compile Include="Validators\ItemPartValidationRule.cs" />
+    <Compile Include="Validators\ItemTypeValidationRule.cs" />
+    <Compile Include="Validators\ManufacturerValidationRule.cs" />
+    <Compile Include="Validators\WeaponPartValidationRule.cs" />
+    <Compile Include="Validators\WeaponTypeValidationRule.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppBootstrapper.cs" />
+    <Compile Include="AppWindowManager.cs" />
+    <Compile Include="Tabs\BackpackViewModel.cs" />
+    <Compile Include="Tabs\GeneralViewModel.cs" />
+    <Compile Include="ShellViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Gibbed.Borderlands2.SaveEdit_TemporaryKey.pfx" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="Resources\Assassin-360.sav" />
+    <None Include="Resources\Assassin.sav" />
+    <None Include="Resources\Commando-360.sav" />
+    <None Include="Resources\Commando.sav" />
+    <None Include="Resources\Gunzerker-360.sav" />
+    <None Include="Resources\Gunzerker.sav" />
+    <None Include="Resources\KV.bin" />
+    <None Include="Resources\Mechromancer-360.sav" />
+    <None Include="Resources\Mechromancer.sav" />
+    <None Include="Resources\Save0001.sav" />
+    <None Include="Resources\Siren-360.sav" />
+    <None Include="Resources\Siren.sav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Items\BackpackItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AccessiblePropertyGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Tabs\BackpackView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Items\BackpackWeaponView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Tabs\BankView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Tabs\CurrencyOnHandView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Items\BaseItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ShellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Tabs\GeneralView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Items\BaseWeaponView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Gibbed.Borderlands2.FileFormats\Gibbed.Borderlands2.FileFormats.csproj">
+      <Project>{75063A4E-0024-4B68-BE6C-1B3D52FD4845}</Project>
+      <Name>Gibbed.Borderlands2.FileFormats</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gibbed.Borderlands2.GameInfo\Gibbed.Borderlands2.GameInfo.csproj">
+      <Project>{9B42EE82-42E9-455C-A3DE-7B93F1FF2476}</Project>
+      <Name>Gibbed.Borderlands2.GameInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gibbed.Borderlands2.ProtoBufFormats\Gibbed.Borderlands2.ProtoBufFormats.csproj">
+      <Project>{17A51353-4224-43DC-91FE-A1407BD318EC}</Project>
+      <Name>Gibbed.Borderlands2.ProtoBufFormats</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gibbed.IO\Gibbed.IO.csproj">
+      <Project>{047857BA-DAA3-4CA7-AFB8-A1B082B28C6A}</Project>
+      <Name>Gibbed.IO</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\fugue\disk-black.png" />
+    <Resource Include="Resources\fugue\document-binary.png" />
+    <Resource Include="Resources\fugue\document.png" />
+    <Resource Include="Resources\fugue\folder-open-document.png" />
+    <Resource Include="Resources\fugue\luggage.png" />
+    <Resource Include="Resources\fugue\piggy-bank.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\backpack.png" />
+    <Resource Include="Resources\bank.png" />
+    <Resource Include="Resources\stash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Handsome Jack.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Handsome Jack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\fugue\exclamation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\credits.png" />
+    <Resource Include="Resources\eridium.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\credits cropped.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\assaultrifle.png" />
+    <Resource Include="Resources\shield.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\WPFToolkit.Extended\component\PropertyGrid\Images\AdvancedProperties11.png" />
+    <Resource Include="Resources\WPFToolkit.Extended\component\PropertyGrid\Images\Categorize16.png" />
+    <Resource Include="Resources\WPFToolkit.Extended\component\PropertyGrid\Images\ClearFilter16.png" />
+    <Resource Include="Resources\WPFToolkit.Extended\component\PropertyGrid\Images\Database11.png" />
+    <Resource Include="Resources\WPFToolkit.Extended\component\PropertyGrid\Images\Inheritance11.png" />
+    <Resource Include="Resources\WPFToolkit.Extended\component\PropertyGrid\Images\Local11.png" />
+    <Resource Include="Resources\WPFToolkit.Extended\component\PropertyGrid\Images\Resource11.png" />
+    <Resource Include="Resources\WPFToolkit.Extended\component\PropertyGrid\Images\SortAscending16.png" />
+    <Resource Include="Resources\WPFToolkit.Extended\component\PropertyGrid\Images\Style11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\pink seraph crystal.png" />
+    <Resource Include="Resources\seraph crystal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\fugue\scanner.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\fugue\printer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\fugue\document-copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\fugue\document-delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\fast travel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\green vault symbol.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\red skull.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Gibbed.Borderlands2.GameInfo.dll" />
+    <Content Include="lzo_32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lzo_64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="Caliburn.Micro">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="Caliburn.Micro.Contrib">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="Gibbed.Borderlands2.FileFormats">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="Gibbed.Borderlands2.GameInfo">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="Gibbed.Borderlands2.GameInfo.dll">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,4 @@
+- Title, Prefix info (for namegen in SaveEdit). Will need info for
+  non-title/prefix parts too, since Title/Prefix can be None.
+
+- Would name generation for weapons and items be appropriate here?

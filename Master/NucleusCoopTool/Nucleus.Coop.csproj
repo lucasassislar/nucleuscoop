@@ -32,6 +32,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <NuGetPackageImportStamp>914e8cc6</NuGetPackageImportStamp>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -102,12 +104,6 @@
     <None Include="Controls\PlayerCount.Designer.cs">
       <DependentUpon>PlayerCount.cs</DependentUpon>
     </None>
-    <None Include="Controls\PlayerOptions.cs">
-      <SubType>Component</SubType>
-    </None>
-    <None Include="Controls\PlayerOptions.Designer.cs">
-      <DependentUpon>PlayerOptions.cs</DependentUpon>
-    </None>
     <None Include="Controls\ScreenControl.cs">
       <SubType>UserControl</SubType>
     </None>
@@ -166,9 +162,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\PlayerCount.resx">
       <DependentUpon>PlayerCount.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\PlayerOptions.resx">
-      <DependentUpon>PlayerOptions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ScreenControl.resx">
       <DependentUpon>ScreenControl.cs</DependentUpon>
@@ -328,7 +321,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Fody.1.29.3\build\portable-net+sl+win+wpa+wp\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.1.29.3\build\portable-net+sl+win+wpa+wp\Fody.targets'))" />
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

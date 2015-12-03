@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{17A51353-4224-43DC-91FE-A1407BD318EC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Gibbed.Borderlands2.ProtoBufFormats</RootNamespace>
+    <AssemblyName>Gibbed.Borderlands2.ProtoBufFormats</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="protobuf-net">
+      <HintPath>..\other\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ComposableHelpers.cs" />
+    <Compile Include="ComposeState.cs" />
+    <Compile Include="IComposable.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WillowTwoSave\BankSlot.cs" />
+    <Compile Include="WillowTwoSave\ChallengeData.cs" />
+    <Compile Include="WillowTwoSave\Color.cs" />
+    <Compile Include="WillowTwoSave\DLCExpansionData.cs" />
+    <Compile Include="WillowTwoSave\GoldenKeys.cs" />
+    <Compile Include="WillowTwoSave\GUID.cs" />
+    <Compile Include="WillowTwoSave\InventorySlotData.cs" />
+    <Compile Include="WillowTwoSave\ItemData.cs" />
+    <Compile Include="WillowTwoSave\ItemMemento.cs" />
+    <Compile Include="WillowTwoSave\LockoutData.cs" />
+    <Compile Include="WillowTwoSave\MissionData.cs" />
+    <Compile Include="WillowTwoSave\MissionPlaythroughData.cs" />
+    <Compile Include="WillowTwoSave\MissionStatus.cs" />
+    <Compile Include="WillowTwoSave\OneOffLevelChallengeData.cs" />
+    <Compile Include="WillowTwoSave\PackedItemData.cs" />
+    <Compile Include="WillowTwoSave\PackedItemDataOptional.cs" />
+    <Compile Include="WillowTwoSave\PackedWeaponData.cs" />
+    <Compile Include="WillowTwoSave\PackedWeaponDataOptional.cs" />
+    <Compile Include="WillowTwoSave\PendingMissionRewards.cs" />
+    <Compile Include="WillowTwoSave\PlayerMark.cs" />
+    <Compile Include="WillowTwoSave\QuickWeaponSlot.cs" />
+    <Compile Include="WillowTwoSave\RegionGameStageData.cs" />
+    <Compile Include="WillowTwoSave\ResourceData.cs" />
+    <Compile Include="WillowTwoSave\SkillData.cs" />
+    <Compile Include="WillowTwoSave\UIPreferencesData.cs" />
+    <Compile Include="WillowTwoSave\WeaponData.cs" />
+    <Compile Include="WillowTwoSave\WeaponMemento.cs" />
+    <Compile Include="WillowTwoSave\WillowTwoPlayerSaveGame.cs" />
+    <Compile Include="WillowTwoSave\WorldDiscoveryData.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
