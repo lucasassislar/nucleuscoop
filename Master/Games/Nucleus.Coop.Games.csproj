@@ -156,6 +156,8 @@
     <None Include="Resources\1_xinput1_3.dll" />
     <None Include="Resources\v2\xinput1.dll" />
     <None Include="Resources\v2\xinput2.dll" />
+    <None Include="Resources\v2\xinput3.dll" />
+    <None Include="Resources\v2\xinput4.dll" />
     <Content Include="tested.txt" />
     <None Include="TheHooker.lib">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

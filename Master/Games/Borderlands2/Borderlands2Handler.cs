@@ -204,13 +204,13 @@ namespace Games
                             xdata = Nucleus.Coop.Games.GamesResources.xinput2;
                             break;
                         case 2:
-                            xdata = Nucleus.Coop.Games.GamesResources._3_xinput1_3;
+                            xdata = Nucleus.Coop.Games.GamesResources.xinput3;
                             break;
                         case 3:
-                            xdata = Nucleus.Coop.Games.GamesResources._4_xinput1_3;
+                            xdata = Nucleus.Coop.Games.GamesResources.xinput4;
                             break;
                         default:
-                            xdata = Nucleus.Coop.Games.GamesResources._4_xinput1_3;
+                            xdata = Nucleus.Coop.Games.GamesResources.xinput4;
                             break;
                     }
 
@@ -264,7 +264,21 @@ namespace Games
                 }
 
                 ScreenData data = (ScreenData)p.Tag;
-                if (!data.Set)
+                if (data.Set)
+                {
+                    uint lStyle = User32Interop.GetWindowLong(data.HWND.Hwnd, User32_WS.GWL_STYLE);
+                    if (lStyle != data.RegLong)
+                    {
+                        //uint toRemove = User32_WS.WS_BORDER;
+                        uint toRemove = User32_WS.WS_CAPTION;
+                        lStyle = lStyle & (~toRemove);
+
+                        User32Interop.SetWindowLong(data.HWND.Hwnd, User32_WS.GWL_STYLE, lStyle);
+                        data.RegLong = lStyle;
+                        data.HWND.Location = data.Position;
+                    }
+                }
+                else
                 {
                     p.Process.Refresh();
 
@@ -279,12 +293,13 @@ namespace Games
                         }
                         else
                         {
-                            Thread.Sleep(delayTime);
+                            //Thread.Sleep(delayTime);
                             Size s = data.Size;
 
                             data.Set = true;
+                            data.HWND.TopMost = true;
                             data.HWND.Size = data.Size;
-                            User32.HideBorder(p.Process.MainWindowHandle);
+                            //User32.HideBorder(p.Process.MainWindowHandle);
                             data.HWND.Location = data.Position;
                         }
                     }

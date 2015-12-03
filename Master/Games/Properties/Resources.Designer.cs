@@ -109,5 +109,25 @@ namespace Nucleus.Coop.Games.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] xinput3 {
+            get {
+                object obj = ResourceManager.GetObject("xinput3", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] xinput4 {
+            get {
+                object obj = ResourceManager.GetObject("xinput4", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

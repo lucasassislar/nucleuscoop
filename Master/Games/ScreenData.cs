@@ -15,5 +15,8 @@ namespace Games
         public bool Set;
 
         public bool Register0;
+
+
+        public long RegLong;
     }
 }

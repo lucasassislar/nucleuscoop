@@ -24,7 +24,7 @@ namespace Nucleus.Gaming.Interop
         /// <param name="nIndex"></param>
         /// <returns></returns>
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        public static extern uint GetWindowLong(IntPtr hWnd, int nIndex);
 
         // DLL libraries used to manage hotkeys
         [DllImport("user32.dll")]
@@ -50,7 +50,8 @@ namespace Nucleus.Gaming.Interop
         /// <returns>If the function succeeds, the return value is the previous value of the specified 32-bit integer. 
         /// If the function fails, the return value is zero. To get extended error information, call GetLastError. </returns>
         [DllImport("user32.dll")]
-        public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+        public static extern int SetWindowLong(IntPtr hWnd, int nIndex, uint dwNewLong);
+
 
         [DllImport("user32.dll")]
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
