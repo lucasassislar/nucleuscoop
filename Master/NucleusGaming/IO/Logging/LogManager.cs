@@ -36,7 +36,6 @@ namespace Nucleus.Gaming
             logStream = File.OpenWrite(GetLogPath());
             logStream.Position = logStream.Length; // keep writing from where we left
 
-
             writer = new StreamWriter(logStream);
         }
 
