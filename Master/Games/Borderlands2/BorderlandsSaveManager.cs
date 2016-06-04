@@ -9,11 +9,10 @@ using System.Windows.Forms;
 
 namespace Games.Borderlands
 {
-    public partial class BorderlandsSaveManager : UserControl, IUserInputForm
+    public class BorderlandsSaveManager : UserControl, IUserInputForm
     {
         public BorderlandsSaveManager()
         {
-            InitializeComponent();
         }
 
         public bool CanProceed

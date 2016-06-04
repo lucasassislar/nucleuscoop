@@ -22,7 +22,7 @@ namespace Games
         }
         public override string ExecutableName
         {
-            get { return "borderlands.exe"; }
+            get { return "__borderlands.exe"; }
         }
 
         public override string GameName

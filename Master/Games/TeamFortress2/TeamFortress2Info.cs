@@ -22,7 +22,7 @@ namespace Games
         }
         public override string ExecutableName
         {
-            get { return "hl2.exe"; }
+            get { return "tf2____hl2.exe"; }
         }
 
         public override string GameName

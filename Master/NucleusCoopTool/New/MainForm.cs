@@ -79,8 +79,7 @@ namespace Nucleus.Coop
             for (int i = 0; i < drives.Length; i++)
             {
                 DriveInfo d = drives[i];
-
-                if (d.DriveFormat != "NTFS")
+                if (!d.IsReady || d.DriveFormat != "NTFS")
                 {
                     continue;
                 }

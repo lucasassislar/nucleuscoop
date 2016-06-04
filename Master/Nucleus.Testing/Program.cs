@@ -49,7 +49,7 @@ namespace Nucleus.Testing
                 Thread.Sleep(16);
                 handler.Update(16);
 
-                if (handler.Ended)
+                if (handler.HasEnded)
                 {
                     break;
                 }

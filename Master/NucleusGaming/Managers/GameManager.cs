@@ -64,6 +64,9 @@ namespace Nucleus.Gaming
             games = new Dictionary<string, GameInfo>();
             gameInfos = new Dictionary<string, GameInfo>();
 
+            string appData = GetAppDataPath();
+            Directory.CreateDirectory(appData);
+
             Initialize();
             LoadUser();
         }
