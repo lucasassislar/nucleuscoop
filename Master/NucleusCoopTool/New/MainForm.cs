@@ -105,6 +105,12 @@ namespace Nucleus.Coop
                     if (gameManager.GameInfos.TryGetValue(lower, out game))
                     {
                         string path = mft.GetFullPath(file);
+                        if (path.Contains("$Recycle.Bin"))
+                        {
+                            // noope
+                            continue;
+                        }
+
                         LogManager.Log("Found game: {0}, full path: {1}", game.GameName, path);
 
                         UserGameInfo info = new UserGameInfo();

@@ -33,7 +33,7 @@ namespace Nucleus.Gaming
             instance = this;
             logPath = GetLogPath();
 
-            logStream = File.OpenWrite(GetLogPath());
+            logStream = new FileStream(GetLogPath(), FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
             logStream.Position = logStream.Length; // keep writing from where we left
 
             writer = new StreamWriter(logStream);
