@@ -13,5 +13,8 @@ namespace Nucleus.Gaming
         public abstract Dictionary<string, string> ModifySave { get; }
 
         public abstract string StartArguments { get; }
+
+        public abstract string BinariesFolder { get; }
+        public abstract string SymlinkFilter { get; }
     }
 }

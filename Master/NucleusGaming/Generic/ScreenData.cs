@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using WindowScrape.Types;
 
-namespace Games
+namespace Nucleus.Gaming
 {
     public class ScreenData
     {

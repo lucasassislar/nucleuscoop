@@ -107,7 +107,6 @@
     </Compile>
     <None Include="Resident Evil 5\ResidentEvil5Handler.cs" />
     <Compile Include="Resident Evil 5\ResidentEvil5Info.cs" />
-    <Compile Include="ScreenData.cs" />
     <Compile Include="TeamFortress2\TeamFortress2Info.cs" />
   </ItemGroup>
   <ItemGroup>

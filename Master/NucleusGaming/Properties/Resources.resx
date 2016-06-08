@@ -130,4 +130,16 @@
   <data name="_4players" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\4players.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="xinput1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\xinput1.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="xinput2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\xinput2.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="xinput3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\xinput3.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="xinput4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\xinput4.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

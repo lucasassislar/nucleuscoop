@@ -59,7 +59,7 @@ namespace Games.Borderlands
         {
             options = new Dictionary<string, GameOption>();
 
-            options.Add("keyboardPlayer", new GameOption("Keyboard Player", "The player that will be playing on keyboard and mouse", KeyboardPlayer.NoKeyboardPlayer));
+            options.Add("KeyboardPlayer", new GameOption("Keyboard Player", "The player that will be playing on keyboard and mouse", KeyboardPlayer.NoKeyboardPlayer));
             options.Add("saveid0", new GameOption("Save ID - Player 1", "Save ID to use for Player 1 (default 0)", 0));
             options.Add("saveid1", new GameOption("Save ID - Player 2", "Save ID to use for Player 2 (default 1)", 1));
             options.Add("saveid2", new GameOption("Save ID - Player 3", "Save ID to use for Player 3 (default 2)", 2));
@@ -81,10 +81,7 @@ namespace Games.Borderlands
 
         public override GenericGameSaveType SaveType
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get { return GenericGameSaveType.INI; }
         }
 
         public override string SavePath
@@ -98,21 +95,31 @@ namespace Games.Borderlands
             {
                 return new Dictionary<string, string>()
                 {
-                    { "SystemSettings/WindowedFullscreen", "&IsFullscreen&" },
-                    { "SystemSettings/ResX", "&Width&" },
-                    { "SystemSettings/ResY", "&Height&" },
-                    { "SystemSettings/Fullscreen", "False" },
-                    { "Engine.Engine/bMuteAudioWhenNotInFocus", "False" },
-                    { "Engine.Engine/bPauseOnLossOfFocus", "False" },
-                    { "WillowGame.WillowGameEngine/bPauseLostFocusWindowed", "False" },
-                    { "WillowGame.WillowGameEngine/bMuteAudioWhenNotInFocus", "False" },
+                    { "SystemSettings/WindowedFullscreen", "IsFullscreen" },
+                    { "SystemSettings/ResX", "Width" },
+                    { "SystemSettings/ResY", "Height" },
+                    { "SystemSettings/Fullscreen", "false" },
+                    { "Engine.Engine/bMuteAudioWhenNotInFocus", "false" },
+                    { "Engine.Engine/bPauseOnLossOfFocus", "false" },
+                    { "WillowGame.WillowGameEngine/bPauseLostFocusWindowed", "false" },
+                    { "WillowGame.WillowGameEngine/bMuteAudioWhenNotInFocus", "false" },
                 };
             }
         }
 
         public override string StartArguments
         {
-            get { return "%if(&Options.Keyboard&){-AlwaysFocus -NoController -SaveDataId=&Id&}else{-AlwaysFocus -nostartupmovies -SaveDataId=&Id&}"; }
+            get { return "if(Keyboard){\"-AlwaysFocus -NoController -SaveDataId=\"+Id}else{\"-AlwaysFocus -nostartupmovies -SaveDataId=\"+Id}"; }
+        }
+
+        public override string BinariesFolder
+        {
+            get { return @"binaries\win32"; }
+        }
+
+        public override string SymlinkFilter
+        {
+            get { return @"binaries\win32"; }
         }
     }
 }

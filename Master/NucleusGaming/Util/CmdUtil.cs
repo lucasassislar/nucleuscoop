@@ -44,7 +44,7 @@ namespace Nucleus
                     continue;
                 }
 
-                string relative = dir.FullName.Replace(rootFolder + @"\", "");
+                string relative = dir.FullName.Replace(rootFolder, "");
                 string linkPath = Path.Combine(destination, relative);
                 CmdUtil.MkLinkDirectory(dir.FullName, linkPath, out exitCode);
             }

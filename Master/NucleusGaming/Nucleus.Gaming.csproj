@@ -51,6 +51,10 @@
     <DefineConstants>UNSAFE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Jint, Version=2.7.1.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jint.2.8\lib\portable-net40+sl50+win+WindowsPhoneApp81+wp80\Jint.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -175,6 +179,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Generic\ScreenData.cs" />
     <Compile Include="Util\CmdUtil.cs" />
     <Compile Include="Util\FileUtil.cs" />
     <Compile Include="Util\FormUtil.cs" />
@@ -228,6 +233,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\vertical.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\xinput1.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\xinput2.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\xinput3.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\xinput4.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ThirdParty\WindowScrape\WindowScrape.csproj">
+      <Project>{d9716550-921d-44e8-a289-c297950db1f7}</Project>
+      <Name>WindowScrape</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
