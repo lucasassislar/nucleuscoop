@@ -62,7 +62,6 @@ namespace Nucleus.Gaming
         /// </summary>
         public abstract string GUID { get; }
 
-
         /// <summary>
         /// Overrides ToString() to show the game's name
         /// </summary>

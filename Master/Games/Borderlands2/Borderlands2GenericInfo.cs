@@ -117,9 +117,14 @@ namespace Games.Borderlands
             get { return @"binaries\win32"; }
         }
 
-        public override string SymlinkFilter
+        public override string SteamID
         {
-            get { return @"binaries\win32"; }
+            get { return "49520"; }
+        }
+
+        public override bool NeedsSteamEmulation
+        {
+            get { return true; }
         }
     }
 }

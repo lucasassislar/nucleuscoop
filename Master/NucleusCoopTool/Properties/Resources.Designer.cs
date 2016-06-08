@@ -259,15 +259,5 @@ namespace Nucleus.Coop.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] SmartSteamEmu {
-            get {
-                object obj = ResourceManager.GetObject("SmartSteamEmu", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
     }
 }

@@ -7,6 +7,8 @@ using System.Reflection;
 using Nucleus.Gaming.Interop;
 using Newtonsoft.Json;
 using System.Threading;
+using Ionic.Zip;
+using Nucleus.Gaming.Properties;
 
 namespace Nucleus.Gaming
 {
@@ -69,6 +71,31 @@ namespace Nucleus.Gaming
 
             Initialize();
             LoadUser();
+        }
+
+        /// <summary>
+        /// Extracts the SmartSteamEmu and returns the folder its on
+        /// </summary>
+        /// <returns></returns>
+        public string ExtractSteamEmu()
+        {
+            string app = GetAppDataPath();
+            string steamEmu = Path.Combine(app, "SteamEmu");
+            if (!Directory.Exists(steamEmu))
+            {
+                Directory.CreateDirectory(steamEmu);
+                using (MemoryStream stream = new MemoryStream(Resources.SmartSteamEmu))
+                {
+                    using (ZipFile zip1 = ZipFile.Read(stream))
+                    {
+                        foreach (ZipEntry e in zip1)
+                        {
+                            e.Extract(steamEmu, ExtractExistingFileAction.OverwriteSilently);
+                        }
+                    }
+                }
+            }
+            return steamEmu;
         }
 
         public void WaitSave()

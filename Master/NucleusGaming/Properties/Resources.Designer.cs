@@ -91,6 +91,16 @@ namespace Nucleus.Gaming.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] SmartSteamEmu {
+            get {
+                object obj = ResourceManager.GetObject("SmartSteamEmu", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap vertical {

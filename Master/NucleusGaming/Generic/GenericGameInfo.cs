@@ -15,6 +15,8 @@ namespace Nucleus.Gaming
         public abstract string StartArguments { get; }
 
         public abstract string BinariesFolder { get; }
-        public abstract string SymlinkFilter { get; }
+        public abstract bool NeedsSteamEmulation { get; }
+
+        public abstract string SteamID { get; }
     }
 }

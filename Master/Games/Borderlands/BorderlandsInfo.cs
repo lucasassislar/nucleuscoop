@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Nucleus.Gaming;
+using Nucleus.Coop;
 
 namespace Games
 {
-    public class BorderlandsInfo : GameInfo
+    public class BorderlandsInfo : GenericGameInfo
     {
         public override bool SupportsKeyboard
         {
@@ -14,7 +15,15 @@ namespace Games
         }
         public override Type[] Steps
         {
-            get { return null; }
+            get
+            {
+                return new Type[]
+                {
+                    typeof(PlayerCountControl),
+                    typeof(PositionsForm),
+                    typeof(PlayerOptions)
+                };
+            }
         }
         public override string ExecutableContext
         {
@@ -22,9 +31,12 @@ namespace Games
         }
         public override string ExecutableName
         {
-            get { return "__borderlands.exe"; }
+            get { return "borderlands.exe"; }
         }
-
+        public override string SteamID
+        {
+            get { return "8980"; }
+        }
         public override string GameName
         {
             get { return "Borderlands"; }
@@ -32,7 +44,7 @@ namespace Games
 
         public override Type HandlerType
         {
-            get { return typeof(object); }
+            get { return typeof(GenericGameHandler); }
         }
 
         public override int MaxPlayers
@@ -50,13 +62,11 @@ namespace Games
         {
             options = new Dictionary<string, GameOption>();
 
-            options.Add("keyboardPlayer", new GameOption("Keyboard Player", "If Player 1 should be using keyboard", false));
-            options.Add("delay", new GameOption("Delay Time", "Time to wait for the game to load (in seconds)", 10));
+            options.Add("KeyboardPlayer", new GameOption("Keyboard Player", "The player that will be playing on keyboard and mouse", KeyboardPlayer.NoKeyboardPlayer));
             options.Add("saveid0", new GameOption("Save ID - Player 1", "Save ID to use for Player 1 (default 0)", 0));
             options.Add("saveid1", new GameOption("Save ID - Player 2", "Save ID to use for Player 2 (default 1)", 1));
             options.Add("saveid2", new GameOption("Save ID - Player 3", "Save ID to use for Player 3 (default 2)", 2));
             options.Add("saveid3", new GameOption("Save ID - Player 4", "Save ID to use for Player 4 (default 3)", 3));
-            options.Add("instructions", new GameOption("Instructions", @"Press A on sequence, from player 1 to player 4 to make sure the game starts up correctly.", "@NOVAR"));
         }
 
         /// <summary>
@@ -70,6 +80,50 @@ namespace Games
         public override int MaxPlayersOneMonitor
         {
             get { return 4; }
+        }
+
+        public override GenericGameSaveType SaveType
+        {
+            get { return GenericGameSaveType.INI; }
+        }
+
+        public override string SavePath
+        {
+            get { return @"&MyDocuments&\My Games\Borderlands\WillowGame\Config\WillowEngine.ini"; }
+        }
+
+        public override Dictionary<string, string> ModifySave
+        {
+            get
+            {
+                return new Dictionary<string, string>()
+                {
+                    { "SystemSettings/WindowedFullscreen", "IsFullscreen" },
+                    { "SystemSettings/ResX", "Width" },
+                    { "SystemSettings/ResY", "Height" },
+                    { "SystemSettings/Fullscreen", "false" },
+                    { "Engine.Engine/bMuteAudioWhenNotInFocus", "false" },
+                    { "Engine.Engine/bPauseOnLossOfFocus", "false" },
+                    { "WillowGame.WillowGameEngine/bPauseLostFocusWindowed", "false" },
+                    { "WillowGame.WillowGameEngine/bMuteAudioWhenNotInFocus", "false" },
+                };
+            }
+        }
+
+        public override string StartArguments
+        {
+            get { return "if(Keyboard){\"-windowed -AlwaysFocus -NoController -SaveDataId=\"+Id}else{\"-windowed -AlwaysFocus -nostartupmovies -SaveDataId=\"+Id}"; }
+        }
+
+        public override string BinariesFolder
+        {
+            get { return @"binaries"; }
+        }
+
+
+        public override bool NeedsSteamEmulation
+        {
+            get { return true; }
         }
     }
 }

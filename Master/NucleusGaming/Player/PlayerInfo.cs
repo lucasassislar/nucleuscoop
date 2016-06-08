@@ -16,5 +16,7 @@ namespace Nucleus.Gaming
 
         public object Tag;
         public Process Process;
+
+        public bool SteamEmu;
     }
 }

@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Windows.Forms;
 using WindowScrape.Types;
@@ -214,14 +215,12 @@ namespace Nucleus.Gaming
                 string linkBin = Path.Combine(linkFolder, gen.BinariesFolder);
                 Directory.CreateDirectory(linkBin);
                 CmdUtil.LinkDirectories(binFolder, linkBin, out exitCode);
-                CmdUtil.LinkFiles(binFolder, linkBin, out exitCode, "xinput", Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()));
+                CmdUtil.LinkFiles(binFolder, linkBin, out exitCode, "xinput");//, Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()));
 
                 string exePath = Path.Combine(linkBin, this.userGame.Game.ExecutableName);
-                File.Copy(userGame.ExePath, exePath, true);
+                //File.Copy(userGame.ExePath, exePath, true);
 
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = exePath;
-                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
 
                 string startArgs = gen.StartArguments;
 
@@ -265,17 +264,44 @@ namespace Nucleus.Gaming
                 }
 
                 startArgs = engine.Execute(startArgs).GetCompletionValue().AsString();
-                startInfo.Arguments = startArgs;
 
-                startInfo.UseShellExecute = true;
-                startInfo.WorkingDirectory = Path.GetDirectoryName(exePath);
+                if (gen.NeedsSteamEmulation)
+                {
+                    string steamEmu = GameManager.Instance.ExtractSteamEmu();
 
-                Process proc = Process.Start(startInfo);
+                    string emuIni = Path.Combine(steamEmu, "SmartSteamEmu.ini");
+                    IniFile emu = new IniFile(emuIni);
+
+                    emu.IniWriteValue("Launcher", "Target", exePath);
+                    emu.IniWriteValue("Launcher", "StartIn", Path.GetDirectoryName(exePath));
+                    emu.IniWriteValue("Launcher", "CommandLine", startArgs);
+                    emu.IniWriteValue("Launcher", "SteamClientPath", Path.Combine(steamEmu, "SmartSteamEmu.dll"));
+                    emu.IniWriteValue("Launcher", "SteamClientPath64", Path.Combine(steamEmu, "SmartSteamEmu64.dll"));
+                    emu.IniWriteValue("Launcher", "InjectDll", "0");
+                    emu.IniWriteValue("SmartSteamEmu", "AppId", gen.SteamID);
+
+                    string emuExe = Path.Combine(steamEmu, "SmartSteamLoader.exe");
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.FileName = emuExe;
+                    Process proc = Process.Start(startInfo);
+                    player.Process = proc;
+                    player.SteamEmu = true;
+                }
+                else
+                {
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.FileName = exePath;
+                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    startInfo.Arguments = startArgs;
+                    startInfo.UseShellExecute = true;
+                    startInfo.WorkingDirectory = Path.GetDirectoryName(exePath);
+                    Process proc = Process.Start(startInfo);
+                    player.Process = proc;
+                }
 
                 ScreenData data = new ScreenData();
                 data.Position = new Point(playerBounds.X, playerBounds.Y);
                 data.Size = new Size(playerBounds.Width, playerBounds.Height);
-                player.Process = proc;
                 player.Tag = data;
             }
 
@@ -297,7 +323,7 @@ namespace Nucleus.Gaming
             for (int i = 0; i < players.Count; i++)
             {
                 PlayerInfo p = players[i];
-                if (p.Tag == null)
+                if (p.Tag == null || p.Process == null)
                 {
                     continue;
                 }
@@ -307,48 +333,69 @@ namespace Nucleus.Gaming
                     continue;
                 }
 
-                ScreenData data = (ScreenData)p.Tag;
-                if (data.Set)
+                if (p.SteamEmu)
                 {
-                    uint lStyle = User32Interop.GetWindowLong(data.HWND.Hwnd, User32_WS.GWL_STYLE);
-                    if (lStyle != data.RegLong)
+                    ManagementObjectSearcher searcher = new ManagementObjectSearcher(
+                        "SELECT * " +
+                        "FROM Win32_Process " +
+                        "WHERE ParentProcessId=" + p.Process.Id);
+                    ManagementObjectCollection collection = searcher.Get();
+                    if (collection.Count > 0)
                     {
-                        //uint toRemove = User32_WS.WS_BORDER;
-                        uint toRemove = User32_WS.WS_CAPTION;
-                        lStyle = lStyle & (~toRemove);
-
-                        User32Interop.SetWindowLong(data.HWND.Hwnd, User32_WS.GWL_STYLE, lStyle);
-                        data.RegLong = lStyle;
-                        data.HWND.Location = data.Position;
+                        // our game is here!
+                        foreach (var item in collection)
+                        {
+                            UInt32 childProcessId = (UInt32)item["ProcessId"];
+                            p.Process = Process.GetProcessById((int)childProcessId);
+                            p.SteamEmu = false;
+                            break;
+                        }
                     }
                 }
                 else
                 {
-                    p.Process.Refresh();
-
-                    if (data.HWND == null || data.HWND.Hwnd != p.Process.MainWindowHandle)
+                    ScreenData data = (ScreenData)p.Tag;
+                    if (data.Set)
                     {
-                        data.HWND = new HwndObject(p.Process.MainWindowHandle);
-                        Point pos = data.HWND.Location;
-
-                        if (String.IsNullOrEmpty(data.HWND.Title) || data.HWND.Title.ToLower() == "splashscreen" || pos.X == -32000)
+                        uint lStyle = User32Interop.GetWindowLong(data.HWND.Hwnd, User32_WS.GWL_STYLE);
+                        if (lStyle != data.RegLong)
                         {
-                            data.HWND = null;
-                        }
-                        else
-                        {
-                            //Thread.Sleep(delayTime);
-                            Size s = data.Size;
+                            //uint toRemove = User32_WS.WS_BORDER;
+                            uint toRemove = User32_WS.WS_CAPTION;
+                            lStyle = lStyle & (~toRemove);
 
-                            data.Set = true;
-                            data.HWND.TopMost = true;
-                            data.HWND.Size = data.Size;
-                            //User32.HideBorder(p.Process.MainWindowHandle);
+                            User32Interop.SetWindowLong(data.HWND.Hwnd, User32_WS.GWL_STYLE, lStyle);
+                            data.RegLong = lStyle;
                             data.HWND.Location = data.Position;
                         }
                     }
-                }
+                    else
+                    {
+                        p.Process.Refresh();
 
+                        if (data.HWND == null || data.HWND.Hwnd != p.Process.MainWindowHandle)
+                        {
+                            data.HWND = new HwndObject(p.Process.MainWindowHandle);
+                            Point pos = data.HWND.Location;
+
+                            if (String.IsNullOrEmpty(data.HWND.Title) || data.HWND.Title.ToLower() == "splashscreen" || pos.X == -32000)
+                            {
+                                data.HWND = null;
+                            }
+                            else
+                            {
+                                //Thread.Sleep(delayTime);
+                                Size s = data.Size;
+
+                                data.Set = true;
+                                data.HWND.TopMost = true;
+                                data.HWND.Size = data.Size;
+                                //User32.HideBorder(p.Process.MainWindowHandle);
+                                data.HWND.Location = data.Position;
+                            }
+                        }
+                    }
+                }
             }
 
             if (exited == players.Count)
