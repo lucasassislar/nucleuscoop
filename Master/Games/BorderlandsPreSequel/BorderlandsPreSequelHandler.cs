@@ -73,7 +73,7 @@ namespace Games.Borderlands
             }
 
             // backup the WillowEngine ini
-            GameManager.Instance.StartBackup(game.Game);
+            GameManager.Instance.BeginBackup(game.Game);
             GameManager.Instance.BackupFile(game.Game, willowEngine);
 
             return true;

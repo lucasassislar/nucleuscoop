@@ -210,6 +210,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\SmartSteamEmu.zip" />
     <None Include="SplitKey.snk" />
   </ItemGroup>
   <ItemGroup>

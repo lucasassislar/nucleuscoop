@@ -124,6 +124,9 @@
     <Compile Include="Coop\UserProfile.cs" />
     <Compile Include="Coop\UserScreen.cs" />
     <Compile Include="Coop\UserScreenType.cs" />
+    <Compile Include="Generic\GenericGameHandler.cs" />
+    <Compile Include="Generic\GenericGameInfo.cs" />
+    <Compile Include="Generic\GenericGameSaveType.cs" />
     <Compile Include="Interop\Shell32\Shell32.cs" />
     <Compile Include="Interop\Shell32\ShFileInfo.cs" />
     <Compile Include="Interop\Shell32\ShgFi.cs" />

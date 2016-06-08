@@ -110,7 +110,7 @@ namespace Nucleus.Gaming
             return gInfo;
         }
 
-        public void StartBackup(GameInfo game)
+        public void BeginBackup(GameInfo game)
         {
             string appData = GetAppDataPath();
             string gamePath = Path.Combine(appData, game.GUID);

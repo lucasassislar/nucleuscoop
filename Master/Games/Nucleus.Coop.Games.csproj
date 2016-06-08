@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Borderlands2\Borderlands2GenericInfo.cs" />
     <Compile Include="Borderlands2\Borderlands2Handler.cs" />
     <Compile Include="Borderlands2\Borderlands2Info.cs" />
     <None Include="Borderlands2\BorderlandsSaveControl.cs">

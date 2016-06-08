@@ -83,7 +83,7 @@ namespace Games.Borderlands
             }
 
             // backup the WillowEngine ini
-            GameManager.Instance.StartBackup(game.Game);
+            GameManager.Instance.BeginBackup(game.Game);
             GameManager.Instance.BackupFile(game.Game, willowEngine);
 
             return true;
@@ -116,14 +116,12 @@ namespace Games.Borderlands
 
             string backupDir = GameManager.Instance.GetBackupFolder(this.userGame.Game);
             string binFolder = Path.GetDirectoryName(executablePlace);
-            string rootFolder = Path.GetDirectoryName(
-                                    Path.GetDirectoryName(binFolder));
+            string rootFolder = Path.GetDirectoryName(Path.GetDirectoryName(binFolder));
 
             int gamePadId = 0;
 
             for (int i = 0; i < players.Count; i++)
             {
-                string linkFolder = Path.Combine(backupDir, "Instance" + i);
 
                 PlayerInfo player = players[i];
                 // Set Borderlands 2 Resolution and stuff to run
@@ -173,6 +171,7 @@ namespace Games.Borderlands
                 file.IniWriteValue("SystemSettings", "ResY", height.ToString(CultureInfo.InvariantCulture));
 
                 // Link-making
+                string linkFolder = Path.Combine(backupDir, "Instance" + i);
                 Directory.CreateDirectory(linkFolder);
                 int exitCode;
                 CmdUtil.LinkDirectories(rootFolder, linkFolder, out exitCode, "binaries");
@@ -185,7 +184,6 @@ namespace Games.Borderlands
                 string exePath = Path.Combine(linkBin, this.userGame.Game.ExecutableName);
                 File.Copy(this.executablePlace, exePath, true);
                 // Link-end
-
 
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = exePath;
