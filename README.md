@@ -18,6 +18,7 @@ Working on:
 
 Next on the List:
 
+- The games that were working before
 - Call of Duty: Black Ops
 - Call of Duty: Modern Warfare 2
 - Saints Row 3
