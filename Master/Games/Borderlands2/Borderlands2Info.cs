@@ -49,6 +49,11 @@ namespace Games.Borderlands
             get { return 4; }
         }
 
+        public override int MaxPlayersOneMonitor
+        {
+            get { return 4; }
+        }
+
         protected Dictionary<string, GameOption> options;
         public override Dictionary<string, GameOption> Options
         {
@@ -60,10 +65,11 @@ namespace Games.Borderlands
             options = new Dictionary<string, GameOption>();
 
             options.Add("KeyboardPlayer", new GameOption("Keyboard Player", "The player that will be playing on keyboard and mouse", KeyboardPlayer.NoKeyboardPlayer));
-            options.Add("saveid0", new GameOption("Save ID - Player 1", "Save ID to use for Player 1 (default 0)", 0));
-            options.Add("saveid1", new GameOption("Save ID - Player 2", "Save ID to use for Player 2 (default 1)", 1));
-            options.Add("saveid2", new GameOption("Save ID - Player 3", "Save ID to use for Player 3 (default 2)", 2));
-            options.Add("saveid3", new GameOption("Save ID - Player 4", "Save ID to use for Player 4 (default 3)", 3));
+            for (int i = 0; i < MaxPlayers; i++)
+            {
+                int playerID = i + 1;
+                options.Add("saveid" + i, new GameOption("Save ID - Player " + playerID, "Save ID to use for Player " + playerID + " (default " + i + ")", i));
+            }
         }
 
         /// <summary>
@@ -72,11 +78,6 @@ namespace Games.Borderlands
         public override string GUID
         {
             get { return "720CE71B-FCBF-46C8-AC9D-C4B2BF3169E3"; }
-        }
-
-        public override int MaxPlayersOneMonitor
-        {
-            get { return 4; }
         }
 
         public override GenericGameSaveType SaveType

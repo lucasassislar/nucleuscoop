@@ -46,6 +46,7 @@
             this.StepPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.StepPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.StepPanel.Location = new System.Drawing.Point(242, 101);
             this.StepPanel.Name = "StepPanel";
             this.StepPanel.Size = new System.Drawing.Size(800, 589);

@@ -14,6 +14,7 @@ namespace Nucleus.Gaming
         public PlayerCountControl()
         {
             InitializeComponent();
+            this.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
         }
 
         private bool go;
