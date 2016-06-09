@@ -8,7 +8,7 @@ using System.Text;
 namespace Games.Borderlands
 {
     public class Borderlands2Info : GenericGameInfo
-    {
+    {       
         public override bool SupportsKeyboard
         {
             get { return true; }
@@ -130,6 +130,15 @@ namespace Games.Borderlands
         public override string[] KillMutex
         {
             get { return new string[0]; }
+        }
+
+        public override string LauncherExe
+        {
+            get { return ""; }
+        }
+        public override string LauncherTitle
+        {
+            get { return "splashscreen"; }
         }
     }
 }

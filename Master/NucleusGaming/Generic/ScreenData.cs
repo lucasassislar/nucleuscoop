@@ -11,6 +11,8 @@ namespace Nucleus.Gaming
     {
         public Point Position;
         public HwndObject HWND;
+        public bool HWNDRetry;
+
         public Size Size;
         public bool Set;
 

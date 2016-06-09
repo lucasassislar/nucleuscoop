@@ -9,6 +9,14 @@ namespace Games.BlackOps
 {
     public class BlackOpsGameInfo : GenericGameInfo
     {
+        public override string LauncherExe
+        {
+            get { throw new NotImplementedException(); }
+        }
+        public override string LauncherTitle
+        {
+            get { throw new NotImplementedException(); }
+        }
         //t6zm
         public override bool SupportsKeyboard
         {

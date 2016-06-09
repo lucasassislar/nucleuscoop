@@ -20,5 +20,8 @@ namespace Nucleus.Gaming
         public abstract string SteamID { get; }
 
         public abstract string[] KillMutex { get; }
+
+        public abstract string LauncherExe { get; }
+        public abstract string LauncherTitle { get; }
     }
 }

@@ -115,7 +115,7 @@ namespace Games.SaintsRow3
 
         public override bool NeedsSteamEmulation
         {
-            get { return false; }
+            get { return true; }
         }
 
         public override string[] KillMutex
@@ -127,6 +127,16 @@ namespace Games.SaintsRow3
                         "SR3"
                     };
             }
+        }
+
+        public override string LauncherExe
+        {
+            get { return "game_launcher"; }
+        }
+
+        public override string LauncherTitle
+        {
+            get { return "Saints Row: The Launcher"; }
         }
     }
 }

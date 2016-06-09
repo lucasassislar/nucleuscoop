@@ -455,41 +455,78 @@ namespace Nucleus.Gaming
                     }
                     else
                     {
-                        if (p.Process.HasExited)
-                        {
-                            // Steam showing a launcher, need to find our game process
-                            //Process[] procs = Process.GetProcessesByName("game_launcher.exe");
-                            //for (int j = 0; j < procs.Length; j++)
-                            //{
-                            //    Process pro = procs[j];
-                            //    if (!attached.Contains(pro))
-                            //    {
-                            //        attached.Add(pro);
-                            //        //p.Process = pro;
-                            //    }
-                            //}
-
-                            continue;
-                        }
-
                         p.Process.Refresh();
 
-                        if (data.HWND == null || data.HWND.Hwnd != p.Process.MainWindowHandle)
+                        if (p.Process.HasExited)
                         {
-                            data.HWND = new HwndObject(p.Process.MainWindowHandle);
-                            Point pos = data.HWND.Location;
-
-                            if (String.IsNullOrEmpty(data.HWND.Title) || data.HWND.Title.ToLower() == "splashscreen" || pos.X == -32000)
+                            if (p.GotLauncher)
                             {
-                                data.HWND = null;
+                                if (p.GotGame)
+                                {
+                                    exited++;
+                                }
+                                else
+                                {
+                                    List<int> children = ProcessUtil.GetChildrenProcesses(p.Process);
+                                    if (children.Count > 0)
+                                    {
+                                        for (int j = 0; j < children.Count; j++)
+                                        {
+                                            int id = children[j];
+                                            Process pro = Process.GetProcessById(id);
+
+                                            if (!attached.Contains(pro))
+                                            {
+                                                attached.Add(pro);
+                                                data.HWND = null;
+                                                p.GotGame = true;
+                                                p.Process = pro;
+                                            }
+                                        }
+                                    }
+                                }
                             }
                             else
                             {
-                                Size s = data.Size;
-                                data.Set = true;
-                                data.HWND.TopMost = true;
-                                data.HWND.Size = data.Size;
-                                data.HWND.Location = data.Position;
+                                // Steam showing a launcher, need to find our game process
+                                string launcher = gen.LauncherExe;
+                                if (launcher.ToLower().EndsWith(".exe"))
+                                {
+                                    launcher = launcher.Remove(launcher.Length - 4, 4);
+                                }
+
+                                Process[] procs = Process.GetProcessesByName(launcher);
+                                for (int j = 0; j < procs.Length; j++)
+                                {
+                                    Process pro = procs[j];
+                                    if (!attached.Contains(pro))
+                                    {
+                                        attached.Add(pro);
+                                        p.Process = pro;
+                                        p.GotLauncher = true;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (data.HWNDRetry || data.HWND == null || data.HWND.Hwnd != p.Process.MainWindowHandle)
+                            {
+                                data.HWND = new HwndObject(p.Process.MainWindowHandle);
+                                Point pos = data.HWND.Location;
+
+                                if (String.IsNullOrEmpty(data.HWND.Title) || pos.X == -32000 || data.HWND.Title.ToLower() == gen.LauncherTitle.ToLower())
+                                {
+                                    data.HWNDRetry = true;
+                                }
+                                else
+                                {
+                                    Size s = data.Size;
+                                    data.Set = true;
+                                    data.HWND.TopMost = true;
+                                    data.HWND.Size = data.Size;
+                                    data.HWND.Location = data.Position;
+                                }
                             }
                         }
                     }

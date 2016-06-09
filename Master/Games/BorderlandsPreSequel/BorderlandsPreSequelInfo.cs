@@ -131,5 +131,14 @@ namespace Games.Borderlands
         {
             get { return new string[0]; }
         }
+
+        public override string LauncherExe
+        {
+            get { return ""; }
+        }
+        public override string LauncherTitle
+        {
+            get { return "splashscreen"; }
+        }
     }
 }

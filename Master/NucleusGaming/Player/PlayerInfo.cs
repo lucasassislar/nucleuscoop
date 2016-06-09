@@ -20,5 +20,7 @@ namespace Nucleus.Gaming
         public ScreenData screenData;
 
         public bool SteamEmu;
+        public bool GotLauncher;
+        public bool GotGame;
     }
 }
