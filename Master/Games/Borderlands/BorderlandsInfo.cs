@@ -27,7 +27,7 @@ namespace Games
         }
         public override string ExecutableContext
         {
-            get { return ""; }
+            get { return "PhysXLocal;binkw32.dll"; }
         }
         public override string ExecutableName
         {
@@ -120,10 +120,14 @@ namespace Games
             get { return @"binaries"; }
         }
 
-
         public override bool NeedsSteamEmulation
         {
             get { return true; }
+        }
+
+        public override string[] KillMutex
+        {
+            get { return new string[0]; }
         }
     }
 }

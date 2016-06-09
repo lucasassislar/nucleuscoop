@@ -11,6 +11,12 @@ Currently Supported Games:
 - Borderlands: The Pre Sequel (didn't test but the code is the same from Borderlands 2)
 
 
+Close to working:
+
+- Saints Row 3 (game opens, just couldnt manage to make them find each other)
+
+
+
 Working on:
 
 - Call of Duty: Black Ops 2 Zombies

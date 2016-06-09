@@ -53,8 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Borderlands2\Borderlands2GenericInfo.cs" />
-    <Compile Include="Borderlands2\Borderlands2Handler.cs" />
+    <Compile Include="BlackOps\BlackOpsGameInfo.cs" />
     <Compile Include="Borderlands2\Borderlands2Info.cs" />
     <None Include="Borderlands2\BorderlandsSaveControl.cs">
       <SubType>UserControl</SubType>
@@ -62,9 +61,7 @@
     <None Include="Borderlands2\BorderlandsSaveManager.cs">
       <SubType>UserControl</SubType>
     </None>
-    <Compile Include="BorderlandsPreSequel\BorderlandsPreSequelHandler.cs" />
     <Compile Include="BorderlandsPreSequel\BorderlandsPreSequelInfo.cs" />
-    <None Include="Borderlands\BorderlandsHandler.cs" />
     <Compile Include="Borderlands\BorderlandsInfo.cs" />
     <Compile Include="GamesResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -107,6 +104,7 @@
     </Compile>
     <None Include="Resident Evil 5\ResidentEvil5Handler.cs" />
     <Compile Include="Resident Evil 5\ResidentEvil5Info.cs" />
+    <Compile Include="SaintsRow3\SaintsRow3Info.cs" />
     <Compile Include="TeamFortress2\TeamFortress2Info.cs" />
   </ItemGroup>
   <ItemGroup>

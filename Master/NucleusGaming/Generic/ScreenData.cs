@@ -16,7 +16,7 @@ namespace Nucleus.Gaming
 
         public bool Register0;
 
-
+        public bool KilledMutexes;
         public long RegLong;
     }
 }

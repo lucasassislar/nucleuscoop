@@ -300,12 +300,10 @@
     <None Include="Resources\no_keyboard.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="FodyWeavers.xml" />
     <None Include="StartGame.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="FodyWeavers.xml" />
     <None Include="Resources\left_arrow_press.png" />
     <None Include="Resources\left_arrow_hover.png" />
     <None Include="Resources\right_arrow_press.png" />

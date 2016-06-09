@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Games.Borderlands
+namespace Games.SaintsRow3
 {
-    public class BorderlandsPreSequelInfo : GenericGameInfo
+    public class SaintsRow3Info : GenericGameInfo
     {
         public override bool SupportsKeyboard
         {
@@ -31,12 +31,12 @@ namespace Games.Borderlands
         }
         public override string ExecutableName
         {
-            get { return "borderlandspresequel.exe"; }
+            get { return "saintsrowthethird_dx11.exe"; }
         }
 
         public override string GameName
         {
-            get { return "Borderlands Pre-Sequel"; }
+            get { return "Saints Row 3"; }
         }
 
         public override Type HandlerType
@@ -55,15 +55,11 @@ namespace Games.Borderlands
             get { return options; }
         }
 
-        public BorderlandsPreSequelInfo()
+        public SaintsRow3Info()
         {
             options = new Dictionary<string, GameOption>();
 
             options.Add("KeyboardPlayer", new GameOption("Keyboard Player", "The player that will be playing on keyboard and mouse", KeyboardPlayer.NoKeyboardPlayer));
-            options.Add("saveid0", new GameOption("Save ID - Player 1", "Save ID to use for Player 1 (default 0)", 0));
-            options.Add("saveid1", new GameOption("Save ID - Player 2", "Save ID to use for Player 2 (default 1)", 1));
-            options.Add("saveid2", new GameOption("Save ID - Player 3", "Save ID to use for Player 3 (default 2)", 2));
-            options.Add("saveid3", new GameOption("Save ID - Player 4", "Save ID to use for Player 4 (default 3)", 3));
         }
 
         /// <summary>
@@ -71,7 +67,7 @@ namespace Games.Borderlands
         /// </summary>
         public override string GUID
         {
-            get { return "E1CCA90A-7B48-4F3A-8F19-FD61B32A0F83"; }
+            get { return "c466f806-a6d7-4a45-be91-4afb2f91f339"; }
         }
 
         public override int MaxPlayersOneMonitor
@@ -86,7 +82,7 @@ namespace Games.Borderlands
 
         public override string SavePath
         {
-            get { return @"&MyDocuments&\My Games\Borderlands The Pre-Sequel\WillowGame\Config\WillowEngine.ini"; }
+            get { return @"&GameFolder&\display.ini"; }
         }
 
         public override Dictionary<string, string> ModifySave
@@ -95,31 +91,26 @@ namespace Games.Borderlands
             {
                 return new Dictionary<string, string>()
                 {
-                    { "SystemSettings/WindowedFullscreen", "IsFullscreen" },
-                    { "SystemSettings/ResX", "Width" },
-                    { "SystemSettings/ResY", "Height" },
-                    { "SystemSettings/Fullscreen", "false" },
-                    { "Engine.Engine/bMuteAudioWhenNotInFocus", "false" },
-                    { "Engine.Engine/bPauseOnLossOfFocus", "false" },
-                    { "WillowGame.WillowGameEngine/bPauseLostFocusWindowed", "false" },
-                    { "WillowGame.WillowGameEngine/bMuteAudioWhenNotInFocus", "false" },
+                    { "/ResolutionWidth", "Width" },
+                    { "/ResolutionHeight", "Height" },
+                    { "/Fullscreen", "false" },
                 };
             }
         }
 
         public override string StartArguments
         {
-            get { return "if(Keyboard){\"-AlwaysFocus -NoController -SaveDataId=\"+Id}else{\"-AlwaysFocus -nostartupmovies -SaveDataId=\"+Id}"; }
+            get { return ""; }
         }
 
         public override string BinariesFolder
         {
-            get { return @"binaries\win32"; }
+            get { return ""; }
         }
 
         public override string SteamID
         {
-            get { return "49520"; }
+            get { return "55230"; }
         }
 
         public override bool NeedsSteamEmulation
@@ -129,7 +120,13 @@ namespace Games.Borderlands
 
         public override string[] KillMutex
         {
-            get { return new string[0]; }
+            get
+            {
+                return new string[]
+                    {
+                        "SR3"
+                    };
+            }
         }
     }
 }

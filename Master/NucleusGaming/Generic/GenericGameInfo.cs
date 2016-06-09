@@ -18,5 +18,7 @@ namespace Nucleus.Gaming
         public abstract bool NeedsSteamEmulation { get; }
 
         public abstract string SteamID { get; }
+
+        public abstract string[] KillMutex { get; }
     }
 }

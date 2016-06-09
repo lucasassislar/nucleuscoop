@@ -111,8 +111,27 @@ namespace Nucleus.Coop
                             continue;
                         }
 
-                        LogManager.Log("Found game: {0}, full path: {1}", game.GameName, path);
+                        // check if the Context matches
+                        string[] context = game.ExecutableContext.Split(';');
+                        string dir = Path.GetDirectoryName(path);
+                        bool notAdd = false;
+                        for (int j = 0; j < context.Length; j++)
+                        {
+                            string con = Path.Combine(dir, context[j]);
+                            if (!File.Exists(con) &&
+                                !Directory.Exists(con))
+                            {
+                                notAdd = true;
+                                break;
+                            }
+                        }
 
+                        if (notAdd)
+                        {
+                            continue;
+                        }
+
+                        LogManager.Log("Found game: {0}, full path: {1}", game.GameName, path);
                         UserGameInfo info = new UserGameInfo();
                         info.InitializeDefault(game, path);
                         gameManager.User.Games.Add(info);
@@ -220,7 +239,6 @@ namespace Nucleus.Coop
                 // can play
                 btn_Play.Enabled = true;
             }
-
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
@@ -244,13 +262,13 @@ namespace Nucleus.Coop
             handler.Initialize(currentGameInfo, currentProfile);
             handler.Ended += handler_Ended;
 
-            gameManager.Play(handler);
-
             if (handler.TimerInterval > 0)
             {
                 Thread t = new Thread(UpdateGameManager);
                 t.Start();
             }
+
+            gameManager.Play(handler);
         }
 
         private void handler_Ended()
@@ -272,7 +290,9 @@ namespace Nucleus.Coop
                     handler.Update(handler.TimerInterval);
                     Thread.Sleep(handler.TimerInterval);
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                }
             }
         }
 

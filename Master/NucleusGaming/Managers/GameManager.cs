@@ -332,7 +332,14 @@ namespace Nucleus.Gaming
             //    User32.HideTaskbar();
             //}
 
+            // Start the Play method in another thread, so the
+            // handler can update while it's still loading
             handler.Play();
+            //ThreadPool.QueueUserWorkItem(play, handler);
+        }
+        private void play(object state)
+        {
+            ((IGameHandler)state).Play();
         }
     }
 }

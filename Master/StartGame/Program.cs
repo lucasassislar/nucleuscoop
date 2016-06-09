@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,6 +13,31 @@ namespace StartGame
     class Program
     {
         static int tries = 5;
+        static Process proc;
+
+        static void StartGame(string path, string args = "")
+        {
+            int tri = 0;
+            ProcessStartInfo startInfo;
+            startInfo = new ProcessStartInfo();
+            startInfo.FileName = path;
+            startInfo.Arguments = args;
+
+            try
+            {
+                proc = Process.Start(startInfo);
+                Console.WriteLine("ID:" + proc.Id);
+            }
+            catch
+            {
+                tri++;
+                if (tri < tries)
+                {
+                    Console.WriteLine("Failed to start process. Retrying...");
+                    StartGame(path, args);
+                }
+            }
+        }
 
         static void Main(string[] args)
         {
@@ -21,64 +47,71 @@ namespace StartGame
                 return;
             }
 
-            string game = args[0];
-            Process proc = null;
-            int tri = 0;
-            ProcessStartInfo startInfo;
-            startInfo = new ProcessStartInfo();
-            startInfo.FileName = game;
-            if (args.Length >= 2)
-            {
-                startInfo.Arguments = args[1];
-            }
-
-        retry:
             try
             {
-                proc = Process.Start(startInfo);
+                for (int i = 0; i < args.Length; i++)
+                {
+                    string arg = args[i];
+                    string[] splited = arg.Split(':');
+
+                    string key = splited[0].ToLower();
+
+                    if (key == "game")
+                    {
+                        string[] arguments = (splited[1] + ":" + splited[2]).Split(';');
+                        string path = arguments[0];
+
+                        string argu = "";
+                        if (arguments.Length > 1)
+                        {
+                            argu = arguments[1];
+                        }
+                        StartGame(path, argu);
+                    }
+                    else if (key == "mutex")
+                    {
+                        string[] mutex = splited[1].Split(';');
+                        for (int j = 0; j < mutex.Length; j++)
+                        {
+                            string m = mutex[j];
+                            if (!ProcessUtil.KillMutex(proc, m))
+                            {
+                                Console.WriteLine("Mutex " + m + " could not be killed");
+                            }
+                            Thread.Sleep(500);
+                        }
+                    }
+                    else if (key == "proc")
+                    {
+                        string procId = splited[1];
+                        int id = int.Parse(procId);
+                        proc = Process.GetProcessById(id);
+                    }
+                }
             }
             catch
             {
-                tri++;
-                if (tri < tries)
-                {
-                    Console.WriteLine("Failed to start process. Retrying...");
-                    Thread.Sleep(1000);
-                    goto retry;
-                }
+                Console.WriteLine("Invalid usage!");
             }
 
-            if (args.Length >= 3)
-            {
-                int timeToWait = int.Parse(args[2]);
-                Thread.Sleep(timeToWait);
+            
+            //if (args.Length >= 3)
+            //{
+            //    int timeToWait = int.Parse(args[2]);
+            //    Thread.Sleep(timeToWait);
 
-                if (proc.HasExited)
-                {
-                    tri++;
-                    if (tri < tries)
-                    {
-                        Console.WriteLine("Failed to start process. Retrying...");
-                        Thread.Sleep(1000);
-                        goto retry;
-                    }
-                }
-            }
+            //    if (proc.HasExited)
+            //    {
+            //        tri++;
+            //        if (tri < tries)
+            //        {
+            //            Console.WriteLine("Failed to start process. Retrying...");
+            //            Thread.Sleep(1000);
+            //            goto retry;
+            //        }
+            //    }
+            //}
 
-            if (args.Length >= 3)
-            {
-                string[] mutex = args[3].Split(';');
-                for (int i = 0; i < mutex.Length; i++)
-                {
-                    if (!ProcessUtil.KillMutex(proc, mutex[i]))
-                    {
-                        Console.WriteLine("Mutex " + mutex[i] + " could not be killed");
-                    }
-                    Thread.Sleep(500);
-                }
-            }
-
-            Console.WriteLine(proc.Id);
         }
     }
 }
