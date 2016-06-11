@@ -240,9 +240,17 @@ namespace Nucleus.Gaming
                     CmdUtil.LinkDirectories(binFolder, linkBin, out exitCode);
                 }
 
-                CmdUtil.LinkFiles(binFolder, linkBin, out exitCode, "xinput", Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()));
                 string exePath = Path.Combine(linkBin, this.userGame.Game.ExecutableName);
-                File.Copy(userGame.ExePath, exePath, true);
+
+                if (gen.SymlinkExe)
+                {
+                    CmdUtil.LinkFiles(binFolder, linkBin, out exitCode, "xinput");
+                }
+                else
+                {
+                    CmdUtil.LinkFiles(binFolder, linkBin, out exitCode, "xinput", Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()));
+                    File.Copy(userGame.ExePath, exePath, true);
+                }
 
 
                 // some games have save files inside their game folder, so we need to access them inside the loop

@@ -141,5 +141,10 @@ namespace Games.Borderlands
         {
             get { return "splashscreen"; }
         }
+
+        public override bool SymlinkExe
+        {
+            get { return true; }
+        }
     }
 }

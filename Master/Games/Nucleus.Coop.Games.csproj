@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Battlefront2\Battlefront2Info.cs" />
     <Compile Include="BlackOps\BlackOpsGameInfo.cs" />
     <Compile Include="Borderlands2\Borderlands2Info.cs" />
     <None Include="Borderlands2\BorderlandsSaveControl.cs">

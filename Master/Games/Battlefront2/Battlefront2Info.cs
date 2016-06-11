@@ -5,14 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Games.SaintsRow3
+namespace Games.Battlefront2
 {
-    public class SaintsRow3Info : GenericGameInfo
+    public class Battlefront2Info : GenericGameInfo
     {
-        public override bool SymlinkExe
-        {
-            get { return true; }
-        }
         public override bool SupportsKeyboard
         {
             get { return true; }
@@ -35,12 +31,12 @@ namespace Games.SaintsRow3
         }
         public override string ExecutableName
         {
-            get { return "saintsrowthethird_dx11.exe"; }
+            get { return "__battlefrontii.exe"; }
         }
 
         public override string GameName
         {
-            get { return "Saints Row 3"; }
+            get { return "Battlefront 2"; }
         }
 
         public override Type HandlerType
@@ -53,68 +49,59 @@ namespace Games.SaintsRow3
             get { return 4; }
         }
 
+        public override int MaxPlayersOneMonitor
+        {
+            get { return 4; }
+        }
+
         protected Dictionary<string, GameOption> options;
         public override Dictionary<string, GameOption> Options
         {
             get { return options; }
         }
 
-        public SaintsRow3Info()
+        public Battlefront2Info()
         {
             options = new Dictionary<string, GameOption>();
-
             options.Add("KeyboardPlayer", new GameOption("Keyboard Player", "The player that will be playing on keyboard and mouse", KeyboardPlayer.NoKeyboardPlayer));
         }
 
-        /// <summary>
-        /// Generated with http://www.random-guid.com/
-        /// </summary>
         public override string GUID
         {
-            get { return "c466f806-a6d7-4a45-be91-4afb2f91f339"; }
-        }
-
-        public override int MaxPlayersOneMonitor
-        {
-            get { return 4; }
+            get { return "6060"; }//"46a03ad4-7f8a-447e-ac05-1801bb831a8c"; }
         }
 
         public override GenericGameSaveType SaveType
         {
-            get { return GenericGameSaveType.INI; }
+            get { return GenericGameSaveType.None ; }
         }
 
         public override string SavePath
         {
-            get { return @"&GameFolder&\display.ini"; }
+            get { return @""; }
         }
 
         public override Dictionary<string, string> ModifySave
         {
             get
             {
-                return new Dictionary<string, string>()
-                {
-                    { "/ResolutionWidth", "Width" },
-                    { "/ResolutionHeight", "Height" },
-                    { "/Fullscreen", "false" },
-                };
+                return new Dictionary<string, string>();
             }
         }
 
         public override string StartArguments
         {
-            get { return ""; }
+            get { return "\"/win /resolution \" + Width + \" \" + Height"; }
         }
 
         public override string BinariesFolder
         {
-            get { return ""; }
+            get { return @"GameData"; }
         }
 
         public override string SteamID
         {
-            get { return "55230"; }
+            get { return "6060"; }
         }
 
         public override bool NeedsSteamEmulation
@@ -124,23 +111,21 @@ namespace Games.SaintsRow3
 
         public override string[] KillMutex
         {
-            get
-            {
-                return new string[]
-                    {
-                        "SR3"
-                    };
-            }
+            get { return new string[0]; }
         }
 
         public override string LauncherExe
         {
-            get { return "game_launcher"; }
+            get { return ""; }
         }
-
         public override string LauncherTitle
         {
-            get { return "Saints Row: The Launcher"; }
+            get { return ""; }
+        }
+
+        public override bool SymlinkExe
+        {
+            get { return true; }
         }
     }
 }

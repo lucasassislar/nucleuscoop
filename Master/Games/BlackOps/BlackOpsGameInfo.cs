@@ -9,6 +9,10 @@ namespace Games.BlackOps
 {
     public class BlackOpsGameInfo : GenericGameInfo
     {
+        public override bool SymlinkExe
+        {
+            get { return true; }
+        }
         public override string LauncherExe
         {
             get { throw new NotImplementedException(); }

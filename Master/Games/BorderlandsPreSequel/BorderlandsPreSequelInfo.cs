@@ -9,6 +9,10 @@ namespace Games.Borderlands
 {
     public class BorderlandsPreSequelInfo : GenericGameInfo
     {
+        public override bool SymlinkExe
+        {
+            get { return true; }
+        }
         public override bool SupportsKeyboard
         {
             get { return true; }

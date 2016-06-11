@@ -23,5 +23,6 @@ namespace Nucleus.Gaming
 
         public abstract string LauncherExe { get; }
         public abstract string LauncherTitle { get; }
+        public abstract bool SymlinkExe { get; }
     }
 }
