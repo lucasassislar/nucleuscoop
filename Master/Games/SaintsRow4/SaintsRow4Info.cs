@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Games.SaintsRow3
+namespace Games.SaintsRow4
 {
-    public class SaintsRow3Info : GenericGameInfo
+    public class SaintsRow4Info : GenericGameInfo
     {
         public override bool SymlinkExe
         {
@@ -35,12 +35,12 @@ namespace Games.SaintsRow3
         }
         public override string ExecutableName
         {
-            get { return "saintsrowthethird_dx11.exe"; }
+            get { return "saintsrowiv.exe"; }
         }
 
         public override string GameName
         {
-            get { return "Saints Row 3"; }
+            get { return "Saints Row 4"; }
         }
 
         public override Type HandlerType
@@ -59,19 +59,16 @@ namespace Games.SaintsRow3
             get { return options; }
         }
 
-        public SaintsRow3Info()
+        public SaintsRow4Info()
         {
             options = new Dictionary<string, GameOption>();
 
             options.Add("KeyboardPlayer", new GameOption("Keyboard Player", "The player that will be playing on keyboard and mouse", KeyboardPlayer.NoKeyboardPlayer));
         }
 
-        /// <summary>
-        /// Generated with http://www.random-guid.com/
-        /// </summary>
         public override string GUID
         {
-            get { return "55230"; }
+            get { return "206420"; }
         }
 
         public override int MaxPlayersOneMonitor
@@ -114,7 +111,7 @@ namespace Games.SaintsRow3
 
         public override string SteamID
         {
-            get { return "55230"; }
+            get { return "206420"; }
         }
 
         public override bool NeedsSteamEmulation
@@ -128,19 +125,19 @@ namespace Games.SaintsRow3
             {
                 return new string[]
                     {
-                        "SR3"
+                        "SRE4"
                     };
             }
         }
 
         public override string LauncherExe
         {
-            get { return "game_launcher"; }
+            get { return ""; }
         }
 
         public override string LauncherTitle
         {
-            get { return "Saints Row: The Launcher"; }
+            get { return ""; }
         }
     }
 }

@@ -71,8 +71,9 @@ namespace Nucleus.Gaming
             int height = Size.Height / 2;
             int player = 2;
 
-            width = Size.Width / (half - 1);
-            for (int i = 0; i < half - 1; i++)
+            int left = Math.Max(half - 1, 1);
+            width = Size.Width / left;
+            for (int i = 0; i < left; i++)
             {
                 Button btn = MkButton();
                 btn.Text = player.ToString();
