@@ -41,6 +41,11 @@ namespace Games
         {
             get { return "8980"; }
         }
+        public override string GUID
+        {
+            get { return SteamID; }
+        }
+
         public override string GameName
         {
             get { return "Borderlands"; }
@@ -73,13 +78,7 @@ namespace Games
             options.Add("saveid3", new GameOption("Save ID - Player 4", "Save ID to use for Player 4 (default 3)", 3));
         }
 
-        /// <summary>
-        /// Generated with http://www.random-guid.com/
-        /// </summary>
-        public override string GUID
-        {
-            get { return "5FC5EE6C-9327-46EB-83FB-F53E025E518E"; }
-        }
+       
 
         public override int MaxPlayersOneMonitor
         {
@@ -116,7 +115,7 @@ namespace Games
 
         public override string StartArguments
         {
-            get { return "if(Keyboard){\"-windowed -AlwaysFocus -NoController -SaveDataId=\"+Id}else{\"-windowed -AlwaysFocus -nostartupmovies -SaveDataId=\"+Id}"; }
+            get { return "if(Keyboard){\"-windowed -AlwaysFocus -NoController -nostartupmovies -SaveDataId=\"+Options[\"saveid\" + Id]}else{\"-windowed -AlwaysFocus -nostartupmovies -SaveDataId=\" + Options[\"saveid\" + Id]}"; }
         }
 
         public override string BinariesFolder

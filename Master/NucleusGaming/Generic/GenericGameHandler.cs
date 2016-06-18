@@ -279,7 +279,7 @@ namespace Nucleus.Gaming
 
                 byte[] xdata = null;
 
-                if (gen.SupportsKeyboard && i == (int)gen.Options["KeyboardPlayer"].Value)
+                if (gen.SupportsKeyboard && i == (int)profile.Options["KeyboardPlayer"])
                 {
                     engine.SetValue("Keyboard", true);
 
