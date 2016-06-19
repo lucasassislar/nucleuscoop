@@ -23,7 +23,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 
 
 #include <Windows.h>
-#include<cstdio>
+#include <cstdio>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -78,8 +78,6 @@ std::vector<HWND> getToplevelWindows()
 
 LRESULT CALLBACK CallWndProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
-	return 1;
-
 	if (nCode == 9)
 	{
 		return 1;
@@ -143,16 +141,11 @@ extern "C" __declspec(dllexport) BOOL __stdcall InstallHook(DWORD threadId)
 	* if it is not already installed. */
 	if (!g_hhkCallWndProcRet)
 	{
-		/*MessageBox(NULL,
+		MessageBox(NULL,
 			(LPCWSTR)L"Initialized",
 			(LPCWSTR)L"Account Details",
 			MB_ICONWARNING | MB_CANCELTRYCONTINUE | MB_DEFBUTTON2
-			);*/
-
-		/*g_hhkCallWndProcRet = SetWindowsHookEx(WH_CALLWNDPROC,
-			CallWndProc,
-			g_hinstDLL,
-			threadId);*/
+			);	
 		g_hhkCallWndProcRet = SetWindowsHookEx(WH_CBT,
 			CallWndProc,
 			g_hinstDLL,
@@ -164,7 +157,7 @@ extern "C" __declspec(dllexport) BOOL __stdcall InstallHook(DWORD threadId)
 		}
 	}
 
-	return TRUE;  /* return success */
+	return TRUE;
 }
 
 extern "C" __declspec(dllexport) BOOL __stdcall RemoveHook(void)

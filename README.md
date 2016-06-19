@@ -1,35 +1,40 @@
 # Nucleus Co-Op
 Nucles Co-Op is a tool for Windows that allows split-screen play on many games that do not initially support it.
 
-
 Currently Supported Games:
 (only games I've personally tested)
 
-
-- Borderlands
 - Borderlands 2
 - Borderlands: The Pre Sequel (didn't test but the code is the same from Borderlands 2)
 
 
-Close to working:
+So close but not there yet:
 
-- Saints Row 3 (game opens, just couldnt manage to make them find each other)
-
+- Borderlands
+	Working: All instances open correctly using SmartSteamEmu, can even join LAN games.
+	Issue: Can't control 2 screens at once. Need to find a way to fake focus (-AlwaysFocus doesn't work on this game)
+- Saints Row 3
+	Working: All instances open correctly using SmartSteamEmu, can control all instances freely
+	Issue: Can't find the game on LAN. If from the Shift + Tab menu, the game says the session is no longer available.
 
 
 Working on:
 
 - Call of Duty: Black Ops 2 Zombies
+- Gears of War
 
 
 Next on the List:
 
-- The games that were working before
+- Left 4 Dead 1
+- Left 4 Dead 2
+- Portal 2
 - Call of Duty: Black Ops
 - Call of Duty: Modern Warfare 2
 - Saints Row 3
 - Saints Row 4
 - Team Fortress 2 (support for 64 players on 1 machine FTW)
+- Unlimited Power mode (multiple keyboards + mouses + gamepads)
 
 
 Games I want to add but I don't own:

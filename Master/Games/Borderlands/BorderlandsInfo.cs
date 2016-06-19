@@ -108,7 +108,6 @@ namespace Games
                     { "Engine.Engine/bMuteAudioWhenNotInFocus", "false" },
                     { "Engine.Engine/bPauseOnLossOfFocus", "false" },
                     { "WillowGame.WillowGameEngine/bPauseLostFocusWindowed", "false" },
-                    { "WillowGame.WillowGameEngine/bMuteAudioWhenNotInFocus", "false" },
                 };
             }
         }
