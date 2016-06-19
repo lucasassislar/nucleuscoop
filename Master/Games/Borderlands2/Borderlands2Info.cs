@@ -72,12 +72,13 @@ namespace Games.Borderlands
             }
         }
 
-        /// <summary>
-        /// Generated with http://www.random-guid.com/
-        /// </summary>
         public override string GUID
         {
-            get { return "720CE71B-FCBF-46C8-AC9D-C4B2BF3169E3"; }
+            get { return SteamID; }
+        }
+        public override string SteamID
+        {
+            get { return "49520"; }
         }
 
         public override GenericGameSaveType SaveType
@@ -118,11 +119,6 @@ namespace Games.Borderlands
             get { return @"binaries\win32"; }
         }
 
-        public override string SteamID
-        {
-            get { return "49520"; }
-        }
-
         public override bool NeedsSteamEmulation
         {
             get { return false; }
@@ -137,6 +133,7 @@ namespace Games.Borderlands
         {
             get { return ""; }
         }
+
         public override string LauncherTitle
         {
             get { return "splashscreen"; }

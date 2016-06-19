@@ -370,6 +370,39 @@ namespace Nucleus.Gaming
                         startInfo.WorkingDirectory = Path.GetDirectoryName(exePath);
                         proc = Process.Start(startInfo);
                     }
+                    if (proc == null)
+                    {
+                        for (int times = 0; times < 200; times++)
+                        {
+                            Thread.Sleep(50);
+
+                            Process[] procs = Process.GetProcesses();
+                            string proceName = Path.GetFileNameWithoutExtension(gen.ExecutableName).ToLower();
+                            string launcherName = Path.GetFileNameWithoutExtension(gen.LauncherExe).ToLower();
+
+                            for (int j = 0; j < procs.Length; j++)
+                            {
+                                Process p = procs[j];
+                                string lowerP = p.ProcessName.ToLower();
+                                if (((lowerP == proceName) || lowerP ==launcherName) &&
+                                    !attached.Contains(p))
+                                {
+                                    attached.Add(p);
+                                    proc = p;
+                                    break;
+                                }
+                            }
+
+                            if (proc != null)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        attached.Add(proc);
+                    }
                     player.Process = proc;
                 }
 

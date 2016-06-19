@@ -8,11 +8,7 @@ using System.Text;
 namespace Games.Borderlands
 {
     public class BorderlandsPreSequelInfo : GenericGameInfo
-    {
-        public override bool SymlinkExe
-        {
-            get { return true; }
-        }
+    {        
         public override bool SupportsKeyboard
         {
             get { return true; }
@@ -64,18 +60,20 @@ namespace Games.Borderlands
             options = new Dictionary<string, GameOption>();
 
             options.Add("KeyboardPlayer", new GameOption("Keyboard Player", "The player that will be playing on keyboard and mouse", KeyboardPlayer.NoKeyboardPlayer));
-            options.Add("saveid0", new GameOption("Save ID - Player 1", "Save ID to use for Player 1 (default 0)", 0));
-            options.Add("saveid1", new GameOption("Save ID - Player 2", "Save ID to use for Player 2 (default 1)", 1));
-            options.Add("saveid2", new GameOption("Save ID - Player 3", "Save ID to use for Player 3 (default 2)", 2));
-            options.Add("saveid3", new GameOption("Save ID - Player 4", "Save ID to use for Player 4 (default 3)", 3));
+            for (int i = 0; i < MaxPlayers; i++)
+            {
+                int playerID = i + 1;
+                options.Add("saveid" + i, new GameOption("Save ID - Player " + playerID, "Save ID to use for Player " + playerID + " (default " + i + ")", i));
+            }
         }
 
-        /// <summary>
-        /// Generated with http://www.random-guid.com/
-        /// </summary>
         public override string GUID
         {
-            get { return "E1CCA90A-7B48-4F3A-8F19-FD61B32A0F83"; }
+            get { return SteamID; }
+        }
+        public override string SteamID
+        {
+            get { return "261640"; }
         }
 
         public override int MaxPlayersOneMonitor
@@ -121,11 +119,6 @@ namespace Games.Borderlands
             get { return @"binaries\win32"; }
         }
 
-        public override string SteamID
-        {
-            get { return "49520"; }
-        }
-
         public override bool NeedsSteamEmulation
         {
             get { return false; }
@@ -140,9 +133,15 @@ namespace Games.Borderlands
         {
             get { return ""; }
         }
+
         public override string LauncherTitle
         {
             get { return "splashscreen"; }
+        }
+
+        public override bool SymlinkExe
+        {
+            get { return true; }
         }
     }
 }
