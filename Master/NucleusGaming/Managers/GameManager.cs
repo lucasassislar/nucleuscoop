@@ -176,8 +176,13 @@ namespace Nucleus.Gaming
 
         private string GetAppDataPath()
         {
+#if ALPHA
+            string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            return Path.Combine(local, "Data");
+#else
             string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             return Path.Combine(appData, "Nucleus Coop");
+#endif
         }
         protected string GetUserProfilePath()
         {
@@ -397,7 +402,7 @@ namespace Nucleus.Gaming
                 }
             }
         }
-        #endregion
+#endregion
 
         public void Play(IGameHandler handler)
         {
