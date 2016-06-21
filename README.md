@@ -5,7 +5,7 @@ Currently Supported Games:
 (only games I've personally tested)
 
 - Borderlands 2
-- Borderlands: The Pre Sequel (didn't test but the code is the same from Borderlands 2)
+- Borderlands: The Pre Sequel
 
 
 So close but not there yet:
