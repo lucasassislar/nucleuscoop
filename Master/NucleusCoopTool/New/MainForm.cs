@@ -73,6 +73,10 @@ namespace Nucleus.Coop
 
         public void ScanExes()
         {
+            SearchDisksForm search = new SearchDisksForm();
+            search.Show();
+            return;
+
             DriveInfo[] drives = DriveInfo.GetDrives();
             Stopwatch stop = new Stopwatch();
 

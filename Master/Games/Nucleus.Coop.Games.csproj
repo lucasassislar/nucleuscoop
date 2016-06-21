@@ -69,6 +69,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GamesResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="GearsOfWar\GearsOfWarInfo.cs" />
     <Compile Include="Left4Dead2\L4D2GameMode.cs" />
     <Compile Include="Left4Dead2\L4D2Level.cs" />
     <None Include="Left4Dead2\Left4Dead2Handler.cs" />

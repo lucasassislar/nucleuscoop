@@ -201,7 +201,10 @@ namespace Nucleus.Gaming
 
         public void SaveUserProfile()
         {
-            user.Games.Sort(Compare);
+            lock (user.Games)
+            {
+                user.Games.Sort(Compare);
+            }
 
             string userProfile = GetUserProfilePath();
             asyncSaveUser(userProfile);
@@ -258,27 +261,35 @@ namespace Nucleus.Gaming
 
         private void asyncSaveUser(string path)
         {
-            IsSaving = true;
-            LogManager.Log("> Saving user profile....");
-            ThreadPool.QueueUserWorkItem(saveUser, path);
+            if (!IsSaving)
+            {
+                IsSaving = true;
+                LogManager.Log("> Saving user profile....");
+                ThreadPool.QueueUserWorkItem(saveUser, path);
+            }
         }
 
         private void saveUser(object p)
         {
             lock (saving)
             {
-                IsSaving = true;
-                string path = (string)p;
-                using (FileStream stream = new FileStream(path, FileMode.Create))
+                try
                 {
-                    using (StreamWriter writer = new StreamWriter(stream))
+                    IsSaving = true;
+                    string path = (string)p;
+                    using (FileStream stream = new FileStream(path, FileMode.Create))
                     {
-                        string json = JsonConvert.SerializeObject(user);
-                        writer.Write(json);
-                        stream.Flush();
+                        using (StreamWriter writer = new StreamWriter(stream))
+                        {
+                            string json = JsonConvert.SerializeObject(user);
+                            writer.Write(json);
+                            stream.Flush();
+                        }
                     }
+                    LogManager.Log("Saved user profile");
                 }
-                LogManager.Log("Saved user profile");
+                catch
+                { }
                 IsSaving = false;
             }
         }

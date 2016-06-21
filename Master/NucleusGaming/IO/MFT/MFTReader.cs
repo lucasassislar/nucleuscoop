@@ -159,8 +159,7 @@ namespace Nucleus.Gaming
 
         #endregion
 
-        public void EnumerateVolume(
-           out Dictionary<UInt64, FileNameAndParentFrn> files, string[] fileExtensions)
+        public void EnumerateVolume(out Dictionary<UInt64, FileNameAndParentFrn> files, string[] fileExtensions)
         {
             files = new Dictionary<ulong, FileNameAndParentFrn>();
             IntPtr medBuffer = IntPtr.Zero;
