@@ -64,9 +64,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(354, 9);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(135, 21);
+            this.label2.Size = new System.Drawing.Size(106, 21);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Supported Games";
+            this.label2.Text = "Found Games";
             // 
             // listGames
             // 
