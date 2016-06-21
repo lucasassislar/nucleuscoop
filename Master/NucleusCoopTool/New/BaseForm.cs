@@ -25,5 +25,15 @@ namespace Nucleus.Coop
                 ControlStyles.DoubleBuffer,
                 true);
         }
+
+        /// <summary>
+        /// Position the form on the same monitor the user has put our app!
+        /// </summary>
+        /// <param name="f"></param>
+        public void SetUpForm(Form f)
+        {
+            Point desktop = this.DesktopLocation;
+            f.SetDesktopLocation(desktop.X + 100, desktop.Y + 100);
+        }
     }
 }

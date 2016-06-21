@@ -131,7 +131,7 @@
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(115, 35);
             this.btnSearch.TabIndex = 7;
-            this.btnSearch.Text = "+ Add Games";
+            this.btnSearch.Text = "Search Game";
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 

@@ -200,6 +200,8 @@ namespace Nucleus.Coop
                 searching = false;
                 Invoke(new Action(delegate
                 {
+                    progress = 1;
+                    UpdateProgress();
                     btnSearch.Enabled = true;
                     main.RefreshGames();
                     MessageBox.Show("Finished searching!");

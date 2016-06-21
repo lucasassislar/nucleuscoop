@@ -296,7 +296,19 @@ namespace Nucleus.Coop
                 open.Filter = "Game Executable Files|*.exe";
                 if (open.ShowDialog() == DialogResult.OK)
                 {
+                    string path = open.FileName;
 
+                    UserGameInfo game = gameManager.TryAddGame(path);
+
+                    if (game == null)
+                    {
+                        MessageBox.Show("Game not added/unknown");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Game recognized as " + game.Game.GameName);
+                        RefreshGames();
+                    }
                 }
             }
         }
@@ -311,6 +323,7 @@ namespace Nucleus.Coop
             form = new SearchDisksForm(this);
             form.FormClosed += Form_FormClosed;
             form.Show();
+            SetUpForm(form);
         }
 
         private void Form_FormClosed(object sender, FormClosedEventArgs e)
