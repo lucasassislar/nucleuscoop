@@ -26,8 +26,16 @@ namespace Nucleus.Coop
             }
         }
 
-        public SearchDisksForm()
+        private List<SearchDriveInfo> toSearch;
+        private float progress;
+        private bool searching;
+        private int done;
+        private bool closed;
+        private MainForm main;
+
+        public SearchDisksForm(MainForm main)
         {
+            this.main = main;
             InitializeComponent();
 
             DriveInfo[] drives = DriveInfo.GetDrives();
@@ -73,11 +81,24 @@ namespace Nucleus.Coop
             }
         }
 
-        private List<SearchDriveInfo> toSearch;
-        private float progress;
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+
+            closed = true;
+        }
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
+            if (searching)
+            {
+                return;
+            }
+
+            btnSearch.Enabled = false;
+            searching = true;
+            done = 0;
+
             toSearch = new List<SearchDriveInfo>();
             CheckedListBox checkedBox = disksBox;
 
@@ -111,6 +132,7 @@ namespace Nucleus.Coop
             SearchDriveInfo info = toSearch[i];
             if (!info.drive.IsReady)
             {
+                done++;
                 return;
             }
 
@@ -131,6 +153,11 @@ namespace Nucleus.Coop
             float increment = (1 / (float)toSearch.Count) / (float)mDict.Count;
             foreach (KeyValuePair<UInt64, FileNameAndParentFrn> entry in mDict)
             {
+                if (closed)
+                {
+                    return;
+                }
+
                 progress += increment;
 
                 FileNameAndParentFrn file = (FileNameAndParentFrn)entry.Value;
@@ -138,8 +165,7 @@ namespace Nucleus.Coop
                 string name = file.Name;
                 string lower = name.ToLower();
 
-                GameInfo game;
-                if (GameManager.Instance.GameInfos.TryGetValue(lower, out game))
+                if (GameManager.Instance.AnyGame(lower))
                 {
                     string path = mft.GetFullPath(file);
                     if (path.Contains("$Recycle.Bin"))
@@ -148,42 +174,37 @@ namespace Nucleus.Coop
                         continue;
                     }
 
-                    // check if the Context matches
-                    string[] context = game.ExecutableContext.Split(';');
-                    string dir = Path.GetDirectoryName(path);
-                    bool notAdd = false;
-                    for (int j = 0; j < context.Length; j++)
+                    UserGameInfo uinfo = GameManager.Instance.TryAddGame(path);
+
+                    if (uinfo != null)
                     {
-                        string con = Path.Combine(dir, context[j]);
-                        if (!File.Exists(con) &&
-                            !Directory.Exists(con))
+                        Invoke(new Action(delegate
                         {
-                            notAdd = true;
-                            break;
-                        }
+                            listGames.Items.Add(uinfo.Game.GameName + " - " + path);
+                            listGames.Invalidate();
+                            main.NewUserGame(uinfo);
+                        }));
                     }
-
-                    if (notAdd)
-                    {
-                        continue;
-                    }
-
-                    Invoke(new Action(delegate
-                    {
-                        listGames.Items.Add(game.GameName + " - " + path);
-                        listGames.Invalidate();
-                    }));
-
-                    LogManager.Log("Found game: {0}, full path: {1}", game.GameName, path);
-                    UserGameInfo uinfo = new UserGameInfo();
-                    uinfo.InitializeDefault(game, path);
-                    GameManager.Instance.User.Games.Add(uinfo);
-                    GameManager.Instance.SaveUserProfile();
                 }
             }
 
+            if (closed)
+            {
+                return;
+            }
             UpdateProgress();
 
+            done++;
+            if (done == toSearch.Count)
+            {
+                searching = false;
+                Invoke(new Action(delegate
+                {
+                    btnSearch.Enabled = true;
+                    main.RefreshGames();
+                    MessageBox.Show("Finished searching!");
+                }));
+            }
         }
     }
 }

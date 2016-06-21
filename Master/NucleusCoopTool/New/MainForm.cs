@@ -16,8 +16,21 @@ namespace Nucleus.Coop
 {
     public partial class MainForm : BaseForm
     {
+        private Size defaultSize = new Size(1070, 740);
+        private Size startSize = new Size(275, 740);
+
         private GameManager gameManager;
         private Dictionary<UserGameInfo, GameControl> controls;
+
+        private SearchDisksForm form;
+
+        private GameControl currentControl;
+        private UserGameInfo currentGameInfo;
+        private GameInfo currentGame;
+        private GameProfile currentProfile;
+        private Control currentStep;
+        private int currentStepIndex;
+        private IUserInputForm currentInputStep;
 
         public MainForm()
         {
@@ -25,36 +38,66 @@ namespace Nucleus.Coop
 
             controls = new Dictionary<UserGameInfo, GameControl>();
             gameManager = new GameManager();
+
+            this.Size = startSize;
         }
 
-        protected override void OnShown(EventArgs e)
-        {
-            base.OnShown(e);
+        private bool noGamesPresent;
 
-            if (gameManager.User.Games.Count == 0)
+        public void RefreshGames()
+        {
+            foreach (var con in controls)
             {
-                if (MessageBox.Show("You have no games on your list. Would you like to automatically search your disk?", "Question", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (con.Value != null)
                 {
-                    ScanExes();
+                    con.Value.Dispose();
                 }
             }
+
+            controls.Clear();
+            this.list_Games.Controls.Clear();
 
             List<UserGameInfo> games = gameManager.User.Games;
             for (int i = 0; i < games.Count; i++)
             {
                 UserGameInfo game = games[i];
+                NewUserGame(game);
+            }
 
+            if (games.Count == 0)
+            {
+                noGamesPresent = true;
                 GameControl con = new GameControl();
-                con.Game = game;
                 con.Width = list_Games.Width;
-
-                controls.Add(game, con);
-
-                con.Text = game.Game.GameName;
-                ThreadPool.QueueUserWorkItem(GetIcon, game);
-
+                con.Text = "No games";
                 this.list_Games.Controls.Add(con);
             }
+        }
+
+        public void NewUserGame(UserGameInfo game)
+        {
+            if (noGamesPresent)
+            {
+                this.list_Games.Controls.Clear();
+                noGamesPresent = false;
+            }
+
+            GameControl con = new GameControl();
+            con.Game = game;
+            con.Width = list_Games.Width;
+
+            controls.Add(game, con);
+
+            con.Text = game.Game.GameName;
+            ThreadPool.QueueUserWorkItem(GetIcon, game);
+
+            this.list_Games.Controls.Add(con);
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            RefreshGames();
         }
 
         private void GetIcon(object state)
@@ -66,102 +109,32 @@ namespace Nucleus.Coop
             icon.Dispose();
             game.Icon = bmp;
 
-            // this aint pretty
             GameControl control = controls[game];
             control.Image = game.Icon;
         }
 
-        public void ScanExes()
-        {
-            SearchDisksForm search = new SearchDisksForm();
-            search.Show();
-            return;
-
-            DriveInfo[] drives = DriveInfo.GetDrives();
-            Stopwatch stop = new Stopwatch();
-
-            for (int i = 0; i < drives.Length; i++)
-            {
-                DriveInfo d = drives[i];
-                if (!d.IsReady || d.DriveFormat != "NTFS")
-                {
-                    continue;
-                }
-
-                LogManager.Log("> Searching drive {0} for game executables", d.Name);
-
-                stop.Reset();
-                stop.Start();
-
-                Dictionary<ulong, FileNameAndParentFrn> mDict = new Dictionary<ulong, FileNameAndParentFrn>();
-                MFTReader mft = new MFTReader();
-                mft.Drive = d.RootDirectory.FullName;
-
-                mft.EnumerateVolume(out mDict, new string[] { ".exe" });
-                foreach (KeyValuePair<UInt64, FileNameAndParentFrn> entry in mDict)
-                {
-                    FileNameAndParentFrn file = (FileNameAndParentFrn)entry.Value;
-
-                    string name = file.Name;
-                    string lower = name.ToLower();
-
-                    GameInfo game;
-                    if (gameManager.GameInfos.TryGetValue(lower, out game))
-                    {
-                        string path = mft.GetFullPath(file);
-                        if (path.Contains("$Recycle.Bin"))
-                        {
-                            // noope
-                            continue;
-                        }
-
-                        // check if the Context matches
-                        string[] context = game.ExecutableContext.Split(';');
-                        string dir = Path.GetDirectoryName(path);
-                        bool notAdd = false;
-                        for (int j = 0; j < context.Length; j++)
-                        {
-                            string con = Path.Combine(dir, context[j]);
-                            if (!File.Exists(con) &&
-                                !Directory.Exists(con))
-                            {
-                                notAdd = true;
-                                break;
-                            }
-                        }
-
-                        if (notAdd)
-                        {
-                            continue;
-                        }
-
-                        LogManager.Log("Found game: {0}, full path: {1}", game.GameName, path);
-                        UserGameInfo info = new UserGameInfo();
-                        info.InitializeDefault(game, path);
-                        gameManager.User.Games.Add(info);
-                    }
-                }
-
-                stop.Stop();
-                LogManager.Log("> Took {0} seconds to search drive {1}", stop.Elapsed.TotalSeconds.ToString("0.00"), d.Name);
-            }
-
-            gameManager.SaveUserProfile();
-            gameManager.WaitSave();
-        }
-
-        private GameControl currentControl;
-        private UserGameInfo currentGameInfo;
-        private GameInfo currentGame;
-        private GameProfile currentProfile;
-        private Control currentStep;
-        private int currentStepIndex;
-        private IUserInputForm currentInputStep;
-
+        private bool setSize = false;
         private void list_Games_SelectedChanged(object arg1, Control arg2)
         {
             currentControl = (GameControl)arg1;
             currentGameInfo = currentControl.Game;
+            if (currentGameInfo == null)
+            {
+                return;
+            }
+
+            if (!setSize)
+            {
+                this.Size = defaultSize;
+                setSize = true;
+            }
+
+            panelGameName.Visible = true;
+            label_StepTitle.Visible = true;
+            StepPanel.Visible = true;
+            btnBack.Visible = true;
+            btnNext.Visible = true;
+
             currentGame = currentGameInfo.Game;
 
             btn_Play.Enabled = false;
@@ -175,8 +148,8 @@ namespace Nucleus.Coop
                 // remove the current step if there's one
                 KillCurrentStep();
 
-                arrow_Back.Enabled = false;
-                arrow_Next.Enabled = false;
+                btnBack.Visible = false;
+                btnNext.Visible = false;
             }
 
             currentProfile = new GameProfile();
@@ -204,12 +177,12 @@ namespace Nucleus.Coop
 
         private void GoToStep(int step)
         {
-            arrow_Back.Enabled = step > 0;
+            btnBack.Enabled = step > 0;
 
             currentStepIndex = step;
             if (step >= currentGame.Steps.Length)
             {
-                arrow_Next.Enabled = false;
+                btnNext.Enabled = false;
                 return;
             }
 
@@ -229,7 +202,7 @@ namespace Nucleus.Coop
 
             label_StepTitle.Text = currentInputStep.Title;
 
-            arrow_Next.Enabled = currentInputStep.CanPlay;
+            btnNext.Enabled = currentInputStep.CanPlay;
         }
 
         void inputs_Proceed()
@@ -282,7 +255,7 @@ namespace Nucleus.Coop
 
         private void UpdateGameManager(object state)
         {
-            for (; ; )
+            for (;;)
             {
                 try
                 {
@@ -294,7 +267,7 @@ namespace Nucleus.Coop
                     handler.Update(handler.TimerInterval);
                     Thread.Sleep(handler.TimerInterval);
                 }
-                catch (Exception ex)
+                catch
                 {
                 }
             }
@@ -314,6 +287,35 @@ namespace Nucleus.Coop
         private void arrow_Next_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog open = new OpenFileDialog())
+            {
+                open.Filter = "Game Executable Files|*.exe";
+                if (open.ShowDialog() == DialogResult.OK)
+                {
+
+                }
+            }
+        }
+
+        private void btnAutoSearch_Click(object sender, EventArgs e)
+        {
+            if (form != null)
+            {
+                return;
+            }
+
+            form = new SearchDisksForm(this);
+            form.FormClosed += Form_FormClosed;
+            form.Show();
+        }
+
+        private void Form_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            form = null;
         }
     }
 }
