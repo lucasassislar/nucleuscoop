@@ -108,14 +108,14 @@ namespace Nucleus.Coop
                 toSearch.Add(info);
             }
 
-            Task.Run(new Action(SearchDrives));
+            SearchDrives();
         }
 
         private void SearchDrives()
         {
             for (int i = 0; i < toSearch.Count; i++)
             {
-                SearchDrive(i);
+                ThreadPool.QueueUserWorkItem(SearchDrive, i);
             }
         }
 
@@ -127,8 +127,9 @@ namespace Nucleus.Coop
             }));
         }
 
-        private async void SearchDrive(int i)
+        private void SearchDrive(object state)
         {
+            int i = (int)state;
             SearchDriveInfo info = toSearch[i];
             if (!info.drive.IsReady)
             {
@@ -142,10 +143,7 @@ namespace Nucleus.Coop
             MFTReader mft = new MFTReader();
             mft.Drive = info.drive.RootDirectory.FullName;
 
-            await Task.Run(delegate
-            {
-                mft.EnumerateVolume(out mDict, new string[] { ".exe" });
-            });
+            mft.EnumerateVolume(out mDict, new string[] { ".exe" });
 
             progress += (1 / (float)toSearch.Count) / 2.0f;
             UpdateProgress();
@@ -178,6 +176,7 @@ namespace Nucleus.Coop
 
                     if (uinfo != null)
                     {
+                        LogManager.Log("> Found new game {0} on drive {1}", uinfo.Game.GameName, info.drive.Name);
                         Invoke(new Action(delegate
                         {
                             listGames.Items.Add(uinfo.Game.GameName + " - " + path);
