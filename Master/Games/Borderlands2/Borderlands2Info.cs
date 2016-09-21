@@ -8,12 +8,12 @@ using System.Text;
 namespace Games.Borderlands
 {
     public class Borderlands2Info : IGenericGameInfo
-    {       
-        public  bool SupportsKeyboard
+    {
+        public bool SupportsKeyboard
         {
             get { return true; }
         }
-        public  Type[] Steps
+        public Type[] Steps
         {
             get
             {
@@ -29,33 +29,33 @@ namespace Games.Borderlands
         {
             get { return null; }
         }
-        public  string ExecutableName
+        public string ExecutableName
         {
             get { return "borderlands2.exe"; }
         }
 
-        public  string GameName
+        public string GameName
         {
             get { return "Borderlands 2"; }
         }
 
-        public  Type HandlerType
+        public Type HandlerType
         {
             get { return typeof(GenericGameHandler); }
         }
 
-        public  int MaxPlayers
+        public int MaxPlayers
         {
             get { return 4; }
         }
 
-        public  int MaxPlayersOneMonitor
+        public int MaxPlayersOneMonitor
         {
             get { return 4; }
         }
 
         protected Dictionary<string, GameOption> options;
-        public  Dictionary<string, GameOption> Options
+        public Dictionary<string, GameOption> Options
         {
             get { return options; }
         }
@@ -72,26 +72,26 @@ namespace Games.Borderlands
             }
         }
 
-        public  string GUID
+        public string GUID
         {
             get { return SteamID; }
         }
-        public  string SteamID
+        public string SteamID
         {
             get { return "49520"; }
         }
 
-        public  GenericGameSaveType SaveType
+        public GenericGameSaveType SaveType
         {
             get { return GenericGameSaveType.INI; }
         }
 
-        public  string SavePath
+        public string SavePath
         {
             get { return @"&MyDocuments&\My Games\Borderlands 2\WillowGame\Config\WillowEngine.ini"; }
         }
 
-        public  Dictionary<string, string> ModifySave
+        public Dictionary<string, string> ModifySave
         {
             get
             {
@@ -109,37 +109,37 @@ namespace Games.Borderlands
             }
         }
 
-        public  string StartArguments
+        public string StartArguments
         {
             get { return "if(Keyboard){\"-AlwaysFocus -NoController -SaveDataId=\"+Id}else{\"-AlwaysFocus -nostartupmovies -SaveDataId=\"+Id}"; }
         }
 
-        public  string BinariesFolder
+        public string BinariesFolder
         {
             get { return @"binaries\win32"; }
         }
 
-        public  bool NeedsSteamEmulation
+        public bool NeedsSteamEmulation
         {
             get { return false; }
         }
 
-        public  string[] KillMutex
+        public string[] KillMutex
         {
             get { return new string[0]; }
         }
 
-        public  string LauncherExe
+        public string LauncherExe
         {
             get { return ""; }
         }
 
-        public  string LauncherTitle
+        public string LauncherTitle
         {
             get { return "splashscreen"; }
         }
 
-        public  bool SymlinkExe
+        public bool SymlinkExe
         {
             get { return true; }
         }
