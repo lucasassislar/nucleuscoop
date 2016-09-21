@@ -20,8 +20,8 @@ namespace Nucleus.Gaming
     public class GameManager
     {
         private static GameManager instance;
-        private Dictionary<string, GameInfo> games;
-        private Dictionary<string, GameInfo> gameInfos;
+        private Dictionary<string, IGameInfo> games;
+        private Dictionary<string, IGameInfo> gameInfos;
         private UserProfile user;
         private List<BackupFile> backupFiles;
 
@@ -39,13 +39,13 @@ namespace Nucleus.Gaming
         /// <summary>
         /// A dictionary containing GameInfos. The key is the game's info guid
         /// </summary>
-        public Dictionary<string, GameInfo> Games
+        public Dictionary<string, IGameInfo> Games
         {
             get { return games; }
         }
 
 
-        public Dictionary<string, GameInfo> GameInfos
+        public Dictionary<string, IGameInfo> GameInfos
         {
             get { return gameInfos; }
         }
@@ -64,8 +64,8 @@ namespace Nucleus.Gaming
         public GameManager()
         {
             instance = this;
-            games = new Dictionary<string, GameInfo>();
-            gameInfos = new Dictionary<string, GameInfo>();
+            games = new Dictionary<string, IGameInfo>();
+            gameInfos = new Dictionary<string, IGameInfo>();
 
             string appData = GetAppDataPath();
             Directory.CreateDirectory(appData);
@@ -97,19 +97,22 @@ namespace Nucleus.Gaming
 
             var possibilities = Games.Values.Where(c => c.ExecutableName == fileName);
 
-            foreach (GameInfo game in possibilities)
+            foreach (IGameInfo game in possibilities)
             {
                 // check if the Context matches
-                string[] context = game.ExecutableContext.Split(';');
+                string[] context = game.ExecutableContext;
                 bool notAdd = false;
-                for (int j = 0; j < context.Length; j++)
+                if (context != null)
                 {
-                    string con = Path.Combine(dir, context[j]);
-                    if (!File.Exists(con) &&
-                        !Directory.Exists(con))
+                    for (int j = 0; j < context.Length; j++)
                     {
-                        notAdd = true;
-                        break;
+                        string con = Path.Combine(dir, context[j]);
+                        if (!File.Exists(con) &&
+                            !Directory.Exists(con))
+                        {
+                            notAdd = true;
+                            break;
+                        }
                     }
                 }
 
@@ -184,6 +187,13 @@ namespace Nucleus.Gaming
             return Path.Combine(appData, "Nucleus Coop");
 #endif
         }
+
+        private string GetJsGamesPath()
+        {
+            string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            return Path.Combine(local, "games");
+        }
+
         protected string GetUserProfilePath()
         {
             return Path.Combine(GetAppDataPath(), "userprofile.json");
@@ -194,7 +204,7 @@ namespace Nucleus.Gaming
             return x.Game.GameName.CompareTo(y.Game.GameName);
         }
 
-        public UserGameInfo AddGame(GameInfo game, string exePath)
+        public UserGameInfo AddGame(IGameInfo game, string exePath)
         {
             UserGameInfo gInfo = new UserGameInfo();
             gInfo.InitializeDefault(game, exePath);
@@ -205,7 +215,7 @@ namespace Nucleus.Gaming
             return gInfo;
         }
 
-        public void BeginBackup(GameInfo game)
+        public void BeginBackup(IGameInfo game)
         {
             string appData = GetAppDataPath();
             string gamePath = Path.Combine(appData, game.GUID);
@@ -214,27 +224,30 @@ namespace Nucleus.Gaming
             backupFiles = new List<BackupFile>();
         }
 
-        public IGameHandler MakeHandler(GameInfo game)
+        public IGameHandler MakeHandler(IGameInfo game)
         {
             return (IGameHandler)Activator.CreateInstance(game.HandlerType);
         }
 
-        public string GetBackupFolder(GameInfo game)
+        public string GetBackupFolder(IGameInfo game)
         {
             string appData = GetAppDataPath();
             return Path.Combine(appData, game.GUID);
         }
 
-        public BackupFile BackupFile(GameInfo game, string path)
+        public BackupFile BackupFile(IGameInfo game, string path)
         {
             string appData = GetAppDataPath();
             string gamePath = Path.Combine(appData, game.GUID);
             string destination = Path.Combine(gamePath, Path.GetFileName(path));
 
-            if (!File.Exists(path) && File.Exists(destination))
+            if (!File.Exists(path))
             {
-                // we fucked up and the backup exists
-                File.Copy(destination, path);
+                if (File.Exists(destination))
+                {
+                    // we fucked up and the backup exists? maybe, so restore
+                    File.Copy(destination, path);
+                }
             }
             else
             {
@@ -251,7 +264,7 @@ namespace Nucleus.Gaming
             return bkp;
         }
 
-        public void ExecuteBackup(GameInfo game)
+        public void ExecuteBackup(IGameInfo game)
         {
             string appData = GetAppDataPath();
             string gamePath = Path.Combine(appData, game.GUID);
@@ -365,7 +378,7 @@ namespace Nucleus.Gaming
         private void Initialize()
         {
             // Type we are looking for (GameInfo)
-            Type infoType = typeof(GameInfo);
+            Type infoType = typeof(IGameInfo);
 
             Assembly ass = Assembly.Load(new AssemblyName("Nucleus.Coop.Games"));
 
@@ -389,16 +402,33 @@ namespace Nucleus.Gaming
                         lastParent = parent;
                         parent = parent.BaseType;
                     }
-                    if (lastParent == infoType)
+                    if (ty.GetInterface("IGameInfo") != null)
                     {
                         // Found!
-                        GameInfo info = (GameInfo)Activator.CreateInstance(ty);
+                        IGameInfo info = (IGameInfo)Activator.CreateInstance(ty);
                         LogManager.Log("Found game info: " + info.GameName);
 
 
                         games.Add(info.GUID, info);
                         gameInfos.Add(info.ExecutableName, info);
                     }
+                }
+            }
+
+            // search for JS games
+            string jsfolder = GetJsGamesPath();
+            DirectoryInfo jsFolder = new DirectoryInfo(jsfolder);
+            FileInfo[] files = jsFolder.GetFiles("*.js");
+            for (int i = 0; i < files.Length; i++)
+            {
+                FileInfo f = files[i];
+                using (Stream str = f.OpenRead())
+                {
+                    GenericGameInfo info = new GenericGameInfo(str);
+                    LogManager.Log("Found game info: " + info.GameName);
+
+                    games.Add(info.GUID, info);
+                    gameInfos.Add(info.ExecutableName, info);
                 }
             }
         }

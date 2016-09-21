@@ -7,13 +7,13 @@ using System.Text;
 
 namespace Games.Borderlands
 {
-    public class BorderlandsPreSequelInfo : GenericGameInfo
+    public class BorderlandsPreSequelInfo : IGenericGameInfo
     {        
-        public override bool SupportsKeyboard
+        public  bool SupportsKeyboard
         {
             get { return true; }
         }
-        public override Type[] Steps
+        public  Type[] Steps
         {
             get
             {
@@ -25,32 +25,32 @@ namespace Games.Borderlands
                 };
             }
         }
-        public override string ExecutableContext
+        public string[] ExecutableContext
         {
-            get { return ""; }
+            get { return null; }
         }
-        public override string ExecutableName
+        public  string ExecutableName
         {
             get { return "borderlandspresequel.exe"; }
         }
 
-        public override string GameName
+        public  string GameName
         {
             get { return "Borderlands Pre-Sequel"; }
         }
 
-        public override Type HandlerType
+        public  Type HandlerType
         {
             get { return typeof(GenericGameHandler); }
         }
 
-        public override int MaxPlayers
+        public  int MaxPlayers
         {
             get { return 4; }
         }
 
         protected Dictionary<string, GameOption> options;
-        public override Dictionary<string, GameOption> Options
+        public  Dictionary<string, GameOption> Options
         {
             get { return options; }
         }
@@ -67,31 +67,31 @@ namespace Games.Borderlands
             }
         }
 
-        public override string GUID
+        public  string GUID
         {
             get { return SteamID; }
         }
-        public override string SteamID
+        public  string SteamID
         {
             get { return "261640"; }
         }
 
-        public override int MaxPlayersOneMonitor
+        public  int MaxPlayersOneMonitor
         {
             get { return 4; }
         }
 
-        public override GenericGameSaveType SaveType
+        public  GenericGameSaveType SaveType
         {
             get { return GenericGameSaveType.INI; }
         }
 
-        public override string SavePath
+        public  string SavePath
         {
             get { return @"&MyDocuments&\My Games\Borderlands The Pre-Sequel\WillowGame\Config\WillowEngine.ini"; }
         }
 
-        public override Dictionary<string, string> ModifySave
+        public  Dictionary<string, string> ModifySave
         {
             get
             {
@@ -109,37 +109,37 @@ namespace Games.Borderlands
             }
         }
 
-        public override string StartArguments
+        public  string StartArguments
         {
             get { return "if(Keyboard){\"-AlwaysFocus -NoController -SaveDataId=\"+Id}else{\"-AlwaysFocus -nostartupmovies -SaveDataId=\"+Id}"; }
         }
 
-        public override string BinariesFolder
+        public  string BinariesFolder
         {
             get { return @"binaries\win32"; }
         }
 
-        public override bool NeedsSteamEmulation
+        public  bool NeedsSteamEmulation
         {
             get { return false; }
         }
 
-        public override string[] KillMutex
+        public  string[] KillMutex
         {
             get { return new string[0]; }
         }
 
-        public override string LauncherExe
+        public  string LauncherExe
         {
             get { return ""; }
         }
 
-        public override string LauncherTitle
+        public  string LauncherTitle
         {
             get { return "splashscreen"; }
         }
 
-        public override bool SymlinkExe
+        public  bool SymlinkExe
         {
             get { return true; }
         }

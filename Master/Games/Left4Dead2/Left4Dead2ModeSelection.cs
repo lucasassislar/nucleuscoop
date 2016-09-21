@@ -17,27 +17,27 @@ namespace Games.Left4Dead2
         {
             InitializeComponent();
 
-            var modes = Left4Dead2Info.GameModes;
+            //var modes = Left4Dead2Info.GameModes;
 
-            int height = 285;
-            Font custom = new Font(this.Font.FontFamily, 18, FontStyle.Bold);
-            for (int i = 0; i < modes.Length; i++)
-            {
-                var mode = modes[i];
+            //int height = 285;
+            //Font custom = new Font(this.Font.FontFamily, 18, FontStyle.Bold);
+            //for (int i = 0; i < modes.Length; i++)
+            //{
+            //    var mode = modes[i];
 
-                Button btn = new Button();
-                btn.Width = this.Width;
-                btn.Height = height;
-                btn.Image = mode.Image;
-                btn.Font = custom;
-                btn.Text = mode.Name;
-                btn.Tag = mode;
+            //    Button btn = new Button();
+            //    btn.Width = this.Width;
+            //    btn.Height = height;
+            //    btn.Image = mode.Image;
+            //    btn.Font = custom;
+            //    btn.Text = mode.Name;
+            //    btn.Tag = mode;
 
-                btn.Click += btn_Click;
-                btn.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            //    btn.Click += btn_Click;
+            //    btn.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
 
-                this.Controls.Add(btn);
-            }
+            //    this.Controls.Add(btn);
+            //}
         }
 
         public string ModeCommand;

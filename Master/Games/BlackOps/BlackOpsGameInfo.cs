@@ -7,26 +7,26 @@ using System.Text;
 
 namespace Games.BlackOps
 {
-    public class BlackOpsGameInfo : GenericGameInfo
+    public class BlackOpsGameInfo : IGenericGameInfo
     {
-        public override bool SymlinkExe
+        public  bool SymlinkExe
         {
             get { return true; }
         }
-        public override string LauncherExe
+        public  string LauncherExe
         {
             get { throw new NotImplementedException(); }
         }
-        public override string LauncherTitle
+        public  string LauncherTitle
         {
             get { throw new NotImplementedException(); }
         }
         //t6zm
-        public override bool SupportsKeyboard
+        public  bool SupportsKeyboard
         {
             get { return true; }
         }
-        public override Type[] Steps
+        public  Type[] Steps
         {
             get
             {
@@ -38,32 +38,32 @@ namespace Games.BlackOps
                 };
             }
         }
-        public override string ExecutableContext
+        public string[] ExecutableContext
         {
-            get { return ""; }
+            get { return null; }
         }
-        public override string ExecutableName
+        public  string ExecutableName
         {
             get { return "__blackops.exe"; }
         }
 
-        public override string GameName
+        public  string GameName
         {
             get { return "Call of Duty - Black Ops: Zombies"; }
         }
 
-        public override Type HandlerType
+        public  Type HandlerType
         {
             get { return typeof(GenericGameHandler); }
         }
 
-        public override int MaxPlayers
+        public  int MaxPlayers
         {
             get { return 4; }
         }
 
         protected Dictionary<string, GameOption> options;
-        public override Dictionary<string, GameOption> Options
+        public  Dictionary<string, GameOption> Options
         {
             get { return options; }
         }
@@ -78,27 +78,27 @@ namespace Games.BlackOps
         /// <summary>
         /// Generated with https://www.guidgenerator.com/online-guid-generator.aspx
         /// </summary>
-        public override string GUID
+        public  string GUID
         {
             get { return "cc1b45a0-09f0-4144-b56f-2710afd2e234"; }
         }
 
-        public override int MaxPlayersOneMonitor
+        public  int MaxPlayersOneMonitor
         {
             get { return 4; }
         }
 
-        public override GenericGameSaveType SaveType
+        public  GenericGameSaveType SaveType
         {
             get { return GenericGameSaveType.None; }
         }
 
-        public override string SavePath
+        public  string SavePath
         {
             get { return ""; } // return @"&MyDocuments&\My Games\Borderlands 2\WillowGame\Config\WillowEngine.ini"; }
         }
 
-        public override Dictionary<string, string> ModifySave
+        public  Dictionary<string, string> ModifySave
         {
             get
             {
@@ -116,26 +116,26 @@ namespace Games.BlackOps
             }
         }
 
-        public override string StartArguments
+        public  string StartArguments
         {
             get { return ""; }//"if(Keyboard){\"-AlwaysFocus -NoController -SaveDataId=\"+Id}else{\"-AlwaysFocus -nostartupmovies -SaveDataId=\"+Id}"; }
         }
 
-        public override string BinariesFolder
+        public  string BinariesFolder
         {
             get { return @""; }
         }
 
-        public override string SteamID
+        public  string SteamID
         {
             get { return "42700"; }
         }
 
-        public override bool NeedsSteamEmulation
+        public  bool NeedsSteamEmulation
         {
             get { return true; }
         }
-        public override string[] KillMutex
+        public  string[] KillMutex
         {
             get { return new string[0]; }
         }

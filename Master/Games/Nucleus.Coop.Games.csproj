@@ -53,27 +53,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Battlefront2\Battlefront2Info.cs" />
-    <Compile Include="BlackOps\BlackOpsGameInfo.cs" />
-    <Compile Include="Borderlands2\Borderlands2Info.cs" />
+    <None Include="Battlefront2\Battlefront2Info.cs" />
+    <None Include="BlackOps\BlackOpsGameInfo.cs" />
+    <None Include="Borderlands2\Borderlands2Info.cs" />
     <None Include="Borderlands2\BorderlandsSaveControl.cs">
       <SubType>UserControl</SubType>
     </None>
     <None Include="Borderlands2\BorderlandsSaveManager.cs">
       <SubType>UserControl</SubType>
     </None>
-    <Compile Include="BorderlandsPreSequel\BorderlandsPreSequelInfo.cs" />
-    <Compile Include="Borderlands\BorderlandsInfo.cs" />
+    <None Include="BorderlandsPreSequel\BorderlandsPreSequelInfo.cs" />
+    <None Include="Borderlands\BorderlandsInfo.cs" />
     <Compile Include="GamesResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GamesResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="GearsOfWar\GearsOfWarInfo.cs" />
+    <None Include="GearsOfWar\GearsOfWarInfo.cs" />
     <Compile Include="Left4Dead2\L4D2GameMode.cs" />
     <Compile Include="Left4Dead2\L4D2Level.cs" />
     <None Include="Left4Dead2\Left4Dead2Handler.cs" />
-    <Compile Include="Left4Dead2\Left4Dead2Info.cs" />
+    <None Include="Left4Dead2\Left4Dead2Info.cs" />
     <Compile Include="Left4Dead2\Left4Dead2LevelSelection.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -105,10 +105,10 @@
       <DependentUpon>RE5Resources.resx</DependentUpon>
     </Compile>
     <None Include="Resident Evil 5\ResidentEvil5Handler.cs" />
-    <Compile Include="Resident Evil 5\ResidentEvil5Info.cs" />
-    <Compile Include="SaintsRow4\SaintsRow4Info.cs" />
-    <Compile Include="SaintsRow3\SaintsRow3Info.cs" />
-    <Compile Include="TeamFortress2\TeamFortress2Info.cs" />
+    <None Include="Resident Evil 5\ResidentEvil5Info.cs" />
+    <None Include="SaintsRow4\SaintsRow4Info.cs" />
+    <None Include="SaintsRow3\SaintsRow3Info.cs" />
+    <None Include="TeamFortress2\TeamFortress2Info.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NucleusGaming\Nucleus.Gaming.csproj">
@@ -139,6 +139,9 @@
     <None Include="Left4Dead2\resources\backup\nomercy.jpg" />
     <None Include="Left4Dead2\resources\backup\swampfever.JPG" />
     <None Include="Left4Dead2\resources\backup\theparish.jpg" />
+    <None Include="games\Borderlands.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Left4Dead2\resources\bloodharvest.jpg" />
     <Content Include="Left4Dead2\resources\crashcourse.jpg" />
     <None Include="Left4Dead2\resources\darkcarnival.jpg" />

@@ -16,6 +16,8 @@ namespace Nucleus.Coop
 {
     public partial class MainForm : BaseForm
     {
+        private bool expanded = false;
+
         private Size defaultSize = new Size(1070, 740);
         private Size startSize = new Size(275, 740);
 
@@ -26,11 +28,16 @@ namespace Nucleus.Coop
 
         private GameControl currentControl;
         private UserGameInfo currentGameInfo;
-        private GameInfo currentGame;
+        private IGameInfo currentGame;
         private GameProfile currentProfile;
         private Control currentStep;
         private int currentStepIndex;
         private IUserInputForm currentInputStep;
+        private bool noGamesPresent;
+
+        private PlayerCountControl countControl;
+        private PositionsControl positionsControl;
+        private PlayerOptionsControl optionsControl;
 
         public MainForm()
         {
@@ -41,8 +48,6 @@ namespace Nucleus.Coop
 
             this.Size = startSize;
         }
-
-        private bool noGamesPresent;
 
         public void RefreshGames()
         {
@@ -82,6 +87,11 @@ namespace Nucleus.Coop
                 noGamesPresent = false;
             }
 
+            if (game.Game == null)
+            {
+                return;
+            }
+
             GameControl con = new GameControl();
             con.Game = game;
             con.Width = list_Games.Width;
@@ -113,7 +123,6 @@ namespace Nucleus.Coop
             control.Image = game.Icon;
         }
 
-        private bool setSize = false;
         private void list_Games_SelectedChanged(object arg1, Control arg2)
         {
             currentControl = (GameControl)arg1;
@@ -123,10 +132,10 @@ namespace Nucleus.Coop
                 return;
             }
 
-            if (!setSize)
+            if (!expanded)
             {
                 this.Size = defaultSize;
-                setSize = true;
+                expanded = true;
             }
 
             panelGameName.Visible = true;
@@ -197,8 +206,8 @@ namespace Nucleus.Coop
             currentStep.Size = StepPanel.Size;
 
             currentInputStep = (IUserInputForm)currentStep;
-            currentInputStep.Initialize(currentGameInfo, currentProfile);
             currentInputStep.Proceed += inputs_Proceed;
+            currentInputStep.Initialize(currentGameInfo, currentProfile);
 
             label_StepTitle.Text = currentInputStep.Title;
 
@@ -215,6 +224,7 @@ namespace Nucleus.Coop
             {
                 // can play
                 btn_Play.Enabled = true;
+                btn_Play.Visible = true;
             }
         }
 

@@ -50,7 +50,7 @@ namespace Nucleus.Gaming
 
         }
 
-        public void InitializeDefault(GameInfo game)
+        public void InitializeDefault(IGameInfo game)
         {
             if (playerData == null)
             {
@@ -68,7 +68,7 @@ namespace Nucleus.Gaming
 
                 foreach (var opt in game.Options)
                 {
-                    options.Add(opt.Key, opt.Value.Value);
+                    options.Add(opt.Key, opt.Value);
                 }
             }
         }

@@ -17,32 +17,32 @@ namespace Games.Left4Dead2
         {
             InitializeComponent();
 
-            var levels = Left4Dead2Info.Levels;
+            //var levels = Left4Dead2Info.Levels;
 
-            int height = 285;
-            Font custom = new Font(this.Font.FontFamily, 18, FontStyle.Bold);
-            for (int i = 0; i < levels.Length; i++)
-            {
-                var level = levels[i];
+            //int height = 285;
+            //Font custom = new Font(this.Font.FontFamily, 18, FontStyle.Bold);
+            //for (int i = 0; i < levels.Length; i++)
+            //{
+            //    var level = levels[i];
 
-                Button btn = new Button();
-                btn.FlatStyle = FlatStyle.Flat;
-                btn.Width = this.Width;
-                btn.Height = height;
-                btn.BackgroundImageLayout = ImageLayout.Zoom;
-                btn.Image = level.Image;
-                btn.Tag = level;
-                if (level.Image == null)
-                {
-                    btn.Text = level.Name;
-                    btn.Font = custom;
-                }
+            //    Button btn = new Button();
+            //    btn.FlatStyle = FlatStyle.Flat;
+            //    btn.Width = this.Width;
+            //    btn.Height = height;
+            //    btn.BackgroundImageLayout = ImageLayout.Zoom;
+            //    btn.Image = level.Image;
+            //    btn.Tag = level;
+            //    if (level.Image == null)
+            //    {
+            //        btn.Text = level.Name;
+            //        btn.Font = custom;
+            //    }
 
-                btn.Click += btn_Click;
-                btn.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            //    btn.Click += btn_Click;
+            //    btn.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
 
-                this.Controls.Add(btn);
-            }
+            //    this.Controls.Add(btn);
+            //}
         }
 
         public string LevelName;

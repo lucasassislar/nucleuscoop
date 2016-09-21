@@ -9,6 +9,25 @@ namespace Games
 {
     public class BorderlandsInfo : GenericGameInfo
     {
+        private Dictionary<string, GameOption> options = new Dictionary<string, GameOption>()
+        {
+            {"KeyboardPlayer", new GameOption("Keyboard Player", "The player that will be playing on keyboard and mouse", KeyboardPlayer.NoKeyboardPlayer) },
+            {"saveid0", new GameOption("Save ID - Player 1", "Save ID to use for Player 1 (default 0)", 0) },
+            {"saveid1", new GameOption("Save ID - Player 2", "Save ID to use for Player 2 (default 1)", 1) },
+            {"saveid2", new GameOption("Save ID - Player 3", "Save ID to use for Player 3 (default 2)", 2) },
+            {"saveid3", new GameOption("Save ID - Player 4", "Save ID to use for Player 4 (default 3)", 3) },
+        };
+        private Dictionary<string, string> modifySave = new Dictionary<string, string>()
+        {
+            { "SystemSettings/WindowedFullscreen", "IsFullscreen" },
+            { "SystemSettings/ResX", "Width" },
+            { "SystemSettings/ResY", "Height" },
+            { "SystemSettings/Fullscreen", "false" },
+            { "Engine.Engine/bMuteAudioWhenNotInFocus", "false" },
+            { "Engine.Engine/bPauseOnLossOfFocus", "false" },
+            { "WillowGame.WillowGameEngine/bPauseLostFocusWindowed", "false" },
+        };
+
         public override bool SymlinkExe
         {
             get { return true; }
@@ -61,24 +80,10 @@ namespace Games
             get { return 4; }
         }
 
-        protected Dictionary<string, GameOption> options;
         public override Dictionary<string, GameOption> Options
         {
             get { return options; }
         }
-
-        public BorderlandsInfo()
-        {
-            options = new Dictionary<string, GameOption>();
-
-            options.Add("KeyboardPlayer", new GameOption("Keyboard Player", "The player that will be playing on keyboard and mouse", KeyboardPlayer.NoKeyboardPlayer));
-            options.Add("saveid0", new GameOption("Save ID - Player 1", "Save ID to use for Player 1 (default 0)", 0));
-            options.Add("saveid1", new GameOption("Save ID - Player 2", "Save ID to use for Player 2 (default 1)", 1));
-            options.Add("saveid2", new GameOption("Save ID - Player 3", "Save ID to use for Player 3 (default 2)", 2));
-            options.Add("saveid3", new GameOption("Save ID - Player 4", "Save ID to use for Player 4 (default 3)", 3));
-        }
-
-       
 
         public override int MaxPlayersOneMonitor
         {
@@ -97,19 +102,7 @@ namespace Games
 
         public override Dictionary<string, string> ModifySave
         {
-            get
-            {
-                return new Dictionary<string, string>()
-                {
-                    { "SystemSettings/WindowedFullscreen", "IsFullscreen" },
-                    { "SystemSettings/ResX", "Width" },
-                    { "SystemSettings/ResY", "Height" },
-                    { "SystemSettings/Fullscreen", "false" },
-                    { "Engine.Engine/bMuteAudioWhenNotInFocus", "false" },
-                    { "Engine.Engine/bPauseOnLossOfFocus", "false" },
-                    { "WillowGame.WillowGameEngine/bPauseLostFocusWindowed", "false" },
-                };
-            }
+            get { return modifySave; }
         }
 
         public override string StartArguments
@@ -139,6 +132,10 @@ namespace Games
         public override string LauncherTitle
         {
             get { return "splashscreen"; }
+        }
+
+        public BorderlandsInfo()
+        {
         }
     }
 }

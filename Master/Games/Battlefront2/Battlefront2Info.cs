@@ -7,13 +7,13 @@ using System.Text;
 
 namespace Games.Battlefront2
 {
-    public class Battlefront2Info : GenericGameInfo
+    public class Battlefront2Info : IGenericGameInfo
     {
-        public override bool SupportsKeyboard
+        public bool SupportsKeyboard
         {
             get { return true; }
         }
-        public override Type[] Steps
+        public Type[] Steps
         {
             get
             {
@@ -25,37 +25,37 @@ namespace Games.Battlefront2
                 };
             }
         }
-        public override string ExecutableContext
+        public string[] ExecutableContext
         {
-            get { return ""; }
+            get { return null; }
         }
-        public override string ExecutableName
+        public string ExecutableName
         {
             get { return "__battlefrontii.exe"; }
         }
 
-        public override string GameName
+        public string GameName
         {
             get { return "Battlefront 2"; }
         }
 
-        public override Type HandlerType
+        public Type HandlerType
         {
             get { return typeof(GenericGameHandler); }
         }
 
-        public override int MaxPlayers
+        public int MaxPlayers
         {
             get { return 4; }
         }
 
-        public override int MaxPlayersOneMonitor
+        public int MaxPlayersOneMonitor
         {
             get { return 4; }
         }
 
-        protected Dictionary<string, GameOption> options;
-        public override Dictionary<string, GameOption> Options
+        protected GameOption[] options;
+        public Dictionary<string, GameOption> Options
         {
             get { return options; }
         }
@@ -63,25 +63,25 @@ namespace Games.Battlefront2
         public Battlefront2Info()
         {
             options = new Dictionary<string, GameOption>();
-            options.Add("KeyboardPlayer", new GameOption("Keyboard Player", "The player that will be playing on keyboard and mouse", KeyboardPlayer.NoKeyboardPlayer));
+            options.Add("KeyboardPlayer", new GameOption("Keyboard Player", "The player that will be playing on keyboard and mouse", KeyboardPlayer.NoKeyboardPlayer, "KeyboardPlayer"));
         }
 
-        public override string GUID
+        public string GUID
         {
             get { return "6060"; }//"46a03ad4-7f8a-447e-ac05-1801bb831a8c"; }
         }
 
-        public override GenericGameSaveType SaveType
+        public GenericGameSaveType SaveType
         {
-            get { return GenericGameSaveType.None ; }
+            get { return GenericGameSaveType.None; }
         }
 
-        public override string SavePath
+        public string SavePath
         {
             get { return @""; }
         }
 
-        public override Dictionary<string, string> ModifySave
+        public Dictionary<string, string> ModifySave
         {
             get
             {
@@ -89,41 +89,41 @@ namespace Games.Battlefront2
             }
         }
 
-        public override string StartArguments
+        public string StartArguments
         {
             get { return "\"/win /resolution \" + Width + \" \" + Height"; }
         }
 
-        public override string BinariesFolder
+        public string BinariesFolder
         {
             get { return @"GameData"; }
         }
 
-        public override string SteamID
+        public string SteamID
         {
             get { return "6060"; }
         }
 
-        public override bool NeedsSteamEmulation
+        public bool NeedsSteamEmulation
         {
             get { return true; }
         }
 
-        public override string[] KillMutex
+        public string[] KillMutex
         {
             get { return new string[0]; }
         }
 
-        public override string LauncherExe
+        public string LauncherExe
         {
             get { return ""; }
         }
-        public override string LauncherTitle
+        public string LauncherTitle
         {
             get { return ""; }
         }
 
-        public override bool SymlinkExe
+        public bool SymlinkExe
         {
             get { return true; }
         }

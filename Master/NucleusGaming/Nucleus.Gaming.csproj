@@ -55,8 +55,8 @@
       <HintPath>..\packages\DotNetZip.1.9.9\lib\net20\Ionic.Zip.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Jint, Version=2.7.1.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jint.2.8\lib\portable-net40+sl50+win+WindowsPhoneApp81+wp80\Jint.dll</HintPath>
+    <Reference Include="Jint, Version=2.9.1.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Jint.2.9.1\lib\portable-net40+sl50+win+WindowsPhoneApp81+wp80\Jint.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
@@ -127,16 +127,20 @@
     </Compile>
     <Compile Include="Coop\GameOption.cs" />
     <Compile Include="Coop\GameProfile.cs" />
+    <Compile Include="Coop\Generic\GenericContext.cs" />
+    <Compile Include="Coop\Generic\GenericGameInfo.cs" />
+    <Compile Include="Coop\Generic\IniSaveInfo.cs" />
+    <Compile Include="Coop\Generic\SaveInfo.cs" />
     <Compile Include="Coop\IGameHandler.cs" />
-    <Compile Include="Coop\GameInfo.cs" />
+    <Compile Include="Coop\IGameInfo.cs" />
     <Compile Include="Coop\UserGameInfo.cs" />
     <Compile Include="Coop\UserProfile.cs" />
     <Compile Include="Coop\UserScreen.cs" />
     <Compile Include="Coop\UserScreenType.cs" />
-    <Compile Include="Generic\GenericGameHandler.cs" />
-    <Compile Include="Generic\GenericGameInfo.cs" />
-    <Compile Include="Generic\GenericGameSaveType.cs" />
-    <Compile Include="Generic\NucleusFolderEnum.cs" />
+    <Compile Include="Coop\Generic\GenericGameHandler.cs" />
+    <Compile Include="Coop\Generic\IGenericGameInfo.cs" />
+    <Compile Include="Coop\Generic\SaveType.cs" />
+    <Compile Include="Coop\Generic\Folder.cs" />
     <Compile Include="Interop\Shell32\Shell32.cs" />
     <Compile Include="Interop\Shell32\ShFileInfo.cs" />
     <Compile Include="Interop\Shell32\ShgFi.cs" />
@@ -167,14 +171,14 @@
     <Compile Include="New\PlayerCountControl.Designer.cs">
       <DependentUpon>PlayerCountControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="New\PlayerOptions.cs">
+    <Compile Include="New\PlayerOptionsControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="New\PositionsForm.cs">
+    <Compile Include="New\PositionsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\PositionsForm.Designer.cs">
-      <DependentUpon>PositionsForm.cs</DependentUpon>
+    <Compile Include="New\PositionsControl.Designer.cs">
+      <DependentUpon>PositionsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="New\Utils\RectangleUtil.cs" />
     <Compile Include="New\Utils\ScreenUtil.cs" />
@@ -185,7 +189,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Generic\ScreenData.cs" />
+    <Compile Include="Coop\Generic\ScreenData.cs" />
     <Compile Include="Util\CmdUtil.cs" />
     <Compile Include="Util\FileUtil.cs" />
     <Compile Include="Util\FormUtil.cs" />
@@ -213,8 +217,8 @@
     <EmbeddedResource Include="New\PlayerCountControl.resx">
       <DependentUpon>PlayerCountControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\PositionsForm.resx">
-      <DependentUpon>PositionsForm.cs</DependentUpon>
+    <EmbeddedResource Include="New\PositionsControl.resx">
+      <DependentUpon>PositionsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -1,0 +1,554 @@
+﻿using Jint;
+using Nucleus.Gaming.Interop;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Management;
+using System.Text;
+using System.Threading;
+using System.Windows.Forms;
+using WindowScrape.Types;
+
+namespace Nucleus.Gaming
+{
+    public class GenericGameHandler : IGameHandler
+    {
+        protected bool hasEnded;
+        protected int timerInterval = 1000;
+
+        public virtual bool HasEnded
+        {
+            get { return hasEnded; }
+        }
+
+        public int TimerInterval
+        {
+            get { return timerInterval; }
+        }
+
+        public event Action Ended;
+
+        public void End()
+        {
+            hasEnded = true;
+        }
+
+        private UserGameInfo userGame;
+        private GameProfile profile;
+        private GenericGameInfo gen;
+        private Dictionary<string, string> data;
+
+        public string GetFolder(Folder folder)
+        {
+            string str = folder.ToString();
+            string output;
+            if (data.TryGetValue(str, out output))
+            {
+                return output;
+            }
+            return "";
+        }
+
+        public bool Initialize(UserGameInfo game, GameProfile profile)
+        {
+            this.userGame = game;
+            this.profile = profile;
+
+            // see if we have any save game to backup
+            gen = game.Game as GenericGameInfo;
+            if (gen == null)
+            {
+                // you fucked up
+                return false;
+            }
+
+            data = new Dictionary<string, string>();
+            data.Add(Folder.Documents.ToString(), Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            data.Add(Folder.GameFolder.ToString(), Path.GetDirectoryName(game.ExePath));
+
+            return true;
+        }
+
+        public string ReplaceCaseInsensitive(string str, string toFind, string toReplace)
+        {
+            string lowerOriginal = str.ToLower();
+            string lowerFind = toFind.ToLower();
+            string lowerRep = toReplace.ToLower();
+
+            int start = lowerOriginal.IndexOf(lowerFind);
+            if (start == -1)
+            {
+                return str;
+            }
+
+            string end = str.Remove(start, toFind.Length);
+            end = end.Insert(start, toReplace);
+
+            return end;
+        }
+
+        static string GetRootFolder(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return path;
+            }
+
+            int failsafe = 20;
+            for (;;)
+            {
+                failsafe--;
+                if (failsafe < 0)
+                {
+                    break;
+                }
+
+                string temp = Path.GetDirectoryName(path);
+                if (String.IsNullOrEmpty(temp))
+                {
+                    break;
+                }
+                path = temp;
+            }
+            return path;
+        }
+
+        public string Play()
+        {
+            List<PlayerInfo> players = profile.PlayerData;
+
+            Screen[] all = Screen.AllScreens;
+
+            string backupDir = GameManager.Instance.GetBackupFolder(this.userGame.Game);
+            string binFolder = Path.GetDirectoryName(userGame.ExePath);
+            string rootFolder = ReplaceCaseInsensitive(binFolder, gen.BinariesFolder, "");
+
+            int gamePadId = 0;
+            bool first = true;
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                PlayerInfo player = players[i];
+                if (i > 0 && gen.KillMutex.Length > 0)
+                {
+                    PlayerInfo before = players[i - 1];
+                    for (;;)
+                    {
+                        if (exited > 0)
+                        {
+                            return "";
+                        }
+                        Thread.Sleep(100);
+                        if (before.screenData.KilledMutexes)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                Rectangle playerBounds = player.monitorBounds;
+
+                // find the monitor that has this screen
+                Screen owner = null;
+                for (int j = 0; j < all.Length; j++)
+                {
+                    Screen s = all[j];
+                    if (s.Bounds.Contains(playerBounds))
+                    {
+                        owner = s;
+                        break;
+                    }
+                }
+
+                int width = playerBounds.Width;
+                int height = playerBounds.Height;
+                bool isFullscreen = false;
+
+                if (owner != null)
+                {
+                    Rectangle ob = owner.Bounds;
+                    if (playerBounds.X == ob.X &&
+                        playerBounds.Y == ob.Y &&
+                        playerBounds.Width == ob.Width &&
+                        playerBounds.Height == ob.Height)
+                    {
+                        isFullscreen = true;
+                    }
+                }
+
+                GenericContext context = gen.CreateContext(profile, player, this);
+                context.PlayerID = i;
+                context.IsFullscreen = isFullscreen;
+                context.IsKeyboardPlayer = context.SupportsKeyboard && i == (int)(double)profile.Options["KeyboardPlayer"];
+                gen.PrePlay(context);
+
+                string saveFile = context.SavePath;
+                if (gen.SaveType != SaveType.None && first)
+                {
+                    GameManager.Instance.BeginBackup(gen);
+                    GameManager.Instance.BackupFile(gen, saveFile);
+                }
+
+                // symlink the game folder
+                // find out the folder that contains the game executable
+                string root = GetRootFolder(gen.BinariesFolder);
+
+                string linkFolder = Path.Combine(backupDir, "Instance" + i);
+                Directory.CreateDirectory(linkFolder);
+                int exitCode;
+                CmdUtil.LinkDirectories(rootFolder, linkFolder, out exitCode, root.ToLower());
+
+                string linkBin = Path.Combine(linkFolder, gen.BinariesFolder);
+
+                if (!string.IsNullOrEmpty(gen.BinariesFolder))
+                {
+                    // this needs fixing, if there are several folder to the exe and they have important files inside, this won't work! TODO
+                    Directory.CreateDirectory(linkBin);
+                    CmdUtil.LinkDirectories(binFolder, linkBin, out exitCode);
+                }
+
+                string exePath = Path.Combine(linkBin, this.userGame.Game.ExecutableName);
+
+                if (context.SymlinkExe)
+                {
+                    CmdUtil.LinkFiles(binFolder, linkBin, out exitCode, "xinput");
+                }
+                else
+                {
+                    CmdUtil.LinkFiles(binFolder, linkBin, out exitCode, "xinput", Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()));
+                    File.Copy(userGame.ExePath, exePath, true);
+                }
+
+
+                // some games have save files inside their game folder, so we need to access them inside the loop
+                this.data[Folder.GameFolder.ToString()] = linkFolder;
+
+                IniFile file = new IniFile(saveFile);
+
+                switch (context.SaveType)
+                {
+                    case SaveType.INI:
+                        for (int j = 0; j < context.ModifySave.Length; j++)
+                        {
+                            SaveInfo save = context.ModifySave[j];
+                            if (save is IniSaveInfo)
+                            {
+                                IniSaveInfo ini = (IniSaveInfo)save;
+                                file.IniWriteValue(ini.Section, ini.Key, ini.Value);
+                            }
+                        }
+                        break;
+                }
+
+                string startArgs = context.StartArguments;
+
+                byte[] xdata = null;
+
+                if (context.SupportsKeyboard && i == (int)(double)profile.Options["KeyboardPlayer"])
+                {
+                    // TODO: need to make an xinput that answers to no gamepad?
+                    xdata = Properties.Resources.xinput4;
+                }
+                else
+                {
+                    switch (gamePadId)
+                    {
+                        case 0:
+                            xdata = Properties.Resources.xinput1;
+                            break;
+                        case 1:
+                            xdata = Properties.Resources.xinput2;
+                            break;
+                        case 2:
+                            xdata = Properties.Resources.xinput3;
+                            break;
+                        case 3:
+                            xdata = Properties.Resources.xinput4;
+                            break;
+                        default:
+                            xdata = Properties.Resources.xinput4;
+                            break;
+                    }
+                    gamePadId++;
+                }
+
+                using (Stream str = File.OpenWrite(Path.Combine(linkBin, "xinput1_3.dll")))
+                {
+                    str.Write(xdata, 0, xdata.Length);
+                }
+
+                if (context.NeedsSteamEmulation)
+                {
+                    string steamEmu = GameManager.Instance.ExtractSteamEmu();
+                    string emuExe = Path.Combine(steamEmu, "SmartSteamLoader.exe");
+
+                    string emuIni = Path.Combine(steamEmu, "SmartSteamEmu.ini");
+                    IniFile emu = new IniFile(emuIni);
+
+                    emu.IniWriteValue("Launcher", "Target", exePath);
+                    emu.IniWriteValue("Launcher", "StartIn", Path.GetDirectoryName(exePath));
+                    emu.IniWriteValue("Launcher", "CommandLine", startArgs);
+                    emu.IniWriteValue("Launcher", "SteamClientPath", Path.Combine(steamEmu, "SmartSteamEmu.dll"));
+                    emu.IniWriteValue("Launcher", "SteamClientPath64", Path.Combine(steamEmu, "SmartSteamEmu64.dll"));
+                    emu.IniWriteValue("Launcher", "InjectDll", "0");
+                    emu.IniWriteValue("SmartSteamEmu", "AppId", context.SteamID);
+
+                    Process proc;
+                    if (context.KillMutex.Length > 0)
+                    {
+                        // to kill the mutexes we need to orphanize the process
+                        proc = ProcessUtil.RunOrphanProcess(emuExe);
+                    }
+                    else
+                    {
+                        ProcessStartInfo startInfo = new ProcessStartInfo();
+                        startInfo.FileName = emuExe;
+                        proc = Process.Start(startInfo);
+                    }
+
+                    player.Process = proc;
+                    player.SteamEmu = true;
+                }
+                else
+                {
+                    Process proc;
+                    if (context.KillMutex.Length > 0)
+                    {
+                        proc = Process.GetProcessById(StartGameUtil.StartGame(exePath, startArgs));
+                    }
+                    else
+                    {
+                        ProcessStartInfo startInfo = new ProcessStartInfo();
+                        startInfo.FileName = exePath;
+                        startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                        startInfo.Arguments = startArgs;
+                        startInfo.UseShellExecute = true;
+                        startInfo.WorkingDirectory = Path.GetDirectoryName(exePath);
+                        proc = Process.Start(startInfo);
+                    }
+                    if (proc == null)
+                    {
+                        for (int times = 0; times < 200; times++)
+                        {
+                            Thread.Sleep(50);
+
+                            Process[] procs = Process.GetProcesses();
+                            string proceName = Path.GetFileNameWithoutExtension(context.ExecutableName).ToLower();
+                            string launcherName = Path.GetFileNameWithoutExtension(context.LauncherExe).ToLower();
+
+                            for (int j = 0; j < procs.Length; j++)
+                            {
+                                Process p = procs[j];
+                                string lowerP = p.ProcessName.ToLower();
+                                if (((lowerP == proceName) || lowerP == launcherName) &&
+                                    !attached.Contains(p))
+                                {
+                                    attached.Add(p);
+                                    proc = p;
+                                    break;
+                                }
+                            }
+
+                            if (proc != null)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        attached.Add(proc);
+                    }
+                    player.Process = proc;
+                }
+
+                ScreenData data = new ScreenData();
+                data.Position = new Point(playerBounds.X, playerBounds.Y);
+                data.Size = new Size(playerBounds.Width, playerBounds.Height);
+                data.KilledMutexes = context.KillMutex.Length == 0;
+                player.screenData = data;
+
+                first = false;
+            }
+
+            return string.Empty;
+        }
+
+        private int timer;
+        private int exited;
+        private List<Process> attached = new List<Process>();
+
+        public void Update(int delayMS)
+        {
+            if (profile == null)
+            {
+                return;
+            }
+
+            exited = 0;
+            List<PlayerInfo> players = profile.PlayerData;
+            timer += delayMS;
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                PlayerInfo p = players[i];
+                if (p.screenData == null || p.Process == null)
+                {
+                    continue;
+                }
+
+                if (p.SteamEmu)
+                {
+                    List<int> children = ProcessUtil.GetChildrenProcesses(p.Process);
+                    if (children.Count > 0)
+                    {
+                        for (int j = 0; j < children.Count; j++)
+                        {
+                            int id = children[j];
+                            Process child = Process.GetProcessById(id);
+                            try
+                            {
+                                if (child.ProcessName.Contains("conhost"))
+                                {
+                                    continue;
+                                }
+                            }
+                            catch
+                            {
+                                continue;
+                            }
+
+                            p.Process = child;
+                            p.SteamEmu = child.ProcessName.Contains("SmartSteamLoader") || child.ProcessName.Contains("cmd");
+                        }
+                    }
+                }
+                else
+                {
+                    ScreenData data = p.screenData;
+
+                    if (data.Set)
+                    {
+                        if (p.Process.HasExited)
+                        {
+                            exited++;
+                            continue;
+                        }
+
+                        if (!p.screenData.KilledMutexes && gen.KillMutex.Length > 0)
+                        {
+                            StartGameUtil.KillMutex(p.Process, gen.KillMutex);
+                            p.screenData.KilledMutexes = true;
+                        }
+
+                        uint lStyle = User32Interop.GetWindowLong(data.HWND.Hwnd, User32_WS.GWL_STYLE);
+                        if (lStyle != data.RegLong)
+                        {
+                            uint toRemove = User32_WS.WS_CAPTION;
+                            lStyle = lStyle & (~toRemove);
+
+                            User32Interop.SetWindowLong(data.HWND.Hwnd, User32_WS.GWL_STYLE, lStyle);
+                            data.RegLong = lStyle;
+                            data.HWND.Location = data.Position;
+                        }
+                    }
+                    else
+                    {
+                        p.Process.Refresh();
+
+                        if (p.Process.HasExited)
+                        {
+                            if (p.GotLauncher)
+                            {
+                                if (p.GotGame)
+                                {
+                                    exited++;
+                                }
+                                else
+                                {
+                                    List<int> children = ProcessUtil.GetChildrenProcesses(p.Process);
+                                    if (children.Count > 0)
+                                    {
+                                        for (int j = 0; j < children.Count; j++)
+                                        {
+                                            int id = children[j];
+                                            Process pro = Process.GetProcessById(id);
+
+                                            if (!attached.Contains(pro))
+                                            {
+                                                attached.Add(pro);
+                                                data.HWND = null;
+                                                p.GotGame = true;
+                                                p.Process = pro;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // Steam showing a launcher, need to find our game process
+                                string launcher = gen.LauncherExe;
+                                if (launcher.ToLower().EndsWith(".exe"))
+                                {
+                                    launcher = launcher.Remove(launcher.Length - 4, 4);
+                                }
+
+                                Process[] procs = Process.GetProcessesByName(launcher);
+                                for (int j = 0; j < procs.Length; j++)
+                                {
+                                    Process pro = procs[j];
+                                    if (!attached.Contains(pro))
+                                    {
+                                        attached.Add(pro);
+                                        p.Process = pro;
+                                        p.GotLauncher = true;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (data.HWNDRetry || data.HWND == null || data.HWND.Hwnd != p.Process.MainWindowHandle)
+                            {
+                                data.HWND = new HwndObject(p.Process.MainWindowHandle);
+                                Point pos = data.HWND.Location;
+
+                                if (String.IsNullOrEmpty(data.HWND.Title) || pos.X == -32000 || data.HWND.Title.ToLower() == gen.LauncherTitle.ToLower())
+                                {
+                                    data.HWNDRetry = true;
+                                }
+                                else
+                                {
+                                    Size s = data.Size;
+                                    data.Set = true;
+                                    data.HWND.TopMost = true;
+                                    data.HWND.Size = data.Size;
+                                    data.HWND.Location = data.Position;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (exited == players.Count)
+                {
+                    if (!hasEnded)
+                    {
+                        hasEnded = true;
+                        GameManager.Instance.ExecuteBackup(this.userGame.Game);
+
+                        if (Ended != null)
+                        {
+                            Ended();
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

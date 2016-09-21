@@ -12,19 +12,19 @@ namespace Games
     /// <summary>
     /// Class that declares all Left 4 Dead 2 important stuff
     /// </summary>
-    public class Left4Dead2Info : GameInfo
+    public class Left4Dead2Info : IGameInfo
     {
         /// <summary>
         /// Custom steps for the user to pass to be able to start the game
         /// </summary>
-        public override Type[] Steps
+        public  Type[] Steps
         {
             get { return steps; }
         }
 
-        public override string ExecutableContext
+        public string[] ExecutableContext
         {
-            get { return ""; }
+            get { return null; }
         }
 
         // Default Levels
@@ -62,32 +62,32 @@ namespace Games
             new L4D2GameMode("Custom", "__custom__", "?Default Mode?", null),
         };
 
-        public override string ExecutableName
+        public  string ExecutableName
         {
             get { return "left4dead2.exe"; }
         }
 
-        public override string GameName
+        public  string GameName
         {
             get { return "Left 4 Dead 2"; }
         }
 
-        public override Type HandlerType
+        public  Type HandlerType
         {
             get { return typeof(object); }
         }
 
-        public override int MaxPlayers
+        public  int MaxPlayers
         {
             get { return 32; }
         }
 
-        public override bool SupportsKeyboard
+        public  bool SupportsKeyboard
         {
             get { return true; }
         }
 
-        public override Dictionary<string, GameOption> Options
+        public  Dictionary<string, GameOption> Options
         {
             get { return options; }
         }
@@ -111,12 +111,12 @@ namespace Games
         /// <summary>
         /// Generated with http://www.random-guid.com/
         /// </summary>
-        public override string GUID
+        public  string GUID
         {
             get { return "E82367CC-29DC-4BF6-BBA5-96A2AF601354"; }
         }
 
-        public override int MaxPlayersOneMonitor
+        public  int MaxPlayersOneMonitor
         {
             get { return 16; }
         }

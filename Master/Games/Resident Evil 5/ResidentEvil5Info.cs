@@ -6,38 +6,38 @@ using Nucleus.Gaming;
 
 namespace Games
 {
-    public class ResidentEvil5Info : GameInfo
+    public class ResidentEvil5Info : IGameInfo
     {
-        public override Type[] Steps
+        public  Type[] Steps
         {
             get { return null; }
         }
-        public override string ExecutableContext
+        public string[] ExecutableContext
         {
-            get { return ""; }
+            get { return null; }
         }
-        public override string ExecutableName
+        public  string ExecutableName
         {
             get { return "re5dx9.exe|re5dx10.exe"; }
         }
 
-        public override string GameName
+        public  string GameName
         {
             get { return "Resident Evil 5"; }
         }
 
-        public override Type HandlerType
+        public  Type HandlerType
         {
             get { return typeof(object); }
         }
 
-        public override int MaxPlayers
+        public  int MaxPlayers
         {
             get { return 2; }
         }
 
         protected Dictionary<string, GameOption> options;
-        public override Dictionary<string, GameOption> Options
+        public  Dictionary<string, GameOption> Options
         {
             get { return options; }
         }
@@ -50,17 +50,17 @@ namespace Games
         /// <summary>
         /// Generated with http://www.random-guid.com/
         /// </summary>
-        public override string GUID
+        public  string GUID
         {
             get { return "1D4433B0-D555-462A-A225-9AF71C65B7CB"; }
         }
 
-        public override bool SupportsKeyboard
+        public  bool SupportsKeyboard
         {
             get { return false; }
         }
 
-        public override int MaxPlayersOneMonitor
+        public  int MaxPlayersOneMonitor
         {
             get { return 2; }
         }

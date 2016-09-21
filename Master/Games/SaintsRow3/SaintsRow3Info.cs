@@ -7,17 +7,17 @@ using System.Text;
 
 namespace Games.SaintsRow3
 {
-    public class SaintsRow3Info : GenericGameInfo
+    public class SaintsRow3Info : IGenericGameInfo
     {
-        public override bool SymlinkExe
+        public  bool SymlinkExe
         {
             get { return true; }
         }
-        public override bool SupportsKeyboard
+        public  bool SupportsKeyboard
         {
             get { return true; }
         }
-        public override Type[] Steps
+        public  Type[] Steps
         {
             get
             {
@@ -29,32 +29,32 @@ namespace Games.SaintsRow3
                 };
             }
         }
-        public override string ExecutableContext
+        public string[] ExecutableContext
         {
-            get { return ""; }
+            get { return null; }
         }
-        public override string ExecutableName
+        public  string ExecutableName
         {
             get { return "saintsrowthethird_dx11.exe"; }
         }
 
-        public override string GameName
+        public  string GameName
         {
             get { return "Saints Row 3"; }
         }
 
-        public override Type HandlerType
+        public  Type HandlerType
         {
             get { return typeof(GenericGameHandler); }
         }
 
-        public override int MaxPlayers
+        public  int MaxPlayers
         {
             get { return 4; }
         }
 
         protected Dictionary<string, GameOption> options;
-        public override Dictionary<string, GameOption> Options
+        public  Dictionary<string, GameOption> Options
         {
             get { return options; }
         }
@@ -69,27 +69,27 @@ namespace Games.SaintsRow3
         /// <summary>
         /// Generated with http://www.random-guid.com/
         /// </summary>
-        public override string GUID
+        public  string GUID
         {
             get { return "55230"; }
         }
 
-        public override int MaxPlayersOneMonitor
+        public  int MaxPlayersOneMonitor
         {
             get { return 4; }
         }
 
-        public override GenericGameSaveType SaveType
+        public  GenericGameSaveType SaveType
         {
             get { return GenericGameSaveType.INI; }
         }
 
-        public override string SavePath
+        public  string SavePath
         {
             get { return @"&GameFolder&\display.ini"; }
         }
 
-        public override Dictionary<string, string> ModifySave
+        public  Dictionary<string, string> ModifySave
         {
             get
             {
@@ -102,27 +102,27 @@ namespace Games.SaintsRow3
             }
         }
 
-        public override string StartArguments
+        public  string StartArguments
         {
             get { return ""; }
         }
 
-        public override string BinariesFolder
+        public  string BinariesFolder
         {
             get { return ""; }
         }
 
-        public override string SteamID
+        public  string SteamID
         {
             get { return "55230"; }
         }
 
-        public override bool NeedsSteamEmulation
+        public  bool NeedsSteamEmulation
         {
             get { return true; }
         }
 
-        public override string[] KillMutex
+        public  string[] KillMutex
         {
             get
             {
@@ -133,12 +133,12 @@ namespace Games.SaintsRow3
             }
         }
 
-        public override string LauncherExe
+        public  string LauncherExe
         {
             get { return "game_launcher"; }
         }
 
-        public override string LauncherTitle
+        public  string LauncherTitle
         {
             get { return "Saints Row: The Launcher"; }
         }

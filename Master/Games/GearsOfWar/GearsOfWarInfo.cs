@@ -7,13 +7,13 @@ using System.Text;
 
 namespace Games.Borderlands
 {
-    public class GearsOfWarInfo : GenericGameInfo
+    public class GearsOfWarInfo : IGenericGameInfo
     {
-        public override bool SupportsKeyboard
+        public  bool SupportsKeyboard
         {
             get { return true; }
         }
-        public override Type[] Steps
+        public  Type[] Steps
         {
             get
             {
@@ -25,37 +25,37 @@ namespace Games.Borderlands
                 };
             }
         }
-        public override string ExecutableContext
+        public string[] ExecutableContext
         {
-            get { return ""; }
+            get { return null; }
         }
-        public override string ExecutableName
+        public  string ExecutableName
         {
             get { return "__startup.exe"; }
         }
 
-        public override string GameName
+        public  string GameName
         {
             get { return "Gears of War"; }
         }
 
-        public override Type HandlerType
+        public  Type HandlerType
         {
             get { return typeof(GenericGameHandler); }
         }
 
-        public override int MaxPlayers
+        public  int MaxPlayers
         {
             get { return 2; }
         }
 
-        public override int MaxPlayersOneMonitor
+        public  int MaxPlayersOneMonitor
         {
             get { return 2; }
         }
 
         protected Dictionary<string, GameOption> options;
-        public override Dictionary<string, GameOption> Options
+        public  Dictionary<string, GameOption> Options
         {
             get { return options; }
         }
@@ -67,26 +67,26 @@ namespace Games.Borderlands
             options.Add("KeyboardPlayer", new GameOption("Keyboard Player", "The player that will be playing on keyboard and mouse", KeyboardPlayer.NoKeyboardPlayer));
         }
 
-        public override string GUID
+        public  string GUID
         {
             get { return "GearsOfWar"; }
         }
-        public override string SteamID
+        public  string SteamID
         {
             get { return "none"; }
         }
 
-        public override GenericGameSaveType SaveType
+        public  GenericGameSaveType SaveType
         {
             get { return GenericGameSaveType.None; }
         }
 
-        public override string SavePath
+        public  string SavePath
         {
             get { return ""; }
         }
 
-        public override Dictionary<string, string> ModifySave
+        public  Dictionary<string, string> ModifySave
         {
             get
             {
@@ -94,37 +94,37 @@ namespace Games.Borderlands
             }
         }
 
-        public override string StartArguments
+        public  string StartArguments
         {
             get { return ""; }
         }
 
-        public override string BinariesFolder
+        public  string BinariesFolder
         {
             get { return @"binaries"; }
         }
 
-        public override bool NeedsSteamEmulation
+        public  bool NeedsSteamEmulation
         {
             get { return false; }
         }
 
-        public override string[] KillMutex
+        public  string[] KillMutex
         {
             get { return new string[0]; }
         }
 
-        public override string LauncherExe
+        public  string LauncherExe
         {
             get { return ""; }
         }
 
-        public override string LauncherTitle
+        public  string LauncherTitle
         {
             get { return ""; }
         }
 
-        public override bool SymlinkExe
+        public  bool SymlinkExe
         {
             get { return true; }
         }

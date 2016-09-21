@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nucleus.Gaming", "NucleusGaming\Nucleus.Gaming.csproj", "{223DBDAE-E362-452C-9455-F518D002B154}"
 EndProject
@@ -10,9 +10,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThirdParty", "ThirdParty", "{EBED4BFC-5AC2-4601-9BEA-879206976057}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nucleus.Coop", "NucleusCoopTool\Nucleus.Coop.csproj", "{7818FD81-77A6-49F3-8571-A91B1B99E63F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{3F7C8608-41B3-4831-9351-980BC4499FFB} = {3F7C8608-41B3-4831-9351-980BC4499FFB}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowScrape", "ThirdParty\WindowScrape\WindowScrape.csproj", "{D9716550-921D-44E8-A289-C297950DB1F7}"
 EndProject

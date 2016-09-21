@@ -9,12 +9,12 @@ namespace Nucleus.Gaming
 {
     public class UserGameInfo
     {
-        private GameInfo game;
+        private IGameInfo game;
         private List<GameProfile> profiles;
         private string exePath;
 
         [JsonIgnore]
-        public GameInfo Game
+        public IGameInfo Game
         {
             get { return game; }
         }
@@ -31,7 +31,7 @@ namespace Nucleus.Gaming
             get { return game.GUID; }
             set
             {
-                game = GameManager.Instance.Games[value];
+                GameManager.Instance.Games.TryGetValue(value, out game);
             }
         }
 
@@ -52,7 +52,7 @@ namespace Nucleus.Gaming
 
         }
 
-        public void InitializeDefault(GameInfo game, string exePath)
+        public void InitializeDefault(IGameInfo game, string exePath)
         {
             this.game = game;
             this.exePath = exePath;

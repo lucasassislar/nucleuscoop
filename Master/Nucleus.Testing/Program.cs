@@ -16,7 +16,7 @@ namespace Nucleus.Testing
         {
             GameManager manager = new GameManager();
 
-            GameInfo borderlands2 = manager.Games["720CE71B-FCBF-46C8-AC9D-C4B2BF3169E3"];
+            IGameInfo borderlands2 = manager.Games["720CE71B-FCBF-46C8-AC9D-C4B2BF3169E3"];
             UserGameInfo borderInfo = manager.AddGame(borderlands2, @"C:\Program Files (x86)\Steam\steamapps\common\Borderlands 2\Binaries\Win32\Borderlands2.exe");
 
             GameProfile profile = new GameProfile();
