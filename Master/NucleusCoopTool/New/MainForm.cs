@@ -255,17 +255,24 @@ namespace Nucleus.Coop
                 return;
             }
 
+            btn_Play.Enabled = false;
+
             handler = gameManager.MakeHandler(currentGame);
             handler.Initialize(currentGameInfo, currentProfile);
             handler.Ended += handler_Ended;
 
-            if (handler.TimerInterval > 0)
+            if (gameManager.Play(handler))
             {
-                Thread t = new Thread(UpdateGameManager);
-                t.Start();
+                if (handler.TimerInterval > 0)
+                {
+                    Thread t = new Thread(UpdateGameManager);
+                    t.Start();
+                }
             }
-
-            gameManager.Play(handler);
+            else
+            {
+                handler = null;
+            }
         }
 
         private void handler_Ended()

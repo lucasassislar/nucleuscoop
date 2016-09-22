@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Threading;
 using Ionic.Zip;
 using Nucleus.Gaming.Properties;
+using System.Windows.Forms;
 
 namespace Nucleus.Gaming
 {
@@ -147,20 +148,32 @@ namespace Nucleus.Gaming
         {
             string app = GetAppDataPath();
             string steamEmu = Path.Combine(app, "SteamEmu");
-            if (!Directory.Exists(steamEmu))
+
+            try
             {
-                Directory.CreateDirectory(steamEmu);
-                using (MemoryStream stream = new MemoryStream(Resources.SmartSteamEmu))
+                if (!Directory.Exists(steamEmu))
                 {
-                    using (ZipFile zip1 = ZipFile.Read(stream))
+                    LogManager.Log("Extracting SmartSteamEmu");
+
+                    Directory.CreateDirectory(steamEmu);
+                    using (MemoryStream stream = new MemoryStream(Resources.SmartSteamEmu))
                     {
-                        foreach (ZipEntry e in zip1)
+                        using (ZipFile zip1 = ZipFile.Read(stream))
                         {
-                            e.Extract(steamEmu, ExtractExistingFileAction.OverwriteSilently);
+                            foreach (ZipEntry e in zip1)
+                            {
+                                e.Extract(steamEmu, ExtractExistingFileAction.OverwriteSilently);
+                            }
                         }
                     }
                 }
             }
+            catch
+            {
+                LogManager.Log("Extraction of SmartSteamEmu failed");
+                return string.Empty;
+            }
+
             return steamEmu;
         }
 
@@ -434,7 +447,7 @@ namespace Nucleus.Gaming
         }
 #endregion
 
-        public void Play(IGameHandler handler)
+        public bool Play(IGameHandler handler)
         {
             //if (handler.HideTaskBar)
             //{
@@ -443,7 +456,14 @@ namespace Nucleus.Gaming
 
             // Start the Play method in another thread, so the
             // handler can update while it's still loading
-            handler.Play();
+            string play = handler.Play();
+
+            if (!string.IsNullOrEmpty(play))
+            {
+                MessageBox.Show(play, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
             //ThreadPool.QueueUserWorkItem(play, handler);
         }
         private void play(object state)

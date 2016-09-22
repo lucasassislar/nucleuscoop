@@ -284,6 +284,11 @@ namespace Nucleus.Gaming
                 if (context.NeedsSteamEmulation)
                 {
                     string steamEmu = GameManager.Instance.ExtractSteamEmu();
+                    if (string.IsNullOrEmpty(steamEmu))
+                    {
+                        return "Extraction of SmartSteamEmu failed!";
+                    }
+
                     string emuExe = Path.Combine(steamEmu, "SmartSteamLoader.exe");
 
                     string emuIni = Path.Combine(steamEmu, "SmartSteamEmu.ini");
