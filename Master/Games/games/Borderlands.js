@@ -43,8 +43,6 @@ Game.NeedsSteamEmulation = true;
 Game.LauncherTitle = "splashscreen";
 Game.SaveType = Nucleus.SaveType.INI;
 
-
-
 Game.Play = function () {
     Context.ModifySave = [
         new Nucleus.IniSaveInfo("SystemSettings", "WindowedFullscreen", false),
