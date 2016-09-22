@@ -2,6 +2,8 @@
 Nucles Co-Op is a tool for Windows that allows split-screen play on many games that do not initially support it.
 
 Support its development by helping on my Patreon! https://www.patreon.com/distro
+Subscribe to our subreddit: https://www.reddit.com/r/nucleuscoop/
+
 
 Currently Supported Games:
 (only games I've personally tested)
