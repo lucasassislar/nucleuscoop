@@ -29,6 +29,7 @@ namespace SplitTool.Controls
         {
             InitializeComponent();
             connectMouse = true;
+            this.Height = defaultHeight;
         }
 
         protected bool connectMouse;
@@ -67,7 +68,7 @@ namespace SplitTool.Controls
             this.OnMouseMove(e);
         }
 
-        protected int defaultHeight = 52;
+        protected int defaultHeight = 72;
         protected int expandedHeight = 156;
         protected bool expanded;
         private void CoolListControl_MouseDown(object sender, MouseEventArgs e)
@@ -101,7 +102,7 @@ namespace SplitTool.Controls
             {
                 int offset = 10;
                 descLabel = new Label();
-                descLabel.Location = new Point(offset, (int)(defaultHeight * 1.2f));
+                descLabel.Location = new Point(offset, (int)(expandedHeight * 0.425f));
                 descLabel.Text = description;
                 descLabel.Width = this.Width - (offset*2);
                 descLabel.AutoSize = true;

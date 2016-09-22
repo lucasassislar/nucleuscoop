@@ -25,7 +25,7 @@ Game.Options = [
         3,
         "saveid3")
 ];
-Game.ExecutableContext = [
+Game.ExecutableContext = [ // need to add these or it might conflict with Tales of the Borderlands
     "PhysXLocal",
     "binkw32.dll"
 ];
@@ -42,6 +42,7 @@ Game.BinariesFolder = "binaries";
 Game.NeedsSteamEmulation = true;
 Game.LauncherTitle = "splashscreen";
 Game.SaveType = Nucleus.SaveType.INI;
+Game.SupportsPositioning = true;
 
 Game.Play = function () {
     Context.ModifySave = [

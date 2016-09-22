@@ -36,7 +36,6 @@
             this.label_StepTitle = new System.Windows.Forms.Label();
             this.btn_Play = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
-            this.btnNext = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
             this.btnAutoSearch = new System.Windows.Forms.Button();
             this.panelGameName.SuspendLayout();
@@ -103,7 +102,7 @@
             // 
             this.label_StepTitle.AutoSize = true;
             this.label_StepTitle.Font = new System.Drawing.Font("Segoe UI", 18F);
-            this.label_StepTitle.Location = new System.Drawing.Point(254, 63);
+            this.label_StepTitle.Location = new System.Drawing.Point(257, 66);
             this.label_StepTitle.Name = "label_StepTitle";
             this.label_StepTitle.Size = new System.Drawing.Size(61, 32);
             this.label_StepTitle.TabIndex = 3;
@@ -120,7 +119,6 @@
             this.btn_Play.TabIndex = 4;
             this.btn_Play.Text = "P L A Y";
             this.btn_Play.UseVisualStyleBackColor = true;
-            this.btn_Play.Visible = false;
             this.btn_Play.Click += new System.EventHandler(this.btn_Play_Click);
             // 
             // btnSearch
@@ -135,25 +133,11 @@
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
-            // btnNext
-            // 
-            this.btnNext.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnNext.Location = new System.Drawing.Point(906, 63);
-            this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(33, 35);
-            this.btnNext.TabIndex = 8;
-            this.btnNext.Text = ">";
-            this.btnNext.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.btnNext.UseVisualStyleBackColor = true;
-            this.btnNext.Visible = false;
-            this.btnNext.Click += new System.EventHandler(this.arrow_Next_Click);
-            // 
             // btnBack
             // 
             this.btnBack.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBack.Location = new System.Drawing.Point(867, 63);
+            this.btnBack.Location = new System.Drawing.Point(906, 63);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(33, 35);
             this.btnBack.TabIndex = 9;
@@ -182,7 +166,6 @@
             this.ClientSize = new System.Drawing.Size(1054, 701);
             this.Controls.Add(this.btnAutoSearch);
             this.Controls.Add(this.btnBack);
-            this.Controls.Add(this.btnNext);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.btn_Play);
             this.Controls.Add(this.label_StepTitle);
@@ -210,7 +193,6 @@
         private System.Windows.Forms.Label label_StepTitle;
         private System.Windows.Forms.Button btn_Play;
         private System.Windows.Forms.Button btnSearch;
-        private System.Windows.Forms.Button btnNext;
         private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.Button btnAutoSearch;
     }

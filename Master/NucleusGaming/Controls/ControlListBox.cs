@@ -15,7 +15,6 @@ namespace Nucleus.Gaming
         public event Action<object, Control> SelectedChanged;
         public Size Offset { get; set; }
 
-
         public ControlListBox()
         {
             InitializeComponent();
@@ -57,7 +56,7 @@ namespace Nucleus.Gaming
             base.OnScroll(se);
         }
 
-        protected void UpdateSizes()
+        public void UpdateSizes()
         {
             //int barSize = SystemInformation.VerticalScrollBarWidth;
             for (int i = 0; i < this.Controls.Count; i++)
@@ -65,6 +64,14 @@ namespace Nucleus.Gaming
                 var con = Controls[i];
                 con.Width = this.Width;
             }
+        }
+
+        private int totalHeight;
+        private int border = 1;
+        public int Border
+        {
+            get { return border; }
+            set { border = value; }
         }
 
         protected override void OnControlAdded(ControlEventArgs e)
@@ -76,11 +83,6 @@ namespace Nucleus.Gaming
                 if (e.Control != null)
                 {
                     Control c = e.Control;
-                    if (!(c is IHighlightControl))
-                    {
-                        //throw new Exception("Control needs to be an IHighlightControl");
-                    }
-
                     c.Click += new EventHandler(c_Click);
                     if (c is IHighlightControl)
                     {
@@ -90,7 +92,10 @@ namespace Nucleus.Gaming
 
                     int index = this.Controls.IndexOf(c);
                     Size s = c.Size;
-                    c.Location = new Point(0, (s.Height * index) + (Offset.Height * index));
+
+                    c.Location = new Point(0, totalHeight);
+
+                    totalHeight += s.Height + border;
                 }
             }
         }

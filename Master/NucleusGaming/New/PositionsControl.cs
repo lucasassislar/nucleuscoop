@@ -12,25 +12,23 @@ using System.Windows.Forms;
 
 namespace Nucleus.Coop
 {
-    public partial class PositionsControl : UserControl, IUserInputForm
+    public partial class PositionsControl : UserInputControl
     {
-        public bool CanProceed
+        public override bool CanProceed
         {
             get
             {
                 return canProceed;
             }
         }
-        public string Title
+        public override string Title
         {
             get { return "Position Players"; }
         }
-        public bool CanPlay
+        public override bool CanPlay
         {
             get { return false; }
         }
-        public event Action Proceed;
-
 
         private bool canProceed;
 
@@ -39,9 +37,6 @@ namespace Nucleus.Coop
 
         // the factor to scale all screens to match the edit area
         private float scale;
-
-        // data for game configuration
-        private GameProfile profile;
 
         private Font playerFont;
         private Font playerTextFont;
@@ -62,9 +57,10 @@ namespace Nucleus.Coop
             InitializeComponent();
         }
 
-        public void Initialize(UserGameInfo game, GameProfile profile)
+        public override void Initialize(UserGameInfo game, GameProfile profile)
         {
-            this.profile = profile;
+            base.Initialize(game, profile);
+
             profile.PlayerData.Clear();// reset profile
 
             playerFont = new Font("Segoe UI", 40);
@@ -399,7 +395,7 @@ namespace Nucleus.Coop
                             PlayerInfo p = players[j];
                             if (p.screenIndex == i)
                             {
-                                p.editBounds = getDefaultBounds(j);
+                                p.editBounds = GetDefaultBounds(j);
                                 p.screenIndex = -1;
                             }
                         }
@@ -417,7 +413,7 @@ namespace Nucleus.Coop
                         dragging = true;
                         draggingIndex = i;
                         draggingOffset = new Point(r.X - e.X, r.Y - e.Y);
-                        Rectangle newBounds = getDefaultBounds(draggingIndex);
+                        Rectangle newBounds = GetDefaultBounds(draggingIndex);
                         profile.PlayerData[draggingIndex].editBounds = newBounds;
 
                         if (draggingOffset.X < -newBounds.Width ||
@@ -562,7 +558,7 @@ namespace Nucleus.Coop
                     else
                     {
                         // return to default position
-                        p.editBounds = getDefaultBounds(draggingIndex);
+                        p.editBounds = GetDefaultBounds(draggingIndex);
                         p.screenIndex = -1;
                     }
 
@@ -582,19 +578,15 @@ namespace Nucleus.Coop
                     if (allReady)
                     {
                         canProceed = true;
-                        if (Proceed != null)
-                        {
-                            Proceed();
-                        }
+                        OnCanPlayTrue();
                     }
-
 
                     Invalidate();
                 }
             }
         }
 
-        private Rectangle getDefaultBounds(int index)
+        private Rectangle GetDefaultBounds(int index)
         {
             float playersWidth = this.Width * 0.5f;
             float playerWidth = (playersWidth * 0.9f) / (float)profile.PlayerData.Count;
@@ -665,8 +657,5 @@ namespace Nucleus.Coop
             g.DrawString("Click on screen's top-left corner to change players on that screen", playerTextFont, Brushes.White, new PointF(20, 490));
             //g.DrawRectangle(Pens.Red, playersArea.X, playersArea.Y, playersArea.Width, playersArea.Height);
         }
-
-
-
     }
 }

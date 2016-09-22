@@ -13,16 +13,33 @@ using SplitTool.Controls;
 
 namespace Nucleus.Gaming
 {
-    public partial class PlayerOptionsControl : ControlListBox, IUserInputForm
+    public partial class PlayerOptionsControl : UserInputControl
     {
-        public PlayerOptionsControl()
+        private ControlListBox list;
+
+        public override bool CanProceed
         {
+            get { return true; }
         }
 
-        private GameProfile profile;
-        public void Initialize(UserGameInfo game, GameProfile profile)
+        public override bool CanPlay
         {
-            this.profile = profile;
+            get { return true; }
+        }
+
+        public override string Title
+        {
+            get { return "Player Options"; }
+        }
+
+        public PlayerOptionsControl()
+        {
+            list = new ControlListBox();
+        }
+
+        public override void Initialize(UserGameInfo game, GameProfile profile)
+        {
+            base.Initialize(game, profile);
             this.Controls.Clear();
 
             GameOption[] options = game.Game.Options;
@@ -42,7 +59,7 @@ namespace Nucleus.Gaming
                 cool.Description = opt.Description;
                 cool.Width = this.Width;
 
-                this.Controls.Add(cool);
+                list.Controls.Add(cool);
 
                 // Check the value type and add a control for it
                 if (opt.Value is bool)
@@ -109,11 +126,11 @@ namespace Nucleus.Gaming
                 }
             }
 
-            UpdateSizes();
-            if (Proceed != null)
-            {
-                Proceed();
-            }
+            list.Size = this.Size;
+            this.Controls.Add(list);
+
+            list.UpdateSizes();
+            OnCanPlayTrue();
         }
 
         private void ChangeOption(object tag, object value)
@@ -124,7 +141,7 @@ namespace Nucleus.Gaming
             profile.Options[sel.Key] = value;
         }
 
-        void box_SelectedValueChanged(object sender, EventArgs e)
+        private void box_SelectedValueChanged(object sender, EventArgs e)
         {
             ComboBox check = (ComboBox)sender;
             if (check.SelectedItem == null)
@@ -134,34 +151,16 @@ namespace Nucleus.Gaming
             ChangeOption(check.Tag, check.SelectedItem);
         }
 
-        void num_ValueChanged(object sender, EventArgs e)
+        private void num_ValueChanged(object sender, EventArgs e)
         {
             NumericUpDown check = (NumericUpDown)sender;
             ChangeOption(check.Tag, check.Value);
         }
 
-        void box_CheckedChanged(object sender, EventArgs e)
+        private void box_CheckedChanged(object sender, EventArgs e)
         {
             SizeableCheckbox check = (SizeableCheckbox)sender;
             ChangeOption(check.Tag, check.Checked);
-        }
-
-
-        public bool CanProceed
-        {
-            get { return true; }
-        }
-
-        public bool CanPlay
-        {
-            get { return true; }
-        }
-
-        public event Action Proceed;
-
-        public string Title
-        {
-            get { return "Player Options"; } 
         }
     }
 }

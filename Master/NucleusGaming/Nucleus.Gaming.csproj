@@ -163,7 +163,9 @@
     <Compile Include="New\ImageButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\IUserInputForm.cs" />
+    <Compile Include="New\UserInputControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="New\KeyboardPlayer.cs" />
     <Compile Include="New\PlayerCountControl.cs">
       <SubType>UserControl</SubType>
@@ -172,7 +174,7 @@
       <DependentUpon>PlayerCountControl.cs</DependentUpon>
     </Compile>
     <Compile Include="New\PlayerOptionsControl.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="New\PositionsControl.cs">
       <SubType>UserControl</SubType>

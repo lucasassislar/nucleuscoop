@@ -37,7 +37,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "PositionsForm";
-            this.Size = new System.Drawing.Size(523, 347);
+            this.Size = new System.Drawing.Size(640, 480);
             this.ResumeLayout(false);
 
         }

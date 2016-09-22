@@ -145,10 +145,13 @@ namespace Nucleus.Coop
 
             mft.EnumerateVolume(out mDict, new string[] { ".exe" });
 
-            progress += (1 / (float)toSearch.Count) / 2.0f;
+            float totalDiskPc = 1 / (float)toSearch.Count;
+            float halfDiskPc = totalDiskPc / 2.0f;
+
+            progress += halfDiskPc; // were half done
             UpdateProgress();
 
-            float increment = (1 / (float)toSearch.Count) / (float)mDict.Count;
+            float increment = halfDiskPc / (float)mDict.Count;
             foreach (KeyValuePair<UInt64, FileNameAndParentFrn> entry in mDict)
             {
                 if (closed)

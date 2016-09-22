@@ -51,7 +51,7 @@ namespace Nucleus.Gaming
             get { return supportsKeyboard; }
             set { supportsKeyboard = value; }
         }
-        public Type[] Steps
+        public Type[] AdditionalSteps
         {
             get
             {

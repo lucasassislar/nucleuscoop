@@ -38,6 +38,7 @@ Game.BinariesFolder = "binaries\\win32";
 Game.NeedsSteamEmulation = true;
 Game.LauncherTitle = "splashscreen";
 Game.SaveType = Nucleus.SaveType.INI;
+Game.SupportsPositioning = true;
 
 Game.Play = function () {
     Context.ModifySave = [

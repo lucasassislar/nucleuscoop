@@ -9,29 +9,28 @@ using System.Windows.Forms;
 
 namespace Nucleus.Gaming
 {
-    public partial class PlayerCountControl : UserControl, IUserInputForm
+    public partial class PlayerCountControl : UserInputControl
     {
+        private bool go;
+
+        public override bool CanProceed
+        {
+            get { return go; }
+        }
+        public override string Title
+        {
+            get { return "Player Count"; }
+        }
+
+        public override bool CanPlay
+        {
+            get { return false; }
+        }
+
         public PlayerCountControl()
         {
             InitializeComponent();
             this.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-        }
-
-        private bool go;
-
-        public bool CanProceed
-        {
-            get { return go; }
-        }
-        public string Title
-        {
-            get { return "Player Count"; }
-        }
-        public event Action Proceed;
-
-        public bool CanPlay
-        {
-            get { return false; }
         }
 
         private Button MkButton()
@@ -44,23 +43,17 @@ namespace Nucleus.Gaming
             return btn;
         }
 
-        void btn_Click(object sender, EventArgs e)
+        private void btn_Click(object sender, EventArgs e)
         {
             go = true;
 
             profile.PlayerCount = int.Parse(((Button)sender).Text);
-
-            if (Proceed != null)
-            {
-                Proceed();
-            }
+            OnCanPlayTrue();
         }
 
-        private GameProfile profile;
-
-        public void Initialize(UserGameInfo game, GameProfile profile)
+        public override void Initialize(UserGameInfo game, GameProfile profile)
         {
-            this.profile = profile;
+            base.Initialize(game, profile);
 
             this.Controls.Clear();
             go = false;
@@ -95,8 +88,5 @@ namespace Nucleus.Gaming
                 this.Controls.Add(btn);
             }
         }
-
-
-     
     }
 }

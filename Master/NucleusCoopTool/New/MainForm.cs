@@ -16,9 +16,12 @@ namespace Nucleus.Coop
 {
     public partial class MainForm : BaseForm
     {
+        private int currentStepIndex;
+        private bool formClosing;
+        private IGameHandler handler;
         private bool expanded = false;
 
-        private Size defaultSize = new Size(1070, 740);
+        private Size expandedSize = new Size(1070, 740);
         private Size startSize = new Size(275, 740);
 
         private GameManager gameManager;
@@ -30,10 +33,9 @@ namespace Nucleus.Coop
         private UserGameInfo currentGameInfo;
         private IGameInfo currentGame;
         private GameProfile currentProfile;
-        private Control currentStep;
-        private int currentStepIndex;
-        private IUserInputForm currentInputStep;
         private bool noGamesPresent;
+        private List<UserInputControl> stepsList;
+        private UserInputControl currentStep;
 
         private PlayerCountControl countControl;
         private PositionsControl positionsControl;
@@ -42,11 +44,24 @@ namespace Nucleus.Coop
         public MainForm()
         {
             InitializeComponent();
+            Size = startSize;
 
             controls = new Dictionary<UserGameInfo, GameControl>();
             gameManager = new GameManager();
 
-            this.Size = startSize;
+            countControl = new PlayerCountControl();
+            positionsControl = new PositionsControl();
+            optionsControl = new PlayerOptionsControl();
+
+            countControl.OnCanPlay += StepCanPlay;
+            positionsControl.OnCanPlay += StepCanPlay;
+            optionsControl.OnCanPlay += StepCanPlay;
+        }
+
+        private void Expand()
+        {
+            Size = expandedSize;
+            expanded = true;
         }
 
         public void RefreshGames()
@@ -132,24 +147,19 @@ namespace Nucleus.Coop
                 return;
             }
 
-            if (!expanded)
-            {
-                this.Size = defaultSize;
-                expanded = true;
-            }
+            Expand();
 
             panelGameName.Visible = true;
             label_StepTitle.Visible = true;
             StepPanel.Visible = true;
             btnBack.Visible = true;
-            btnNext.Visible = true;
 
             currentGame = currentGameInfo.Game;
 
             btn_Play.Enabled = false;
 
-            if (currentGame.Steps == null ||
-                currentStepIndex == currentGame.Steps.Length)
+            if (!currentGame.SupportsPositioning &&
+                currentGame.Options.Length == 0)
             {
                 // can play
                 btn_Play.Enabled = true;
@@ -158,7 +168,17 @@ namespace Nucleus.Coop
                 KillCurrentStep();
 
                 btnBack.Visible = false;
-                btnNext.Visible = false;
+            }
+
+            stepsList = new List<UserInputControl>();
+            if (currentGame.SupportsPositioning)
+            {
+                stepsList.Add(countControl);
+                stepsList.Add(positionsControl);
+            }
+            if (currentGame.Options.Length != 0)
+            {
+                stepsList.Add(optionsControl);
             }
 
             currentProfile = new GameProfile();
@@ -167,65 +187,58 @@ namespace Nucleus.Coop
             this.label_GameTitle.Text = currentGame.GameName;
             this.pic_Game.Image = currentGameInfo.Icon;
 
-            Type[] steps = currentGame.Steps;
-            if (steps != null && steps.Length > 0)
-            {
-                GoToStep(0);
-            }
+            GoToStep(0);
         }
+
+        private void EnablePlay()
+        {
+            btn_Play.Enabled = true;
+        }
+
+        private void StepCanPlay(UserControl obj)
+        {
+            if (currentStepIndex + 1 > stepsList.Count - 1)
+            {
+                EnablePlay();
+                return;
+            }
+
+            GoToStep(currentStepIndex + 1);
+        }
+
 
         private void KillCurrentStep()
         {
-            if (currentStep != null)
-            {
-                currentStep.Dispose();
-                this.StepPanel.Controls.Clear();
-            }
+            this.StepPanel.Controls.Clear();
         }
-
 
         private void GoToStep(int step)
         {
             btnBack.Enabled = step > 0;
 
-            currentStepIndex = step;
-            if (step >= currentGame.Steps.Length)
+            if (step >= stepsList.Count - 1)
             {
-                btnNext.Enabled = false;
-                return;
+                if (step >= stepsList.Count)
+                {
+                    return;
+                }
             }
 
             KillCurrentStep();
 
-            Type[] steps = currentGame.Steps;
-
-            Type s = steps[step];
-            currentStep = (Control)Activator.CreateInstance(s);
-            this.StepPanel.Controls.Add(currentStep);
-
+            currentStepIndex = step;
+            currentStep = stepsList[step];
             currentStep.Size = StepPanel.Size;
 
-            currentInputStep = (IUserInputForm)currentStep;
-            currentInputStep.Proceed += inputs_Proceed;
-            currentInputStep.Initialize(currentGameInfo, currentProfile);
-
-            label_StepTitle.Text = currentInputStep.Title;
-
-            btnNext.Enabled = currentInputStep.CanPlay;
-        }
-
-        void inputs_Proceed()
-        {
-            currentStepIndex++;
-            GoToStep(currentStepIndex);
-
-            if (currentStepIndex == currentGame.Steps.Length ||
-                currentInputStep.CanPlay)
+            if (currentStep.Profile != currentProfile)// dont reinitialize, user is coming back
             {
-                // can play
-                btn_Play.Enabled = true;
-                btn_Play.Visible = true;
+                currentStep.Initialize(currentGameInfo, currentProfile);
             }
+
+            StepPanel.Controls.Add(currentStep);
+            currentStep.Size = StepPanel.Size; // for some reason this line must exist or the PositionsControlg et messed up
+
+            label_StepTitle.Text = currentStep.Title;
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
@@ -234,9 +247,6 @@ namespace Nucleus.Coop
 
             formClosing = true;
         }
-
-        private bool formClosing;
-        private IGameHandler handler;
 
         private void btn_Play_Click(object sender, EventArgs e)
         {
@@ -296,7 +306,8 @@ namespace Nucleus.Coop
 
         private void arrow_Next_Click(object sender, EventArgs e)
         {
-
+            currentStepIndex = Math.Min(currentStepIndex++, stepsList.Count - 1);
+            GoToStep(currentStepIndex);
         }
 
         private void btnSearch_Click(object sender, EventArgs e)

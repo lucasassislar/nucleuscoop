@@ -8,11 +8,11 @@ namespace Nucleus.Gaming
     public interface IGameInfo
     {
         /// <summary>
-        /// A reference to the types used to create the 
-        /// form steps needed for the user to successfully
-        /// start the game
+        /// An array of types of IUserInputForm controls
+        /// that will be used to get information from the user
+        /// and start the game
         /// </summary>
-        Type[] Steps { get; }
+        Type[] AdditionalSteps { get; }
 
         /// <summary>
         /// The game's executable name in lower case
