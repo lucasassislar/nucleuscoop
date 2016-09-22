@@ -46,7 +46,7 @@ Game.SupportsPositioning = true;
 
 Game.Play = function () {
     Context.ModifySave = [
-        new Nucleus.IniSaveInfo("SystemSettings", "WindowedFullscreen", false),
+        new Nucleus.IniSaveInfo("SystemSettings", "WindowedFullscreen", Context.IsFullscreen),
         new Nucleus.IniSaveInfo("SystemSettings", "ResX", Context.Width),
         new Nucleus.IniSaveInfo("SystemSettings", "ResY", Context.Height),
         new Nucleus.IniSaveInfo("SystemSettings", "Fullscreen", false),
