@@ -1,0 +1,3 @@
+[submodule "Submodules/nukeupdater"]
+	path = Submodules/nukeupdater
+	url = https://github.com/lucasassislar/nukeupdater
