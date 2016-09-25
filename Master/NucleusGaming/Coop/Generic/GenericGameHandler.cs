@@ -201,7 +201,7 @@ namespace Nucleus.Gaming
                 GenericContext context = gen.CreateContext(profile, player, this);
                 context.PlayerID = i;
                 context.IsFullscreen = isFullscreen;
-                context.IsKeyboardPlayer = context.SupportsKeyboard && i == (int)(double)profile.Options["KeyboardPlayer"];
+                context.IsKeyboardPlayer = context.SupportsKeyboard && i == ((KeyboardPlayer)profile.Options["KeyboardPlayer"]).Value;
                 gen.PrePlay(context);
 
                 string saveFile = context.SavePath;
@@ -266,7 +266,7 @@ namespace Nucleus.Gaming
 
                 byte[] xdata = null;
 
-                if (context.SupportsKeyboard && i == (int)(double)profile.Options["KeyboardPlayer"])
+                if (context.SupportsKeyboard && i == ((KeyboardPlayer)profile.Options["KeyboardPlayer"]).Value)
                 {
                     // TODO: need to make an xinput that answers to no gamepad?
                     xdata = Properties.Resources.xinput4;
@@ -560,8 +560,8 @@ namespace Nucleus.Gaming
                                 data.HWND = new HwndObject(data.Process.MainWindowHandle);
                                 Point pos = data.HWND.Location;
 
-                                if (String.IsNullOrEmpty(data.HWND.Title) || 
-                                    pos.X == -32000 || 
+                                if (String.IsNullOrEmpty(data.HWND.Title) ||
+                                    pos.X == -32000 ||
                                     data.HWND.Title.ToLower() == gen.LauncherTitle.ToLower())
                                 {
                                     data.HWNDRetry = true;
