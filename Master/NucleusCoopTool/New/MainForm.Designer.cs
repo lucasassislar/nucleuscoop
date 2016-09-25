@@ -38,6 +38,7 @@
             this.btnSearch = new System.Windows.Forms.Button();
             this.btnBack = new System.Windows.Forms.Button();
             this.btnAutoSearch = new System.Windows.Forms.Button();
+            this.btnNext = new System.Windows.Forms.Button();
             this.panelGameName.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Game)).BeginInit();
             this.SuspendLayout();
@@ -91,6 +92,7 @@
             this.list_Games.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.list_Games.AutoScroll = true;
+            this.list_Games.Border = 1;
             this.list_Games.Location = new System.Drawing.Point(12, 12);
             this.list_Games.Name = "list_Games";
             this.list_Games.Offset = new System.Drawing.Size(0, 2);
@@ -159,11 +161,25 @@
             this.btnAutoSearch.UseVisualStyleBackColor = true;
             this.btnAutoSearch.Click += new System.EventHandler(this.btnAutoSearch_Click);
             // 
+            // btnNext
+            // 
+            this.btnNext.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNext.Location = new System.Drawing.Point(945, 101);
+            this.btnNext.Name = "btnNext";
+            this.btnNext.Size = new System.Drawing.Size(97, 35);
+            this.btnNext.TabIndex = 11;
+            this.btnNext.Text = "N E X T";
+            this.btnNext.UseVisualStyleBackColor = true;
+            this.btnNext.Visible = false;
+            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1054, 701);
+            this.Controls.Add(this.btnNext);
             this.Controls.Add(this.btnAutoSearch);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btnSearch);
@@ -195,5 +211,6 @@
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.Button btnAutoSearch;
+        private System.Windows.Forms.Button btnNext;
     }
 }

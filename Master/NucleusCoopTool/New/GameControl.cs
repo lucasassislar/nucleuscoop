@@ -77,6 +77,9 @@ namespace Nucleus.Coop
             this.BackColor = Color.FromArgb(70, 70, 70);
         }
 
-        
+        public override string ToString()
+        {
+            return Text;
+        }
     }
 }

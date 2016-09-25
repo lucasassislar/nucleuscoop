@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Nucleus.Gaming
 {
+    // This class is a holder for the GenericGameInfo class. It doesn't implement the IGenericGameInfo
+    // because some of the elements are implemented differently to work with the JS engine
+    // Comments can be found on the original class if no specific feature is implemented here
     public class GenericContext
     {
         private SaveInfo[] modifySave;
@@ -25,6 +28,13 @@ namespace Nucleus.Gaming
         private bool needsSteamEmulation;
         private string launcherExe;
         private string launcherTitle;
+        private bool hideTaskbar;
+
+        public bool HideTaskbar
+        {
+            get { return hideTaskbar; }
+            set { hideTaskbar = value; }
+        }
 
         public bool SymlinkExe
         {
@@ -38,18 +48,6 @@ namespace Nucleus.Gaming
             set { supportsKeyboard = value; }
         }
 
-        public Type[] Steps
-        {
-            get
-            {
-                return new Type[]
-                {
-                    typeof(PlayerCountControl),
-                    typeof(PositionsControl),
-                    typeof(PlayerOptionsControl)
-                };
-            }
-        }
         public string[] ExecutableContext
         {
             get { return executableContext; }
@@ -154,11 +152,11 @@ namespace Nucleus.Gaming
         public bool IsKeyboardPlayer { get; set; }
         public int Width
         {
-            get { return pInfo.monitorBounds.Width; }
+            get { return pInfo.MonitorBounds.Width; }
         }
         public int Height
         {
-            get { return pInfo.monitorBounds.Height; }
+            get { return pInfo.MonitorBounds.Height; }
         }
         public int PlayerID { get; set; }
         public bool IsFullscreen { get; set; }

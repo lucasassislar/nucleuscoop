@@ -92,6 +92,8 @@ namespace Nucleus.Coop
                 con.Text = "No games";
                 this.list_Games.Controls.Add(con);
             }
+
+            GameManager.Instance.SaveUserProfile();
         }
 
         public void NewUserGame(UserGameInfo game)
@@ -114,9 +116,9 @@ namespace Nucleus.Coop
             controls.Add(game, con);
 
             con.Text = game.Game.GameName;
-            ThreadPool.QueueUserWorkItem(GetIcon, game);
-
             this.list_Games.Controls.Add(con);
+
+            ThreadPool.QueueUserWorkItem(GetIcon, game);
         }
 
         protected override void OnShown(EventArgs e)
@@ -195,7 +197,7 @@ namespace Nucleus.Coop
             btn_Play.Enabled = true;
         }
 
-        private void StepCanPlay(UserControl obj)
+        private void StepCanPlay(UserControl obj, bool autoProceed)
         {
             if (currentStepIndex + 1 > stepsList.Count - 1)
             {
@@ -203,9 +205,20 @@ namespace Nucleus.Coop
                 return;
             }
 
-            GoToStep(currentStepIndex + 1);
+            if (autoProceed)
+            {
+                GoToStep(currentStepIndex + 1);
+            }
+            else
+            {
+                btnNext.Visible = true;
+            }
         }
 
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            GoToStep(currentStepIndex + 1);
+        }
 
         private void KillCurrentStep()
         {
@@ -215,13 +228,9 @@ namespace Nucleus.Coop
         private void GoToStep(int step)
         {
             btnBack.Enabled = step > 0;
-
-            if (step >= stepsList.Count - 1)
+            if (step >= stepsList.Count)
             {
-                if (step >= stepsList.Count)
-                {
-                    return;
-                }
+                return;
             }
 
             KillCurrentStep();
@@ -229,6 +238,9 @@ namespace Nucleus.Coop
             currentStepIndex = step;
             currentStep = stepsList[step];
             currentStep.Size = StepPanel.Size;
+            currentStep.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+
+            btnNext.Visible = currentStep.CanProceed && step != stepsList.Count - 1;
 
             if (currentStep.Profile != currentProfile)// dont reinitialize, user is coming back
             {
@@ -236,7 +248,7 @@ namespace Nucleus.Coop
             }
 
             StepPanel.Controls.Add(currentStep);
-            currentStep.Size = StepPanel.Size; // for some reason this line must exist or the PositionsControlg et messed up
+            currentStep.Size = StepPanel.Size; // for some reason this line must exist or the PositionsControl get messed up
 
             label_StepTitle.Text = currentStep.Title;
         }
@@ -246,16 +258,22 @@ namespace Nucleus.Coop
             base.OnFormClosed(e);
 
             formClosing = true;
+            if (handler != null)
+            {
+                handler.End();
+            }
         }
 
         private void btn_Play_Click(object sender, EventArgs e)
         {
             if (handler != null)
             {
+                handler.End();
+                btn_Play.Text = "P L A Y";
                 return;
             }
 
-            btn_Play.Enabled = false;
+            btn_Play.Text = "S T O P";
 
             handler = gameManager.MakeHandler(currentGame);
             handler.Initialize(currentGameInfo, currentProfile);
@@ -278,6 +296,7 @@ namespace Nucleus.Coop
         private void handler_Ended()
         {
             handler = null;
+            btn_Play.Enabled = true;
         }
 
         private void UpdateGameManager(object state)
@@ -358,5 +377,7 @@ namespace Nucleus.Coop
         {
             form = null;
         }
+
+
     }
 }

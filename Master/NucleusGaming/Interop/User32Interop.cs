@@ -7,8 +7,7 @@ using System.Text;
 namespace Nucleus.Gaming.Interop
 {
     public static class User32Interop
-    {
-        /// <summary>
+    { /// <summary>
         /// No documentation found
         /// </summary>
         /// <param name="className"></param>
@@ -17,14 +16,14 @@ namespace Nucleus.Gaming.Interop
         [DllImport("user32.dll")]
         public static extern IntPtr FindWindow(string className, string windowText);
 
-        /// <summary>
-        /// No documentation found
-        /// </summary>
-        /// <param name="hWnd"></param>
-        /// <param name="nIndex"></param>
-        /// <returns></returns>
+        [DllImport("user32.dll")]
+        public static extern IntPtr FindWindowEx(IntPtr parentHwnd, IntPtr childAfterHwnd, IntPtr className, string windowText);
+
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint GetWindowLong(IntPtr hWnd, int nIndex);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetDesktopWindow();
 
         // DLL libraries used to manage hotkeys
         [DllImport("user32.dll")]
@@ -42,6 +41,15 @@ namespace Nucleus.Gaming.Interop
         public static extern IntPtr SendMessage(IntPtr hWnd, Int32 Msg, IntPtr wParam, IntPtr lParam);
 
         /// <summary>
+        /// Brings the thread that created the specified window into the foreground and activates the window. Keyboard input is
+        /// directed to the window, and various visual cues are changed for the user. The system assigns a slightly higher
+        /// priority to the thread that created the foreground window than it does to other threads.
+        /// <para>See for https://msdn.microsoft.com/en-us/library/windows/desktop/ms633539%28v=vs.85%29.aspx more information.</para>
+        /// </summary>
+        [DllImport("user32.dll")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        /// <summary>
         /// Changes an attribute of the specified window. The function also sets the 32-bit (long) value at the specified offset into the extra window memory.
         /// </summary>
         /// <param name="hWnd">A handle to the window and, indirectly, the class to which the window belongs..</param>
@@ -52,48 +60,11 @@ namespace Nucleus.Gaming.Interop
         [DllImport("user32.dll")]
         public static extern int SetWindowLong(IntPtr hWnd, int nIndex, uint dwNewLong);
 
+        /// <summary>Shows a Window</summary>
+        [DllImport("user32.dll")]
+        public static extern int ShowWindow(IntPtr hWnd, WindowShowStyle command);
 
         [DllImport("user32.dll")]
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
-        /// <summary>Shows a Window</summary>
-        /// <remarks>
-        /// <para>To perform certain special effects when showing or hiding a 
-        /// window, use AnimateWindow.</para>
-        ///<para>The first time an application calls ShowWindow, it should use 
-        ///the WinMain function's nCmdShow parameter as its nCmdShow parameter. 
-        ///Subsequent calls to ShowWindow must use one of the values in the 
-        ///given list, instead of the one specified by the WinMain function's 
-        ///nCmdShow parameter.</para>
-        ///<para>As noted in the discussion of the nCmdShow parameter, the 
-        ///nCmdShow value is ignored in the first call to ShowWindow if the 
-        ///program that launched the application specifies startup information 
-        ///in the structure. In this case, ShowWindow uses the information 
-        ///specified in the STARTUPINFO structure to show the window. On 
-        ///subsequent calls, the application must call ShowWindow with nCmdShow 
-        ///set to SW_SHOWDEFAULT to use the startup information provided by the 
-        ///program that launched the application. This behavior is designed for 
-        ///the following situations: </para>
-        ///<list type="">
-        ///    <item>Applications create their main window by calling CreateWindow 
-        ///    with the WS_VISIBLE flag set. </item>
-        ///    <item>Applications create their main window by calling CreateWindow 
-        ///    with the WS_VISIBLE flag cleared, and later call ShowWindow with the 
-        ///    SW_SHOW flag set to make it visible.</item>
-        ///</list></remarks>
-        /// <param name="hWnd">Handle to the window.</param>
-        /// <param name="nCmdShow">Specifies how the window is to be shown. 
-        /// This parameter is ignored the first time an application calls 
-        /// ShowWindow, if the program that launched the application provides a 
-        /// STARTUPINFO structure. Otherwise, the first time ShowWindow is called, 
-        /// the value should be the value obtained by the WinMain function in its 
-        /// nCmdShow parameter. In subsequent calls, this parameter can be one of 
-        /// the WindowShowStyle members.</param>
-        /// <returns>
-        /// If the window was previously visible, the return value is nonzero. 
-        /// If the window was previously hidden, the return value is zero.
-        /// </returns>
-        [DllImport("user32.dll")]
-        public static extern int ShowWindow(int hwnd, WindowShowStyle command);
     }
 }

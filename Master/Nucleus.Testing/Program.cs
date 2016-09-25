@@ -23,13 +23,13 @@ namespace Nucleus.Testing
             profile.InitializeDefault(borderlands2);
 
             PlayerInfo p1 = new PlayerInfo();
-            p1.monitorBounds = new Rectangle(0, 0, 960, 540);
-            p1.screenIndex = 0;
+            p1.MonitorBounds = new Rectangle(0, 0, 960, 540);
+            p1.ScreenIndex = 0;
             profile.PlayerData.Add(p1);
 
             PlayerInfo p2 = new PlayerInfo();
-            p2.monitorBounds = new Rectangle(0, 540, 960, 540);
-            p2.screenIndex = 0;
+            p2.MonitorBounds = new Rectangle(0, 540, 960, 540);
+            p2.ScreenIndex = 0;
             profile.PlayerData.Add(p2);
 
             borderInfo.Profiles.Add(profile);

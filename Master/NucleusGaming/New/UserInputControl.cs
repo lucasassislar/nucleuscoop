@@ -18,18 +18,18 @@ namespace Nucleus.Gaming
 
         public GameProfile Profile { get { return profile; } }
 
-        public event Action<UserControl> OnCanPlay;
+        public event Action<UserControl, bool> OnCanPlay;
 
         public virtual void Initialize(UserGameInfo game, GameProfile profile)
         {
             this.profile = profile;
         }
 
-        protected virtual void OnCanPlayTrue()
+        protected virtual void OnCanPlayTrue(bool autoProceed)
         {
             if (OnCanPlay != null)
             {
-                OnCanPlay(this);
+                OnCanPlay(this, autoProceed);
             }
         }
     }

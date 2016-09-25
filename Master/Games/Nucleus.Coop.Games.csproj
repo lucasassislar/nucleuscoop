@@ -140,10 +140,13 @@
     <None Include="Left4Dead2\resources\backup\swampfever.JPG" />
     <None Include="Left4Dead2\resources\backup\theparish.jpg" />
     <None Include="games\Borderlands.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="games\Borderlands2.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="games\BorderlandsPreSequel.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Left4Dead2\resources\bloodharvest.jpg" />
     <Content Include="Left4Dead2\resources\crashcourse.jpg" />

@@ -10,6 +10,7 @@ using Nucleus.Gaming;
 using Nucleus.Gaming.Controls;
 using System.Collections;
 using SplitTool.Controls;
+using System.Reflection;
 
 namespace Nucleus.Gaming
 {
@@ -34,14 +35,17 @@ namespace Nucleus.Gaming
 
         public PlayerOptionsControl()
         {
-            list = new ControlListBox();
         }
 
         public override void Initialize(UserGameInfo game, GameProfile profile)
         {
             base.Initialize(game, profile);
+
             this.Controls.Clear();
 
+            int wid = 200;
+
+            list = new ControlListBox();
             GameOption[] options = game.Game.Options;
             Dictionary<string, object> vals = profile.Options;
             for (int j = 0; j < options.Length; j++)
@@ -91,7 +95,7 @@ namespace Nucleus.Gaming
 
                     num.Value = value;
 
-                    num.Width = 150;
+                    num.Width = wid;
                     num.Height = 40;
                     num.Left = cool.Width - num.Width - border;
                     num.Top = (cool.Height / 2) - (num.Height / 2);
@@ -114,7 +118,32 @@ namespace Nucleus.Gaming
                     }
                     box.SelectedIndex = box.Items.IndexOf(value);
 
-                    box.Width = 150;
+                    box.Width = wid;
+                    box.Height = 40;
+                    box.Left = cool.Width - box.Width - border;
+                    box.Top = (cool.Height / 2) - (box.Height / 2);
+                    box.Anchor = AnchorStyles.Right;
+                    cool.AddControl(box, false);
+
+                    box.Tag = opt;
+                    box.SelectedValueChanged += box_SelectedValueChanged;
+                }
+                else if (opt.Value is GameOptionValue)
+                {
+                    ComboBox box = new ComboBox();
+                    int border = 10;
+
+                    GameOptionValue value = (GameOptionValue)val;
+                    PropertyInfo[] props = value.GetType().GetProperties(BindingFlags.Public | BindingFlags.Static);
+
+                    for (int i = 0; i < props.Length; i++)
+                    {
+                        PropertyInfo prop = props[i];
+                        box.Items.Add(prop.GetValue(null, null));
+                    }
+                    box.SelectedIndex = box.Items.IndexOf(value);
+
+                    box.Width = wid;
                     box.Height = 40;
                     box.Left = cool.Width - box.Width - border;
                     box.Top = (cool.Height / 2) - (box.Height / 2);
@@ -130,15 +159,14 @@ namespace Nucleus.Gaming
             this.Controls.Add(list);
 
             list.UpdateSizes();
-            OnCanPlayTrue();
+            OnCanPlayTrue(false);
         }
 
         private void ChangeOption(object tag, object value)
         {
             // boxing but wahtever
-            var sel = (KeyValuePair<string, GameOption>)tag;
-            GameOption option = sel.Value;
-            profile.Options[sel.Key] = value;
+            GameOption option = (GameOption)tag;
+            profile.Options[option.Key] = value;
         }
 
         private void box_SelectedValueChanged(object sender, EventArgs e)

@@ -12,8 +12,18 @@ namespace Nucleus.Gaming
 {
     public partial class ControlListBox : Panel
     {
+        private int totalHeight;
+        private int border = 1;
+
         public event Action<object, Control> SelectedChanged;
         public Size Offset { get; set; }
+        public Control SelectedControl { get; protected set; }
+
+        public int Border
+        {
+            get { return border; }
+            set { border = value; }
+        }
 
         public ControlListBox()
         {
@@ -25,12 +35,7 @@ namespace Nucleus.Gaming
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
-
-            for (int i = 0; i < this.Controls.Count; i++)
-            {
-                var con = Controls[i];
-                con.Width = this.Width;
-            }
+            UpdateSizes();
         }
 
         protected override void OnScroll(ScrollEventArgs se)
@@ -58,49 +63,44 @@ namespace Nucleus.Gaming
 
         public void UpdateSizes()
         {
-            //int barSize = SystemInformation.VerticalScrollBarWidth;
+            totalHeight = 0;
             for (int i = 0; i < this.Controls.Count; i++)
             {
                 var con = Controls[i];
                 con.Width = this.Width;
-            }
-        }
 
-        private int totalHeight;
-        private int border = 1;
-        public int Border
-        {
-            get { return border; }
-            set { border = value; }
+                con.Location = new Point(0, totalHeight);
+                totalHeight += con.Height + border;
+            }
         }
 
         protected override void OnControlAdded(ControlEventArgs e)
         {
             base.OnControlAdded(e);
 
-            if (!this.DesignMode)
+            if (!this.DesignMode && e.Control != null)
             {
-                if (e.Control != null)
+                Control c = e.Control;
+                c.Click += new EventHandler(c_Click);
+                if (c is IHighlightControl)
                 {
-                    Control c = e.Control;
-                    c.Click += new EventHandler(c_Click);
-                    if (c is IHighlightControl)
-                    {
-                        c.MouseMove += new MouseEventHandler(c_MouseMove);
-                        c.MouseLeave += new EventHandler(c_MouseLeave);
-                    }
-
-                    int index = this.Controls.IndexOf(c);
-                    Size s = c.Size;
-
-                    c.Location = new Point(0, totalHeight);
-
-                    totalHeight += s.Height + border;
+                    c.MouseMove += new MouseEventHandler(c_MouseMove);
+                    c.MouseLeave += new EventHandler(c_MouseLeave);
                 }
+
+                int index = this.Controls.IndexOf(c);
+                Size s = c.Size;
+
+                c.Location = new Point(0, totalHeight);
+                totalHeight += s.Height + border;
             }
         }
 
-        public Control SelectedControl { get; protected set; }
+        protected override void OnControlRemoved(ControlEventArgs e)
+        {
+            base.OnControlRemoved(e);
+            UpdateSizes();
+        }
 
         public void Deselect()
         {
@@ -108,7 +108,7 @@ namespace Nucleus.Gaming
             c_Click(this, EventArgs.Empty);
         }
 
-        void c_MouseMove(object sender, MouseEventArgs e)
+        private void c_MouseMove(object sender, MouseEventArgs e)
         {
             Control parent = (Control)sender;
 
@@ -118,7 +118,8 @@ namespace Nucleus.Gaming
                 high.SoftHighlight();
             }
         }
-        void c_MouseLeave(object sender, EventArgs e)
+
+        private void c_MouseLeave(object sender, EventArgs e)
         {
             Control parent = (Control)sender;
 
@@ -165,7 +166,5 @@ namespace Nucleus.Gaming
 
             this.OnClick(e);
         }
-
-
     }
 }

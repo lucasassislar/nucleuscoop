@@ -31,7 +31,8 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>914e8cc6</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -212,7 +213,6 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -312,7 +312,6 @@
     <None Include="Resources\no_keyboard.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FodyWeavers.xml" />
     <None Include="StartGame.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -325,12 +324,10 @@
     <Folder Include="UI\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Fody.1.29.3\build\portable-net+sl+win+wpa+wp\Fody.targets" Condition="Exists('..\packages\Fody.1.29.3\build\portable-net+sl+win+wpa+wp\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Fody.1.29.3\build\portable-net+sl+win+wpa+wp\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.1.29.3\build\portable-net+sl+win+wpa+wp\Fody.targets'))" />
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -126,6 +126,7 @@
       <DependentUpon>TextMessageBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Coop\GameOption.cs" />
+    <Compile Include="Coop\GameOptionValue.cs" />
     <Compile Include="Coop\GameProfile.cs" />
     <Compile Include="Coop\Generic\GenericContext.cs" />
     <Compile Include="Coop\Generic\GenericGameInfo.cs" />
@@ -191,7 +192,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Coop\Generic\ScreenData.cs" />
+    <Compile Include="Coop\Generic\ProcessData.cs" />
     <Compile Include="Util\CmdUtil.cs" />
     <Compile Include="Util\FileUtil.cs" />
     <Compile Include="Util\FormUtil.cs" />

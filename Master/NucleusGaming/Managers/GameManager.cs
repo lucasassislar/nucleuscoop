@@ -185,10 +185,6 @@ namespace Nucleus.Gaming
         }
 
         #region Initialize
-        public void End()
-        {
-            //User32.ShowTaskBar();
-        }
 
         private string GetAppDataPath()
         {

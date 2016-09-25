@@ -17,8 +17,19 @@ namespace Nucleus.Gaming
 {
     public class GenericGameHandler : IGameHandler
     {
+        private UserGameInfo userGame;
+        private GameProfile profile;
+        private GenericGameInfo gen;
+        private Dictionary<string, string> data;
+
+        private int timer;
+        private int exited;
+        private List<Process> attached = new List<Process>();
+
         protected bool hasEnded;
         protected int timerInterval = 1000;
+
+        public event Action Ended;
 
         public virtual bool HasEnded
         {
@@ -30,17 +41,21 @@ namespace Nucleus.Gaming
             get { return timerInterval; }
         }
 
-        public event Action Ended;
-
         public void End()
         {
-            hasEnded = true;
-        }
+            if (hidetaskbar)
+            {
+                User32.ShowTaskBar();
+            }
 
-        private UserGameInfo userGame;
-        private GameProfile profile;
-        private GenericGameInfo gen;
-        private Dictionary<string, string> data;
+            hasEnded = true;
+            GameManager.Instance.ExecuteBackup(this.userGame.Game);
+
+            if (Ended != null)
+            {
+                Ended();
+            }
+        }
 
         public string GetFolder(Folder folder)
         {
@@ -91,7 +106,7 @@ namespace Nucleus.Gaming
             return end;
         }
 
-        static string GetRootFolder(string path)
+        private static string GetRootFolder(string path)
         {
             if (string.IsNullOrEmpty(path))
             {
@@ -117,6 +132,8 @@ namespace Nucleus.Gaming
             return path;
         }
 
+        private bool hidetaskbar;
+
         public string Play()
         {
             List<PlayerInfo> players = profile.PlayerData;
@@ -129,6 +146,7 @@ namespace Nucleus.Gaming
 
             int gamePadId = 0;
             bool first = true;
+            hidetaskbar = false;
 
             for (int i = 0; i < players.Count; i++)
             {
@@ -143,14 +161,14 @@ namespace Nucleus.Gaming
                             return "";
                         }
                         Thread.Sleep(100);
-                        if (before.screenData.KilledMutexes)
+                        if (before.ProcessData.KilledMutexes)
                         {
                             break;
                         }
                     }
                 }
 
-                Rectangle playerBounds = player.monitorBounds;
+                Rectangle playerBounds = player.MonitorBounds;
 
                 // find the monitor that has this screen
                 Screen owner = null;
@@ -252,6 +270,7 @@ namespace Nucleus.Gaming
                 {
                     // TODO: need to make an xinput that answers to no gamepad?
                     xdata = Properties.Resources.xinput4;
+                    player.IsKeyboardPlayer = true;
                 }
                 else
                 {
@@ -281,6 +300,7 @@ namespace Nucleus.Gaming
                     str.Write(xdata, 0, xdata.Length);
                 }
 
+                Process proc;
                 if (context.NeedsSteamEmulation)
                 {
                     string steamEmu = GameManager.Instance.ExtractSteamEmu();
@@ -302,7 +322,6 @@ namespace Nucleus.Gaming
                     emu.IniWriteValue("Launcher", "InjectDll", "0");
                     emu.IniWriteValue("SmartSteamEmu", "AppId", context.SteamID);
 
-                    Process proc;
                     if (context.KillMutex.Length > 0)
                     {
                         // to kill the mutexes we need to orphanize the process
@@ -315,12 +334,10 @@ namespace Nucleus.Gaming
                         proc = Process.Start(startInfo);
                     }
 
-                    player.Process = proc;
                     player.SteamEmu = true;
                 }
                 else
                 {
-                    Process proc;
                     if (context.KillMutex.Length > 0)
                     {
                         proc = Process.GetProcessById(StartGameUtil.StartGame(exePath, startArgs));
@@ -335,6 +352,7 @@ namespace Nucleus.Gaming
                         startInfo.WorkingDirectory = Path.GetDirectoryName(exePath);
                         proc = Process.Start(startInfo);
                     }
+
                     if (proc == null)
                     {
                         for (int times = 0; times < 200; times++)
@@ -368,24 +386,33 @@ namespace Nucleus.Gaming
                     {
                         attached.Add(proc);
                     }
-                    player.Process = proc;
                 }
 
-                ScreenData data = new ScreenData();
+                ProcessData data = new ProcessData(proc);
+
                 data.Position = new Point(playerBounds.X, playerBounds.Y);
                 data.Size = new Size(playerBounds.Width, playerBounds.Height);
                 data.KilledMutexes = context.KillMutex.Length == 0;
-                player.screenData = data;
+                player.ProcessData = data;
+
+                if (first)
+                {
+                    if (context.HideTaskbar)
+                    {
+                        hidetaskbar = true;
+                    }
+                }
 
                 first = false;
             }
 
+            if (hidetaskbar)
+            {
+                User32.HideTaskbar();
+            }
+
             return string.Empty;
         }
-
-        private int timer;
-        private int exited;
-        private List<Process> attached = new List<Process>();
 
         public void Update(int delayMS)
         {
@@ -401,14 +428,17 @@ namespace Nucleus.Gaming
             for (int i = 0; i < players.Count; i++)
             {
                 PlayerInfo p = players[i];
-                if (p.screenData == null || p.Process == null)
+                ProcessData data = p.ProcessData;
+                if (data == null)
                 {
                     continue;
                 }
 
                 if (p.SteamEmu)
                 {
-                    List<int> children = ProcessUtil.GetChildrenProcesses(p.Process);
+                    List<int> children = ProcessUtil.GetChildrenProcesses(data.Process);
+
+                    // catch the game process, that was spawned from Smart Steam Emu
                     if (children.Count > 0)
                     {
                         for (int j = 0; j < children.Count; j++)
@@ -427,45 +457,52 @@ namespace Nucleus.Gaming
                                 continue;
                             }
 
-                            p.Process = child;
+                            data.AssignProcess(child);
                             p.SteamEmu = child.ProcessName.Contains("SmartSteamLoader") || child.ProcessName.Contains("cmd");
                         }
                     }
                 }
                 else
                 {
-                    ScreenData data = p.screenData;
-
-                    if (data.Set)
+                    if (data.Setted)
                     {
-                        if (p.Process.HasExited)
+                        if (data.Process.HasExited)
                         {
                             exited++;
                             continue;
                         }
 
-                        if (!p.screenData.KilledMutexes && gen.KillMutex.Length > 0)
+                        if (!p.ProcessData.KilledMutexes && gen.KillMutex.Length > 0)
                         {
-                            StartGameUtil.KillMutex(p.Process, gen.KillMutex);
-                            p.screenData.KilledMutexes = true;
+                            StartGameUtil.KillMutex(data.Process, gen.KillMutex);
+                            p.ProcessData.KilledMutexes = true;
                         }
 
-                        uint lStyle = User32Interop.GetWindowLong(data.HWND.Hwnd, User32_WS.GWL_STYLE);
+                        uint lStyle = User32Interop.GetWindowLong(data.HWND.NativePtr, User32_WS.GWL_STYLE);
                         if (lStyle != data.RegLong)
                         {
                             uint toRemove = User32_WS.WS_CAPTION;
                             lStyle = lStyle & (~toRemove);
 
-                            User32Interop.SetWindowLong(data.HWND.Hwnd, User32_WS.GWL_STYLE, lStyle);
+                            User32Interop.SetWindowLong(data.HWND.NativePtr, User32_WS.GWL_STYLE, lStyle);
                             data.RegLong = lStyle;
                             data.HWND.Location = data.Position;
+                        }
+
+                        if (!data.SettedKeyboard)
+                        {
+                            if (p.IsKeyboardPlayer)
+                            {
+                                User32Interop.SetForegroundWindow(data.HWND.NativePtr);
+                                data.SettedKeyboard = true;
+                            }
                         }
                     }
                     else
                     {
-                        p.Process.Refresh();
+                        data.Process.Refresh();
 
-                        if (p.Process.HasExited)
+                        if (data.Process.HasExited)
                         {
                             if (p.GotLauncher)
                             {
@@ -475,7 +512,7 @@ namespace Nucleus.Gaming
                                 }
                                 else
                                 {
-                                    List<int> children = ProcessUtil.GetChildrenProcesses(p.Process);
+                                    List<int> children = ProcessUtil.GetChildrenProcesses(data.Process);
                                     if (children.Count > 0)
                                     {
                                         for (int j = 0; j < children.Count; j++)
@@ -488,7 +525,7 @@ namespace Nucleus.Gaming
                                                 attached.Add(pro);
                                                 data.HWND = null;
                                                 p.GotGame = true;
-                                                p.Process = pro;
+                                                data.AssignProcess(pro);
                                             }
                                         }
                                     }
@@ -510,7 +547,7 @@ namespace Nucleus.Gaming
                                     if (!attached.Contains(pro))
                                     {
                                         attached.Add(pro);
-                                        p.Process = pro;
+                                        data.AssignProcess(pro);
                                         p.GotLauncher = true;
                                     }
                                 }
@@ -518,19 +555,21 @@ namespace Nucleus.Gaming
                         }
                         else
                         {
-                            if (data.HWNDRetry || data.HWND == null || data.HWND.Hwnd != p.Process.MainWindowHandle)
+                            if (data.HWNDRetry || data.HWND == null || data.HWND.NativePtr != data.Process.MainWindowHandle)
                             {
-                                data.HWND = new HwndObject(p.Process.MainWindowHandle);
+                                data.HWND = new HwndObject(data.Process.MainWindowHandle);
                                 Point pos = data.HWND.Location;
 
-                                if (String.IsNullOrEmpty(data.HWND.Title) || pos.X == -32000 || data.HWND.Title.ToLower() == gen.LauncherTitle.ToLower())
+                                if (String.IsNullOrEmpty(data.HWND.Title) || 
+                                    pos.X == -32000 || 
+                                    data.HWND.Title.ToLower() == gen.LauncherTitle.ToLower())
                                 {
                                     data.HWNDRetry = true;
                                 }
                                 else
                                 {
                                     Size s = data.Size;
-                                    data.Set = true;
+                                    data.Setted = true;
                                     data.HWND.TopMost = true;
                                     data.HWND.Size = data.Size;
                                     data.HWND.Location = data.Position;
@@ -539,19 +578,13 @@ namespace Nucleus.Gaming
                         }
                     }
                 }
+            }
 
-                if (exited == players.Count)
+            if (exited == players.Count)
+            {
+                if (!hasEnded)
                 {
-                    if (!hasEnded)
-                    {
-                        hasEnded = true;
-                        GameManager.Instance.ExecuteBackup(this.userGame.Game);
-
-                        if (Ended != null)
-                        {
-                            Ended();
-                        }
-                    }
+                    End();
                 }
             }
         }

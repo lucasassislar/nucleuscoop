@@ -14,22 +14,6 @@ namespace Nucleus.Coop
 {
     public partial class PositionsControl : UserInputControl
     {
-        public override bool CanProceed
-        {
-            get
-            {
-                return canProceed;
-            }
-        }
-        public override string Title
-        {
-            get { return "Position Players"; }
-        }
-        public override bool CanPlay
-        {
-            get { return false; }
-        }
-
         private bool canProceed;
 
         // array of users's screens
@@ -43,6 +27,32 @@ namespace Nucleus.Coop
 
         private RectangleF playersArea;
 
+        private bool dragging = false;
+        private int draggingIndex = -1;
+        private Point draggingOffset;
+        private Point mousePos;
+        private int draggingScreen = -1;
+        private Rectangle draggingScreenRec;
+        private Rectangle draggingScreenBounds;
+
+        public override bool CanProceed
+        {
+            get { return canProceed; }
+        }
+        public override string Title
+        {
+            get { return "Position Players"; }
+        }
+        public override bool CanPlay
+        {
+            get { return false; }
+        }
+
+        public PositionsControl()
+        {
+            InitializeComponent();
+        }
+
         public void RemoveFlicker()
         {
             this.SetStyle(
@@ -52,16 +62,19 @@ namespace Nucleus.Coop
                 true);
         }
 
-        public PositionsControl()
+        private void AddPlayer(int i, float playerWidth, float playerHeight, float offset)
         {
-            InitializeComponent();
+            Rectangle r = new Rectangle((int)(50 + ((playerWidth + offset) * i)), 100, (int)playerWidth, (int)playerHeight);
+            PlayerInfo playa = new PlayerInfo();
+            playa.EditBounds = r;
+            profile.PlayerData.Add(playa);
         }
 
         public override void Initialize(UserGameInfo game, GameProfile profile)
         {
             base.Initialize(game, profile);
 
-            profile.PlayerData.Clear();// reset profile
+            canProceed = false;
 
             playerFont = new Font("Segoe UI", 40);
             playerTextFont = new Font("Segoe UI", 18);
@@ -75,14 +88,6 @@ namespace Nucleus.Coop
             float playerHeight = playerWidth * 0.5625f;
             float offset = (playersWidth * 0.1f) / (float)playerCount;
             playersArea = new RectangleF(50, 100, playersWidth, playerHeight);
-
-            for (int i = 0; i < playerCount; i++)
-            {
-                Rectangle r = new Rectangle((int)(50 + ((playerWidth + offset) * i)), 100, (int)playerWidth, (int)playerHeight);
-                PlayerInfo playa = new PlayerInfo();
-                playa.editBounds = r;
-                profile.PlayerData.Add(playa);
-            }
 
             screens = ScreensUtil.AllScreens();
             Rectangle totalBounds = RectangleUtil.Union(ScreensUtil.AllScreensRec());
@@ -137,15 +142,37 @@ namespace Nucleus.Coop
                 screen.bounds = new Rectangle(x + totalBounds.X - offsetViewsX, y + totalBounds.Y - offsetViewsY, width, height);
                 screen.swapTypeRect = new Rectangle(screen.bounds.X, screen.bounds.Y, (int)(screen.bounds.Width * 0.1f), (int)(screen.bounds.Width * 0.1f));
             }
-        }
 
-        private bool dragging = false;
-        private int draggingIndex = -1;
-        private Point draggingOffset;
-        private Point mousePos;
-        private int draggingScreen = -1;
-        private Rectangle draggingScreenRec;
-        private Rectangle draggingScreenBounds;
+            List<PlayerInfo> playerData = profile.PlayerData;
+            if (playerData.Count == 0)
+            {
+                for (int i = 0; i < playerCount; i++)
+                {
+                    AddPlayer(i, playerWidth, playerHeight, offset);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < playerCount; i++)
+                {
+                    if (i >= playerData.Count)
+                    {
+                        // additional players
+                        AddPlayer(i, playerWidth, playerHeight, offset);
+                    }
+                    else
+                    {
+                        PlayerInfo info = playerData[i];
+                        Rectangle s = info.MonitorBounds;
+                        int width = (int)(s.Width * scale);
+                        int height = (int)(s.Height * scale);
+                        int x = (int)(s.X * scale);
+                        int y = (int)(s.Y * scale);
+                        info.EditBounds = new Rectangle(x, y, width, height);
+                    }
+                }
+            }
+        }
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -158,7 +185,7 @@ namespace Nucleus.Coop
                 var players = profile.PlayerData;
 
                 PlayerInfo player = players[draggingIndex];
-                Rectangle p = player.editBounds;
+                Rectangle p = player.EditBounds;
                 if (draggingScreen == -1)
                 {
                     for (int i = 0; i < screens.Length; i++)
@@ -199,7 +226,7 @@ namespace Nucleus.Coop
                 }
 
                 p = new Rectangle(mousePos.X + draggingOffset.X, mousePos.Y + draggingOffset.Y, p.Width, p.Height);
-                players[draggingIndex].editBounds = p;
+                players[draggingIndex].EditBounds = p;
 
                 Invalidate();
             }
@@ -221,7 +248,7 @@ namespace Nucleus.Coop
                     for (int i = 0; i < players.Count; i++)
                     {
                         PlayerInfo p = players[i];
-                        if (p.screenIndex == screenIndex)
+                        if (p.ScreenIndex == screenIndex)
                         {
                             return;
                         }
@@ -238,10 +265,10 @@ namespace Nucleus.Coop
                         for (int i = 0; i < players.Count; i++)
                         {
                             PlayerInfo p = players[i];
-                            if (p.screenIndex == screenIndex)
+                            if (p.ScreenIndex == screenIndex)
                             {
                                 playersUsing++;
-                                areaUsed = Rectangle.Union(areaUsed, p.monitorBounds);
+                                areaUsed = Rectangle.Union(areaUsed, p.MonitorBounds);
                             }
                         }
 
@@ -274,10 +301,10 @@ namespace Nucleus.Coop
                         for (int i = 0; i < players.Count; i++)
                         {
                             PlayerInfo p = players[i];
-                            if (p.screenIndex == screenIndex)
+                            if (p.ScreenIndex == screenIndex)
                             {
                                 playersUsing++;
-                                areaUsed = Rectangle.Union(areaUsed, p.monitorBounds);
+                                areaUsed = Rectangle.Union(areaUsed, p.MonitorBounds);
                             }
                         }
 
@@ -309,10 +336,10 @@ namespace Nucleus.Coop
                         for (int i = 0; i < players.Count; i++)
                         {
                             PlayerInfo p = players[i];
-                            if (p.screenIndex == screenIndex)
+                            if (p.ScreenIndex == screenIndex)
                             {
                                 playersUsing++;
-                                areaUsed = Rectangle.Union(areaUsed, p.monitorBounds);
+                                areaUsed = Rectangle.Union(areaUsed, p.MonitorBounds);
                             }
                         }
 
@@ -335,10 +362,11 @@ namespace Nucleus.Coop
                                 for (int i = 0; i < players.Count; i++)
                                 {
                                     PlayerInfo p = players[i];
-                                    if (p.screenIndex == screenIndex)
+                                    if (p.ScreenIndex == screenIndex)
                                     {
-                                        if (p.monitorBounds.X == area.X &&
-                                            p.monitorBounds.Y == area.Y)
+                                        //if (p.MonitorBounds.X == area.X &&
+                                        //    p.MonitorBounds.Y == area.Y)
+                                        if (p.MonitorBounds.IntersectsWith(area))
                                         {
                                             goNext = true;
                                             break;
@@ -393,10 +421,10 @@ namespace Nucleus.Coop
                         {
                             // return to default position
                             PlayerInfo p = players[j];
-                            if (p.screenIndex == i)
+                            if (p.ScreenIndex == i)
                             {
-                                p.editBounds = GetDefaultBounds(j);
-                                p.screenIndex = -1;
+                                p.EditBounds = GetDefaultBounds(j);
+                                p.ScreenIndex = -1;
                             }
                         }
 
@@ -407,14 +435,14 @@ namespace Nucleus.Coop
 
                 for (int i = 0; i < players.Count; i++)
                 {
-                    Rectangle r = players[i].editBounds;
+                    Rectangle r = players[i].EditBounds;
                     if (r.Contains(e.Location))
                     {
                         dragging = true;
                         draggingIndex = i;
                         draggingOffset = new Point(r.X - e.X, r.Y - e.Y);
                         Rectangle newBounds = GetDefaultBounds(draggingIndex);
-                        profile.PlayerData[draggingIndex].editBounds = newBounds;
+                        profile.PlayerData[draggingIndex].EditBounds = newBounds;
 
                         if (draggingOffset.X < -newBounds.Width ||
                             draggingOffset.Y < -newBounds.Height)
@@ -433,16 +461,16 @@ namespace Nucleus.Coop
                 for (int i = 0; i < players.Count; i++)
                 {
                     PlayerInfo p = players[i];
-                    Rectangle r = p.editBounds;
+                    Rectangle r = p.EditBounds;
                     if (r.Contains(e.Location))
                     {
-                        if (p.screenIndex != -1)
+                        if (p.ScreenIndex != -1)
                         {
-                            UserScreen screen = screens[p.screenIndex];
+                            UserScreen screen = screens[p.ScreenIndex];
                             int halfWidth = screen.monitorBounds.Width / 2;
                             int halfHeight = screen.monitorBounds.Height / 2;
 
-                            Rectangle bounds = p.monitorBounds;
+                            Rectangle bounds = p.MonitorBounds;
                             if (screen.type == UserScreenType.FourPlayers)
                             {
                                 // check if the size is 1/4th of screen
@@ -461,27 +489,27 @@ namespace Nucleus.Coop
                                         }
 
                                         PlayerInfo other = players[j];
-                                        if (other.screenIndex != p.screenIndex)
+                                        if (other.ScreenIndex != p.ScreenIndex)
                                         {
                                             continue;
                                         }
 
-                                        if (other.monitorBounds.Y == p.monitorBounds.Y)
+                                        if (other.MonitorBounds.Y == p.MonitorBounds.Y)
                                         {
                                             hasLeftRightSpace = false;
                                         }
-                                        if (other.monitorBounds.X == p.monitorBounds.X)
+                                        if (other.MonitorBounds.X == p.MonitorBounds.X)
                                         {
                                             hasTopBottomSpace = false;
                                         }
 
-                                        if (other.monitorBounds.X == screen.monitorBounds.X + halfWidth &&
-                                            other.monitorBounds.Height == screen.monitorBounds.Height)
+                                        if (other.MonitorBounds.X == screen.monitorBounds.X + halfWidth &&
+                                            other.MonitorBounds.Height == screen.monitorBounds.Height)
                                         {
                                             hasLeftRightSpace = false;
                                         }
-                                        if (other.monitorBounds.X == screen.monitorBounds.X &&
-                                            other.monitorBounds.Width == screen.monitorBounds.Width)
+                                        if (other.MonitorBounds.X == screen.monitorBounds.X &&
+                                            other.MonitorBounds.Width == screen.monitorBounds.Width)
                                         {
                                             hasTopBottomSpace = false;
                                         }
@@ -489,7 +517,7 @@ namespace Nucleus.Coop
 
                                     if (hasLeftRightSpace)
                                     {
-                                        Rectangle edit = p.editBounds;
+                                        Rectangle edit = p.EditBounds;
                                         if (bounds.X == screen.monitorBounds.X + bounds.Width)
                                         {
                                             bounds.X -= bounds.Width;
@@ -499,19 +527,18 @@ namespace Nucleus.Coop
                                         bounds.Width *= 2;
                                         edit.Width *= 2;
 
-                                        p.editBounds = edit;
-                                        p.monitorBounds = bounds;
-
+                                        p.EditBounds = edit;
+                                        p.MonitorBounds = bounds;
 
                                         Invalidate();
                                     }
                                     else if (hasTopBottomSpace)
                                     {
                                         bounds.Height *= 2;
-                                        p.monitorBounds = bounds;
-                                        Rectangle edit = p.editBounds;
+                                        p.MonitorBounds = bounds;
+                                        Rectangle edit = p.EditBounds;
                                         edit.Height *= 2;
-                                        p.editBounds = edit;
+                                        p.EditBounds = edit;
 
                                         Invalidate();
                                     }
@@ -520,12 +547,12 @@ namespace Nucleus.Coop
                                 {
                                     bounds.Width = screen.monitorBounds.Width / 2;
                                     bounds.Height = screen.monitorBounds.Height / 2;
-                                    p.monitorBounds = bounds;
+                                    p.MonitorBounds = bounds;
 
-                                    Rectangle edit = p.editBounds;
+                                    Rectangle edit = p.EditBounds;
                                     edit.Width = screen.bounds.Width / 2;
                                     edit.Height = screen.bounds.Height / 2;
-                                    p.editBounds = edit;
+                                    p.EditBounds = edit;
 
                                     Invalidate();
                                 }
@@ -549,17 +576,17 @@ namespace Nucleus.Coop
 
                     if (draggingScreen != -1)
                     {
-                        p.screenIndex = draggingScreen;
-                        p.monitorBounds = draggingScreenBounds;
-                        p.editBounds = draggingScreenRec;
+                        p.ScreenIndex = draggingScreen;
+                        p.MonitorBounds = draggingScreenBounds;
+                        p.EditBounds = draggingScreenRec;
 
                         draggingScreen = -1;
                     }
                     else
                     {
                         // return to default position
-                        p.editBounds = GetDefaultBounds(draggingIndex);
-                        p.screenIndex = -1;
+                        p.EditBounds = GetDefaultBounds(draggingIndex);
+                        p.ScreenIndex = -1;
                     }
 
 
@@ -567,7 +594,7 @@ namespace Nucleus.Coop
                     for (int i = 0; i < profile.PlayerData.Count; i++)
                     {
                         PlayerInfo player = profile.PlayerData[i];
-                        if (player.screenIndex == -1)
+                        if (player.ScreenIndex == -1)
                         {
                             allReady = false;
                             canProceed = false;
@@ -578,7 +605,7 @@ namespace Nucleus.Coop
                     if (allReady)
                     {
                         canProceed = true;
-                        OnCanPlayTrue();
+                        OnCanPlayTrue(false);
                     }
 
                     Invalidate();
@@ -628,9 +655,9 @@ namespace Nucleus.Coop
             for (int i = 0; i < players.Count; i++)
             {
                 PlayerInfo info = players[i];
-                Rectangle s = info.editBounds;
+                Rectangle s = info.EditBounds;
 
-                if (info.screenIndex == -1)
+                if (info.ScreenIndex == -1)
                 {
                     g.DrawRectangle(Pens.White, s);
                 }
@@ -653,9 +680,8 @@ namespace Nucleus.Coop
             g.DrawString("Drag each player to\ntheir respective screen", playerTextFont, Brushes.White, new PointF(470, 100));
             g.DrawString("Players", playerTextFont, Brushes.White, new PointF(50, 50));
 
-            g.DrawString("Right click player to change size", playerTextFont, Brushes.White, new PointF(20, 450));
-            g.DrawString("Click on screen's top-left corner to change players on that screen", playerTextFont, Brushes.White, new PointF(20, 490));
-            //g.DrawRectangle(Pens.Red, playersArea.X, playersArea.Y, playersArea.Width, playersArea.Height);
+            g.DrawString("Click on screen's top-left corner to change players on that screen", playerTextFont, Brushes.White, new PointF(20, 450));
+            g.DrawString("(4-player only) Right click player to change size", playerTextFont, Brushes.White, new PointF(20, 490));
         }
     }
 }

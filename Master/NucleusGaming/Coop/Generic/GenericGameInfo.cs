@@ -35,6 +35,13 @@ namespace Nucleus.Gaming
         private string launcherExe;
         private string launcherTitle;
         private bool supportsPositioning;
+        private bool hideTaskbar;
+
+        public bool HideTaskbar
+        {
+            get { return hideTaskbar; }
+            set { hideTaskbar = value; }
+        }
 
         public bool SupportsPositioning
         {

@@ -11,11 +11,11 @@ namespace Nucleus.Gaming
 {
     public partial class PlayerCountControl : UserInputControl
     {
-        private bool go;
+        private bool canProceed;
 
         public override bool CanProceed
         {
-            get { return go; }
+            get { return canProceed; }
         }
         public override string Title
         {
@@ -45,10 +45,10 @@ namespace Nucleus.Gaming
 
         private void btn_Click(object sender, EventArgs e)
         {
-            go = true;
+            canProceed = true;
 
             profile.PlayerCount = int.Parse(((Button)sender).Text);
-            OnCanPlayTrue();
+            OnCanPlayTrue(true);
         }
 
         public override void Initialize(UserGameInfo game, GameProfile profile)
@@ -56,7 +56,7 @@ namespace Nucleus.Gaming
             base.Initialize(game, profile);
 
             this.Controls.Clear();
-            go = false;
+            canProceed = false;
 
             int maxPlayers = game.Game.MaxPlayers;
             int half = (int)Math.Round(maxPlayers / 2.0);

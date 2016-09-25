@@ -16,11 +16,11 @@ namespace Nucleus.Gaming.Interop
         }
         public static void HideTaskbar()
         {
-            int hwnd = User32Interop.FindWindow("Shell_TrayWnd", "").ToInt32();
+            IntPtr hwnd = User32Interop.FindWindow("Shell_TrayWnd", "");
             User32Interop.ShowWindow(hwnd, WindowShowStyle.Hide);
 
-            IntPtr hwndOrb = FindWindowEx(IntPtr.Zero, IntPtr.Zero, (IntPtr)0xC017, null);
-            ShowWindow(hwndOrb, SW_HIDE);
+            IntPtr hwndOrb = User32Interop.FindWindowEx(IntPtr.Zero, IntPtr.Zero, (IntPtr)0xC017, null);
+            User32Interop.ShowWindow(hwndOrb, WindowShowStyle.Hide);
         }
         public static void MinimizeEverything()
         {
@@ -29,23 +29,11 @@ namespace Nucleus.Gaming.Interop
         }
         public static void ShowTaskBar()
         {
-            int hwnd = User32Interop.FindWindow("Shell_TrayWnd", "").ToInt32();
+            IntPtr hwnd = User32Interop.FindWindow("Shell_TrayWnd", "");
             User32Interop.ShowWindow(hwnd, WindowShowStyle.Show);
 
-            IntPtr hwndOrb = FindWindowEx(IntPtr.Zero, IntPtr.Zero, (IntPtr)0xC017, null);
-            ShowWindow(hwndOrb, SW_SHOW);
+            IntPtr hwndOrb = User32Interop.FindWindowEx(IntPtr.Zero, IntPtr.Zero, (IntPtr)0xC017, null);
+            User32Interop.ShowWindow(hwndOrb, WindowShowStyle.Show);
         }
-
-        private const int SW_HIDE = 0;
-        private const int SW_SHOW = 1;
-
-        [DllImport("user32.dll")]
-        private static extern int ShowWindow(IntPtr hwnd, int command);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr FindWindowEx(IntPtr parentHwnd, IntPtr childAfterHwnd, IntPtr className, string windowText);
     }
 }

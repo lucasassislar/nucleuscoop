@@ -17,14 +17,14 @@ namespace WindowScrape.Types
         /// <summary>
         /// The windows handle to this object.
         /// </summary>
-        public IntPtr Hwnd { get; private set; }
+        public IntPtr NativePtr { get; private set; }
 
         /// <summary>
         /// The registered class name (if any) of this object.
         /// </summary>
         public string ClassName
         {
-            get { return HwndInterface.GetHwndClassName(Hwnd); }
+            get { return HwndInterface.GetHwndClassName(NativePtr); }
         }
 
         /// <summary>
@@ -32,8 +32,8 @@ namespace WindowScrape.Types
         /// </summary>
         public string Title
         {
-            get { return HwndInterface.GetHwndTitle(Hwnd); }
-            set { HwndInterface.SetHwndTitle(Hwnd, value); }
+            get { return HwndInterface.GetHwndTitle(NativePtr); }
+            set { HwndInterface.SetHwndTitle(NativePtr, value); }
         }
 
         /// <summary>
@@ -41,8 +41,8 @@ namespace WindowScrape.Types
         /// </summary>
         public string Text
         {
-            get { return HwndInterface.GetHwndText(Hwnd); }
-            set { HwndInterface.SetHwndText(Hwnd, value); }
+            get { return HwndInterface.GetHwndText(NativePtr); }
+            set { HwndInterface.SetHwndText(NativePtr, value); }
         }
 
         /// <summary>
@@ -50,16 +50,16 @@ namespace WindowScrape.Types
         /// </summary>
         public Point Location
         {
-            get { return HwndInterface.GetHwndPos(Hwnd); }
+            get { return HwndInterface.GetHwndPos(NativePtr); }
             set
             {
                 if (TopMost)
                 {
-                    HwndInterface.SetHwndPosTopMost(Hwnd, (int)value.X, (int)value.Y);
+                    HwndInterface.SetHwndPosTopMost(NativePtr, (int)value.X, (int)value.Y);
                 }
                 else
                 {
-                    HwndInterface.SetHwndPos(Hwnd, (int)value.X, (int)value.Y);
+                    HwndInterface.SetHwndPos(NativePtr, (int)value.X, (int)value.Y);
                 }
             }
         }
@@ -71,10 +71,10 @@ namespace WindowScrape.Types
         /// </summary>
         public Size Size
         {
-            get { return HwndInterface.GetHwndSize(Hwnd); }
+            get { return HwndInterface.GetHwndSize(NativePtr); }
             set
             {
-                HwndInterface.SetHwndSize(Hwnd, (int)value.Width, (int)value.Height);
+                HwndInterface.SetHwndSize(NativePtr, (int)value.Width, (int)value.Height);
             }
         }
 
@@ -106,7 +106,7 @@ namespace WindowScrape.Types
         /// <param name="hwnd"></param>
         public HwndObject(IntPtr hwnd)
         {
-            Hwnd = hwnd;
+            NativePtr = hwnd;
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace WindowScrape.Types
         /// <param name="param2"></param>
         public void SendMessage(WM msg, uint param1, string param2)
         {
-            HwndInterface.SendMessage(Hwnd, msg, param1, param2);
+            HwndInterface.SendMessage(NativePtr, msg, param1, param2);
         }
         /// <summary>
         /// Sends a message to this Hwnd Object
@@ -127,7 +127,7 @@ namespace WindowScrape.Types
         /// <param name="param2"></param>
         public void SendMessage(WM msg, uint param1, uint param2)
         {
-            HwndInterface.SendMessage(Hwnd, msg, param1, param2);
+            HwndInterface.SendMessage(NativePtr, msg, param1, param2);
         }
         /// <summary>
         /// Returns a string result from a message.
@@ -137,7 +137,7 @@ namespace WindowScrape.Types
         /// <returns></returns>
         public string GetMessageString(WM msg, uint param)
         {
-            return HwndInterface.GetMessageString(Hwnd, msg, param);
+            return HwndInterface.GetMessageString(NativePtr, msg, param);
         }
         /// <summary>
         /// Returns an integer result from a message.
@@ -146,7 +146,7 @@ namespace WindowScrape.Types
         /// <returns></returns>
         public int GetMessageInt(WM msg)
         {
-            return HwndInterface.GetMessageInt(Hwnd, msg);
+            return HwndInterface.GetMessageInt(NativePtr, msg);
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace WindowScrape.Types
         /// </summary>
         public void Click()
         {
-            HwndInterface.ClickHwnd(Hwnd);
+            HwndInterface.ClickHwnd(NativePtr);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace WindowScrape.Types
         /// <returns></returns>
         public HwndObject GetParent()
         {
-            return new HwndObject(HwndInterface.GetHwndParent(Hwnd));
+            return new HwndObject(HwndInterface.GetHwndParent(NativePtr));
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace WindowScrape.Types
         public List<HwndObject> GetChildren()
         {
             var result = new List<HwndObject>();
-            foreach (var hwnd in HwndInterface.EnumChildren(Hwnd))
+            foreach (var hwnd in HwndInterface.EnumChildren(NativePtr))
                 result.Add(new HwndObject(hwnd));
             return result;
         }
@@ -186,7 +186,7 @@ namespace WindowScrape.Types
         /// <returns></returns>
         public HwndObject GetChild(string cls, string title)
         {
-            var hwnd = HwndInterface.GetHwndChild(Hwnd, cls, title);
+            var hwnd = HwndInterface.GetHwndChild(NativePtr, cls, title);
             return new HwndObject(hwnd);
         }
 
@@ -197,7 +197,7 @@ namespace WindowScrape.Types
             var result =
                 string.Format(
                     "({0}) {1},{2}:{3}x{4} \"{5}\"",
-                    Hwnd,
+                    NativePtr,
                     pt.X, pt.Y,
                     sz.Width, sz.Height,
                     Title);
