@@ -269,7 +269,7 @@ namespace Nucleus.Coop
             if (handler != null)
             {
                 handler.End();
-                btn_Play.Text = "P L A Y";
+                SetBtnToPlay();
                 return;
             }
 
@@ -293,10 +293,15 @@ namespace Nucleus.Coop
             }
         }
 
+        private void SetBtnToPlay()
+        {
+            btn_Play.Text = "P L A Y";
+        }
+
         private void handler_Ended()
         {
             handler = null;
-            btn_Play.Enabled = true;
+            SetBtnToPlay();
         }
 
         private void UpdateGameManager(object state)
