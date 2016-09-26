@@ -1,3 +1,6 @@
 [submodule "Submodules/nukeupdater"]
 	path = Submodules/nukeupdater
 	url = https://github.com/lucasassislar/nukeupdater
+[submodule "Submodules/x360ce"]
+	path = Submodules/x360ce
+	url = https://github.com/x360ce/x360ce
