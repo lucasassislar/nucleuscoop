@@ -51,6 +51,18 @@ namespace Nucleus.Gaming
             hasEnded = true;
             GameManager.Instance.ExecuteBackup(this.userGame.Game);
 
+            string backupDir = GameManager.Instance.GetBackupFolder(this.userGame.Game);
+
+            // delete symlink folder
+            for (int i = 0; i < profile.PlayerCount; i++)
+            {
+                string linkFolder = Path.Combine(backupDir, "Instance" + i);
+                if (Directory.Exists(linkFolder))
+                {
+                    Directory.Delete(linkFolder);
+                }
+            }
+
             if (Ended != null)
             {
                 Ended();
@@ -241,7 +253,6 @@ namespace Nucleus.Gaming
                     File.Copy(userGame.ExePath, exePath, true);
                 }
 
-
                 // some games have save files inside their game folder, so we need to access them inside the loop
                 this.data[Folder.GameFolder.ToString()] = linkFolder;
 
@@ -263,9 +274,7 @@ namespace Nucleus.Gaming
                 }
 
                 string startArgs = context.StartArguments;
-
                 byte[] xdata = null;
-
                 if (context.SupportsKeyboard && i == ((KeyboardPlayer)profile.Options["KeyboardPlayer"]).Value)
                 {
                     // TODO: need to make an xinput that answers to no gamepad?
@@ -294,11 +303,35 @@ namespace Nucleus.Gaming
                     }
                     gamePadId++;
                 }
-
                 using (Stream str = File.OpenWrite(Path.Combine(linkBin, "xinput1_3.dll")))
                 {
                     str.Write(xdata, 0, xdata.Length);
                 }
+
+                // new x360ce
+                //using (Stream str = File.OpenWrite(Path.Combine(linkBin, "xinput1_3.dll")))
+                //{
+                //    byte[] xdata = Properties.Resources.xinput1_3_x86;
+                //    str.Write(xdata, 0, xdata.Length);
+                //}
+                //string x360ceini = Path.Combine(linkBin, "x360ce.ini");
+                //using (Stream str = File.OpenWrite(x360ceini))
+                //{
+                //    byte[] xdata = Properties.Resources.x360ce;
+                //    str.Write(xdata, 0, xdata.Length);
+                //}
+                //IniFile x360ce = new IniFile(x360ceini);
+                //if (context.SupportsKeyboard && i == ((KeyboardPlayer)profile.Options["KeyboardPlayer"]).Value)
+                //{
+                //    // TODO: need to make an xinput that answers to no gamepad?
+                //    x360ce.IniWriteValue("Gamepad", "PassThroughIndex", "4");
+                //    player.IsKeyboardPlayer = true;
+                //}
+                //else
+                //{
+                //    x360ce.IniWriteValue("Gamepad", "PassThroughIndex", (gamePadId + 1).ToString());
+                //    gamePadId++;
+                //}
 
                 Process proc;
                 if (context.NeedsSteamEmulation)

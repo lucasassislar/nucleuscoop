@@ -113,9 +113,29 @@ namespace Nucleus.Gaming.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] x360ce {
+            get {
+                object obj = ResourceManager.GetObject("x360ce", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] xinput1 {
             get {
                 object obj = ResourceManager.GetObject("xinput1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] xinput1_3_x86 {
+            get {
+                object obj = ResourceManager.GetObject("xinput1_3_x86", resourceCulture);
                 return ((byte[])(obj));
             }
         }

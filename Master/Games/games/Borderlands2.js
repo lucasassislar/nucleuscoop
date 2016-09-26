@@ -26,7 +26,7 @@ Game.Options = [
         "saveid3")
 ];
 
-Game.SymlinkExe = true;
+Game.SymlinkExe = false;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "borderlands2.exe";
 Game.SteamID = "49520";

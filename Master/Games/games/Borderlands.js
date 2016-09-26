@@ -30,7 +30,7 @@ Game.ExecutableContext = [ // need to add these or it might conflict with Tales 
     "binkw32.dll"
 ];
 
-Game.SymlinkExe = true;
+Game.SymlinkExe = false;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "borderlands.exe";
 Game.SteamID = "8980";

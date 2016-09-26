@@ -291,6 +291,8 @@ namespace Nucleus.Coop
             {
                 handler = null;
             }
+
+            this.WindowState = FormWindowState.Minimized;
         }
 
         private void SetBtnToPlay()
