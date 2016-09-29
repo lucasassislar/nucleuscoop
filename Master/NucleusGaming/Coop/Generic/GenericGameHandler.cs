@@ -1,4 +1,6 @@
-﻿using Jint;
+﻿//#define NEWXINPUT
+
+using Jint;
 using Nucleus.Gaming.Interop;
 using System;
 using System.Collections.Generic;
@@ -38,7 +40,7 @@ namespace Nucleus.Gaming
 
         public int TimerInterval
         {
-            get { return timerInterval; }
+            get { return gen.Interval; }
         }
 
         public void End()
@@ -54,14 +56,18 @@ namespace Nucleus.Gaming
             string backupDir = GameManager.Instance.GetBackupFolder(this.userGame.Game);
 
             // delete symlink folder
-            for (int i = 0; i < profile.PlayerCount; i++)
+            try
             {
-                string linkFolder = Path.Combine(backupDir, "Instance" + i);
-                if (Directory.Exists(linkFolder))
+                for (int i = 0; i < profile.PlayerCount; i++)
                 {
-                    Directory.Delete(linkFolder);
+                    string linkFolder = Path.Combine(backupDir, "Instance" + i);
+                    if (Directory.Exists(linkFolder))
+                    {
+                        Directory.Delete(linkFolder, true);
+                    }
                 }
             }
+            catch { }
 
             if (Ended != null)
             {
@@ -160,6 +166,33 @@ namespace Nucleus.Gaming
             bool first = true;
             hidetaskbar = false;
 
+            bool keyboard = false;
+
+            if (gen.SupportsKeyboard)
+            {
+                // make sure the keyboard player is the last to be started,
+                // so it will get the focus by default
+                KeyboardPlayer player = (KeyboardPlayer)profile.Options["KeyboardPlayer"];
+                if (player.Value != -1)
+                {
+                    keyboard = true;
+                    List<PlayerInfo> newPlayers = new List<PlayerInfo>();
+
+                    for (int i = 0; i < players.Count; i++)
+                    {
+                        PlayerInfo p = players[i];
+                        if (i == player.Value)
+                        {
+                            continue;
+                        }
+
+                        newPlayers.Add(p);
+                    }
+                    newPlayers.Add(players[player.Value]);
+                    players = newPlayers;
+                }
+            }
+
             for (int i = 0; i < players.Count; i++)
             {
                 PlayerInfo player = players[i];
@@ -213,8 +246,10 @@ namespace Nucleus.Gaming
                 GenericContext context = gen.CreateContext(profile, player, this);
                 context.PlayerID = i;
                 context.IsFullscreen = isFullscreen;
-                context.IsKeyboardPlayer = context.SupportsKeyboard && i == ((KeyboardPlayer)profile.Options["KeyboardPlayer"]).Value;
+                context.IsKeyboardPlayer = keyboard && i == players.Count - 1;
                 gen.PrePlay(context);
+
+                player.IsKeyboardPlayer = context.IsKeyboardPlayer;
 
                 string saveFile = context.SavePath;
                 if (gen.SaveType != SaveType.None && first)
@@ -274,64 +309,73 @@ namespace Nucleus.Gaming
                 }
 
                 string startArgs = context.StartArguments;
-                byte[] xdata = null;
-                if (context.SupportsKeyboard && i == ((KeyboardPlayer)profile.Options["KeyboardPlayer"]).Value)
-                {
-                    // TODO: need to make an xinput that answers to no gamepad?
-                    xdata = Properties.Resources.xinput4;
-                    player.IsKeyboardPlayer = true;
-                }
-                else
-                {
-                    switch (gamePadId)
-                    {
-                        case 0:
-                            xdata = Properties.Resources.xinput1;
-                            break;
-                        case 1:
-                            xdata = Properties.Resources.xinput2;
-                            break;
-                        case 2:
-                            xdata = Properties.Resources.xinput3;
-                            break;
-                        case 3:
-                            xdata = Properties.Resources.xinput4;
-                            break;
-                        default:
-                            xdata = Properties.Resources.xinput4;
-                            break;
-                    }
-                    gamePadId++;
-                }
-                using (Stream str = File.OpenWrite(Path.Combine(linkBin, "xinput1_3.dll")))
-                {
-                    str.Write(xdata, 0, xdata.Length);
-                }
 
-                // new x360ce
-                //using (Stream str = File.OpenWrite(Path.Combine(linkBin, "xinput1_3.dll")))
-                //{
-                //    byte[] xdata = Properties.Resources.xinput1_3_x86;
-                //    str.Write(xdata, 0, xdata.Length);
-                //}
-                //string x360ceini = Path.Combine(linkBin, "x360ce.ini");
-                //using (Stream str = File.OpenWrite(x360ceini))
-                //{
-                //    byte[] xdata = Properties.Resources.x360ce;
-                //    str.Write(xdata, 0, xdata.Length);
-                //}
-                //IniFile x360ce = new IniFile(x360ceini);
-                //if (context.SupportsKeyboard && i == ((KeyboardPlayer)profile.Options["KeyboardPlayer"]).Value)
-                //{
-                //    // TODO: need to make an xinput that answers to no gamepad?
-                //    x360ce.IniWriteValue("Gamepad", "PassThroughIndex", "4");
-                //    player.IsKeyboardPlayer = true;
-                //}
-                //else
-                //{
-                //    x360ce.IniWriteValue("Gamepad", "PassThroughIndex", (gamePadId + 1).ToString());
-                //    gamePadId++;
-                //}
+#if NEWXINPUT
+                if (context.CustomXinput)
+                {
+                    byte[] xdata = null;
+                    if (context.IsKeyboardPlayer)
+                    {
+                        int wut = -1;
+                    }
+                    else
+                    {
+                        xdata = Properties.Resources.xinput1_3_x86;
+
+                        string x360ceini = Path.Combine(linkBin, "x360ce.ini");
+
+                        using (Stream str = File.OpenWrite(x360ceini))
+                        {
+                            byte[] ini = Properties.Resources.x360ce;
+                            str.Write(ini, 0, ini.Length);
+                        }
+
+                        IniFile x360 = new IniFile(x360ceini);
+                        x360.IniWriteValue("Gamepad", "PassThroughIndex", (gamePadId + 1).ToString());
+                        gamePadId++;
+
+                        using (Stream str = File.OpenWrite(Path.Combine(linkBin, "xinput1_3.dll")))
+                        {
+                            str.Write(xdata, 0, xdata.Length);
+                        }
+                    }
+                }
+#else
+                if (context.CustomXinput)
+                {
+                    byte[] xdata = null;
+                    if (context.IsKeyboardPlayer)
+                    {
+                        // TODO: need to make an xinput that answers to no gamepad?
+                        xdata = Properties.Resources.xinput4;
+                    }
+                    else
+                    {
+                        switch (gamePadId)
+                        {
+                            case 0:
+                                xdata = Properties.Resources.xinput1;
+                                break;
+                            case 1:
+                                xdata = Properties.Resources.xinput2;
+                                break;
+                            case 2:
+                                xdata = Properties.Resources.xinput3;
+                                break;
+                            case 3:
+                            default:
+                                xdata = Properties.Resources.xinput4;
+                                break;
+                        }
+                        gamePadId++;
+                    }
+
+                    using (Stream str = File.OpenWrite(Path.Combine(linkBin, "xinput1_3.dll")))
+                    {
+                        str.Write(xdata, 0, xdata.Length);
+                    }
+                }
+#endif
 
                 Process proc;
                 if (context.NeedsSteamEmulation)
@@ -511,24 +555,30 @@ namespace Nucleus.Gaming
                             p.ProcessData.KilledMutexes = true;
                         }
 
-                        uint lStyle = User32Interop.GetWindowLong(data.HWND.NativePtr, User32_WS.GWL_STYLE);
-                        if (lStyle != data.RegLong)
+                        if (!data.SettedScreen)
                         {
-                            uint toRemove = User32_WS.WS_CAPTION;
-                            lStyle = lStyle & (~toRemove);
+                            uint lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE);
+                            //if (lStyle != data.RegLong)
+                            {
+                                uint toRemove = User32_WS.WS_CAPTION;
+                                lStyle = lStyle & (~toRemove);
 
-                            User32Interop.SetWindowLong(data.HWND.NativePtr, User32_WS.GWL_STYLE, lStyle);
-                            data.RegLong = lStyle;
-                            data.HWND.Location = data.Position;
+                                User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE, lStyle);
+                                data.RegLong = lStyle;
+                                data.HWnd.Location = data.Position;
+                            }
+                            data.SettedScreen = true;
                         }
 
-                        if (!data.SettedKeyboard)
+                        data.HWnd.TopMost = true;
+                        data.HWnd.Click();
+
+                        if (p.IsKeyboardPlayer)
                         {
-                            if (p.IsKeyboardPlayer)
-                            {
-                                User32Interop.SetForegroundWindow(data.HWND.NativePtr);
-                                data.SettedKeyboard = true;
-                            }
+                            Rectangle r = p.MonitorBounds;
+                            r.Height /= 2;
+                            Cursor.Clip = r;
+                            //User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
                         }
                     }
                     else
@@ -556,7 +606,7 @@ namespace Nucleus.Gaming
                                             if (!attached.Contains(pro))
                                             {
                                                 attached.Add(pro);
-                                                data.HWND = null;
+                                                data.HWnd = null;
                                                 p.GotGame = true;
                                                 data.AssignProcess(pro);
                                             }
@@ -588,14 +638,14 @@ namespace Nucleus.Gaming
                         }
                         else
                         {
-                            if (data.HWNDRetry || data.HWND == null || data.HWND.NativePtr != data.Process.MainWindowHandle)
+                            if (data.HWNDRetry || data.HWnd == null || data.HWnd.NativePtr != data.Process.MainWindowHandle)
                             {
-                                data.HWND = new HwndObject(data.Process.MainWindowHandle);
-                                Point pos = data.HWND.Location;
+                                data.HWnd = new HwndObject(data.Process.MainWindowHandle);
+                                Point pos = data.HWnd.Location;
 
-                                if (String.IsNullOrEmpty(data.HWND.Title) ||
+                                if (String.IsNullOrEmpty(data.HWnd.Title) ||
                                     pos.X == -32000 ||
-                                    data.HWND.Title.ToLower() == gen.LauncherTitle.ToLower())
+                                    data.HWnd.Title.ToLower() == gen.LauncherTitle.ToLower())
                                 {
                                     data.HWNDRetry = true;
                                 }
@@ -603,9 +653,9 @@ namespace Nucleus.Gaming
                                 {
                                     Size s = data.Size;
                                     data.Setted = true;
-                                    data.HWND.TopMost = true;
-                                    data.HWND.Size = data.Size;
-                                    data.HWND.Location = data.Position;
+                                    data.HWnd.TopMost = true;
+                                    data.HWnd.Size = data.Size;
+                                    data.HWnd.Location = data.Position;
                                 }
                             }
                         }

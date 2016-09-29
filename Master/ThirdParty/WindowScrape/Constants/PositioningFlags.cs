@@ -6,7 +6,7 @@ using System.Text;
 namespace WindowScrape.Constants
 {
     [Flags]
-    internal enum PositioningFlags
+    public enum PositioningFlags : uint
     {
         SWP_NOSIZE = 0x0001,
         SWP_NOMOVE = 0x0002,

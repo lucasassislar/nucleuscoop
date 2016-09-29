@@ -29,7 +29,20 @@ namespace Nucleus.Gaming
         private string launcherExe;
         private string launcherTitle;
         private bool hideTaskbar;
+        private int interval;
+        private bool customXinput;
 
+        public bool CustomXinput
+        {
+            get { return customXinput; }
+            set { customXinput = value; }
+        }
+
+        public int Interval
+        {
+            get { return interval; }
+            set { interval = value; }
+        }
         public bool HideTaskbar
         {
             get { return hideTaskbar; }

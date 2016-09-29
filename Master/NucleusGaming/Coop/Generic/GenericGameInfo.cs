@@ -36,7 +36,19 @@ namespace Nucleus.Gaming
         private string launcherTitle;
         private bool supportsPositioning;
         private bool hideTaskbar;
+        private int interval = 1000;
+        private bool customXinput = true;
 
+        public bool CustomXinput
+        {
+            get { return customXinput; }
+            set { customXinput = value; }
+        }
+        public int Interval
+        {
+            get { return interval; }
+            set { interval = value; }
+        }
         public bool HideTaskbar
         {
             get { return hideTaskbar; }

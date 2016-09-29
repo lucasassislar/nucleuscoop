@@ -13,12 +13,12 @@ namespace Nucleus.Gaming
         private Process process;
 
         public Point Position;
-        public HwndObject HWND;
+        private HwndObject hWnd;
         public bool HWNDRetry;
 
         public Size Size;
         public bool Setted;
-        public bool SettedKeyboard;
+        public bool SettedScreen;
 
         public bool Register0;
 
@@ -31,6 +31,12 @@ namespace Nucleus.Gaming
         public Process Process
         {
             get { return process; }
+        }
+
+        public HwndObject HWnd
+        {
+            get { return hWnd; }
+            set { hWnd = value; }
         }
 
         public ProcessData(Process proc)

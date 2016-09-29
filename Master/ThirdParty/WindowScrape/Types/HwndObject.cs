@@ -64,7 +64,24 @@ namespace WindowScrape.Types
             }
         }
 
-        public bool TopMost { get; set; }
+        private bool isTopMost;
+
+        public bool TopMost
+        {
+            get { return isTopMost; }
+            set
+            {
+                isTopMost = value;
+                if (value)
+                {
+                    HwndInterface.MakeTopMost(NativePtr);
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+        }
 
         /// <summary>
         /// The size of this Hwnd Object.
@@ -74,7 +91,14 @@ namespace WindowScrape.Types
             get { return HwndInterface.GetHwndSize(NativePtr); }
             set
             {
-                HwndInterface.SetHwndSize(NativePtr, (int)value.Width, (int)value.Height);
+                if (TopMost)
+                {
+                    HwndInterface.SetHwndSizeTopMost(NativePtr, (int)value.Width, (int)value.Height);
+                }
+                else
+                {
+                    HwndInterface.SetHwndSize(NativePtr, (int)value.Width, (int)value.Height);
+                }
             }
         }
 
@@ -119,6 +143,7 @@ namespace WindowScrape.Types
         {
             HwndInterface.SendMessage(NativePtr, msg, param1, param2);
         }
+
         /// <summary>
         /// Sends a message to this Hwnd Object
         /// </summary>
@@ -129,6 +154,7 @@ namespace WindowScrape.Types
         {
             HwndInterface.SendMessage(NativePtr, msg, param1, param2);
         }
+
         /// <summary>
         /// Returns a string result from a message.
         /// </summary>

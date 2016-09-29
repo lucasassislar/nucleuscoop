@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.Interop;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -41,6 +42,8 @@ namespace Nucleus.Coop
         private PositionsControl positionsControl;
         private PlayerOptionsControl optionsControl;
 
+        private Thread handlerThread;
+
         public MainForm()
         {
             InitializeComponent();
@@ -56,6 +59,11 @@ namespace Nucleus.Coop
             countControl.OnCanPlay += StepCanPlay;
             positionsControl.OnCanPlay += StepCanPlay;
             optionsControl.OnCanPlay += StepCanPlay;
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
         }
 
         private void Expand()
@@ -283,8 +291,8 @@ namespace Nucleus.Coop
             {
                 if (handler.TimerInterval > 0)
                 {
-                    Thread t = new Thread(UpdateGameManager);
-                    t.Start();
+                    handlerThread = new Thread(UpdateGameManager);
+                    handlerThread.Start();
                 }
             }
             else
@@ -385,6 +393,9 @@ namespace Nucleus.Coop
             form = null;
         }
 
-
+        private void button1_Click(object sender, EventArgs e)
+        {
+            User32.ShowTaskBar();
+        }
     }
 }

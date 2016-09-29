@@ -9,15 +9,17 @@ namespace Nucleus.Gaming
     /// </summary>
     public class IniFile
     {
-        public string path;
+        [DllImport("kernel32")]
+        private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
+        [DllImport("kernel32")]
+        private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
 
-        [DllImport("kernel32")]
-        private static extern long WritePrivateProfileString(string section,
-            string key, string val, string filePath);
-        [DllImport("kernel32")]
-        private static extern int GetPrivateProfileString(string section,
-                 string key, string def, StringBuilder retVal,
-            int size, string filePath);
+        private string path;
+
+        public string Path
+        {
+            get { return path; }
+        }
 
         /// <summary>
         /// INIFile Constructor.

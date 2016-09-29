@@ -39,6 +39,7 @@
             this.btnBack = new System.Windows.Forms.Button();
             this.btnAutoSearch = new System.Windows.Forms.Button();
             this.btnNext = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.panelGameName.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Game)).BeginInit();
             this.SuspendLayout();
@@ -174,11 +175,24 @@
             this.btnNext.Visible = false;
             this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
+            // button1
+            // 
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Location = new System.Drawing.Point(868, 12);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(174, 35);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "Show Taskbar";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1054, 701);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnNext);
             this.Controls.Add(this.btnAutoSearch);
             this.Controls.Add(this.btnBack);
@@ -212,5 +226,6 @@
         private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.Button btnAutoSearch;
         private System.Windows.Forms.Button btnNext;
+        private System.Windows.Forms.Button button1;
     }
 }

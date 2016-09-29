@@ -79,13 +79,11 @@ namespace WindowScrape.Static
         }
         public static bool SetHwndPos(IntPtr hwnd, int x, int y)
         {
-            return SetWindowPos(hwnd, IntPtr.Zero, x, y, 0, 0,
-                         (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOZORDER));
+            return SetWindowPos(hwnd, IntPtr.Zero, x, y, 0, 0, (uint)(PositioningFlags.SWP_NOSIZE));
         }
         public static bool SetHwndPosTopMost(IntPtr hwnd, int x, int y)
         {
-            return SetWindowPos(hwnd, IntPtr.Zero, x, y, 0, 0,
-                         (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOZORDER));
+            return SetWindowPos(hwnd, new IntPtr(-1), x, y, 0, 0, (uint)(PositioningFlags.SWP_NOSIZE));
         }
         public static Point GetHwndPos(IntPtr hwnd)
         {
@@ -96,9 +94,18 @@ namespace WindowScrape.Static
         }
         public static bool SetHwndSize(IntPtr hwnd, int w, int h)
         {
-            return SetWindowPos(hwnd, IntPtr.Zero, 0, 0, w, h,
-                         (uint)(PositioningFlags.SWP_NOMOVE | PositioningFlags.SWP_NOZORDER));
+            return SetWindowPos(hwnd, IntPtr.Zero, 0, 0, w, h, (uint)(PositioningFlags.SWP_NOMOVE));
         }
+        public static bool SetHwndSizeTopMost(IntPtr hWnd, int w, int h)
+        {
+            return SetWindowPos(hWnd, new IntPtr(-1), 0, 0, w, h, (uint)(PositioningFlags.SWP_NOMOVE));
+        }
+
+        public static bool MakeTopMost(IntPtr hWnd)
+        {
+            return SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
+        }
+
         public static Size GetHwndSize(IntPtr hwnd)
         {
             var rect = new RECT();
@@ -106,6 +113,7 @@ namespace WindowScrape.Static
             var result = new Size(rect.Right - rect.Left, rect.Bottom - rect.Top);
             return result;
         }
+
         #endregion
 
         #region Hwnd Functions
