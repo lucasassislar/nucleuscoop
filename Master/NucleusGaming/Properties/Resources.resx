@@ -133,12 +133,6 @@
   <data name="SmartSteamEmu" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SmartSteamEmu.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="xinput1_3_x86" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\xinput1_3.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="x360ce" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\x360ce.ini;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="xinput1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\xinput1.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

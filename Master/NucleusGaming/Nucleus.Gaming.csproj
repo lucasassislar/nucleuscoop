@@ -225,13 +225,13 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="GamingKey.snk" />
     <None Include="packages.config" />
-    <None Include="Resources\x360ce.ini" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="User\" />
@@ -254,9 +254,6 @@
       <Project>{d9716550-921d-44e8-a289-c297950db1f7}</Project>
       <Name>WindowScrape</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\xinput1_3.dll" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\xinput1.dll" />
