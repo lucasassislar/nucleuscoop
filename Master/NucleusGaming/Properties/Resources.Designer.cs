@@ -93,6 +93,16 @@ namespace Nucleus.Gaming.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] ncoop {
+            get {
+                object obj = ResourceManager.GetObject("ncoop", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] SmartSteamEmu {
             get {
                 object obj = ResourceManager.GetObject("SmartSteamEmu", resourceCulture);

@@ -28,9 +28,12 @@ namespace Nucleus.Gaming
         private string logPath;
         private Stream logStream;
         private StreamWriter writer;
+        private object locker;
 
         public LogManager()
         {
+            locker = new object();
+
             instance = this;
             logPath = GetLogPath();
 
@@ -64,13 +67,16 @@ namespace Nucleus.Gaming
 
         private void doLog(object s)
         {
-            string str = (string)s;
-            writer.WriteLine(str);
-            writer.Flush();
-
-            if (logStream.Length > MaxSize)
+            lock (locker)
             {
-                logStream.Position = 0;// write on top
+                string str = (string)s;
+                writer.WriteLine(str);
+                writer.Flush();
+
+                if (logStream.Position > MaxSize)
+                {
+                    logStream.Position = 0;// write on top
+                }
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nucleus.Gaming;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +13,46 @@ namespace Nucleus.Coop
 {
     public partial class GameList : BaseForm
     {
-        public GameList()
+        private IGameInfo clicked;
+
+        public IGameInfo Selected
+        {
+            get { return clicked; }
+        }
+
+        public GameList(IGameInfo highlight)
         {
             InitializeComponent();
+
+            GameManager manager = GameManager.Instance;
+            var games = manager.Games;
+            foreach (IGameInfo game in games.Values)
+            {
+                GameControl con = new GameControl();
+                con.Width = listGames.Width;
+                con.GameInfo = game;
+                con.Click += Con_Click;
+
+                con.Text = game.GameName;
+                listGames.Controls.Add(con);
+
+                if (game == highlight)
+                {
+                    con.Highlight();
+                }
+            }
+        }
+
+        private void Con_Click(object sender, EventArgs e)
+        {
+            clicked = ((GameControl)sender).GameInfo;
+            btnOk.Enabled = true;
+        }
+
+        private void btnOk_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }

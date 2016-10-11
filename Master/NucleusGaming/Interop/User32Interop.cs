@@ -40,6 +40,9 @@ namespace Nucleus.Gaming.Interop
         [DllImport("user32.dll", EntryPoint = "SendMessage", SetLastError = true)]
         public static extern IntPtr SendMessage(IntPtr hWnd, Int32 Msg, IntPtr wParam, IntPtr lParam);
 
+        [DllImport("user32.dll")]
+        public static extern bool SetActiveWindow(IntPtr hWnd);
+
         /// <summary>
         /// Brings the thread that created the specified window into the foreground and activates the window. Keyboard input is
         /// directed to the window, and various visual cues are changed for the user. The system assigns a slightly higher

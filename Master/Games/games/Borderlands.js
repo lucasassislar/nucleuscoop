@@ -23,9 +23,12 @@ Game.NeedsSteamEmulation = true;
 Game.LauncherTitle = "splashscreen";
 Game.SaveType = Nucleus.SaveType.INI;
 Game.SupportsPositioning = true;
-Game.HideTaskbar = true;
+Game.HideTaskbar = false;
 Game.CustomXinput = true;
 Game.StartArguments = "-windowed -NoLauncher -nostartupmovies";
+Game.HookNeeded = true;
+Game.HookWindows = 7;
+Game.HookGameWindow = 1;
 
 Game.Play = function () {
     Context.ModifySave = [

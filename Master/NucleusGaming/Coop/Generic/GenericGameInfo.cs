@@ -38,6 +38,25 @@ namespace Nucleus.Gaming
         private bool hideTaskbar;
         private int interval = 1000;
         private bool customXinput = true;
+        private bool hookNeeded = false;
+        private int hookWindows;
+        private int hookGameWindow;
+
+        public bool HookNeeded
+        {
+            get { return hookNeeded; }
+            set { hookNeeded = value; }
+        }
+        public int HookWindows
+        {
+            get { return hookWindows; }
+            set { hookWindows = value; }
+        }
+        public int HookGameWindow
+        {
+            get { return hookGameWindow; }
+            set { hookGameWindow = value; }
+        }
 
         public bool CustomXinput
         {

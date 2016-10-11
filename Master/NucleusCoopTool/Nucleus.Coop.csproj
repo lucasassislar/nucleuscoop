@@ -75,9 +75,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EasyHook">
-      <HintPath>E:\Downloads\SplitTool 1.3\EasyHook-2.7.5159.0-Binaries\NetFX4.0\EasyHook.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -312,9 +309,6 @@
     <None Include="Resources\no_keyboard.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="StartGame.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Resources\left_arrow_press.png" />
     <None Include="Resources\left_arrow_hover.png" />
     <None Include="Resources\right_arrow_press.png" />

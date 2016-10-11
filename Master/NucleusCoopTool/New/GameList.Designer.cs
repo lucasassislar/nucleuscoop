@@ -28,14 +28,45 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.listGames = new Nucleus.Gaming.ControlListBox();
+            this.btnOk = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // listGames
+            // 
+            this.listGames.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listGames.AutoScroll = true;
+            this.listGames.Border = 1;
+            this.listGames.Location = new System.Drawing.Point(12, 12);
+            this.listGames.Name = "listGames";
+            this.listGames.Offset = new System.Drawing.Size(0, 0);
+            this.listGames.Size = new System.Drawing.Size(396, 593);
+            this.listGames.TabIndex = 0;
+            // 
+            // btnOk
+            // 
+            this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOk.Enabled = false;
+            this.btnOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOk.Location = new System.Drawing.Point(12, 611);
+            this.btnOk.Name = "btnOk";
+            this.btnOk.Size = new System.Drawing.Size(396, 49);
+            this.btnOk.TabIndex = 1;
+            this.btnOk.Text = "O K";
+            this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // GameList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.ClientSize = new System.Drawing.Size(420, 672);
+            this.Controls.Add(this.btnOk);
+            this.Controls.Add(this.listGames);
             this.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.Name = "GameList";
             this.Text = "Split Play PC";
@@ -44,6 +75,9 @@
         }
 
         #endregion
+
+        private Gaming.ControlListBox listGames;
+        private System.Windows.Forms.Button btnOk;
     }
 }
 

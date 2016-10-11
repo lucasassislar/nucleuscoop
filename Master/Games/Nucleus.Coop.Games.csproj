@@ -121,9 +121,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="TheHooker.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="TheHooker.dll" />
     <None Include="GamesKey.snk" />
     <None Include="Resident Evil 5\resources\Splitscreen Mod PC RE5.zip" />
     <None Include="Resident Evil 5\resources\Splitscreen Mod PC RE5\re5ssmod\splitscreen.cfg" />
@@ -172,9 +170,7 @@
     <None Include="Resources\v2\xinput3.dll" />
     <None Include="Resources\v2\xinput4.dll" />
     <Content Include="tested.txt" />
-    <None Include="TheHooker.lib">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="TheHooker.lib" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="GamesResources.resx">

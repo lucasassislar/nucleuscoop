@@ -20,10 +20,6 @@ namespace Nucleus.Coop
         private int currentStepIndex;
         private bool formClosing;
         private IGameHandler handler;
-        private bool expanded = false;
-
-        private Size expandedSize = new Size(1070, 740);
-        private Size startSize = new Size(275, 740);
 
         private GameManager gameManager;
         private Dictionary<UserGameInfo, GameControl> controls;
@@ -47,7 +43,6 @@ namespace Nucleus.Coop
         public MainForm()
         {
             InitializeComponent();
-            Size = startSize;
 
             controls = new Dictionary<UserGameInfo, GameControl>();
             gameManager = new GameManager();
@@ -63,13 +58,10 @@ namespace Nucleus.Coop
 
         protected override void WndProc(ref Message m)
         {
-            base.WndProc(ref m);
-        }
+            int msg = m.Msg;
+            LogManager.Log(msg.ToString());
 
-        private void Expand()
-        {
-            Size = expandedSize;
-            expanded = true;
+            base.WndProc(ref m);
         }
 
         public void RefreshGames()
@@ -157,12 +149,9 @@ namespace Nucleus.Coop
                 return;
             }
 
-            Expand();
-
-            panelGameName.Visible = true;
-            label_StepTitle.Visible = true;
             StepPanel.Visible = true;
             btnBack.Visible = true;
+            btn_Play.Visible = true;
 
             currentGame = currentGameInfo.Game;
 
@@ -219,7 +208,7 @@ namespace Nucleus.Coop
             }
             else
             {
-                btnNext.Visible = true;
+                btn_Next.Visible = true;
             }
         }
 
@@ -248,7 +237,7 @@ namespace Nucleus.Coop
             currentStep.Size = StepPanel.Size;
             currentStep.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
 
-            btnNext.Visible = currentStep.CanProceed && step != stepsList.Count - 1;
+            btn_Next.Visible = currentStep.CanProceed && step != stepsList.Count - 1;
 
             if (currentStep.Profile != currentProfile)// dont reinitialize, user is coming back
             {
@@ -360,16 +349,21 @@ namespace Nucleus.Coop
                 {
                     string path = open.FileName;
 
-                    UserGameInfo game = gameManager.TryAddGame(path);
+                    IGameInfo info = gameManager.GetGame(path);
+                    GameList list = new GameList(info);
+                    if (list.ShowDialog() == DialogResult.OK)
+                    {
+                        UserGameInfo game = gameManager.TryAddGame(path, info);
 
-                    if (game == null)
-                    {
-                        MessageBox.Show("Game not added/unknown");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Game recognized as " + game.Game.GameName);
-                        RefreshGames();
+                        if (game == null)
+                        {
+                            MessageBox.Show("Game already in your library!");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Game accepted as " + game.Game.GameName);
+                            RefreshGames();
+                        }
                     }
                 }
             }
@@ -393,7 +387,7 @@ namespace Nucleus.Coop
             form = null;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnShowTaskbar_Click(object sender, EventArgs e)
         {
             User32.ShowTaskBar();
         }

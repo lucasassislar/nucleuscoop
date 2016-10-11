@@ -10,6 +10,7 @@ namespace Nucleus.Gaming
     public class UserInputControl : UserControl
     {
         protected GameProfile profile;
+        protected UserGameInfo game;
 
         public virtual bool CanProceed { get { throw new NotImplementedException(); } }
         public virtual bool CanPlay { get { throw new NotImplementedException(); } }
@@ -23,6 +24,7 @@ namespace Nucleus.Gaming
         public virtual void Initialize(UserGameInfo game, GameProfile profile)
         {
             this.profile = profile;
+            this.game = game;
         }
 
         protected virtual void OnCanPlayTrue(bool autoProceed)

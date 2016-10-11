@@ -86,6 +86,74 @@ namespace Nucleus.Gaming
         }
 
         /// <summary>
+        /// Tries to find the game
+        /// </summary>
+        /// <param name="exePath"></param>
+        /// <returns></returns>
+        public IGameInfo GetGame(string exePath)
+        {
+            string lower = exePath.ToLower();
+            string fileName = Path.GetFileName(exePath).ToLower();
+            string dir = Path.GetDirectoryName(exePath);
+
+            var possibilities = Games.Values.Where(c => c.ExecutableName == fileName);
+
+            foreach (IGameInfo game in possibilities)
+            {
+                // check if the Context matches
+                string[] context = game.ExecutableContext;
+                bool notAdd = false;
+                if (context != null)
+                {
+                    for (int j = 0; j < context.Length; j++)
+                    {
+                        string con = Path.Combine(dir, context[j]);
+                        if (!File.Exists(con) &&
+                            !Directory.Exists(con))
+                        {
+                            notAdd = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (notAdd)
+                {
+                    continue;
+                }
+
+                // search for the same exe on the user profile
+                return game;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Tries adding a game to the collection with the provided IGameInfo
+        /// </summary>
+        /// <param name="exePath"></param>
+        /// <returns></returns>
+        public UserGameInfo TryAddGame(string exePath, IGameInfo game)
+        {
+            string lower = exePath.ToLower();
+
+            // search for the same exe on the user profile
+            if (GameManager.Instance.User.Games.Any(c => c.ExePath.ToLower() == lower))
+            {
+                return null;
+            }
+
+            LogManager.Log("Found game: {0}, full path: {1}", game.GameName, exePath);
+            UserGameInfo uinfo = new UserGameInfo();
+            uinfo.InitializeDefault(game, exePath);
+            GameManager.Instance.User.Games.Add(uinfo);
+            GameManager.Instance.SaveUserProfile();
+
+            return uinfo;
+        }
+
+        /// <summary>
         /// Tries adding a game to the collection with the provided executable path
         /// </summary>
         /// <param name="exePath"></param>

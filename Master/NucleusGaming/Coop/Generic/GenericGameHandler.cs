@@ -1,6 +1,4 @@
-﻿//#define NEWXINPUT
-
-using Jint;
+﻿using Jint;
 using Nucleus.Gaming.Interop;
 using System;
 using System.Collections.Generic;
@@ -58,14 +56,14 @@ namespace Nucleus.Gaming
             // delete symlink folder
             try
             {
-                for (int i = 0; i < profile.PlayerCount; i++)
-                {
-                    string linkFolder = Path.Combine(backupDir, "Instance" + i);
-                    if (Directory.Exists(linkFolder))
-                    {
-                        Directory.Delete(linkFolder, true);
-                    }
-                }
+                //for (int i = 0; i < profile.PlayerCount; i++)
+                //{
+                //    string linkFolder = Path.Combine(backupDir, "Instance" + i);
+                //    if (Directory.Exists(linkFolder))
+                //    {
+                //        Directory.Delete(linkFolder, true);
+                //    }
+                //}
             }
             catch { }
 
@@ -280,11 +278,11 @@ namespace Nucleus.Gaming
 
                 if (context.SymlinkExe)
                 {
-                    CmdUtil.LinkFiles(binFolder, linkBin, out exitCode, "xinput");
+                    CmdUtil.LinkFiles(binFolder, linkBin, out exitCode, "xinput", "ncoop");
                 }
                 else
                 {
-                    CmdUtil.LinkFiles(binFolder, linkBin, out exitCode, "xinput", Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()));
+                    CmdUtil.LinkFiles(binFolder, linkBin, out exitCode, "xinput", "ncoop", Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()));
                     File.Copy(userGame.ExePath, exePath, true);
                 }
 
@@ -310,37 +308,6 @@ namespace Nucleus.Gaming
 
                 string startArgs = context.StartArguments;
 
-#if NEWXINPUT
-                if (context.CustomXinput)
-                {
-                    byte[] xdata = null;
-                    if (context.IsKeyboardPlayer)
-                    {
-                        int wut = -1;
-                    }
-                    else
-                    {
-                        xdata = Properties.Resources.xinput1_3_x86;
-
-                        string x360ceini = Path.Combine(linkBin, "x360ce.ini");
-
-                        using (Stream str = File.OpenWrite(x360ceini))
-                        {
-                            byte[] ini = Properties.Resources.x360ce;
-                            str.Write(ini, 0, ini.Length);
-                        }
-
-                        IniFile x360 = new IniFile(x360ceini);
-                        x360.IniWriteValue("Gamepad", "PassThroughIndex", (gamePadId + 1).ToString());
-                        gamePadId++;
-
-                        using (Stream str = File.OpenWrite(Path.Combine(linkBin, "xinput1_3.dll")))
-                        {
-                            str.Write(xdata, 0, xdata.Length);
-                        }
-                    }
-                }
-#else
                 if (context.CustomXinput)
                 {
                     byte[] xdata = null;
@@ -374,8 +341,20 @@ namespace Nucleus.Gaming
                     {
                         str.Write(xdata, 0, xdata.Length);
                     }
+
+                    string ncoopIni = Path.Combine(linkBin, "ncoop.ini");
+
+                    using (Stream str = File.OpenWrite(ncoopIni))
+                    {
+                        byte[] ini = Properties.Resources.ncoop;
+                        str.Write(ini, 0, ini.Length);
+                    }
+
+                    IniFile x360 = new IniFile(ncoopIni);
+                    x360.IniWriteValue("Options", "HookWindows", context.HookWindows.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "HookGameWindow", context.HookGameWindow.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "HookNeeded", context.HookNeeded.ToString(CultureInfo.InvariantCulture));
                 }
-#endif
 
                 Process proc;
                 if (context.NeedsSteamEmulation)
@@ -573,10 +552,12 @@ namespace Nucleus.Gaming
                         data.HWnd.TopMost = true;
                         data.HWnd.Click();
 
+                        //User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
+                        //User32Interop.SetActiveWindow(data.HWnd.NativePtr);
+
                         if (p.IsKeyboardPlayer)
                         {
                             Rectangle r = p.MonitorBounds;
-                            r.Height /= 2;
                             Cursor.Clip = r;
                             //User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
                         }
