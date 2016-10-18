@@ -18,7 +18,6 @@ namespace Nucleus.Gaming
 
         public Size Size;
         public bool Setted;
-        public bool SettedScreen;
 
         public bool Register0;
 

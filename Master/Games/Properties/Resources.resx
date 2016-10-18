@@ -117,26 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="d3d9" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\d3d9.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="_1_xinput1_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1_xinput1_3.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="_2_xinput1_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\2_xinput1_3.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="_3_xinput1_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\3_xinput1_3.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="_4_xinput1_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\4_xinput1_3.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="xinput3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v2\xinput3.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="xinput4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v2\xinput4.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
 </root>

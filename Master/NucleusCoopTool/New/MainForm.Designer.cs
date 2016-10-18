@@ -39,7 +39,6 @@
             this.btnBack = new System.Windows.Forms.Button();
             this.btnAutoSearch = new System.Windows.Forms.Button();
             this.btn_Next = new System.Windows.Forms.Button();
-            this.btnShowTaskbar = new System.Windows.Forms.Button();
             this.panelGameName.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_Game)).BeginInit();
             this.SuspendLayout();
@@ -95,7 +94,7 @@
             this.list_Games.Location = new System.Drawing.Point(12, 12);
             this.list_Games.Name = "list_Games";
             this.list_Games.Offset = new System.Drawing.Size(0, 2);
-            this.list_Games.Size = new System.Drawing.Size(236, 592);
+            this.list_Games.Size = new System.Drawing.Size(236, 636);
             this.list_Games.TabIndex = 2;
             this.list_Games.SelectedChanged += new System.Action<object, System.Windows.Forms.Control>(this.list_Games_SelectedChanged);
             // 
@@ -127,7 +126,7 @@
             // 
             this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSearch.Location = new System.Drawing.Point(12, 610);
+            this.btnSearch.Location = new System.Drawing.Point(12, 654);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(115, 35);
             this.btnSearch.TabIndex = 7;
@@ -154,7 +153,7 @@
             // 
             this.btnAutoSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnAutoSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAutoSearch.Location = new System.Drawing.Point(133, 610);
+            this.btnAutoSearch.Location = new System.Drawing.Point(133, 654);
             this.btnAutoSearch.Name = "btnAutoSearch";
             this.btnAutoSearch.Size = new System.Drawing.Size(115, 35);
             this.btnAutoSearch.TabIndex = 10;
@@ -176,25 +175,11 @@
             this.btn_Next.Visible = false;
             this.btn_Next.Click += new System.EventHandler(this.btnNext_Click);
             // 
-            // btnShowTaskbar
-            // 
-            this.btnShowTaskbar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnShowTaskbar.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnShowTaskbar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShowTaskbar.Location = new System.Drawing.Point(12, 651);
-            this.btnShowTaskbar.Name = "btnShowTaskbar";
-            this.btnShowTaskbar.Size = new System.Drawing.Size(236, 35);
-            this.btnShowTaskbar.TabIndex = 12;
-            this.btnShowTaskbar.Text = "Show Taskbar";
-            this.btnShowTaskbar.UseVisualStyleBackColor = true;
-            this.btnShowTaskbar.Click += new System.EventHandler(this.btnShowTaskbar_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1054, 701);
-            this.Controls.Add(this.btnShowTaskbar);
             this.Controls.Add(this.btn_Next);
             this.Controls.Add(this.btnAutoSearch);
             this.Controls.Add(this.btnBack);
@@ -229,6 +214,5 @@
         private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.Button btnAutoSearch;
         private System.Windows.Forms.Button btn_Next;
-        private System.Windows.Forms.Button btnShowTaskbar;
     }
 }

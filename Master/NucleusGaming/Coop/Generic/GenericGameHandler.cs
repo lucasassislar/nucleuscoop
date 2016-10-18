@@ -462,10 +462,10 @@ namespace Nucleus.Gaming
                 first = false;
             }
 
-            if (hidetaskbar)
-            {
-                User32.HideTaskbar();
-            }
+            //if (hidetaskbar)
+            //{
+            //    User32.HideTaskbar();
+            //}
 
             return string.Empty;
         }
@@ -534,32 +534,24 @@ namespace Nucleus.Gaming
                             p.ProcessData.KilledMutexes = true;
                         }
 
-                        if (!data.SettedScreen)
+                        uint lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE);
+                        if (lStyle != data.RegLong)
                         {
-                            uint lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE);
-                            //if (lStyle != data.RegLong)
-                            {
-                                uint toRemove = User32_WS.WS_CAPTION;
-                                lStyle = lStyle & (~toRemove);
+                            uint toRemove = User32_WS.WS_CAPTION;
+                            lStyle = lStyle & (~toRemove);
 
-                                User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE, lStyle);
-                                data.RegLong = lStyle;
-                                data.HWnd.Location = data.Position;
-                            }
-                            data.SettedScreen = true;
+                            User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE, lStyle);
+                            data.RegLong = lStyle;
+                            data.HWnd.Location = data.Position;
                         }
 
                         data.HWnd.TopMost = true;
-                        data.HWnd.Click();
-
-                        //User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
-                        //User32Interop.SetActiveWindow(data.HWnd.NativePtr);
 
                         if (p.IsKeyboardPlayer)
                         {
                             Rectangle r = p.MonitorBounds;
                             Cursor.Clip = r;
-                            //User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
+                            User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
                         }
                     }
                     else
