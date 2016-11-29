@@ -351,9 +351,8 @@ namespace Nucleus.Gaming
                     }
 
                     IniFile x360 = new IniFile(ncoopIni);
-                    x360.IniWriteValue("Options", "HookWindows", context.HookWindows.ToString(CultureInfo.InvariantCulture));
-                    x360.IniWriteValue("Options", "HookGameWindow", context.HookGameWindow.ToString(CultureInfo.InvariantCulture));
                     x360.IniWriteValue("Options", "HookNeeded", context.HookNeeded.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "GameWindowName", context.HookGameWindowName.ToString(CultureInfo.InvariantCulture));
                 }
 
                 Process proc;

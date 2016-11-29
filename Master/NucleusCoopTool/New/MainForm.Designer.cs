@@ -63,7 +63,7 @@
             this.panelGameName.Controls.Add(this.pic_Game);
             this.panelGameName.Location = new System.Drawing.Point(254, 14);
             this.panelGameName.Name = "panelGameName";
-            this.panelGameName.Size = new System.Drawing.Size(178, 46);
+            this.panelGameName.Size = new System.Drawing.Size(250, 46);
             this.panelGameName.TabIndex = 1;
             // 
             // label_GameTitle
@@ -72,12 +72,13 @@
             this.label_GameTitle.Font = new System.Drawing.Font("Segoe UI", 18F);
             this.label_GameTitle.Location = new System.Drawing.Point(49, 7);
             this.label_GameTitle.Name = "label_GameTitle";
-            this.label_GameTitle.Size = new System.Drawing.Size(126, 32);
+            this.label_GameTitle.Size = new System.Drawing.Size(198, 32);
             this.label_GameTitle.TabIndex = 1;
-            this.label_GameTitle.Text = "No Games";
+            this.label_GameTitle.Text = "Nothing selected";
             // 
             // pic_Game
             // 
+            this.pic_Game.Image = global::Nucleus.Coop.Properties.Resources.not_found_white;
             this.pic_Game.Location = new System.Drawing.Point(3, 3);
             this.pic_Game.Name = "pic_Game";
             this.pic_Game.Size = new System.Drawing.Size(40, 40);

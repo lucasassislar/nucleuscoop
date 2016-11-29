@@ -27,8 +27,7 @@ Game.HideTaskbar = false;
 Game.CustomXinput = true;
 Game.StartArguments = "-windowed -NoLauncher -nostartupmovies";
 Game.HookNeeded = true;
-Game.HookWindows = 7;
-Game.HookGameWindow = 1;
+Game.HookGameWindowName = "Borderlands";
 
 Game.Play = function () {
     Context.ModifySave = [

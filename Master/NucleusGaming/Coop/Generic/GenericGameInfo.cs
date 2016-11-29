@@ -39,23 +39,17 @@ namespace Nucleus.Gaming
         private int interval = 1000;
         private bool customXinput = true;
         private bool hookNeeded = false;
-        private int hookWindows;
-        private int hookGameWindow;
+        private string hookGameWindowName = "";
 
         public bool HookNeeded
         {
             get { return hookNeeded; }
             set { hookNeeded = value; }
         }
-        public int HookWindows
+        public string HookGameWindowName
         {
-            get { return hookWindows; }
-            set { hookWindows = value; }
-        }
-        public int HookGameWindow
-        {
-            get { return hookGameWindow; }
-            set { hookGameWindow = value; }
+            get { return hookGameWindowName; }
+            set { hookGameWindowName = value; }
         }
 
         public bool CustomXinput

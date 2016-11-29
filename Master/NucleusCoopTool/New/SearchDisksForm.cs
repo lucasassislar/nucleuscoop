@@ -169,7 +169,8 @@ namespace Nucleus.Coop
                 if (GameManager.Instance.AnyGame(lower))
                 {
                     string path = mft.GetFullPath(file);
-                    if (path.Contains("$Recycle.Bin"))
+                    if (path.Contains("$Recycle.Bin") ||
+                        path.Contains(@"\Instance"))
                     {
                         // noope
                         continue;

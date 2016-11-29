@@ -140,6 +140,9 @@
     <None Include="games\BorderlandsPreSequel.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="games\SaintsRow3DX11.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Left4Dead2\resources\bloodharvest.jpg" />
     <Content Include="Left4Dead2\resources\crashcourse.jpg" />
     <None Include="Left4Dead2\resources\darkcarnival.jpg" />

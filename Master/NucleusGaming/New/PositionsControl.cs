@@ -304,7 +304,17 @@ namespace Nucleus.Coop
                             if (p.ScreenIndex == screenIndex)
                             {
                                 playersUsing++;
-                                areaUsed = Rectangle.Union(areaUsed, p.MonitorBounds);
+
+                                if (i == 0)
+                                {
+                                    // this check needs to exist, because if the coordinates in the monitor
+                                    // are negative the Union method will extend from 0 to the negative and we'll end up messing everything up
+                                    areaUsed = p.MonitorBounds; 
+                                }
+                                else
+                                {
+                                    areaUsed = Rectangle.Union(areaUsed, p.MonitorBounds);
+                                }
                             }
                         }
 
