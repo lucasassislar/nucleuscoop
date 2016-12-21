@@ -130,8 +130,10 @@
     <Compile Include="Coop\GameProfile.cs" />
     <Compile Include="Coop\Generic\GenericContext.cs" />
     <Compile Include="Coop\Generic\GenericGameInfo.cs" />
-    <Compile Include="Coop\Generic\IniSaveInfo.cs" />
+    <Compile Include="Coop\Generic\Save\CfgSaveInfo.cs" />
+    <Compile Include="Coop\Generic\Save\IniSaveInfo.cs" />
     <Compile Include="Coop\Generic\SaveInfo.cs" />
+    <Compile Include="IO\SourceCfgFile.cs" />
     <Compile Include="Coop\IGameHandler.cs" />
     <Compile Include="Coop\IGameInfo.cs" />
     <Compile Include="Coop\UserGameInfo.cs" />

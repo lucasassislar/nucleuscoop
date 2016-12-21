@@ -33,6 +33,7 @@ namespace Nucleus.Gaming
         private bool customXinput;
         private bool hookNeeded = false;
         private string hookGameWindowName = "";
+        private string[] killMutex;
 
         public bool HookNeeded
         {
@@ -161,7 +162,8 @@ namespace Nucleus.Gaming
 
         public string[] KillMutex
         {
-            get { return new string[0]; }
+            get { return killMutex; }
+            set { killMutex = value; }
         }
 
         public string LauncherExe

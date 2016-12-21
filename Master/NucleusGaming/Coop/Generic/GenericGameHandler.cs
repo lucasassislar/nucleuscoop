@@ -289,11 +289,11 @@ namespace Nucleus.Gaming
                 // some games have save files inside their game folder, so we need to access them inside the loop
                 this.data[Folder.GameFolder.ToString()] = linkFolder;
 
-                IniFile file = new IniFile(saveFile);
 
                 switch (context.SaveType)
                 {
                     case SaveType.INI:
+                        IniFile file = new IniFile(saveFile);
                         for (int j = 0; j < context.ModifySave.Length; j++)
                         {
                             SaveInfo save = context.ModifySave[j];
@@ -303,6 +303,24 @@ namespace Nucleus.Gaming
                                 file.IniWriteValue(ini.Section, ini.Key, ini.Value);
                             }
                         }
+                        break;
+                    case SaveType.CFG:
+                        SourceCfgFile cfg;
+                        using (Stream str = File.OpenRead(saveFile))
+                        {
+                            cfg = new SourceCfgFile(str);
+                        }
+
+                        for (int j = 0; j < context.ModifySave.Length; j++)
+                        {
+                            SaveInfo save = context.ModifySave[j];
+                            if (save is CfgSaveInfo)
+                            {
+                                CfgSaveInfo option = (CfgSaveInfo)save;
+                                cfg.ChangeProperty(option.Key, option.Value);
+                            }
+                        }
+
                         break;
                 }
 
