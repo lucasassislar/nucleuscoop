@@ -54,11 +54,12 @@ Game.Play = function () {
         new Nucleus.IniSaveInfo("WillowGame.WillowGameEngine", "bMuteAudioWhenNotInFocus", false),
     ];
 
+    var playerStr = "saveid" + Context.PlayerID;
     if (Context.IsKeyboardPlayer) {
-        Context.StartArguments = "-windowed -AlwaysFocus -NoController -nostartupmovies -SaveDataId=" + Context.Options["saveid" + Context.PlayerId];
+        Context.StartArguments = "-windowed -AlwaysFocus -NoController -nostartupmovies -SaveDataId=" + Context.Options[playerStr];
     }
     else {
-        Context.StartArguments = "-windowed -AlwaysFocus -nostartupmovies -SaveDataId=" + Context.Options["saveid" + Context.PlayerId];
+        Context.StartArguments = "-windowed -AlwaysFocus -nostartupmovies -SaveDataId=" + Context.Options[playerStr];
     }
 
     Context.SavePath = Context.GetFolder(Nucleus.Folder.Documents) + "\\My Games\\Borderlands The Pre-Sequel\\WillowGame\\Config\\WillowEngine.ini";

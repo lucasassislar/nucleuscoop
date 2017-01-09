@@ -56,14 +56,16 @@ namespace Nucleus.Gaming
             // delete symlink folder
             try
             {
-                //for (int i = 0; i < profile.PlayerCount; i++)
-                //{
-                //    string linkFolder = Path.Combine(backupDir, "Instance" + i);
-                //    if (Directory.Exists(linkFolder))
-                //    {
-                //        Directory.Delete(linkFolder, true);
-                //    }
-                //}
+#if RELEASE
+                for (int i = 0; i < profile.PlayerCount; i++)
+                {
+                    string linkFolder = Path.Combine(backupDir, "Instance" + i);
+                    if (Directory.Exists(linkFolder))
+                    {
+                        Directory.Delete(linkFolder, true);
+                    }
+                }
+#endif
             }
             catch { }
 
