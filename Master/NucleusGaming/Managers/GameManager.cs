@@ -25,6 +25,12 @@ namespace Nucleus.Gaming
         private Dictionary<string, IGameInfo> gameInfos;
         private UserProfile user;
         private List<BackupFile> backupFiles;
+        private string error;
+
+        public string Error
+        {
+            get { return error; }
+        }
 
         /// <summary>
         /// object instance so we can thread-safe save the user profile
@@ -212,10 +218,19 @@ namespace Nucleus.Gaming
         /// Extracts the SmartSteamEmu and returns the folder its on
         /// </summary>
         /// <returns></returns>
-        public string ExtractSteamEmu()
+        public string ExtractSteamEmu(string outputFolder = null)
         {
-            string app = GetAppDataPath();
-            string steamEmu = Path.Combine(app, "SteamEmu");
+            string steamEmu;
+
+            if (string.IsNullOrEmpty(outputFolder))
+            {
+                string app = GetAppDataPath();
+                steamEmu = Path.Combine(app, "SteamEmu");
+            }
+            else
+            {
+                steamEmu = outputFolder;
+            }
 
             try
             {
@@ -517,7 +532,7 @@ namespace Nucleus.Gaming
         }
 #endregion
 
-        public bool Play(IGameHandler handler)
+        public void Play(IGameHandler handler)
         {
             //if (handler.HideTaskBar)
             //{
@@ -526,19 +541,13 @@ namespace Nucleus.Gaming
 
             // Start the Play method in another thread, so the
             // handler can update while it's still loading
-            string play = handler.Play();
-
-            if (!string.IsNullOrEmpty(play))
-            {
-                MessageBox.Show(play, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-            return true;
-            //ThreadPool.QueueUserWorkItem(play, handler);
+            error = null;
+            ThreadPool.QueueUserWorkItem(play, handler);
         }
         private void play(object state)
         {
-            ((IGameHandler)state).Play();
+            error = ((IGameHandler)state).Play();
+           
         }
     }
 }

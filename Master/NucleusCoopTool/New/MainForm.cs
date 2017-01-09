@@ -276,17 +276,11 @@ namespace Nucleus.Coop
             handler.Initialize(currentGameInfo, currentProfile);
             handler.Ended += handler_Ended;
 
-            if (gameManager.Play(handler))
+            gameManager.Play(handler);
+            if (handler.TimerInterval > 0)
             {
-                if (handler.TimerInterval > 0)
-                {
-                    handlerThread = new Thread(UpdateGameManager);
-                    handlerThread.Start();
-                }
-            }
-            else
-            {
-                handler = null;
+                handlerThread = new Thread(UpdateGameManager);
+                handlerThread.Start();
             }
 
             this.WindowState = FormWindowState.Minimized;
@@ -312,6 +306,14 @@ namespace Nucleus.Coop
                     if (gameManager == null || formClosing || handler == null)
                     {
                         break;
+                    }
+
+                    string error = gameManager.Error;
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        MessageBox.Show(error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        handler_Ended();
+                        return;
                     }
 
                     handler.Update(handler.TimerInterval);

@@ -133,7 +133,8 @@ namespace Nucleus.Gaming.Interop
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct SYSTEM_HANDLE_INFORMATION
-        { // Information Class 16
+        { 
+            // Information Class 16
             public int ProcessID;
             public byte ObjectTypeNumber;
             public byte Flags; // 0x01 = PROTECT_FROM_CLOSE, 0x02 = INHERIT
@@ -278,8 +279,7 @@ namespace Nucleus.Gaming.Interop
             return null;
         }
 
-        public static List<Win32API.SYSTEM_HANDLE_INFORMATION>
-        GetHandles(Process process = null, string IN_strObjectTypeName = null, string IN_strObjectName = null)
+        public static List<Win32API.SYSTEM_HANDLE_INFORMATION> GetHandles(Process process = null, string IN_strObjectTypeName = null, string IN_strObjectName = null)
         {
             uint nStatus;
             int nHandleInfoSize = 0x10000;
@@ -288,8 +288,7 @@ namespace Nucleus.Gaming.Interop
             IntPtr ipHandle = IntPtr.Zero;
 
             while ((nStatus = Win32API.NtQuerySystemInformation(CNST_SYSTEM_HANDLE_INFORMATION, ipHandlePointer,
-                                                                nHandleInfoSize, ref nLength)) ==
-                    STATUS_INFO_LENGTH_MISMATCH)
+                                                                nHandleInfoSize, ref nLength)) == STATUS_INFO_LENGTH_MISMATCH)
             {
                 nHandleInfoSize = nLength;
                 Marshal.FreeHGlobal(ipHandlePointer);

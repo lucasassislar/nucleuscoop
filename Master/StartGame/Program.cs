@@ -12,8 +12,8 @@ namespace StartGame
 {
     class Program
     {
-        static int tries = 5;
-        static Process proc;
+        private static int tries = 5;
+        private static Process proc;
 
         static void StartGame(string path, string args = "")
         {
@@ -43,7 +43,7 @@ namespace StartGame
         {
             if (args.Length == 0)
             {
-                Console.WriteLine("Invalid usage!");
+                Console.WriteLine("Invalid usage! Need arguments to proceed!");
                 return;
             }
 
@@ -87,11 +87,30 @@ namespace StartGame
                         int id = int.Parse(procId);
                         proc = Process.GetProcessById(id);
                     }
+                    else if (key == "output")
+                    {
+                        string[] mutex = splited[1].Split(';');
+                        bool all = true;
+
+                        for (int j = 0; j < mutex.Length; j++)
+                        {
+                            string m = mutex[j];
+                            bool exists = ProcessUtil.MutexExists(proc, m);
+                            if (!exists)
+                            {
+                                all = false;
+                            }
+
+                            Console.WriteLine("Mutex " + m + (exists ? " exists" : " doesn't exist"));
+                            Thread.Sleep(500);
+                        }
+                        Console.WriteLine(all.ToString());
+                    }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                Console.WriteLine("Invalid usage!");
+                Console.WriteLine(ex.Message);
             }
 
             

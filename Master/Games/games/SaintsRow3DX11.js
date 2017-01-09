@@ -8,6 +8,9 @@ Game.Options = [
 Game.ExecutableContext = [
     "binkw32.dll"
 ];
+Game.KillMutex = [
+    "SR3"
+];
 
 Game.SymlinkExe = false;
 Game.SupportsKeyboard = true;

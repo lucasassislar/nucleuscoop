@@ -8,9 +8,13 @@ using System.Text;
 
 namespace Nucleus
 {
+    /// <summary>
+    /// Util class for executing and reading output from the Nucleus.Coop.StartGame application
+    /// </summary>
     public static class StartGameUtil
     {
         private static string lastLine;
+        private static object locker = new object();
 
         public static string GetStartGamePath()
         {
@@ -35,30 +39,67 @@ namespace Nucleus
 
         public static void KillMutex(Process p, params string[] mutex)
         {
-            string startGamePath = GetStartGamePath();
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = startGamePath;
-
-            string mu = "";
-            for (int i = 0; i < mutex.Length; i++)
+            lock (locker)
             {
-                mu += mutex[i];
+                string startGamePath = GetStartGamePath();
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = startGamePath;
 
-                if (i != mutex.Length - 1)
+                string mu = "";
+                for (int i = 0; i < mutex.Length; i++)
                 {
-                    mu += ";";
+                    mu += mutex[i];
+
+                    if (i != mutex.Length - 1)
+                    {
+                        mu += ";";
+                    }
                 }
+
+                startInfo.Arguments = "\"proc:" + p.Id.ToString() + "\" \"mutex:" + mu + "\"";
+                startInfo.RedirectStandardOutput = true;
+                startInfo.UseShellExecute = false;
+
+                Process proc = Process.Start(startInfo);
+                proc.OutputDataReceived += proc_OutputDataReceived;
+                proc.BeginOutputReadLine();
+
+                proc.WaitForExit();
             }
+        }
 
-            startInfo.Arguments = "\"proc:" + p.Id.ToString() + "\" \"mutex:" + mu + "\"";
-            startInfo.RedirectStandardOutput = true;
-            startInfo.UseShellExecute = false;
+        public static bool MutexExists(Process p, params string[] mutex)
+        {
+            lock (locker)
+            {
+                string startGamePath = GetStartGamePath();
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = startGamePath;
 
-            Process proc = Process.Start(startInfo);
-            proc.OutputDataReceived += proc_OutputDataReceived;
-            proc.BeginOutputReadLine();
+                string mu = "";
+                for (int i = 0; i < mutex.Length; i++)
+                {
+                    mu += mutex[i];
 
-            proc.WaitForExit();
+                    if (i != mutex.Length - 1)
+                    {
+                        mu += ";";
+                    }
+                }
+
+                startInfo.Arguments = $"proc:{p.Id} output:{mu}";
+                startInfo.RedirectStandardOutput = true;
+                startInfo.UseShellExecute = false;
+                startInfo.CreateNoWindow = true;
+
+                Process proc = Process.Start(startInfo);
+                proc.OutputDataReceived += proc_OutputDataReceived;
+                proc.BeginOutputReadLine();
+
+                proc.WaitForExit();
+
+                return bool.Parse(lastLine);
+            }
         }
 
         /// <summary>
@@ -71,22 +112,25 @@ namespace Nucleus
         /// <returns></returns>
         public static int StartGame(string pathToGame, string args)
         {
-            string startGamePath = GetStartGamePath();
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = startGamePath;
+            lock (locker)
+            {
+                string startGamePath = GetStartGamePath();
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = startGamePath;
 
-            startInfo.Arguments = "\"game:" + pathToGame + ";" + args + "\"";
-            startInfo.RedirectStandardOutput = true;
-            startInfo.UseShellExecute = false;
+                startInfo.Arguments = "\"game:" + pathToGame + ";" + args + "\"";
+                startInfo.RedirectStandardOutput = true;
+                startInfo.UseShellExecute = false;
 
-            Process proc = Process.Start(startInfo);
-            proc.OutputDataReceived += proc_OutputDataReceived;
-            proc.BeginOutputReadLine();
+                Process proc = Process.Start(startInfo);
+                proc.OutputDataReceived += proc_OutputDataReceived;
+                proc.BeginOutputReadLine();
 
-            proc.WaitForExit();
+                proc.WaitForExit();
 
-            // parse the last line for the process ID
-            return int.Parse(lastLine.Split(':')[1]);
+                // parse the last line for the process ID
+                return int.Parse(lastLine.Split(':')[1]);
+            }
         }
         public static void proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
@@ -94,6 +138,7 @@ namespace Nucleus
             {
                 return;
             }
+            Console.WriteLine($"Redirected output: {e.Data}");
             lastLine = e.Data;
         }
     }

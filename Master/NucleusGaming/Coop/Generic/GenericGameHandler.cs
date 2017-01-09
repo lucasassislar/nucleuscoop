@@ -206,8 +206,20 @@ namespace Nucleus.Gaming
                             return "";
                         }
                         Thread.Sleep(100);
-                        if (before.ProcessData.KilledMutexes)
+
+                        if (!before.ProcessData.KilledMutexes)
                         {
+                            // check for the existence of the mutexes
+                            // before invoking our StartGame app to kill them
+                            ProcessData pdata = before.ProcessData;
+
+                            if (!StartGameUtil.MutexExists(pdata.Process, gen.KillMutex))
+                            {
+                                continue;
+                            }
+
+                            StartGameUtil.KillMutex(pdata.Process, gen.KillMutex);
+                            pdata.KilledMutexes = true;
                             break;
                         }
                     }
@@ -361,14 +373,13 @@ namespace Nucleus.Gaming
                 Process proc;
                 if (context.NeedsSteamEmulation)
                 {
-                    string steamEmu = GameManager.Instance.ExtractSteamEmu();
+                    string steamEmu = GameManager.Instance.ExtractSteamEmu(Path.Combine(linkFolder, "SmartSteamLoader"));
                     if (string.IsNullOrEmpty(steamEmu))
                     {
                         return "Extraction of SmartSteamEmu failed!";
                     }
 
                     string emuExe = Path.Combine(steamEmu, "SmartSteamLoader.exe");
-
                     string emuIni = Path.Combine(steamEmu, "SmartSteamEmu.ini");
                     IniFile emu = new IniFile(emuIni);
 
@@ -379,6 +390,8 @@ namespace Nucleus.Gaming
                     emu.IniWriteValue("Launcher", "SteamClientPath64", Path.Combine(steamEmu, "SmartSteamEmu64.dll"));
                     emu.IniWriteValue("Launcher", "InjectDll", "0");
                     emu.IniWriteValue("SmartSteamEmu", "AppId", context.SteamID);
+                    emu.IniWriteValue("SmartSteamEmu", "Offline", "True");
+                    //emu.IniWriteValue("SmartSteamEmu", "PersonaName", $"Player { i + 1 }");
 
                     if (context.KillMutex.Length > 0)
                     {
@@ -528,12 +541,6 @@ namespace Nucleus.Gaming
                         {
                             exited++;
                             continue;
-                        }
-
-                        if (!p.ProcessData.KilledMutexes && gen.KillMutex.Length > 0)
-                        {
-                            StartGameUtil.KillMutex(data.Process, gen.KillMutex);
-                            p.ProcessData.KilledMutexes = true;
                         }
 
                         uint lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE);
