@@ -343,6 +343,12 @@ namespace Nucleus.Gaming
 
         public void ExecuteBackup(IGameInfo game)
         {
+            // we didnt backup anything
+            if (backupFiles == null)
+            {
+                return;
+            }
+
             string appData = GetAppDataPath();
             string gamePath = Path.Combine(appData, game.GUID);
 

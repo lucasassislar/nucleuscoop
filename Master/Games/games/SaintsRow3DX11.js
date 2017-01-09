@@ -5,7 +5,7 @@ Game.Options = [
         Nucleus.KeyboardPlayer.NoKeyboardPlayer,
         "KeyboardPlayer"),
 ];
-Game.ExecutableContext = [ // need to add these or it might conflict with Tales of the Borderlands
+Game.ExecutableContext = [
     "binkw32.dll"
 ];
 

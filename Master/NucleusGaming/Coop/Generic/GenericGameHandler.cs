@@ -328,40 +328,13 @@ namespace Nucleus.Gaming
 
                 if (context.CustomXinput)
                 {
-                    byte[] xdata = null;
-                    if (context.IsKeyboardPlayer)
-                    {
-                        // TODO: need to make an xinput that answers to no gamepad?
-                        xdata = Properties.Resources.xinput4;
-                    }
-                    else
-                    {
-                        switch (gamePadId)
-                        {
-                            case 0:
-                                xdata = Properties.Resources.xinput1;
-                                break;
-                            case 1:
-                                xdata = Properties.Resources.xinput2;
-                                break;
-                            case 2:
-                                xdata = Properties.Resources.xinput3;
-                                break;
-                            case 3:
-                            default:
-                                xdata = Properties.Resources.xinput4;
-                                break;
-                        }
-                        gamePadId++;
-                    }
-
+                    byte[] xdata = Properties.Resources.xinput1_3;
                     using (Stream str = File.OpenWrite(Path.Combine(linkBin, "xinput1_3.dll")))
                     {
                         str.Write(xdata, 0, xdata.Length);
                     }
 
                     string ncoopIni = Path.Combine(linkBin, "ncoop.ini");
-
                     using (Stream str = File.OpenWrite(ncoopIni))
                     {
                         byte[] ini = Properties.Resources.ncoop;
@@ -371,6 +344,16 @@ namespace Nucleus.Gaming
                     IniFile x360 = new IniFile(ncoopIni);
                     x360.IniWriteValue("Options", "HookNeeded", context.HookNeeded.ToString(CultureInfo.InvariantCulture));
                     x360.IniWriteValue("Options", "GameWindowName", context.HookGameWindowName.ToString(CultureInfo.InvariantCulture));
+
+                    if (context.IsKeyboardPlayer)
+                    {
+                        x360.IniWriteValue("Options", "PlayerOverride", "3");
+                    }
+                    else
+                    {
+                        x360.IniWriteValue("Options", "PlayerOverride", gamePadId.ToString(CultureInfo.InvariantCulture));
+                        gamePadId++;
+                    }
                 }
 
                 Process proc;

@@ -270,6 +270,9 @@
   <ItemGroup>
     <None Include="Resources\xinput4.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\xinput1_3.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

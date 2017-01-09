@@ -133,6 +133,16 @@ namespace Nucleus.Gaming.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] xinput1_3 {
+            get {
+                object obj = ResourceManager.GetObject("xinput1_3", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] xinput2 {
             get {
                 object obj = ResourceManager.GetObject("xinput2", resourceCulture);
