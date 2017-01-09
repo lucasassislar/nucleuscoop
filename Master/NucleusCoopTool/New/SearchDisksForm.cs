@@ -123,6 +123,10 @@ namespace Nucleus.Coop
         {
             Invoke(new Action(delegate
             {
+                if (this.IsDisposed || progressBar1.IsDisposed)
+                {
+                    return;
+                }
                 progressBar1.Value = Math.Min(100, (int)(progress * 100));
             }));
         }
