@@ -5,19 +5,14 @@ Game.Options = [
         Nucleus.KeyboardPlayer.NoKeyboardPlayer,
         "KeyboardPlayer"),
 ];
-Game.ExecutableContext = [
-    "binkw32.dll"
-];
-Game.KillMutex = [
-    "SR3"
-];
 
+Game.Debug = true;
 Game.SymlinkExe = false;
 Game.SupportsKeyboard = true;
-Game.ExecutableName = "saintsrowthethird_dx11.exe";
-Game.SteamID = "55230";
-Game.GUID = "55230";
-Game.GameName = "Saints Row 3 (DX11)";
+Game.ExecutableName = "battlefrontii.exe";
+Game.SteamID = "6060";
+Game.GUID = "6060";
+Game.GameName = "Star Wars: Battlefront 2";
 Game.MaxPlayers = 4;
 Game.MaxPlayersOneMonitor = 4;
 Game.BinariesFolder = "";
@@ -27,10 +22,10 @@ Game.SaveType = Nucleus.SaveType.None;
 Game.SupportsPositioning = true;
 Game.HideTaskbar = false;
 Game.CustomXinput = true;
-Game.StartArguments = "-windowed -NoLauncher -nostartupmovies";
+Game.StartArguments = "/win";
 Game.HookNeeded = true;
-Game.HookGameWindowName = "Saints Row: The Third";
-Game.LauncherExe = "game_launcher.exe";
+Game.HookGameWindowName = "Star Wars Battlefront II";
+Game.LauncherExe = "";
 
 Game.Play = function () {
     //Context.SavePath = Context.GetFolder(Nucleus.Folder.Documents) + "\\My Games\\Borderlands\\WillowGame\\Config\\WillowEngine.ini";

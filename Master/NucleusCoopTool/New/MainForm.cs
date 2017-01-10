@@ -58,8 +58,8 @@ namespace Nucleus.Coop
 
         protected override void WndProc(ref Message m)
         {
-            int msg = m.Msg;
-            LogManager.Log(msg.ToString());
+            //int msg = m.Msg;
+            //LogManager.Log(msg.ToString());
 
             base.WndProc(ref m);
         }

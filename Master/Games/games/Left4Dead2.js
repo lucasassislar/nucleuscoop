@@ -5,11 +5,12 @@
         Nucleus.KeyboardPlayer.NoKeyboardPlayer,
         "KeyboardPlayer"),
 ];
-Game.KillMutex = [ // need to add these or it might conflict with Tales of the Borderlands
+Game.KillMutex = [ // 2nd instance won't launch without these removed
     "hl2_singleton_mutex",
     "steam_singleton_mutext"
 ];
 
+Game.Debug = true;
 Game.SymlinkExe = false;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "left4dead2.exe";
@@ -19,7 +20,7 @@ Game.GameName = "Left 4 Dead 2";
 Game.MaxPlayers = 4;
 Game.MaxPlayersOneMonitor = 4;
 Game.BinariesFolder = "";
-Game.NeedsSteamEmulation = true;
+Game.NeedsSteamEmulation = false;
 Game.LauncherTitle = "";
 Game.SaveType = Nucleus.SaveType.CFG;
 Game.SupportsPositioning = true;
@@ -34,5 +35,5 @@ Game.Play = function () {
         new Nucleus.CfgSaveInfo("VideoConfig", "setting.defaultresheight", Context.Height),
     ];
 
-    Context.SavePath = Context.GetFolder(Nucleus.Folder.GameFolder) + "\\left4dead2\\cfg\\video.text";
+    Context.SavePath = Context.GetFolder(Nucleus.Folder.GameFolder) + "\\left4dead2\\cfg\\video.txt";
 }

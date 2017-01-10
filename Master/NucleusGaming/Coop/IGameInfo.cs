@@ -8,6 +8,11 @@ namespace Nucleus.Gaming
     public interface IGameInfo
     {
         /// <summary>
+        /// If this game's implementation is unfinished (should not add in a release build)
+        /// </summary>
+        bool Debug { get; }
+
+        /// <summary>
         /// An array of types of IUserInputForm controls
         /// that will be used to get information from the user
         /// and start the game

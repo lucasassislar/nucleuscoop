@@ -196,7 +196,10 @@ namespace Nucleus.Gaming
             for (int i = 0; i < players.Count; i++)
             {
                 PlayerInfo player = players[i];
-                if (i > 0 && gen.KillMutex.Length > 0)
+                ProcessData procData = player.ProcessData;
+                bool hasSetted = procData != null && procData.Setted;
+
+                if (i > 0 && (gen.KillMutex?.Length > 0 || !hasSetted))
                 {
                     PlayerInfo before = players[i - 1];
                     for (;;)
@@ -205,22 +208,25 @@ namespace Nucleus.Gaming
                         {
                             return "";
                         }
-                        Thread.Sleep(100);
+                        Thread.Sleep(1000);
 
-                        if (!before.ProcessData.KilledMutexes)
+                        if (gen.KillMutex?.Length > 0)
                         {
-                            // check for the existence of the mutexes
-                            // before invoking our StartGame app to kill them
-                            ProcessData pdata = before.ProcessData;
-
-                            if (!StartGameUtil.MutexExists(pdata.Process, gen.KillMutex))
+                            if (!before.ProcessData.KilledMutexes)
                             {
-                                continue;
-                            }
+                                // check for the existence of the mutexes
+                                // before invoking our StartGame app to kill them
+                                ProcessData pdata = before.ProcessData;
 
-                            StartGameUtil.KillMutex(pdata.Process, gen.KillMutex);
-                            pdata.KilledMutexes = true;
-                            break;
+                                if (!StartGameUtil.MutexExists(pdata.Process, gen.KillMutex))
+                                {
+                                    continue;
+                                }
+
+                                StartGameUtil.KillMutex(pdata.Process, gen.KillMutex);
+                                pdata.KilledMutexes = true;
+                                break;
+                            }
                         }
                     }
                 }
@@ -373,7 +379,8 @@ namespace Nucleus.Gaming
                 Process proc;
                 if (context.NeedsSteamEmulation)
                 {
-                    string steamEmu = GameManager.Instance.ExtractSteamEmu(Path.Combine(linkFolder, "SmartSteamLoader"));
+                    //string steamEmu = GameManager.Instance.ExtractSteamEmu(Path.Combine(linkFolder, "SmartSteamLoader"));
+                    string steamEmu = GameManager.Instance.ExtractSteamEmu();
                     if (string.IsNullOrEmpty(steamEmu))
                     {
                         return "Extraction of SmartSteamEmu failed!";
@@ -390,10 +397,19 @@ namespace Nucleus.Gaming
                     emu.IniWriteValue("Launcher", "SteamClientPath64", Path.Combine(steamEmu, "SmartSteamEmu64.dll"));
                     emu.IniWriteValue("Launcher", "InjectDll", "0");
                     emu.IniWriteValue("SmartSteamEmu", "AppId", context.SteamID);
-                    emu.IniWriteValue("SmartSteamEmu", "Offline", "True");
-                    //emu.IniWriteValue("SmartSteamEmu", "PersonaName", $"Player { i + 1 }");
+                    emu.IniWriteValue("SmartSteamEmu", "SteamIdGeneration", "Static");
 
-                    if (context.KillMutex.Length > 0)
+                    string userName = $"Player { context.PlayerID }";
+
+                    emu.IniWriteValue("SmartSteamEmu", "PersonaName", userName);
+                    emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", userName);
+
+                    emu.IniWriteValue("SmartSteamEmu", "Offline", "False");
+                    emu.IniWriteValue("SmartSteamEmu", "MasterServer", "");
+                    emu.IniWriteValue("SmartSteamEmu", "MasterServerGoldSrc", "");
+
+
+                    if (context.KillMutex?.Length > 0)
                     {
                         // to kill the mutexes we need to orphanize the process
                         proc = ProcessUtil.RunOrphanProcess(emuExe);
@@ -409,7 +425,7 @@ namespace Nucleus.Gaming
                 }
                 else
                 {
-                    if (context.KillMutex.Length > 0)
+                    if (context.KillMutex?.Length > 0)
                     {
                         proc = Process.GetProcessById(StartGameUtil.StartGame(exePath, startArgs));
                     }
@@ -463,7 +479,7 @@ namespace Nucleus.Gaming
 
                 data.Position = new Point(playerBounds.X, playerBounds.Y);
                 data.Size = new Size(playerBounds.Width, playerBounds.Height);
-                data.KilledMutexes = context.KillMutex.Length == 0;
+                data.KilledMutexes = context.KillMutex?.Length == 0;
                 player.ProcessData = data;
 
                 if (first)

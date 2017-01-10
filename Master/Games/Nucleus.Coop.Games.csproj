@@ -131,18 +131,23 @@
     <None Include="Left4Dead2\resources\backup\swampfever.JPG" />
     <None Include="Left4Dead2\resources\backup\theparish.jpg" />
     <None Include="games\Borderlands.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="games\Borderlands2.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="games\BorderlandsPreSequel.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="games\SaintsRow3DX11.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="games\Left4Dead2.js" />
+    <None Include="games\Left4Dead2.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="games\Battlefront2.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Left4Dead2\resources\bloodharvest.jpg" />
     <Content Include="Left4Dead2\resources\crashcourse.jpg" />
     <None Include="Left4Dead2\resources\darkcarnival.jpg" />

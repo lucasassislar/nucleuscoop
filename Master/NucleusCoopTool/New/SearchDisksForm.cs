@@ -184,6 +184,13 @@ namespace Nucleus.Coop
 
                     if (uinfo != null)
                     {
+#if RELEASE
+                        if (uinfo.Game.Debug)
+                        {
+                            continue;
+                        }
+#endif
+
                         LogManager.Log("> Found new game {0} on drive {1}", uinfo.Game.GameName, info.drive.Name);
                         Invoke(new Action(delegate
                         {

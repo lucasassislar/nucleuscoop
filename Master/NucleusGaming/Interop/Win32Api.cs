@@ -355,7 +355,7 @@ namespace Nucleus.Gaming.Interop
 
                 string strObjectTypeName2 = getObjectTypeName(shHandle, Process.GetProcessById(shHandle.ProcessID));
                 string strObjectName2 = getObjectName(shHandle, Process.GetProcessById(shHandle.ProcessID));
-                Console.WriteLine("{0}   {1}   {2}", shHandle.ProcessID, strObjectTypeName2, strObjectName2);
+                Console.WriteLine("Win32Api: {0}   {1}   {2}", shHandle.ProcessID, strObjectTypeName2, strObjectName2);
 
                 lstHandles.Add(shHandle);
             }

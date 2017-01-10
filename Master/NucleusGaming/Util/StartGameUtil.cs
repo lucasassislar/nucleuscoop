@@ -98,7 +98,10 @@ namespace Nucleus
 
                 proc.WaitForExit();
 
-                return bool.Parse(lastLine);
+                bool result;
+                bool.TryParse(lastLine, out result);
+
+                return result;
             }
         }
 

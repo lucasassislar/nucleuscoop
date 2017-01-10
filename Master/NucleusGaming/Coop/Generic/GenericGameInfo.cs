@@ -41,6 +41,13 @@ namespace Nucleus.Gaming
         private bool hookNeeded = false;
         private string hookGameWindowName = "";
         private string[] killMutex;
+        private bool debug;
+
+        public bool Debug
+        {
+            get { return debug; }
+            set { debug = value; }
+        }
 
         public bool HookNeeded
         {
