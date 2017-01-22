@@ -113,24 +113,6 @@ namespace StartGame
                 Console.WriteLine(ex.Message);
             }
 
-            
-            //if (args.Length >= 3)
-            //{
-            //    int timeToWait = int.Parse(args[2]);
-            //    Thread.Sleep(timeToWait);
-
-            //    if (proc.HasExited)
-            //    {
-            //        tri++;
-            //        if (tri < tries)
-            //        {
-            //            Console.WriteLine("Failed to start process. Retrying...");
-            //            Thread.Sleep(1000);
-            //            goto retry;
-            //        }
-            //    }
-            //}
-
         }
     }
 }

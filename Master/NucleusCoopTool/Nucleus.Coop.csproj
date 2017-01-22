@@ -87,6 +87,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Controls\MonitorControl.cs">
       <SubType>UserControl</SubType>
     </None>
