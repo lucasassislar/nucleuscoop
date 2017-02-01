@@ -122,6 +122,7 @@ namespace Nucleus
                 startInfo.FileName = startGamePath;
 
                 startInfo.Arguments = "\"game:" + pathToGame + ";" + args + "\"";
+                Console.WriteLine(startInfo.Arguments);
                 startInfo.RedirectStandardOutput = true;
                 startInfo.UseShellExecute = false;
 

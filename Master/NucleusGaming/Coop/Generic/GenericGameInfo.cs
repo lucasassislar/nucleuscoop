@@ -21,6 +21,7 @@ namespace Nucleus.Gaming
         private bool supportsKeyboard;
         private string[] executableContext;
         private string executableName;
+        private string executablePath;
         private string steamID;
         private string guid;
         private string gameName;
@@ -31,6 +32,8 @@ namespace Nucleus.Gaming
         private string savePath;
         private string startArguments;
         private string binariesFolder;
+        private string rootGameFolderPath;
+        private string xInputFolder;
         private bool needsSteamEmulation;
         private string launcherExe;
         private string launcherTitle;
@@ -181,6 +184,24 @@ namespace Nucleus.Gaming
         {
             get { return binariesFolder; }
             set { binariesFolder = value; }
+        }
+
+        public string ExecutablePath
+        {
+            get { return executablePath; }
+            set { executablePath = value; }
+        }
+
+        public string RootGameFolderPath
+        {
+            get { return rootGameFolderPath; }
+            set { rootGameFolderPath = value; }
+        }
+
+        public string XInputFolder
+        {
+            get { return xInputFolder; }
+            set { xInputFolder = value; }
         }
 
         public bool NeedsSteamEmulation

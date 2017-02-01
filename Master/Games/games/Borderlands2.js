@@ -26,6 +26,11 @@ Game.Options = [
         "saveid3")
 ];
 
+Game.BinariesFolder = "binaries\\win32";
+Game.RootGamePath = "..\\..";
+Game.XInputFolder = "binaries\\win32";
+Game.ExecutablePath = "binaries\\win32";
+
 Game.SymlinkExe = false;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "borderlands2.exe";
@@ -34,7 +39,6 @@ Game.GUID = "49520";
 Game.GameName = "Borderlands 2";
 Game.MaxPlayers = 4;
 Game.MaxPlayersOneMonitor = 4;
-Game.BinariesFolder = "binaries\\win32";
 Game.NeedsSteamEmulation = false;
 Game.LauncherTitle = "splashscreen";
 Game.SaveType = Nucleus.SaveType.INI;

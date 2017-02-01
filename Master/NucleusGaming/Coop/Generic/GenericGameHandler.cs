@@ -24,6 +24,8 @@ namespace Nucleus.Gaming
 
         private int timer;
         private int exited;
+        int gamePadId;
+
         private List<Process> attached = new List<Process>();
 
         protected bool hasEnded;
@@ -152,17 +154,137 @@ namespace Nucleus.Gaming
 
         private bool hidetaskbar;
 
+        private void CreateLinkDirectory(string linkDirectory, string binFolder, string rootFolder, GenericContext context)
+        {
+            Directory.CreateDirectory(linkDirectory);
+
+            int exitCode;
+            string root = GetRootFolder(binFolder);
+            //TODO: NEEDS LinkFiles HERE, AS WELL
+            CmdUtil.LinkDirectories(rootFolder, linkDirectory, out exitCode, root.ToLower());
+
+            //This is where the bin folder will go in the Instance<n> folder
+            string linkExeDir = Path.Combine(linkDirectory, gen.ExecutablePath);
+            if (!string.IsNullOrEmpty(gen.ExecutablePath))
+            {
+                // this needs fixing, if there are several folder to the exe and they have important files inside, this won't work! TODO
+                Directory.CreateDirectory(linkExeDir);
+                CmdUtil.LinkDirectories(binFolder, linkExeDir, out exitCode);
+            }
+
+
+            if (context.SymlinkExe)
+            {
+                CmdUtil.LinkFiles(binFolder, linkExeDir, out exitCode, "xinput", "ncoop");
+            }
+            else
+            {
+                CmdUtil.LinkFiles(binFolder, linkExeDir, out exitCode, "xinput", "ncoop", Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()));
+                string exePath = Path.Combine(linkExeDir, this.userGame.Game.ExecutableName);
+                File.Copy(userGame.ExePath, exePath, true);
+            }
+
+            // some games have save files inside their game folder, so we need to access them inside the loop
+            this.data[Folder.GameFolder.ToString()] = linkDirectory;
+
+
+            string saveFile = context.SavePath;
+            switch (context.SaveType)
+            {
+                case SaveType.INI:
+                    IniFile file = new IniFile(saveFile);
+                    for (int j = 0; j < context.ModifySave.Length; j++)
+                    {
+                        SaveInfo save = context.ModifySave[j];
+                        if (save is IniSaveInfo)
+                        {
+                            IniSaveInfo ini = (IniSaveInfo)save;
+                            file.IniWriteValue(ini.Section, ini.Key, ini.Value);
+                        }
+                    }
+                    break;
+                case SaveType.CFG:
+                    //TODO: THERE NEEDS TO BE A SEPARATE FILE FOR EACH INSTANCE, TO SUPPORT DIFFERENT RESOLUTIONS
+                    SourceCfgFile cfg;
+                    using (Stream str = File.OpenRead(saveFile))
+                    {
+                        cfg = new SourceCfgFile(str);
+                    }
+
+                    for (int j = 0; j < context.ModifySave.Length; j++)
+                    {
+                        SaveInfo save = context.ModifySave[j];
+                        if (save is CfgSaveInfo)
+                        {
+                            CfgSaveInfo option = (CfgSaveInfo)save;
+                            cfg.ChangeProperty(option.Key, option.Value);
+                        }
+                    }
+
+
+                    using (Stream str = File.OpenWrite(saveFile))
+                    {
+                        cfg.Write(str);
+                    }
+                    break;
+            }
+
+            string startArgs = context.StartArguments;
+
+            if (context.CustomXinput)
+            {
+                string linkXinputDir = Path.Combine(linkDirectory, gen.XInputFolder);
+                if (!string.IsNullOrEmpty(gen.XInputFolder))
+                {
+                    //Deleting the symlink directory, if it exists
+                    Directory.Delete(linkXinputDir);
+                    Directory.CreateDirectory(linkXinputDir);
+                    string xinputDir = Path.Combine(rootFolder, gen.XInputFolder);
+                    CmdUtil.LinkDirectories(xinputDir, linkXinputDir, out exitCode);
+                    CmdUtil.LinkFiles(xinputDir, linkXinputDir, out exitCode, "xinput", "ncoop");
+                }
+
+                byte[] xdata = Properties.Resources.xinput1_3;
+                //TODO:NEEDS TO USE A DIFFERENT .dll FOR 32 VS 64 BIT GAMES
+                using (Stream str = File.OpenWrite(Path.Combine(linkXinputDir, "xinput1_3.dll")))
+                {
+                    str.Write(xdata, 0, xdata.Length);
+                }
+
+                string ncoopIni = Path.Combine(linkXinputDir, "ncoop.ini");
+                using (Stream str = File.OpenWrite(ncoopIni))
+                {
+                    byte[] ini = Properties.Resources.ncoop;
+                    str.Write(ini, 0, ini.Length);
+                }
+
+                IniFile x360 = new IniFile(ncoopIni);
+                x360.IniWriteValue("Options", "HookNeeded", context.HookNeeded.ToString(CultureInfo.InvariantCulture));
+                x360.IniWriteValue("Options", "GameWindowName", context.HookGameWindowName.ToString(CultureInfo.InvariantCulture));
+
+                if (context.IsKeyboardPlayer)
+                {
+                    x360.IniWriteValue("Options", "PlayerOverride", "3");
+                }
+                else
+                {
+                    x360.IniWriteValue("Options", "PlayerOverride", gamePadId.ToString(CultureInfo.InvariantCulture));
+                    gamePadId++;
+                }
+            }
+        }
+
         public string Play()
         {
             List<PlayerInfo> players = profile.PlayerData;
 
             Screen[] all = Screen.AllScreens;
+            gamePadId = 0;
+
 
             string backupDir = GameManager.Instance.GetBackupFolder(this.userGame.Game);
             string binFolder = Path.GetDirectoryName(userGame.ExePath);
-            string rootFolder = ReplaceCaseInsensitive(binFolder, gen.BinariesFolder, "");
-
-            int gamePadId = 0;
+            string rootFolder = Path.Combine(binFolder, gen.RootGameFolderPath);
             bool first = true;
             hidetaskbar = false;
 
@@ -276,110 +398,17 @@ namespace Nucleus.Gaming
                     GameManager.Instance.BackupFile(gen, saveFile);
                 }
 
-                // symlink the game folder
-                // find out the folder that contains the game executable
-                string root = GetRootFolder(gen.BinariesFolder);
-
-                string linkFolder = Path.Combine(backupDir, "Instance" + i);
-                Directory.CreateDirectory(linkFolder);
-                int exitCode;
-                CmdUtil.LinkDirectories(rootFolder, linkFolder, out exitCode, root.ToLower());
-
-                string linkBin = Path.Combine(linkFolder, gen.BinariesFolder);
-
-                if (!string.IsNullOrEmpty(gen.BinariesFolder))
-                {
-                    // this needs fixing, if there are several folder to the exe and they have important files inside, this won't work! TODO
-                    Directory.CreateDirectory(linkBin);
-                    CmdUtil.LinkDirectories(binFolder, linkBin, out exitCode);
-                }
-
-                string exePath = Path.Combine(linkBin, this.userGame.Game.ExecutableName);
-
-                if (context.SymlinkExe)
-                {
-                    CmdUtil.LinkFiles(binFolder, linkBin, out exitCode, "xinput", "ncoop");
-                }
-                else
-                {
-                    CmdUtil.LinkFiles(binFolder, linkBin, out exitCode, "xinput", "ncoop", Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()));
-                    File.Copy(userGame.ExePath, exePath, true);
-                }
-
-                // some games have save files inside their game folder, so we need to access them inside the loop
-                this.data[Folder.GameFolder.ToString()] = linkFolder;
-
-
-                switch (context.SaveType)
-                {
-                    case SaveType.INI:
-                        IniFile file = new IniFile(saveFile);
-                        for (int j = 0; j < context.ModifySave.Length; j++)
-                        {
-                            SaveInfo save = context.ModifySave[j];
-                            if (save is IniSaveInfo)
-                            {
-                                IniSaveInfo ini = (IniSaveInfo)save;
-                                file.IniWriteValue(ini.Section, ini.Key, ini.Value);
-                            }
-                        }
-                        break;
-                    case SaveType.CFG:
-                        SourceCfgFile cfg;
-                        using (Stream str = File.OpenRead(saveFile))
-                        {
-                            cfg = new SourceCfgFile(str);
-                        }
-
-                        for (int j = 0; j < context.ModifySave.Length; j++)
-                        {
-                            SaveInfo save = context.ModifySave[j];
-                            if (save is CfgSaveInfo)
-                            {
-                                CfgSaveInfo option = (CfgSaveInfo)save;
-                                cfg.ChangeProperty(option.Key, option.Value);
-                            }
-                        }
-
-                        break;
-                }
-
-                string startArgs = context.StartArguments;
-
-                if (context.CustomXinput)
-                {
-                    byte[] xdata = Properties.Resources.xinput1_3;
-                    using (Stream str = File.OpenWrite(Path.Combine(linkBin, "xinput1_3.dll")))
-                    {
-                        str.Write(xdata, 0, xdata.Length);
-                    }
-
-                    string ncoopIni = Path.Combine(linkBin, "ncoop.ini");
-                    using (Stream str = File.OpenWrite(ncoopIni))
-                    {
-                        byte[] ini = Properties.Resources.ncoop;
-                        str.Write(ini, 0, ini.Length);
-                    }
-
-                    IniFile x360 = new IniFile(ncoopIni);
-                    x360.IniWriteValue("Options", "HookNeeded", context.HookNeeded.ToString(CultureInfo.InvariantCulture));
-                    x360.IniWriteValue("Options", "GameWindowName", context.HookGameWindowName.ToString(CultureInfo.InvariantCulture));
-
-                    if (context.IsKeyboardPlayer)
-                    {
-                        x360.IniWriteValue("Options", "PlayerOverride", "3");
-                    }
-                    else
-                    {
-                        x360.IniWriteValue("Options", "PlayerOverride", gamePadId.ToString(CultureInfo.InvariantCulture));
-                        gamePadId++;
-                    }
+                string linkDirectory = Path.Combine(backupDir, "Instance" + i);
+                if(!Directory.Exists(linkDirectory)){
+                    CreateLinkDirectory(linkDirectory, binFolder, rootFolder, context);
                 }
 
                 Process proc;
+                string startArgs = context.StartArguments;
+                string linkExe = Path.Combine(linkDirectory, gen.ExecutableName);
                 if (context.NeedsSteamEmulation)
                 {
-                    //string steamEmu = GameManager.Instance.ExtractSteamEmu(Path.Combine(linkFolder, "SmartSteamLoader"));
+                    //string steamEmu = GameManager.Instance.ExtractSteamEmu(Path.Combine(linkDirectory, "SmartSteamLoader"));
                     string steamEmu = GameManager.Instance.ExtractSteamEmu();
                     if (string.IsNullOrEmpty(steamEmu))
                     {
@@ -390,8 +419,8 @@ namespace Nucleus.Gaming
                     string emuIni = Path.Combine(steamEmu, "SmartSteamEmu.ini");
                     IniFile emu = new IniFile(emuIni);
 
-                    emu.IniWriteValue("Launcher", "Target", exePath);
-                    emu.IniWriteValue("Launcher", "StartIn", Path.GetDirectoryName(exePath));
+                    emu.IniWriteValue("Launcher", "Target", linkExe);
+                    emu.IniWriteValue("Launcher", "StartIn", Path.GetDirectoryName(linkExe));
                     emu.IniWriteValue("Launcher", "CommandLine", startArgs);
                     emu.IniWriteValue("Launcher", "SteamClientPath", Path.Combine(steamEmu, "SmartSteamEmu.dll"));
                     emu.IniWriteValue("Launcher", "SteamClientPath64", Path.Combine(steamEmu, "SmartSteamEmu64.dll"));
@@ -427,16 +456,16 @@ namespace Nucleus.Gaming
                 {
                     if (context.KillMutex?.Length > 0)
                     {
-                        proc = Process.GetProcessById(StartGameUtil.StartGame(exePath, startArgs));
+                        proc = Process.GetProcessById(StartGameUtil.StartGame(linkExe, startArgs));
                     }
                     else
                     {
                         ProcessStartInfo startInfo = new ProcessStartInfo();
-                        startInfo.FileName = exePath;
+                        startInfo.FileName = linkExe;
                         startInfo.WindowStyle = ProcessWindowStyle.Hidden;
                         startInfo.Arguments = startArgs;
                         startInfo.UseShellExecute = true;
-                        startInfo.WorkingDirectory = Path.GetDirectoryName(exePath);
+                        startInfo.WorkingDirectory = Path.GetDirectoryName(linkExe);
                         proc = Process.Start(startInfo);
                     }
 

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
+using Nucleus.Gaming.Properties;
 using System.IO;
 using System.Reflection;
 using Newtonsoft.Json;
 using System.Threading;
 using Ionic.Zip;
-using Nucleus.Gaming.Properties;
 
 namespace Nucleus.Gaming
 {
