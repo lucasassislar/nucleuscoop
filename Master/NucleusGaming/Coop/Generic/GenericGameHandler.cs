@@ -1,17 +1,16 @@
-﻿using Jint;
-using Nucleus.Gaming.Interop;
+﻿using Nucleus.Gaming.Interop;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Management;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using WindowScrape.Types;
+
+//TODO:REMOVE
+using System.Runtime.InteropServices;
 
 namespace Nucleus.Gaming
 {
@@ -204,6 +203,7 @@ namespace Nucleus.Gaming
                     }
                     break;
                 case SaveType.CFG:
+                    //TODO: NEEDS TO SET VALUES CORRECTLY
                     //TODO: THERE NEEDS TO BE A SEPARATE FILE FOR EACH INSTANCE, TO SUPPORT DIFFERENT RESOLUTIONS
                     SourceCfgFile cfg;
                     using (Stream str = File.OpenRead(saveFile))
@@ -324,31 +324,27 @@ namespace Nucleus.Gaming
                 if (i > 0 && (gen.KillMutex?.Length > 0 || !hasSetted))
                 {
                     PlayerInfo before = players[i - 1];
-                    for (;;)
+                    while (gen.KillMutex?.Length > 0)
                     {
                         if (exited > 0)
                         {
                             return "";
                         }
                         Thread.Sleep(1000);
-
-                        if (gen.KillMutex?.Length > 0)
+                        if (!before.ProcessData.KilledMutexes)
                         {
-                            if (!before.ProcessData.KilledMutexes)
+                            // check for the existence of the mutexes
+                            // before invoking our StartGame app to kill them
+                            ProcessData pdata = before.ProcessData;
+
+                            if (!StartGameUtil.MutexExists(pdata.Process, gen.KillMutex))
                             {
-                                // check for the existence of the mutexes
-                                // before invoking our StartGame app to kill them
-                                ProcessData pdata = before.ProcessData;
-
-                                if (!StartGameUtil.MutexExists(pdata.Process, gen.KillMutex))
-                                {
-                                    continue;
-                                }
-
-                                StartGameUtil.KillMutex(pdata.Process, gen.KillMutex);
-                                pdata.KilledMutexes = true;
-                                break;
+                                continue;
                             }
+                            
+                            StartGameUtil.KillMutex(pdata.Process, gen.KillMutex);
+                            pdata.KilledMutexes = true;
+                            break;
                         }
                     }
                 }

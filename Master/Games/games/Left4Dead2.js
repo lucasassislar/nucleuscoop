@@ -25,7 +25,7 @@
         3,
         "saveid3")
 ];
-Game.KillMutex = [ // 2nd instance won't launch without these removed
+Game.KillMutex = [ // 2nd instance won't launch with these removed
     "hl2_singleton_mutex",
     "steam_singleton_mutext"
 ];
@@ -54,8 +54,10 @@ Game.CustomXinput = true;
 Game.StartArguments = "-novid";
 
 Game.Play = function () {
+    var isFullscreen = Context.IsFullscreen ? 1 : 0;
+
     Context.ModifySave = [
-        new Nucleus.CfgSaveInfo("VideoConfig", "setting.fullscreen", Context.IsFullscreen),
+        new Nucleus.CfgSaveInfo("VideoConfig", "setting.fullscreen", isFullscreen),
         new Nucleus.CfgSaveInfo("VideoConfig", "setting.defaultres", Context.Width),
         new Nucleus.CfgSaveInfo("VideoConfig", "setting.defaultresheight", Context.Height),
     ];
