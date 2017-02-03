@@ -14,19 +14,21 @@ namespace Nucleus.Gaming
 {
     public class GenericGameHandler : IGameHandler
     {
+        private const float HWndInterval = 1000;
+
         private UserGameInfo userGame;
         private GameProfile profile;
         private GenericGameInfo gen;
         private Dictionary<string, string> data;
 
-        private int timer;
+        private double timer;
         private int exited;
         int gamePadId;
 
         private List<Process> attached = new List<Process>();
 
         protected bool hasEnded;
-        protected int timerInterval = 1000;
+        protected double timerInterval = 1000;
 
         public event Action Ended;
 
@@ -35,9 +37,9 @@ namespace Nucleus.Gaming
             get { return hasEnded; }
         }
 
-        public int TimerInterval
+        public double TimerInterval
         {
-            get { return gen.Interval; }
+            get { return timerInterval; }
         }
         
         //Gets the XInput file for each of the players
@@ -113,6 +115,22 @@ namespace Nucleus.Gaming
 
             string backupDir = GameManager.Instance.GetBackupFolder(this.userGame.Game);
             
+            // delete symlink folder
+            try
+            {
+#if RELEASE
+                for (int i = 0; i < profile.PlayerCount; i++)
+                {
+                    string linkFolder = Path.Combine(backupDir, "Instance" + i);
+                    if (Directory.Exists(linkFolder))
+                    {
+                        Directory.Delete(linkFolder, true);
+                    }
+                }
+#endif
+            }
+            catch { }
+			
             if (Ended != null)
             {
                 Ended();
@@ -146,6 +164,8 @@ namespace Nucleus.Gaming
             data = new Dictionary<string, string>();
             data.Add(Folder.Documents.ToString(), Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
             data.Add(Folder.GameFolder.ToString(), Path.GetDirectoryName(game.ExePath));
+
+            timerInterval = gen.HandlerInterval;
 
             return true;
         }
@@ -415,6 +435,10 @@ namespace Nucleus.Gaming
         public string Play()
         {
             List<PlayerInfo> players = profile.PlayerData;
+            for (int i = 0; i < players.Count; i++)
+            {
+                players[i].PlayerID = i;
+            }
 
             Screen[] all = Screen.AllScreens;
             gamePadId = 0;
@@ -473,6 +497,10 @@ namespace Nucleus.Gaming
                             StartGameUtil.KillMutexes(pdata.Process, gen.KillMutex);
                             break;
                         }
+                        else
+                        {
+                            break;
+                        }
                     }
                 }
 
@@ -495,10 +523,10 @@ namespace Nucleus.Gaming
                 }
 
                 GenericContext context = gen.CreateContext(profile, player, this);
-                context.PlayerID = i;
+                context.PlayerID = player.PlayerID;
                 context.IsFullscreen = isFullscreen;
                 context.IsKeyboardPlayer = keyboard && i == players.Count - 1;
-                gen.PrePlay(context);
+                gen.PrePlay(context, this);
 
                 player.IsKeyboardPlayer = context.IsKeyboardPlayer;
 
@@ -537,19 +565,22 @@ namespace Nucleus.Gaming
                     }
 
                     Process steamEmuProc;
+                    List<string> childProcPath;
                     if (context.KillMutex?.Length > 0)
                     {
                         // to kill the mutexes we need to orphanize the process
                         steamEmuProc = ProcessUtil.RunOrphanProcess(emuExe);
+                        childProcPath = new List<string>(new string[] {
+                            "SmartSteamLoader", gen.ExecutableName });
                     }
                     else
                     {
                         ProcessStartInfo startInfo = new ProcessStartInfo() {FileName = emuExe};
                         steamEmuProc = Process.Start(startInfo);
+                        childProcPath = new List<string>(new string[] {
+                            gen.ExecutableName });
                     }
 
-                    List<string> childProcPath = new List<string>(new string[] {
-                        "SmartSteamLoader", gen.ExecutableName });
 
                     string execNameNoExe = gen.ExecutableName;
                     if (execNameNoExe.EndsWith(".exe"))
@@ -643,7 +674,66 @@ namespace Nucleus.Gaming
             return string.Empty;
         }
 
-        public void Update(int delayMS)
+        struct TickThread
+        {
+            public double Interval;
+            public Action Function;
+        }
+
+        public void StartPlayTick(double interval, Action function)
+        {
+            Thread t = new Thread(PlayTickThread);
+
+            TickThread tick = new TickThread();
+            tick.Interval = interval;
+            tick.Function = function;
+            t.Start(tick);
+        }
+
+        private void PlayTickThread(object state)
+        {
+            TickThread t = (TickThread)state;
+
+            for (;;)
+            {
+                Thread.Sleep(TimeSpan.FromMilliseconds(t.Interval));
+                t.Function();
+                
+                if (hasEnded)
+                {
+                    break;
+                }
+            }
+        }
+
+        public void CenterCursor()
+        {
+            List<PlayerInfo> players = profile.PlayerData;
+            if (players == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                PlayerInfo p = players[i];
+                
+                if (p.IsKeyboardPlayer)
+                {
+                    ProcessData data = p.ProcessData;
+                    if (data == null)
+                    {
+                        continue;
+                    }
+
+                    Rectangle r = p.MonitorBounds;
+                    Cursor.Clip = r;
+                    User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
+                }
+            }
+        }
+
+        public void Update(double delayMS)
         {
             if (profile == null)
             {
@@ -654,6 +744,13 @@ namespace Nucleus.Gaming
             List<PlayerInfo> players = profile.PlayerData;
             timer += delayMS;
 
+            bool updatedHwnd = false;
+            if (timer > HWndInterval)
+            {
+                updatedHwnd = true;
+                timer = 0;
+            }
+
             for (int i = 0; i < players.Count; i++)
             {
                 PlayerInfo p = players[i];
@@ -662,62 +759,90 @@ namespace Nucleus.Gaming
                 {
                     continue;
                 }
-                if (data.Setted)
+                if (updatedHwnd)
                 {
-                    if (data.Process.HasExited)
+                    if (data.Setted)
                     {
-                        exited++;
-                        continue;
-                    }
-
-                    uint lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE);
-                    if (lStyle != data.RegLong)
-                    {
-                        uint toRemove = User32_WS.WS_CAPTION;
-                        lStyle = lStyle & (~toRemove);
-
-                        User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE, lStyle);
-                        data.RegLong = lStyle;
-                        data.HWnd.Location = data.Position;
-                    }
-
-                    data.HWnd.TopMost = true;
-
-                    if (p.IsKeyboardPlayer)
-                    {
-                        Rectangle r = p.MonitorBounds;
-                        Cursor.Clip = r;
-                        User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
-                    }
-                }
-                else
-                {
-                    data.Process.Refresh();
-
-                    if (data.Process.HasExited)
-                    {
-                        if (p.GotLauncher)
+                        if (data.Process.HasExited)
                         {
-                            if (p.GotGame)
+                            exited++;
+                            continue;
+                        }
+
+                        uint lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE);
+                        if (lStyle != data.RegLong)
+                        {
+                            uint toRemove = User32_WS.WS_CAPTION;
+                            lStyle = lStyle & (~toRemove);
+
+                            User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE, lStyle);
+                            data.RegLong = lStyle;
+                            data.HWnd.Location = data.Position;
+                        }
+
+                        data.HWnd.TopMost = true;
+
+                        if (p.IsKeyboardPlayer)
+                        {
+                            Rectangle r = p.MonitorBounds;
+                            Cursor.Clip = r;
+                            User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
+                        }
+                    }
+                    else
+                    {
+                        data.Process.Refresh();
+
+                        if (data.Process.HasExited)
+                        {
+                            if (p.GotLauncher)
                             {
-                                exited++;
+                                if (p.GotGame)
+                                {
+                                    exited++;
+                                }
+                                else
+                                {
+                                    List<int> children = ProcessUtil.GetChildrenProcesses(data.Process);
+                                    if (children.Count > 0)
+                                    {
+                                        for (int j = 0; j < children.Count; j++)
+                                        {
+                                            int id = children[j];
+                                            Process pro = Process.GetProcessById(id);
+
+                                            if (!attached.Contains(pro))
+                                            {
+                                                attached.Add(pro);
+                                                data.HWnd = null;
+                                                p.GotGame = true;
+                                                data.AssignProcess(pro);
+                                            }
+                                        }
+                                    }
+                                }
                             }
                             else
                             {
-                                List<int> children = ProcessUtil.GetChildrenProcesses(data.Process);
-                                if (children.Count > 0)
+                                // Steam showing a launcher, need to find our game process
+                                string launcher = gen.LauncherExe;
+                                if (!string.IsNullOrEmpty(launcher))
                                 {
-                                    for (int j = 0; j < children.Count; j++)
+                                    if (launcher.ToLower().EndsWith(".exe"))
                                     {
-                                        int id = children[j];
-                                        Process pro = Process.GetProcessById(id);
+                                        launcher = launcher.Remove(launcher.Length - 4, 4);
+                                    }
+
+                                    Process[] procs = Process.GetProcessesByName(launcher);
+                                    for (int j = 0; j < procs.Length; j++)
+                                    {
+                                        Process pro = procs[j];
 
                                         if (!attached.Contains(pro))
                                         {
                                             attached.Add(pro);
-                                            data.HWnd = null;
-                                            p.GotGame = true;
                                             data.AssignProcess(pro);
+                                            p.GotLauncher = true;
                                         }
                                     }
                                 }
@@ -725,57 +850,33 @@ namespace Nucleus.Gaming
                         }
                         else
                         {
-                            // Steam showing a launcher, need to find our game process
-                            string launcher = gen.LauncherExe;
-                            if (launcher.ToLower().EndsWith(".exe"))
+                            if (data.HWNDRetry || data.HWnd == null || data.HWnd.NativePtr != data.Process.MainWindowHandle)
                             {
-                                launcher = launcher.Remove(launcher.Length - 4, 4);
-                            }
+                                data.HWnd = new HwndObject(data.Process.MainWindowHandle);
+                                Point pos = data.HWnd.Location;
 
-                            Process[] procs = Process.GetProcessesByName(launcher);
-                            for (int j = 0; j < procs.Length; j++)
-                            {
-                                Process pro = procs[j];
-                                if (!attached.Contains(pro))
+
+                                if (String.IsNullOrEmpty(data.HWnd.Title) ||
+                                    pos.X == -32000 ||
+                                    data.HWnd.Title.ToLower() == gen.LauncherTitle.ToLower())
                                 {
-                                    attached.Add(pro);
-                                    data.AssignProcess(pro);
-                                    p.GotLauncher = true;
+                                    data.HWNDRetry = true;
+                                }
+                                else
+                                {
+                                    Size s = data.Size;
+                                    data.Setted = true;
+                                    data.HWnd.TopMost = true;
+                                    data.HWnd.Size = data.Size;
+                                    data.HWnd.Location = data.Position;
                                 }
                             }
                         }
                     }
-                    else
+					if ((exited == players.Count) && (!hasEnded))
                     {
-                        if (data.HWNDRetry || data.HWnd == null || data.HWnd.NativePtr != data.Process.MainWindowHandle)
-                        {
-                            data.HWnd = new HwndObject(data.Process.MainWindowHandle);
-                            Point pos = data.HWnd.Location;
-
-                            if (String.IsNullOrEmpty(data.HWnd.Title) ||
-                                pos.X == -32000 ||
-                                data.HWnd.Title.ToLower() == gen.LauncherTitle.ToLower())
-                            {
-                                data.HWNDRetry = true;
-                            }
-                            else
-                            {
-                                Size s = data.Size;
-                                data.Setted = true;
-                                data.HWnd.TopMost = true;
-                                data.HWnd.Size = data.Size;
-                                data.HWnd.Location = data.Position;
-                            }
-                        }
+                        End();
                     }
-                }
-            }
-
-            if (exited == players.Count)
-            {
-                if (!hasEnded)
-                {
-                    End();
                 }
             }
         }

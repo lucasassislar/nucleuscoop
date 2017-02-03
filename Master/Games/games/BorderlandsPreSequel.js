@@ -31,6 +31,7 @@ Game.RootGameFolderPath = "..\\..";
 Game.XInputFolder = "binaries\\win32";
 Game.ExecutablePath = "binaries\\win32";
 
+Game.HandlerInterval = 16;
 Game.SymlinkExe = false;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "borderlandspresequel.exe";
@@ -60,6 +61,9 @@ Game.Play = function () {
 
     var playerStr = "saveid" + Context.PlayerID;
     if (Context.IsKeyboardPlayer) {
+        Handler.StartPlayTick(1, function () {
+            Handler.CenterCursor();
+        });
         Context.StartArguments = "-windowed -AlwaysFocus -NoController -nostartupmovies -SaveDataId=" + Context.Options[playerStr];
     }
     else {

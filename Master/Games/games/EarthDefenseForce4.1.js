@@ -32,7 +32,7 @@ Game.BinariesFolder = "";
 
 Game.Debug = true;
 Game.SymlinkExe = false;
-Game.SupportsKeyboard = true;
+Game.SupportsKeyboard = false;
 Game.ExecutableName = "edf41.exe";
 Game.SteamID = "410320";
 Game.GUID = "410320";

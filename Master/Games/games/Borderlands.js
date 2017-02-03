@@ -10,6 +10,7 @@ Game.ExecutableContext = [ // need to add these or it might conflict with Tales 
     "binkw32.dll"
 ];
 
+Game.HandlerInterval = 16;
 Game.SymlinkExe = false;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "borderlands.exe";
@@ -30,6 +31,12 @@ Game.HookNeeded = true;
 Game.HookGameWindowName = "Borderlands";
 
 Game.Play = function () {
+    if (Context.IsKeyboardPlayer) {
+        Handler.StartPlayTick(1, function () {
+            Handler.CenterCursor();
+        });
+    }
+
     Context.ModifySave = [
         new Nucleus.IniSaveInfo("SystemSettings", "WindowedFullscreen", Context.IsFullscreen),
         new Nucleus.IniSaveInfo("SystemSettings", "ResX", Context.Width),

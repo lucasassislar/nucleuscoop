@@ -314,7 +314,7 @@ namespace Nucleus.Coop
                     }
 
                     handler.Update(handler.TimerInterval);
-                    Thread.Sleep(handler.TimerInterval);
+                    Thread.Sleep(TimeSpan.FromMilliseconds(handler.TimerInterval));
                 }
                 catch
                 {

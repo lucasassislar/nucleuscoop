@@ -10,6 +10,7 @@ namespace Nucleus.Gaming
         SaveType SaveType { get; }
         string SavePath { get; }
 
+        double HandlerInterval { get; }
         //Dictionary<string, string> ModifySave { get; }
 
         string StartArguments { get; }
