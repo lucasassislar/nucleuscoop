@@ -15,7 +15,7 @@ namespace Nucleus.Gaming
         /// The update interval to call Update(). Set to 0 or -1
         /// to disable 
         /// </summary>
-        int TimerInterval { get; }
+        double TimerInterval { get; }
 
         ///bool Initialize(string gameFilename, List<PlayerInfo> players, Dictionary<string, GameOption> options, List<Control> addSteps, int titleHeight);
 
@@ -23,7 +23,7 @@ namespace Nucleus.Gaming
 
 
         string Play();
-        void Update(int delayMS);
+        void Update(double delayMS);
 
         void End();
 

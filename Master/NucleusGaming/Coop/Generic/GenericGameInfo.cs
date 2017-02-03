@@ -36,12 +36,18 @@ namespace Nucleus.Gaming
         private string launcherTitle;
         private bool supportsPositioning;
         private bool hideTaskbar;
-        private int interval = 1000;
         private bool customXinput = true;
         private bool hookNeeded = false;
         private string hookGameWindowName = "";
         private string[] killMutex;
         private bool debug;
+        private double handlerInterval = 500;
+
+        public double HandlerInterval
+        {
+            get { return handlerInterval; }
+            set { handlerInterval = value; }
+        }
 
         public bool Debug
         {
@@ -64,11 +70,6 @@ namespace Nucleus.Gaming
         {
             get { return customXinput; }
             set { customXinput = value; }
-        }
-        public int Interval
-        {
-            get { return interval; }
-            set { interval = value; }
         }
         public bool HideTaskbar
         {
@@ -226,9 +227,10 @@ namespace Nucleus.Gaming
             engine.SetValue("Game", (object)null);
         }
 
-        public void PrePlay(GenericContext context)
+        public void PrePlay(GenericContext context, GenericGameHandler handler)
         {
             engine.SetValue("Context", context);
+            engine.SetValue("Handler", handler);
 
             if (play != null)
             {

@@ -36,7 +36,13 @@ namespace Nucleus.Gaming
         private string[] killMutex;
         private string error;
         private bool debug;
+        private double handlerInterval;
 
+        public double HandlerInterval
+        {
+            get { return handlerInterval; }
+            set { handlerInterval = value; }
+        }
         public bool Debug
         {
             get { return debug; }

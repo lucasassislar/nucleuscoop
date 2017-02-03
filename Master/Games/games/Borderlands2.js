@@ -26,6 +26,7 @@ Game.Options = [
         "saveid3")
 ];
 
+Game.HandlerInterval = 16;
 Game.SymlinkExe = false;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "borderlands2.exe";
@@ -56,6 +57,9 @@ Game.Play = function () {
 
     var playerStr = "saveid" + Context.PlayerID;
     if (Context.IsKeyboardPlayer) {
+        Handler.StartPlayTick(1, function () {
+            Handler.CenterCursor();
+        });
         Context.StartArguments = "-windowed -AlwaysFocus -NoController -nostartupmovies -SaveDataId=" + Context.Options[playerStr];
     }
     else {
