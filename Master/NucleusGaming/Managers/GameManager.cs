@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Diagnostics;
+using Nucleus.Gaming.Properties;
 using System.IO;
 using System.Reflection;
-using Nucleus.Gaming.Interop;
 using Newtonsoft.Json;
 using System.Threading;
 using Ionic.Zip;
-using Nucleus.Gaming.Properties;
-using System.Windows.Forms;
 
 namespace Nucleus.Gaming
 {
@@ -267,17 +265,17 @@ namespace Nucleus.Gaming
             }
         }
 
-        #region Initialize
+#region Initialize
 
         private string GetAppDataPath()
         {
-#if ALPHA
+  #if ALPHA
             string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             return Path.Combine(local, "Data");
-#else
+  #else
             string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             return Path.Combine(appData, "Nucleus Coop");
-#endif
+  #endif
         }
 
         private string GetJsGamesPath()
@@ -472,40 +470,23 @@ namespace Nucleus.Gaming
                 IsSaving = false;
             }
         }
-
+        
         private void Initialize()
         {
-            // Type we are looking for (GameInfo)
-            Type infoType = typeof(IGameInfo);
-
-            Assembly ass = Assembly.Load(new AssemblyName("Nucleus.Coop.Games"));
-
             // I used to hate working with assembly, and that's why it has that name :D
-            Type objType = typeof(object);
-            if (ass == null)
-            {
-                // shit's null yo
-            }
-            else
+            Assembly ass = Assembly.Load(new AssemblyName("Nucleus.Coop.Games"));
+            if (ass != null)
             {
                 Type[] t = ass.GetTypes();
                 for (int x = 0; x < t.Length; x++)
                 {
                     Type ty = t[x];
-                    Type lastParent = ty.BaseType;
-                    Type parent = ty.BaseType;
 
-                    while (parent != objType)
-                    {
-                        lastParent = parent;
-                        parent = parent.BaseType;
-                    }
                     if (ty.GetInterface("IGameInfo") != null)
                     {
                         // Found!
                         IGameInfo info = (IGameInfo)Activator.CreateInstance(ty);
-                        LogManager.Log("Found game info: " + info.GameName);
-
+                        LogManager.Log("Found game info class: " + info.GameName);
 
                         games.Add(info.GUID, info);
                         gameInfos.Add(info.ExecutableName, info);
@@ -523,22 +504,17 @@ namespace Nucleus.Gaming
                 using (Stream str = f.OpenRead())
                 {
                     GenericGameInfo info = new GenericGameInfo(str);
-                    LogManager.Log("Found game info: " + info.GameName);
+                    LogManager.Log("Found game info js file: " + info.GameName);
 
                     games.Add(info.GUID, info);
                     gameInfos.Add(info.ExecutableName, info);
                 }
             }
-        }
+        } 
 #endregion
 
         public void Play(IGameHandler handler)
         {
-            //if (handler.HideTaskBar)
-            //{
-            //    User32.HideTaskbar();
-            //}
-
             // Start the Play method in another thread, so the
             // handler can update while it's still loading
             error = null;

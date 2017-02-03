@@ -26,6 +26,8 @@ namespace Nucleus.Gaming
             set;
         }
 
+        //TODO: ADD GetHashCode AND Equals FUNCTIONS, BECAUSE THIS OBJECT
+        //      IS BEING USED AS A DICTIONARY KEY
         public string GameGuid
         {
             get { return game.GUID; }

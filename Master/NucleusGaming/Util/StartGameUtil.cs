@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
+//TODO:REMOVE
+using System.Threading;
 
 namespace Nucleus
 {
@@ -122,6 +121,7 @@ namespace Nucleus
                 startInfo.FileName = startGamePath;
 
                 startInfo.Arguments = "\"game:" + pathToGame + ";" + args + "\"";
+                Console.WriteLine(startInfo.Arguments);
                 startInfo.RedirectStandardOutput = true;
                 startInfo.UseShellExecute = false;
 
