@@ -9,9 +9,6 @@ using System.Threading;
 using System.Windows.Forms;
 using WindowScrape.Types;
 
-//TODO:REMOVE
-using System.Runtime.InteropServices;
-
 namespace Nucleus.Gaming
 {
     public class GenericGameHandler : IGameHandler
@@ -40,6 +37,33 @@ namespace Nucleus.Gaming
         public int TimerInterval
         {
             get { return gen.Interval; }
+        }
+        
+        private Dictionary<string, byte[]> GetXInputFiles(int playerIndex)
+        {
+            Dictionary<string, byte[]> xinputFiles = new Dictionary<string, byte[]>();
+            switch (playerIndex)
+            {
+                case 0:
+                    xinputFiles.Add("x360ce.ini", Properties.Resources.player1_x360ce);
+                    xinputFiles.Add("xinput1_3.dll", Properties.Resources.player1_xinput1_3);
+                    break;
+                case 1:
+                    xinputFiles.Add("x360ce.ini", Properties.Resources.player2_x360ce);
+                    xinputFiles.Add("xinput1_3.dll", Properties.Resources.player2_xinput1_3);
+                    break;
+                case 2:
+                    xinputFiles.Add("x360ce.ini", Properties.Resources.player3_x360ce);
+                    xinputFiles.Add("xinput1_3.dll", Properties.Resources.player3_xinput1_3);
+                    break;
+                case 3:
+                    xinputFiles.Add("x360ce.ini", Properties.Resources.player4_x360ce);
+                    xinputFiles.Add("xinput1_3.dll", Properties.Resources.player4_xinput1_3);
+                    break;
+            }
+
+            return xinputFiles;
+
         }
 
         public void End()
@@ -244,11 +268,13 @@ namespace Nucleus.Gaming
                     CmdUtil.LinkFiles(xinputDir, linkXinputDir, out exitCode, "xinput", "ncoop");
                 }
 
-                byte[] xdata = Properties.Resources.xinput1_3;
-                //TODO:NEEDS TO USE A DIFFERENT .dll FOR 32 VS 64 BIT GAMES
-                using (Stream str = File.OpenWrite(Path.Combine(linkXinputDir, "xinput1_3.dll")))
+                foreach (KeyValuePair<string, byte[]> xdata in GetXInputFiles(gamePadId))
                 {
-                    str.Write(xdata, 0, xdata.Length);
+                    //TODO:NEEDS TO USE A DIFFERENT .dll FOR 32 VS 64 BIT GAMES
+                    using (Stream str = File.OpenWrite(Path.Combine(linkXinputDir, xdata.Key)))
+                    {
+                        str.Write(xdata.Value, 0, xdata.Value.Length);
+                    }
                 }
 
                 string ncoopIni = Path.Combine(linkXinputDir, "ncoop.ini");
@@ -289,6 +315,8 @@ namespace Nucleus.Gaming
             hidetaskbar = false;
 
             bool keyboard = false;
+            
+            ProcessUtil.KillProcessesByName(gen.ExecutableName);
 
             if (gen.SupportsKeyboard)
             {
@@ -326,10 +354,6 @@ namespace Nucleus.Gaming
                     PlayerInfo before = players[i - 1];
                     while (gen.KillMutex?.Length > 0)
                     {
-                        if (exited > 0)
-                        {
-                            return "";
-                        }
                         Thread.Sleep(1000);
                         if (!before.ProcessData.KilledMutexes)
                         {

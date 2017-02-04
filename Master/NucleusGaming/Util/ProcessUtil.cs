@@ -94,5 +94,19 @@ namespace Nucleus
 
             return killed;
         }
+
+        public static void KillProcessesByName(string processName)
+        {
+            string nameWithoutExe = processName;
+            if (processName.EndsWith(".exe"))
+            {
+                nameWithoutExe = processName.Substring(0, processName.Length - 4);
+            }
+
+            foreach (var process in Process.GetProcessesByName(nameWithoutExe))
+            {
+                process.Kill();
+            }
+        }
     }
 }

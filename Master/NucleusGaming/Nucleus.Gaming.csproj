@@ -249,6 +249,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ncoop.ini" />
+    <None Include="Resources\player1\x360ce.ini" />
+    <None Include="Resources\player2\x360ce.ini" />
+    <None Include="Resources\player3\x360ce.ini" />
+    <None Include="Resources\player4\x360ce.ini" />
     <None Include="Resources\SmartSteamEmu.zip" />
     <None Include="Resources\vertical.png" />
   </ItemGroup>
@@ -272,6 +276,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\xinput1_3.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\0\xinput1_3.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\player1\xinput1_3.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\player2\xinput1_3.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\player3\xinput1_3.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\player4\xinput1_3.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

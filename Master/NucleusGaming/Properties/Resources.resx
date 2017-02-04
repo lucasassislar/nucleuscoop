@@ -151,4 +151,28 @@
   <data name="xinput1_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\xinput1_3.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="player1_x360ce" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\player1\x360ce.ini;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="player1_xinput1_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\player1\xinput1_3.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="player2_x360ce" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\player2\x360ce.ini;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="player2_xinput1_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\player2\xinput1_3.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="player3_x360ce" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\player3\x360ce.ini;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="player3_xinput1_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\player3\xinput1_3.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="player4_x360ce" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\player4\x360ce.ini;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="player4_xinput1_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\player4\xinput1_3.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

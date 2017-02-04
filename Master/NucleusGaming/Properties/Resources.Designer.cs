@@ -103,6 +103,86 @@ namespace Nucleus.Gaming.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] player1_x360ce {
+            get {
+                object obj = ResourceManager.GetObject("player1_x360ce", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] player1_xinput1_3 {
+            get {
+                object obj = ResourceManager.GetObject("player1_xinput1_3", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] player2_x360ce {
+            get {
+                object obj = ResourceManager.GetObject("player2_x360ce", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] player2_xinput1_3 {
+            get {
+                object obj = ResourceManager.GetObject("player2_xinput1_3", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] player3_x360ce {
+            get {
+                object obj = ResourceManager.GetObject("player3_x360ce", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] player3_xinput1_3 {
+            get {
+                object obj = ResourceManager.GetObject("player3_xinput1_3", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] player4_x360ce {
+            get {
+                object obj = ResourceManager.GetObject("player4_x360ce", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] player4_xinput1_3 {
+            get {
+                object obj = ResourceManager.GetObject("player4_xinput1_3", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] SmartSteamEmu {
             get {
                 object obj = ResourceManager.GetObject("SmartSteamEmu", resourceCulture);
