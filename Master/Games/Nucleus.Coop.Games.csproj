@@ -53,39 +53,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Battlefront2\Battlefront2Info.cs" />
-    <None Include="BlackOps\BlackOpsGameInfo.cs" />
-    <None Include="Borderlands2\Borderlands2Info.cs" />
-    <None Include="Borderlands2\BorderlandsSaveControl.cs">
-      <SubType>UserControl</SubType>
-    </None>
-    <None Include="Borderlands2\BorderlandsSaveManager.cs">
-      <SubType>UserControl</SubType>
-    </None>
-    <None Include="BorderlandsPreSequel\BorderlandsPreSequelInfo.cs" />
-    <None Include="Borderlands\BorderlandsInfo.cs" />
-    <None Include="GearsOfWar\GearsOfWarInfo.cs" />
-    <Compile Include="Left4Dead2\L4D2GameMode.cs" />
-    <Compile Include="Left4Dead2\L4D2Level.cs" />
-    <None Include="Left4Dead2\Left4Dead2Handler.cs" />
-    <None Include="Left4Dead2\Left4Dead2Info.cs" />
-    <Compile Include="Left4Dead2\Left4Dead2LevelSelection.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Left4Dead2\Left4Dead2LevelSelection.Designer.cs">
-      <DependentUpon>Left4Dead2LevelSelection.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Left4Dead2\Left4Dead2ModeSelection.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Left4Dead2\Left4Dead2ModeSelection.Designer.cs">
-      <DependentUpon>Left4Dead2ModeSelection.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Left4Dead2\resources\L4D2Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>L4D2Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="PlayerID.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -93,16 +60,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resident Evil 5\RE5Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RE5Resources.resx</DependentUpon>
-    </Compile>
-    <None Include="Resident Evil 5\ResidentEvil5Handler.cs" />
-    <None Include="Resident Evil 5\ResidentEvil5Info.cs" />
-    <None Include="SaintsRow4\SaintsRow4Info.cs" />
-    <None Include="SaintsRow3\SaintsRow3Info.cs" />
-    <None Include="TeamFortress2\TeamFortress2Info.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NucleusGaming\Nucleus.Gaming.csproj">
@@ -115,21 +72,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="TheHooker.dll" />
     <None Include="GamesKey.snk" />
-    <None Include="Resident Evil 5\resources\Splitscreen Mod PC RE5.zip" />
-    <None Include="Resident Evil 5\resources\Splitscreen Mod PC RE5\re5ssmod\splitscreen.cfg" />
-    <None Include="Left4Dead2\resources\backup\bloodharvest.jpg" />
-    <None Include="Left4Dead2\resources\backup\crashcourse.jpg" />
-    <None Include="Left4Dead2\resources\backup\darkcarnival.png" />
-    <None Include="Left4Dead2\resources\backup\deadair.jpg" />
-    <None Include="Left4Dead2\resources\backup\deadcenter.jpg" />
-    <None Include="Left4Dead2\resources\backup\deathabroad.jpg" />
-    <None Include="Left4Dead2\resources\backup\deathtoll.jpg" />
-    <None Include="Left4Dead2\resources\backup\hardrain.jpg" />
-    <None Include="Left4Dead2\resources\backup\nomercy.jpg" />
-    <None Include="Left4Dead2\resources\backup\swampfever.JPG" />
-    <None Include="Left4Dead2\resources\backup\theparish.jpg" />
     <None Include="games\Borderlands.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -154,48 +97,15 @@
     <None Include="games\CallOfDutyBlackOps2Zombies.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="Left4Dead2\resources\bloodharvest.jpg" />
-    <Content Include="Left4Dead2\resources\crashcourse.jpg" />
-    <None Include="Left4Dead2\resources\darkcarnival.jpg" />
-    <Content Include="Left4Dead2\resources\deadair.jpg" />
-    <Content Include="Left4Dead2\resources\deadcenter.jpg" />
-    <None Include="Left4Dead2\resources\deathaboard.jpg" />
-    <Content Include="Left4Dead2\resources\deathtoll.jpg" />
-    <Content Include="Left4Dead2\resources\hardrain.jpg" />
-    <Content Include="Left4Dead2\resources\nomercy.jpg" />
-    <Content Include="Left4Dead2\resources\swampfever.JPG" />
-    <Content Include="Left4Dead2\resources\theparish.jpg" />
-    <None Include="Resident Evil 5\resources\Source.txt" />
-    <None Include="Resident Evil 5\resources\Splitscreen Mod PC RE5\re5ssmod\splitscreen.dll" />
-    <None Include="Resident Evil 5\resources\Splitscreen Mod PC RE5\re5ssmod\splitscreen.exe" />
-    <Content Include="ReadMe.txt" />
-    <Content Include="tested.txt" />
-    <None Include="TheHooker.lib" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Left4Dead2\Left4Dead2LevelSelection.resx">
-      <DependentUpon>Left4Dead2LevelSelection.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Left4Dead2\Left4Dead2ModeSelection.resx">
-      <DependentUpon>Left4Dead2ModeSelection.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Left4Dead2\resources\L4D2Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>L4D2Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resident Evil 5\RE5Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>RE5Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CustomXInput\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

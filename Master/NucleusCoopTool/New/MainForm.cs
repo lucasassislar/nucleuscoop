@@ -74,23 +74,26 @@ namespace Nucleus.Coop
                 }
             }
 
-            controls.Clear();
-            this.list_Games.Controls.Clear();
-
-            List<UserGameInfo> games = gameManager.User.Games;
-            for (int i = 0; i < games.Count; i++)
+            lock (controls)
             {
-                UserGameInfo game = games[i];
-                NewUserGame(game);
-            }
+                controls.Clear();
+                this.list_Games.Controls.Clear();
 
-            if (games.Count == 0)
-            {
-                noGamesPresent = true;
-                GameControl con = new GameControl();
-                con.Width = list_Games.Width;
-                con.Text = "No games";
-                this.list_Games.Controls.Add(con);
+                List<UserGameInfo> games = gameManager.User.Games;
+                for (int i = 0; i < games.Count; i++)
+                {
+                    UserGameInfo game = games[i];
+                    NewUserGame(game);
+                }
+
+                if (games.Count == 0)
+                {
+                    noGamesPresent = true;
+                    GameControl con = new GameControl();
+                    con.Width = list_Games.Width;
+                    con.Text = "No games";
+                    this.list_Games.Controls.Add(con);
+                }
             }
 
             GameManager.Instance.SaveUserProfile();
@@ -129,15 +132,18 @@ namespace Nucleus.Coop
 
         private void GetIcon(object state)
         {
-            UserGameInfo game = (UserGameInfo)state;
-            Icon icon = Shell32.GetIcon(game.ExePath, false);
+            lock (controls)
+            {
+                UserGameInfo game = (UserGameInfo)state;
+                Icon icon = Shell32.GetIcon(game.ExePath, false);
 
-            Bitmap bmp = icon.ToBitmap();
-            icon.Dispose();
-            game.Icon = bmp;
+                Bitmap bmp = icon.ToBitmap();
+                icon.Dispose();
+                game.Icon = bmp;
 
-            GameControl control = controls[game];
-            control.Image = game.Icon;
+                GameControl control = controls[game];
+                control.Image = game.Icon;
+            }
         }
 
         private void list_Games_SelectedChanged(object arg1, Control arg2)

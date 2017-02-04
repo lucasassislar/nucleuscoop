@@ -36,4 +36,10 @@ Game.Play = function () {
     ];
 
     Context.SavePath = Context.GetFolder(Nucleus.Folder.GameFolder) + "\\left4dead2\\cfg\\video.txt";
+
+    if (Context.IsKeyboardPlayer) {
+        Handler.StartPlayTick(1, function () {
+            Handler.CenterCursor();
+        });
+    }
 }
