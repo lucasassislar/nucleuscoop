@@ -28,8 +28,8 @@ namespace Nucleus
 
         public static bool MutexExists(Process process, string mutexName)
         {
-            // TODO: Does only 1-3 exist? I've only seen these values in the Sessions
-            for (int i = 1; i <= 3; i++)
+            // TODO: Does only 1-11 exist? I've only seen these values in the Sessions
+            for (int i = 1; i <= 11; i++)
             {
                 try
                 {
@@ -72,7 +72,7 @@ namespace Nucleus
         public static bool KillMutex(Process process, string mutexName)
         {
             bool killed = false;
-            for (int i = 1; i <= 3; i++)
+            for (int i = 1; i <= 11; i++)
             {
                 var handles = Win32Processes.GetHandles(process, "Mutant", "\\Sessions\\" + i + "\\BaseNamedObjects\\" + mutexName);
                 if (handles.Count == 0)
