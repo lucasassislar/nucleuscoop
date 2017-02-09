@@ -357,17 +357,8 @@ namespace Nucleus.Gaming
                         Thread.Sleep(1000);
                         if (!before.ProcessData.KilledMutexes)
                         {
-                            // check for the existence of the mutexes
-                            // before invoking our StartGame app to kill them
                             ProcessData pdata = before.ProcessData;
-
-                            if (!StartGameUtil.MutexExists(pdata.Process, gen.KillMutex))
-                            {
-                                continue;
-                            }
-                            
                             StartGameUtil.KillMutex(pdata.Process, gen.KillMutex);
-                            pdata.KilledMutexes = true;
                             break;
                         }
                     }

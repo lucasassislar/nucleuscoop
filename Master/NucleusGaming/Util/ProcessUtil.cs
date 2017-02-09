@@ -18,36 +18,37 @@ namespace Nucleus
             psi.FileName = @"cmd";
             psi.Arguments = "/C \"" + path + "\" " + arguments;
             return Process.Start(psi);
-            //ThreadPool.QueueUserWorkItem(KillParent, p);
         }
         private static void KillParent(object state)
         {
             Process p = (Process)state;
+        }
 
+
+
+        public static string GetFullMutexName(Process process, string mutexName)
+        {
+            List<Win32API.SYSTEM_HANDLE_INFORMATION> handles = Win32Processes.GetHandles(process, "Mutant", mutexName);
+
+            foreach (var handle in handles)
+            {
+                return Win32Processes.getObjectName(handle, process);
+            }
+
+            return "";
         }
 
         public static bool MutexExists(Process process, string mutexName)
         {
-            // TODO: Does only 1-11 exist? I've only seen these values in the Sessions
-            for (int i = 1; i <= 11; i++)
+            string fullMutexName = GetFullMutexName(process, mutexName);
+            if (string.IsNullOrEmpty(fullMutexName))
             {
-                try
-                {
-                    string str = "\\Sessions\\" + i + "\\BaseNamedObjects\\" + mutexName;
-                    var handles = Win32Processes.GetHandles(process, "Mutant", str);
-                    if (handles.Count > 0)
-                    {
-                        return true;
-                    }
-                }
-                catch (IndexOutOfRangeException)
-                {
-                }
-                catch (ArgumentException)
-                {
-                }
+                return false;
             }
-            return false;
+            else
+            {
+                return true;
+            }
         }
 
         public static List<int> GetChildrenProcesses(Process process)
@@ -72,21 +73,22 @@ namespace Nucleus
         public static bool KillMutex(Process process, string mutexName)
         {
             bool killed = false;
-            for (int i = 1; i <= 11; i++)
+            string fullMutexName = GetFullMutexName(process, mutexName);
+            var handles = Win32Processes.GetHandles(process, "Mutant", fullMutexName);
+            if (string.IsNullOrEmpty(fullMutexName))
             {
-                var handles = Win32Processes.GetHandles(process, "Mutant", "\\Sessions\\" + i + "\\BaseNamedObjects\\" + mutexName);
-                if (handles.Count == 0)
+                return false;
+            }
+            foreach (var handle in handles)
+            {
+                IntPtr ipHandle = new IntPtr(handle.Handle);
+                if (!Win32API.DuplicateHandle(Process.GetProcessById(handle.ProcessID).Handle, handle.Handle, Win32API.GetCurrentProcess(), out ipHandle, 0, false, Win32API.DUPLICATE_CLOSE_SOURCE))
                 {
-                    continue;
+                    Debug.WriteLine("DuplicateHandle() failed, error = {0}", Marshal.GetLastWin32Error());
                 }
-                foreach (var handle in handles)
+                else
                 {
-                    IntPtr ipHandle = IntPtr.Zero;
-                    if (!Win32API.DuplicateHandle(Process.GetProcessById(handle.ProcessID).Handle, handle.Handle, Win32API.GetCurrentProcess(), out ipHandle, 0, false, Win32API.DUPLICATE_CLOSE_SOURCE))
-                    {
-                        Debug.WriteLine("DuplicateHandle() failed, error = {0}", Marshal.GetLastWin32Error());
-                    }
-
+                    Win32API.CloseHandle(ipHandle);
                     Debug.WriteLine("Mutex was killed");
                     killed = true;
                 }

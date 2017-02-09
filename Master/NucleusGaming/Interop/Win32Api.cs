@@ -202,6 +202,7 @@ namespace Nucleus.Gaming.Interop
 
             strObjectTypeName = Marshal.PtrToStringUni(ipTemp, objObjectType.Name.Length >> 1);
             Marshal.FreeHGlobal(ipObjectType);
+            Win32API.CloseHandle(ipHandle);
             return strObjectTypeName;
         }
 
@@ -324,13 +325,11 @@ namespace Nucleus.Gaming.Interop
                 else
                 {
                     ipHandle = new IntPtr(ipHandle.ToInt64() + Marshal.SizeOf(shHandle));
+                    //TODO: SHOULD THIS vv BE ABOVE ^^
                     shHandle = (Win32API.SYSTEM_HANDLE_INFORMATION)Marshal.PtrToStructure(ipHandle, shHandle.GetType());
                 }
 
-                if (process != null)
-                {
-                    if (shHandle.ProcessID != process.Id) continue;
-                }
+                if (process != null && shHandle.ProcessID != process.Id) continue;
 
                 string strObjectTypeName = "";
                 if (IN_strObjectTypeName != null)
@@ -343,19 +342,11 @@ namespace Nucleus.Gaming.Interop
                 if (IN_strObjectName != null)
                 {
                     strObjectName = getObjectName(shHandle, Process.GetProcessById(shHandle.ProcessID));
-                    //if (strObjectName != IN_strObjectName) continue;
-                    if (strObjectName != null && strObjectName.Contains(IN_strObjectName))
-                    {
-                    }
-                    else
+                    if (strObjectName == null || !strObjectName.Contains(IN_strObjectName))
                     {
                         continue;
                     }
                 }
-
-                string strObjectTypeName2 = getObjectTypeName(shHandle, Process.GetProcessById(shHandle.ProcessID));
-                string strObjectName2 = getObjectName(shHandle, Process.GetProcessById(shHandle.ProcessID));
-                Console.WriteLine("Win32Api: {0}   {1}   {2}", shHandle.ProcessID, strObjectTypeName2, strObjectName2);
 
                 lstHandles.Add(shHandle);
             }
@@ -365,9 +356,6 @@ namespace Nucleus.Gaming.Interop
         public static bool Is64Bits()
         {
             return Environment.Is64BitProcess;
-
-            int size = Marshal.SizeOf(typeof(IntPtr)) ;
-            return size  == 8 ? true : false;
         }
     }
 

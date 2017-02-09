@@ -44,26 +44,13 @@ namespace Nucleus
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = startGamePath;
 
-                string mu = "";
-                for (int i = 0; i < mutex.Length; i++)
+                while (MutexExists(p, mutex))
                 {
-                    mu += mutex[i];
-
-                    if (i != mutex.Length - 1)
+                    foreach (string mu in mutex)
                     {
-                        mu += ";";
+                        ProcessUtil.KillMutex(p, mu);
                     }
                 }
-
-                startInfo.Arguments = "\"proc:" + p.Id.ToString() + "\" \"mutex:" + mu + "\"";
-                startInfo.RedirectStandardOutput = true;
-                startInfo.UseShellExecute = false;
-
-                Process proc = Process.Start(startInfo);
-                proc.OutputDataReceived += proc_OutputDataReceived;
-                proc.BeginOutputReadLine();
-
-                proc.WaitForExit();
             }
         }
 
@@ -71,36 +58,15 @@ namespace Nucleus
         {
             lock (locker)
             {
-                string startGamePath = GetStartGamePath();
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = startGamePath;
-
-                string mu = "";
-                for (int i = 0; i < mutex.Length; i++)
+                bool all = false;
+                foreach (string mu in mutex)
                 {
-                    mu += mutex[i];
-
-                    if (i != mutex.Length - 1)
+                    if (ProcessUtil.MutexExists(p, mu))
                     {
-                        mu += ";";
+                        all = true;
                     }
                 }
-
-                startInfo.Arguments = $"proc:{p.Id} output:{mu}";
-                startInfo.RedirectStandardOutput = true;
-                startInfo.UseShellExecute = false;
-                startInfo.CreateNoWindow = true;
-
-                Process proc = Process.Start(startInfo);
-                proc.OutputDataReceived += proc_OutputDataReceived;
-                proc.BeginOutputReadLine();
-
-                proc.WaitForExit();
-
-                bool result;
-                bool.TryParse(lastLine, out result);
-
-                return result;
+                return all;
             }
         }
 

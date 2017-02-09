@@ -71,15 +71,19 @@ namespace StartGame
                     else if (key == "mutex")
                     {
                         string[] mutex = splited[1].Split(';');
+                        bool all = true;
                         for (int j = 0; j < mutex.Length; j++)
                         {
                             string m = mutex[j];
                             if (!ProcessUtil.KillMutex(proc, m))
                             {
                                 Console.WriteLine("Mutex " + m + " could not be killed");
+                                all = false;
                             }
                             Thread.Sleep(500);
                         }
+
+                        Console.WriteLine(all.ToString());
                     }
                     else if (key == "proc")
                     {
@@ -95,13 +99,12 @@ namespace StartGame
                         for (int j = 0; j < mutex.Length; j++)
                         {
                             string m = mutex[j];
-                            bool exists = ProcessUtil.MutexExists(proc, m);
-                            if (!exists)
+                            string name = ProcessUtil.GetFullMutexName(proc, m);
+                            if (!string.IsNullOrWhiteSpace(name))
                             {
                                 all = false;
                             }
 
-                            Console.WriteLine("Mutex " + m + (exists ? " exists" : " doesn't exist"));
                             Thread.Sleep(500);
                         }
                         Console.WriteLine(all.ToString());
