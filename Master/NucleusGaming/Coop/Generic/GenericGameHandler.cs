@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using WindowScrape.Types;
@@ -62,7 +63,7 @@ namespace Nucleus.Gaming
                     break;
             }
 
-            return xinputFiles;
+             return xinputFiles;
 
         }
 
@@ -358,7 +359,7 @@ namespace Nucleus.Gaming
                         if (!before.ProcessData.KilledMutexes)
                         {
                             ProcessData pdata = before.ProcessData;
-                            StartGameUtil.KillMutex(pdata.Process, gen.KillMutex);
+                            StartGameUtil.KillMutexes(pdata.Process, gen.KillMutex);
                             break;
                         }
                     }
@@ -367,16 +368,7 @@ namespace Nucleus.Gaming
                 Rectangle playerBounds = player.MonitorBounds;
 
                 // find the monitor that has this screen
-                Screen owner = null;
-                for (int j = 0; j < all.Length; j++)
-                {
-                    Screen s = all[j];
-                    if (s.Bounds.Contains(playerBounds))
-                    {
-                        owner = s;
-                        break;
-                    }
-                }
+                var owner = all.FirstOrDefault(s => s.Bounds.Contains(playerBounds));
 
                 int width = playerBounds.Width;
                 int height = playerBounds.Height;
@@ -419,7 +411,6 @@ namespace Nucleus.Gaming
                 string linkExe = Path.Combine(linkDirectory, gen.ExecutableName);
                 if (context.NeedsSteamEmulation)
                 {
-                    //string steamEmu = GameManager.Instance.ExtractSteamEmu(Path.Combine(linkDirectory, "SmartSteamLoader"));
                     string steamEmu = GameManager.Instance.ExtractSteamEmu();
                     if (string.IsNullOrEmpty(steamEmu))
                     {

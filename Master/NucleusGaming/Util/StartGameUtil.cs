@@ -36,37 +36,26 @@ namespace Nucleus
             return "\"" + pathToGame + "\" \"" + args + "\" \"" + waitTime + "\" \"" + mu + "\"";
         }
 
-        public static void KillMutex(Process p, params string[] mutex)
+        public static void KillMutexes(Process p, params string[] mutexes)
         {
             lock (locker)
             {
-                string startGamePath = GetStartGamePath();
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = startGamePath;
-
-                while (MutexExists(p, mutex))
+                foreach (string mutex in mutexes)
                 {
-                    foreach (string mu in mutex)
+                    while (MutexExists(p, mutex))
                     {
-                        ProcessUtil.KillMutex(p, mu);
+                        ProcessUtil.KillMutex(p, mutex);
                     }
                 }
+
             }
         }
 
-        public static bool MutexExists(Process p, params string[] mutex)
+        public static bool MutexExists(Process p, string mutex)
         {
             lock (locker)
             {
-                bool all = false;
-                foreach (string mu in mutex)
-                {
-                    if (ProcessUtil.MutexExists(p, mu))
-                    {
-                        all = true;
-                    }
-                }
-                return all;
+                return ProcessUtil.MutexExists(p, mutex);
             }
         }
 
