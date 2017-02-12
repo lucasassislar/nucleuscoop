@@ -96,7 +96,6 @@ namespace Nucleus.Gaming
         /// <returns></returns>
         public IGameInfo GetGame(string exePath)
         {
-            string lower = exePath.ToLower();
             string fileName = Path.GetFileName(exePath).ToLower();
             string dir = Path.GetDirectoryName(exePath);
 
@@ -147,7 +146,7 @@ namespace Nucleus.Gaming
             {
                 return null;
             }
-
+            
             LogManager.Log("Found game: {0}, full path: {1}", game.GameName, exePath);
             UserGameInfo uinfo = new UserGameInfo();
             uinfo.InitializeDefault(game, exePath);

@@ -148,6 +148,9 @@
     <None Include="games\Battlefront2.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="games\EarthDefenseForce4.1.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Left4Dead2\resources\bloodharvest.jpg" />
     <Content Include="Left4Dead2\resources\crashcourse.jpg" />
     <None Include="Left4Dead2\resources\darkcarnival.jpg" />

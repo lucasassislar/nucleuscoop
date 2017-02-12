@@ -228,7 +228,6 @@ namespace Nucleus.Gaming
                     }
                     break;
                 case SaveType.CFG:
-                    //TODO: NEEDS TO SET VALUES CORRECTLY
                     //TODO: THERE NEEDS TO BE A SEPARATE FILE FOR EACH INSTANCE, TO SUPPORT DIFFERENT RESOLUTIONS
                     SourceCfgFile cfg;
                     using (Stream str = File.OpenRead(saveFile))
@@ -236,14 +235,12 @@ namespace Nucleus.Gaming
                         cfg = new SourceCfgFile(str);
                     }
 
-                    for (int j = 0; j < context.ModifySave.Length; j++)
+                    foreach (var save in context.ModifySave)
                     {
-                        SaveInfo save = context.ModifySave[j];
-                        if (save is CfgSaveInfo)
-                        {
-                            CfgSaveInfo option = (CfgSaveInfo)save;
-                            cfg.ChangeProperty(option.Key, option.Value);
-                        }
+                        CfgSaveInfo info = save as CfgSaveInfo;
+                        if (info == null) continue;
+                        CfgSaveInfo option = info;
+                        cfg.ChangeProperty(option.Key, option.Value);
                     }
 
 
@@ -411,7 +408,7 @@ namespace Nucleus.Gaming
                 string linkExe = Path.Combine(linkDirectory, gen.ExecutableName);
                 if (context.NeedsSteamEmulation)
                 {
-                    string steamEmu = GameManager.Instance.ExtractSteamEmu();
+                    string steamEmu = GameManager.Instance.ExtractSteamEmu(Path.Combine(linkDirectory, "SmartSteamLoader"));
                     if (string.IsNullOrEmpty(steamEmu))
                     {
                         return "Extraction of SmartSteamEmu failed!";
@@ -428,14 +425,14 @@ namespace Nucleus.Gaming
                     emu.IniWriteValue("Launcher", "SteamClientPath64", Path.Combine(steamEmu, "SmartSteamEmu64.dll"));
                     emu.IniWriteValue("Launcher", "InjectDll", "0");
                     emu.IniWriteValue("SmartSteamEmu", "AppId", context.SteamID);
-                    emu.IniWriteValue("SmartSteamEmu", "SteamIdGeneration", "Static");
+                    emu.IniWriteValue("SmartSteamEmu", "SteamIdGeneration", "Manual");
 
-                    string userName = $"Player { context.PlayerID }";
+                    string userName = $"Player{ context.PlayerID }";
 
                     emu.IniWriteValue("SmartSteamEmu", "PersonaName", userName);
-                    emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", userName);
+                    emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", "7656119796028793" + context.PlayerID);
 
-                    emu.IniWriteValue("SmartSteamEmu", "Offline", "False");
+                    emu.IniWriteValue("SmartSteamEmu", "Offline", "0");
                     emu.IniWriteValue("SmartSteamEmu", "MasterServer", "");
                     emu.IniWriteValue("SmartSteamEmu", "MasterServerGoldSrc", "");
 
