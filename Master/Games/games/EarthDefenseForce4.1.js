@@ -25,8 +25,7 @@ Game.Options = [
         3,
         "saveid3")
 ];
-Game.KillMutex = [ // 2nd instance won't launch with these removed
-];
+Game.KillMutex = [];
 
 
 Game.BinariesFolder = "";
@@ -40,27 +39,14 @@ Game.SupportsKeyboard = true;
 Game.ExecutableName = "edf41.exe";
 Game.SteamID = "410320";
 Game.GUID = "410320";
-Game.GameName = "EARTH DEFENSE FORCE 4.1 The Shadow of New Despair";
+Game.GameName = "EARTH DEFENSE FORCE 4.1: The Shadow of New Despair";
 Game.MaxPlayers = 4;
 Game.MaxPlayersOneMonitor = 4;
 Game.NeedsSteamEmulation = true;
 Game.LauncherTitle = "";
-Game.SaveType = null;//Nucleus.SaveType.CFG;
+Game.SaveType = null;
 Game.SupportsPositioning = true;
 Game.HideTaskbar = false;
 Game.CustomXinput = true;
-//Game.StartArguments = "-novid";
 
-Game.Play = function () {
-    /*
-    var isFullscreen = Context.IsFullscreen ? 1 : 0;
-
-    Context.ModifySave = [
-        new Nucleus.CfgSaveInfo("VideoConfig", "setting.fullscreen", isFullscreen),
-        new Nucleus.CfgSaveInfo("VideoConfig", "setting.defaultres", Context.Width),
-        new Nucleus.CfgSaveInfo("VideoConfig", "setting.defaultresheight", Context.Height),
-    ];
-
-    Context.SavePath = Context.GetFolder(Nucleus.Folder.GameFolder) + "\\left4dead2\\cfg\\video.txt";
-    */
-}
+Game.Play = function () {}

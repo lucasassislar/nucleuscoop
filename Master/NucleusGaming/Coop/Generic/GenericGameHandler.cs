@@ -217,9 +217,8 @@ namespace Nucleus.Gaming
             {
                 case SaveType.INI:
                     IniFile file = new IniFile(saveFile);
-                    for (int j = 0; j < context.ModifySave.Length; j++)
+                    foreach (SaveInfo save in context.ModifySave)
                     {
-                        SaveInfo save = context.ModifySave[j];
                         if (save is IniSaveInfo)
                         {
                             IniSaveInfo ini = (IniSaveInfo)save;
@@ -298,6 +297,39 @@ namespace Nucleus.Gaming
             }
         }
 
+        private string CreateSteamEmuDirectory(string emuDir, string linkExe, GenericContext context)
+        {
+            string steamEmu = GameManager.Instance.ExtractSteamEmu(emuDir);
+            if (string.IsNullOrEmpty(steamEmu))
+            {
+                return "";
+            }
+            
+            IniFile emu = new IniFile(Path.Combine(steamEmu, "SmartSteamEmu.ini"));
+
+            emu.IniWriteValue("Launcher", "Target", linkExe);
+            emu.IniWriteValue("Launcher", "StartIn", Path.GetDirectoryName(linkExe));
+            emu.IniWriteValue("Launcher", "CommandLine", context.StartArguments);
+            emu.IniWriteValue("Launcher", "SteamClientPath", Path.Combine(steamEmu, "SmartSteamEmu.dll"));
+            emu.IniWriteValue("Launcher", "SteamClientPath64", Path.Combine(steamEmu, "SmartSteamEmu64.dll"));
+            emu.IniWriteValue("Launcher", "InjectDll", "0");
+            emu.IniWriteValue("SmartSteamEmu", "AppId", context.SteamID);
+            emu.IniWriteValue("SmartSteamEmu", "SteamIdGeneration", "Manual");
+
+            string userName = $"Player{ context.PlayerID }";
+
+            emu.IniWriteValue("SmartSteamEmu", "PersonaName", userName);
+            emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", "7656119796028793" + context.PlayerID);
+
+            emu.IniWriteValue("SmartSteamEmu", "Offline", "0");
+            emu.IniWriteValue("SmartSteamEmu", "MasterServer", "");
+            emu.IniWriteValue("SmartSteamEmu", "MasterServerGoldSrc", "");
+
+            return Path.Combine(steamEmu, "SmartSteamLoader.exe");
+        }
+
+
+
         public string Play()
         {
             List<PlayerInfo> players = profile.PlayerData;
@@ -366,9 +398,6 @@ namespace Nucleus.Gaming
 
                 // find the monitor that has this screen
                 var owner = all.FirstOrDefault(s => s.Bounds.Contains(playerBounds));
-
-                int width = playerBounds.Width;
-                int height = playerBounds.Height;
                 bool isFullscreen = false;
 
                 if (owner != null)
@@ -408,34 +437,20 @@ namespace Nucleus.Gaming
                 string linkExe = Path.Combine(linkDirectory, gen.ExecutableName);
                 if (context.NeedsSteamEmulation)
                 {
-                    string steamEmu = GameManager.Instance.ExtractSteamEmu(Path.Combine(linkDirectory, "SmartSteamLoader"));
-                    if (string.IsNullOrEmpty(steamEmu))
+                    string emuDir = Path.Combine(linkDirectory, "SmartSteamLoader");
+                    string emuExe;
+                    if (Directory.Exists(emuDir))
                     {
-                        return "Extraction of SmartSteamEmu failed!";
+                        emuExe = Path.Combine(emuDir, "SmartSteamLoader");
                     }
-
-                    string emuExe = Path.Combine(steamEmu, "SmartSteamLoader.exe");
-                    string emuIni = Path.Combine(steamEmu, "SmartSteamEmu.ini");
-                    IniFile emu = new IniFile(emuIni);
-
-                    emu.IniWriteValue("Launcher", "Target", linkExe);
-                    emu.IniWriteValue("Launcher", "StartIn", Path.GetDirectoryName(linkExe));
-                    emu.IniWriteValue("Launcher", "CommandLine", startArgs);
-                    emu.IniWriteValue("Launcher", "SteamClientPath", Path.Combine(steamEmu, "SmartSteamEmu.dll"));
-                    emu.IniWriteValue("Launcher", "SteamClientPath64", Path.Combine(steamEmu, "SmartSteamEmu64.dll"));
-                    emu.IniWriteValue("Launcher", "InjectDll", "0");
-                    emu.IniWriteValue("SmartSteamEmu", "AppId", context.SteamID);
-                    emu.IniWriteValue("SmartSteamEmu", "SteamIdGeneration", "Manual");
-
-                    string userName = $"Player{ context.PlayerID }";
-
-                    emu.IniWriteValue("SmartSteamEmu", "PersonaName", userName);
-                    emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", "7656119796028793" + context.PlayerID);
-
-                    emu.IniWriteValue("SmartSteamEmu", "Offline", "0");
-                    emu.IniWriteValue("SmartSteamEmu", "MasterServer", "");
-                    emu.IniWriteValue("SmartSteamEmu", "MasterServerGoldSrc", "");
-
+                    else
+                    {
+                        emuExe = CreateSteamEmuDirectory(emuDir, linkExe, context);
+                        if (string.IsNullOrEmpty(emuExe))
+                        {
+                            return "Extraction of SmartSteamEmu failed!";
+                        }
+                    }
 
                     if (context.KillMutex?.Length > 0)
                     {
@@ -444,8 +459,7 @@ namespace Nucleus.Gaming
                     }
                     else
                     {
-                        ProcessStartInfo startInfo = new ProcessStartInfo();
-                        startInfo.FileName = emuExe;
+                        ProcessStartInfo startInfo = new ProcessStartInfo() {FileName = emuExe};
                         proc = Process.Start(startInfo);
                     }
 
