@@ -1,5 +1,6 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Interop;
+using Nucleus.Interop.User32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -397,7 +398,7 @@ namespace Nucleus.Coop
 
         private void btnShowTaskbar_Click(object sender, EventArgs e)
         {
-            User32.ShowTaskBar();
+            User32Util.ShowTaskBar();
         }
     }
 }

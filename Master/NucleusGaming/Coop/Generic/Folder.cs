@@ -7,6 +7,6 @@ namespace Nucleus.Gaming
 {
     public enum Folder
     {
-        Documents, GameFolder
+        Documents, MainGameFolder, InstancedGameFolder
     }
 }

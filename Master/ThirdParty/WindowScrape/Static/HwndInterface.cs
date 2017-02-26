@@ -173,6 +173,7 @@ namespace WindowScrape.Static
         #endregion
 
         #region lib
+
         static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
         static readonly IntPtr HWND_NOTOPMOST = new IntPtr(-2);
         static readonly IntPtr HWND_TOP = new IntPtr(0);

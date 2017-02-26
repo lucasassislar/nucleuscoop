@@ -53,15 +53,6 @@ namespace Nucleus.Coop
             InitializeComponent();
         }
 
-        public void RemoveFlicker()
-        {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.UserPaint |
-                ControlStyles.DoubleBuffer,
-                true);
-        }
-
         private void AddPlayer(int i, float playerWidth, float playerHeight, float offset)
         {
             Rectangle r = new Rectangle((int)(50 + ((playerWidth + offset) * i)), 100, (int)playerWidth, (int)playerHeight);
@@ -70,25 +61,8 @@ namespace Nucleus.Coop
             profile.PlayerData.Add(playa);
         }
 
-        public override void Initialize(UserGameInfo game, GameProfile profile)
+        private void UpdateScreens()
         {
-            base.Initialize(game, profile);
-
-            canProceed = false;
-
-            playerFont = new Font("Segoe UI", 40);
-            playerTextFont = new Font("Segoe UI", 18);
-
-            RemoveFlicker();
-
-            float playersWidth = this.Width * 0.5f;
-
-            int playerCount = profile.PlayerCount;
-            float playerWidth = (playersWidth * 0.9f) / (float)playerCount;
-            float playerHeight = playerWidth * 0.5625f;
-            float offset = (playersWidth * 0.1f) / (float)playerCount;
-            playersArea = new RectangleF(50, 100, playersWidth, playerHeight);
-
             screens = ScreensUtil.AllScreens();
             Rectangle totalBounds = RectangleUtil.Union(ScreensUtil.AllScreensRec());
 
@@ -142,6 +116,28 @@ namespace Nucleus.Coop
                 screen.bounds = new Rectangle(x + totalBounds.X - offsetViewsX, y + totalBounds.Y - offsetViewsY, width, height);
                 screen.swapTypeRect = new Rectangle(screen.bounds.X, screen.bounds.Y, (int)(screen.bounds.Width * 0.1f), (int)(screen.bounds.Width * 0.1f));
             }
+        }
+
+        public override void Initialize(UserGameInfo game, GameProfile profile)
+        {
+            base.Initialize(game, profile);
+
+            canProceed = false;
+
+            playerFont = new Font("Segoe UI", 40);
+            playerTextFont = new Font("Segoe UI", 18);
+
+            RemoveFlicker();
+
+            float playersWidth = this.Width * 0.5f;
+
+            int playerCount = profile.PlayerCount;
+            float playerWidth = (playersWidth * 0.9f) / (float)playerCount;
+            float playerHeight = playerWidth * 0.5625f;
+            float offset = (playersWidth * 0.1f) / (float)playerCount;
+            playersArea = new RectangleF(50, 100, playersWidth, playerHeight);
+
+            UpdateScreens();
 
             List<PlayerInfo> playerData = profile.PlayerData;
             if (playerData.Count == 0)
@@ -309,7 +305,7 @@ namespace Nucleus.Coop
                                 {
                                     // this check needs to exist, because if the coordinates in the monitor
                                     // are negative the Union method will extend from 0 to the negative and we'll end up messing everything up
-                                    areaUsed = p.MonitorBounds; 
+                                    areaUsed = p.MonitorBounds;
                                 }
                                 else
                                 {
@@ -635,6 +631,8 @@ namespace Nucleus.Coop
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
+
+            UpdateScreens();
 
             Graphics g = e.Graphics;
             for (int i = 0; i < screens.Length; i++)

@@ -9,6 +9,9 @@ Game.KillMutex = [ // 2nd instance won't launch without these removed
     "hl2_singleton_mutex",
     "steam_singleton_mutext"
 ];
+Game.SymlinkIgnore = [
+    "video.txt"
+];
 
 Game.Debug = true;
 Game.SymlinkExe = false;
@@ -30,12 +33,13 @@ Game.StartArguments = "-novid";
 
 Game.Play = function () {
     Context.ModifySave = [
-        new Nucleus.CfgSaveInfo("VideoConfig", "setting.fullscreen", Context.IsFullscreen),
+        new Nucleus.CfgSaveInfo("VideoConfig", "setting.fullscreen", "0"),
         new Nucleus.CfgSaveInfo("VideoConfig", "setting.defaultres", Context.Width),
         new Nucleus.CfgSaveInfo("VideoConfig", "setting.defaultresheight", Context.Height),
+        new Nucleus.CfgSaveInfo("VideoConfig", "setting.nowindowborder", "0"),
     ];
 
-    Context.SavePath = Context.GetFolder(Nucleus.Folder.GameFolder) + "\\left4dead2\\cfg\\video.txt";
+    Context.SavePath = Context.GetFolder(Nucleus.Folder.InstancedGameFolder) + "\\left4dead2\\cfg\\video.txt";
 
     if (Context.IsKeyboardPlayer) {
         Handler.StartPlayTick(1, function () {

@@ -35,13 +35,19 @@ namespace Nucleus.Gaming
         private string launcherExe;
         private string launcherTitle;
         private bool supportsPositioning;
-        private bool hideTaskbar;
         private bool customXinput = true;
         private bool hookNeeded = false;
         private string hookGameWindowName = "";
         private string[] killMutex;
         private bool debug;
         private double handlerInterval = 500;
+        private string[] symlinkIgnore;
+
+        public string[] SymlinkIgnore
+        {
+            get { return symlinkIgnore; }
+            set { symlinkIgnore = value; }
+        }
 
         public double HandlerInterval
         {
@@ -70,11 +76,6 @@ namespace Nucleus.Gaming
         {
             get { return customXinput; }
             set { customXinput = value; }
-        }
-        public bool HideTaskbar
-        {
-            get { return hideTaskbar; }
-            set { hideTaskbar = value; }
         }
 
         public bool SupportsPositioning

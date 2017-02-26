@@ -133,6 +133,8 @@
     <Compile Include="Coop\Generic\Save\CfgSaveInfo.cs" />
     <Compile Include="Coop\Generic\Save\IniSaveInfo.cs" />
     <Compile Include="Coop\Generic\SaveInfo.cs" />
+    <Compile Include="Interop\User32\Structures\Display.cs" />
+    <Compile Include="Interop\User32\C\Rect.cs" />
     <Compile Include="IO\SourceCfgFile.cs" />
     <Compile Include="Coop\IGameHandler.cs" />
     <Compile Include="Coop\IGameInfo.cs" />
@@ -153,11 +155,11 @@
     <Compile Include="Interop\Interceptor\Win32EnumWindows.cs" />
     <Compile Include="Interop\Interceptor\Win32Messages.cs" />
     <Compile Include="Interop\Interceptor\WindowInterceptor.cs" />
-    <Compile Include="Interop\User32.cs" />
-    <Compile Include="Interop\User32Interop.cs" />
-    <Compile Include="Interop\User32_WS.cs" />
+    <Compile Include="Interop\User32\User32Util.cs" />
+    <Compile Include="Interop\User32\User32Interop.cs" />
+    <Compile Include="Interop\User32\User32_WS.cs" />
     <Compile Include="Interop\Win32Api.cs" />
-    <Compile Include="Interop\WindowShowStyle.cs" />
+    <Compile Include="Interop\User32\WindowShowStyle.cs" />
     <Compile Include="IO\Logging\LogManager.cs" />
     <Compile Include="IO\MFT\FileNameAndParentFrn.cs" />
     <Compile Include="IO\MFT\MFTReader.cs" />

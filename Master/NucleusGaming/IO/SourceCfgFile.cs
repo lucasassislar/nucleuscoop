@@ -7,56 +7,74 @@ using System.Text;
 
 namespace Nucleus.Gaming
 {
+    /// <summary>
+    /// Reads and modifies parameters in a Source Engine configuration
+    /// file (*.cfg)
+    /// </summary>
     public class SourceCfgFile
     {
-        protected Stream localStream;
-        protected StreamReader reader;
-        protected StreamWriter writer;
+        protected string path;
         protected string rawData;
         protected string backupData;
-
 
         public string RawData
         {
             get { return rawData; }
         }
 
-        public SourceCfgFile(Stream stream)
+        public SourceCfgFile(string filePath)
         {
-            localStream = stream;
-            reader = new StreamReader(stream);
-            rawData = reader.ReadToEnd();
+            path = filePath;
+            rawData = File.ReadAllText(path);
             backupData = string.Copy(rawData);
         }
-        public void Reset()
+
+        /// <summary>
+        /// Flushes all changes to disk
+        /// </summary>
+        public void Save()
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+
+            File.WriteAllText(path, rawData);
+        }
+
+        /// <summary>
+        /// Reverts the data to the initially read data
+        /// </summary>
+        public void RevertToBackup()
         {
             rawData = string.Copy(backupData);
         }
 
-        public void ChangeProperty(string propertyName, string value)
+        public bool ChangeProperty(string propertyName, string value)
         {
             int start;
             int end;
-            GetPosition(rawData, propertyName, out start, out end);
+            if (GetPosition(rawData, propertyName, out start, out end))
+            {
+                rawData = rawData.Remove(start, end - start);
+                rawData = rawData.Insert(start, value);
 
-            rawData = rawData.Remove(start, end - start);
-            rawData = rawData.Insert(start, value);
+                return true;
+            }
+            return false;
         }
 
-        public void Write(Stream stream)
-        {
-            writer = new StreamWriter(stream);
-            writer.Write(rawData);
-            writer.Flush();
-            stream.Flush();
-        }
-
-        private void GetPosition(string text, string word, out int start, out int end)
+        private bool GetPosition(string text, string word, out int start, out int end)
         {
             start = -1;
             end = 0;
 
             int def = text.IndexOf(word);
+            if (def == -1)
+            {
+                return false;
+            }
+
             int aspas = 0;
             bool firstNumber = true;
             for (int i = def; i < text.Length; i++)
@@ -87,10 +105,8 @@ namespace Nucleus.Gaming
                     }
                 }
             }
-        }
 
-        public void Dispose()
-        {
+            return true;
         }
     }
 }

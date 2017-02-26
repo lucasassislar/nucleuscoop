@@ -21,6 +21,15 @@ namespace Nucleus.Gaming
 
         public event Action<UserControl, bool> OnCanPlay;
 
+        protected virtual void RemoveFlicker()
+        {
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.UserPaint |
+                ControlStyles.DoubleBuffer,
+                true);
+        }
+
         public virtual void Initialize(UserGameInfo game, GameProfile profile)
         {
             this.profile = profile;
