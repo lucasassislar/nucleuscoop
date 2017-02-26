@@ -28,7 +28,6 @@ namespace Nucleus.Gaming
         private bool needsSteamEmulation;
         private string launcherExe;
         private string launcherTitle;
-        private bool hideTaskbar;
         private int interval;
         private bool customXinput;
         private bool hookNeeded = false;
@@ -37,6 +36,13 @@ namespace Nucleus.Gaming
         private string error;
         private bool debug;
         private double handlerInterval;
+        private string[] symlinkIgnore;
+
+        public string[] SymlinkIgnore
+        {
+            get { return symlinkIgnore; }
+            set { symlinkIgnore = value; }
+        }
 
         public double HandlerInterval
         {
@@ -76,11 +82,6 @@ namespace Nucleus.Gaming
         {
             get { return interval; }
             set { interval = value; }
-        }
-        public bool HideTaskbar
-        {
-            get { return hideTaskbar; }
-            set { hideTaskbar = value; }
         }
 
         public bool SymlinkExe

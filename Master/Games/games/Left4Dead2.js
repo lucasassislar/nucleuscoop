@@ -29,6 +29,9 @@ Game.KillMutex = [ // 2nd instance won't launch with these removed
     "hl2_singleton_mutex",
     "steam_singleton_mutext"
 ];
+Game.SymlinkIgnore = [
+    "video.txt"
+];
 
 
 Game.BinariesFolder = "";
@@ -55,15 +58,14 @@ Game.StartArguments = "-novid -steam";
 Game.XInputFiles = ["xinput1_3.dll", "x360ce.ini"];
 
 Game.Play = function () {
-    var isFullscreen = Context.IsFullscreen ? 1 : 0;
-
     Context.ModifySave = [
-        new Nucleus.CfgSaveInfo("VideoConfig", "setting.fullscreen", isFullscreen),
+        new Nucleus.CfgSaveInfo("VideoConfig", "setting.fullscreen", "0"),
         new Nucleus.CfgSaveInfo("VideoConfig", "setting.defaultres", Context.Width),
         new Nucleus.CfgSaveInfo("VideoConfig", "setting.defaultresheight", Context.Height),
+        new Nucleus.CfgSaveInfo("VideoConfig", "setting.nowindowborder", "0"),
     ];
 
-    Context.SavePath = Context.GetFolder(Nucleus.Folder.GameFolder) + "\\left4dead2\\cfg\\video.txt";
+    Context.SavePath = Context.GetFolder(Nucleus.Folder.InstancedGameFolder) + "\\left4dead2\\cfg\\video.txt";
 
     if (Context.IsKeyboardPlayer) {
         Handler.StartPlayTick(1, function () {

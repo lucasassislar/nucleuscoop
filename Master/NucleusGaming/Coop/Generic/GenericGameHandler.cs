@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming.Interop;
+using Nucleus.Interop.User32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,7 +20,7 @@ namespace Nucleus.Gaming
         private UserGameInfo userGame;
         private GameProfile profile;
         private GenericGameInfo gen;
-        private Dictionary<string, string> data;
+        private Dictionary<string, string> jsData;
 
         private double timer;
         private int exited;
@@ -105,11 +106,6 @@ namespace Nucleus.Gaming
 
         public void End()
         {
-            if (hidetaskbar)
-            {
-                User32.ShowTaskBar();
-            }
-
             hasEnded = true;
             GameManager.Instance.ExecuteBackup(this.userGame.Game);
 
@@ -141,7 +137,7 @@ namespace Nucleus.Gaming
         {
             string str = folder.ToString();
             string output;
-            if (data.TryGetValue(str, out output))
+            if (jsData.TryGetValue(str, out output))
             {
                 return output;
             }
@@ -161,9 +157,10 @@ namespace Nucleus.Gaming
                 return false;
             }
 
-            data = new Dictionary<string, string>();
-            data.Add(Folder.Documents.ToString(), Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-            data.Add(Folder.GameFolder.ToString(), Path.GetDirectoryName(game.ExePath));
+            jsData = new Dictionary<string, string>();
+            jsData.Add(Folder.Documents.ToString(), Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            jsData.Add(Folder.MainGameFolder.ToString(), Path.GetDirectoryName(game.ExePath));
+            jsData.Add(Folder.InstancedGameFolder.ToString(), Path.GetDirectoryName(game.ExePath));
 
             timerInterval = gen.HandlerInterval;
 
@@ -213,15 +210,15 @@ namespace Nucleus.Gaming
             }
             return path;
         }
-
-        private bool hidetaskbar;
          
         private void CreateLinkDirectory(string linkDir, string rootDir, GenericContext context)
         {
             List<string> exclusions = new List<string>();
-            foreach(string excl in gen.PathExclusions) {
-                exclusions.Add(excl);
-            };
+            if(gen.SymlinkIgnore != null){
+				foreach(string excl in gen.SymlinkIgnore) {
+					exclusions.Add(excl);
+				};
+			}
 
             if (!context.SymlinkExe)
             {
@@ -249,10 +246,9 @@ namespace Nucleus.Gaming
 
                 File.Copy(exeRootFilePath, exeLinkFilePath);
             }
-
-            // some games have save files inside their game folder, so we need to access them inside the loop
-            this.data[Folder.GameFolder.ToString()] = linkDir;
             
+			// some games have save files inside their game folder, so we need to access them inside the loop
+			jsData[Folder.InstancedGameFolder.ToString()] = linkDir;
 
             string configFile = context.SavePath;
 
@@ -270,11 +266,7 @@ namespace Nucleus.Gaming
                     }
                     break;
                 case SaveType.CFG:
-                    SourceCfgFile cfg;
-                    using (Stream str = File.OpenRead(configFile))
-                    {
-                        cfg = new SourceCfgFile(str);
-                    }
+                    SourceCfgFile cfg = new SourceCfgFile(configFile);
 
                     foreach (var save in context.ModifySave)
                     {
@@ -283,12 +275,9 @@ namespace Nucleus.Gaming
                         CfgSaveInfo option = info;
                         cfg.ChangeProperty(option.Key, option.Value);
                     }
-
-
-                    using (Stream str = File.OpenWrite(configFile))
-                    {
-                        cfg.Write(str);
-                    }
+					
+					cfg.Save();
+					
                     break;
             }
 
@@ -448,7 +437,6 @@ namespace Nucleus.Gaming
             string binFolder = Path.GetDirectoryName(userGame.ExePath);
             string rootFolder = Path.Combine(binFolder, gen.RootGameFolderPath);
             bool first = true;
-            hidetaskbar = false;
 
             bool keyboard = false;
             
@@ -521,7 +509,7 @@ namespace Nucleus.Gaming
                         isFullscreen = true;
                     }
                 }
-
+                
                 GenericContext context = gen.CreateContext(profile, player, this);
                 context.PlayerID = player.PlayerID;
                 context.IsFullscreen = isFullscreen;
@@ -655,22 +643,9 @@ namespace Nucleus.Gaming
                 data.KilledMutexes = context.KillMutex?.Length == 0;
                 player.ProcessData = data;
 
-                if (first)
-                {
-                    if (context.HideTaskbar)
-                    {
-                        hidetaskbar = true;
-                    }
-                }
-
                 first = false;
             }
-
-            //if (hidetaskbar)
-            //{
-            //    User32.HideTaskbar();
-            //}
-
+			
             return string.Empty;
         }
 

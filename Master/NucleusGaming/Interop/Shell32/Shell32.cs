@@ -14,9 +14,14 @@ namespace Nucleus.Gaming
         [DllImport("shell32.dll", CharSet = CharSet.Auto)]
         private static extern int SHGetFileInfo(string pszPath, int dwFileAttributes, out ShFileInfo psfi, uint cbfileInfo, ShgFi uFlags);
 
-        /// <summary>Maximal Length of unmanaged Windows-Path-strings</summary>
+        /// <summary>
+        /// Maximal Length of unmanaged Windows-Path-strings
+        /// </summary>
         public const int MAX_PATH = 260;
-        /// <summary>Maximal Length of unmanaged Typename</summary>
+
+        /// <summary>
+        /// Maximal Length of unmanaged Typename
+        /// </summary>
         public const int MAX_TYPE = 80;
 
         /// <summary>

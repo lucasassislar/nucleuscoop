@@ -12,8 +12,7 @@ using Ionic.Zip;
 namespace Nucleus.Gaming
 {
     /// <summary>
-    /// Manages games information, 
-    /// so we can know what games are supported 
+    /// Manages games information, so we can know what games are supported
     /// and how to support it
     /// </summary>
     public class GameManager
@@ -24,46 +23,28 @@ namespace Nucleus.Gaming
         private UserProfile user;
         private List<BackupFile> backupFiles;
         private string error;
+		private bool isSaving;
 
-        public string Error
-        {
-            get { return error; }
-        }
 
-        /// <summary>
         /// object instance so we can thread-safe save the user profile
-        /// </summary>
         private object saving = new object();
 
-        public bool IsSaving
-        {
-            get;
-            private set;
-        }
+        public string Error { get { return error; } }
+		
+		public bool IsSaving { get { return isSaving; } }
+		
 
         /// <summary>
-        /// A dictionary containing GameInfos. The key is the game's info guid
+        /// A dictionary containing GameInfos. The key is the game's guid
         /// </summary>
-        public Dictionary<string, IGameInfo> Games
-        {
-            get { return games; }
-        }
-
-
-        public Dictionary<string, IGameInfo> GameInfos
-        {
-            get { return gameInfos; }
-        }
+		public Dictionary<string, IGameInfo> Games { get { return games; } }
+		public Dictionary<string, IGameInfo> GameInfos { get { return gameInfos; } }
+		public static GameManager Instance { get { return instance; } }
 
         public UserProfile User
         {
             get { return user; }
             set { user = value; }
-        }
-
-        public static GameManager Instance
-        {
-            get { return instance; }
         }
 
         public GameManager()
@@ -266,7 +247,7 @@ namespace Nucleus.Gaming
             }
         }
 
-#region Initialize
+		#region Initialize
 
         private string GetAppDataPath()
         {
@@ -410,7 +391,7 @@ namespace Nucleus.Gaming
                         }
                     }
                 }
-                catch (Exception wtf)
+                catch
                 {
                     makeDefaultUserFile();
                 }
@@ -438,9 +419,9 @@ namespace Nucleus.Gaming
 
         private void asyncSaveUser(string path)
         {
-            if (!IsSaving)
+            if (!isSaving)
             {
-                IsSaving = true;
+                isSaving = true;
                 LogManager.Log("> Saving user profile....");
                 ThreadPool.QueueUserWorkItem(saveUser, path);
             }
@@ -452,7 +433,7 @@ namespace Nucleus.Gaming
             {
                 try
                 {
-                    IsSaving = true;
+                    isSaving = true;
                     string path = (string)p;
                     using (FileStream stream = new FileStream(path, FileMode.Create))
                     {
@@ -465,36 +446,14 @@ namespace Nucleus.Gaming
                     }
                     LogManager.Log("Saved user profile");
                 }
-                catch
-                { }
-                IsSaving = false;
+                catch { }
+                isSaving = false;
             }
         }
         
         private void Initialize()
         {
-            // I used to hate working with assembly, and that's why it has that name :D
-            Assembly ass = Assembly.Load(new AssemblyName("Nucleus.Coop.Games"));
-            if (ass != null)
-            {
-                Type[] t = ass.GetTypes();
-                for (int x = 0; x < t.Length; x++)
-                {
-                    Type ty = t[x];
-
-                    if (ty.GetInterface("IGameInfo") != null)
-                    {
-                        // Found!
-                        IGameInfo info = (IGameInfo)Activator.CreateInstance(ty);
-                        LogManager.Log("Found game info class: " + info.GameName);
-
-                        games.Add(info.GUID, info);
-                        gameInfos.Add(info.ExecutableName, info);
-                    }
-                }
-            }
-
-            // search for JS games
+            // Search for Javascript games-infos
             string jsfolder = GetJsGamesPath();
             DirectoryInfo jsFolder = new DirectoryInfo(jsfolder);
             FileInfo[] files = jsFolder.GetFiles("*.js");
@@ -510,8 +469,8 @@ namespace Nucleus.Gaming
                     gameInfos.Add(info.ExecutableName, info);
                 }
             }
-        } 
-#endregion
+        }
+		#endregion
 
         public void Play(IGameHandler handler)
         {
@@ -523,7 +482,6 @@ namespace Nucleus.Gaming
         private void play(object state)
         {
             error = ((IGameHandler)state).Play();
-           
         }
     }
 }

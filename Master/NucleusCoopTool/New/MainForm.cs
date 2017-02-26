@@ -1,5 +1,6 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Interop;
+using Nucleus.Interop.User32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -71,8 +72,8 @@ namespace Nucleus.Coop
                 }
             }
 
-            lock (controls)
-            {
+            //lock (controls)
+            //{
                 controls.Clear();
                 this.list_Games.Controls.Clear();
 
@@ -91,7 +92,7 @@ namespace Nucleus.Coop
                     con.Text = "No games";
                     this.list_Games.Controls.Add(con);
                 }
-            }
+            //}
 
             GameManager.Instance.SaveUserProfile();
         }
@@ -129,8 +130,8 @@ namespace Nucleus.Coop
 
         private void GetIcon(object state)
         {
-            lock (controls)
-            {
+            //lock (controls)
+            //{
                 UserGameInfo game = (UserGameInfo)state;
                 Icon icon = Shell32.GetIcon(game.ExePath, false);
 
@@ -140,7 +141,7 @@ namespace Nucleus.Coop
 
                 GameControl control = controls[game];
                 control.Image = game.Icon;
-            }
+            //}
         }
 
         private void list_Games_SelectedChanged(object arg1, Control arg2)
@@ -394,7 +395,7 @@ namespace Nucleus.Coop
 
         private void btnShowTaskbar_Click(object sender, EventArgs e)
         {
-            User32.ShowTaskBar();
+            User32Util.ShowTaskBar();
         }
     }
 }
