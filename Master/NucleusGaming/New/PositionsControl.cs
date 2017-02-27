@@ -19,8 +19,11 @@ namespace Nucleus.Coop
         // array of users's screens
         private UserScreen[] screens;
 
-        // the factor to scale all screens to match the edit area
+        // the factor to scale all screens to fit them inside the edit area
         private float scale;
+
+        // the total bounds of all the connected monitors together
+        private Rectangle totalBounds;
 
         private Font playerFont;
         private Font playerTextFont;
@@ -51,70 +54,88 @@ namespace Nucleus.Coop
         public PositionsControl()
         {
             InitializeComponent();
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            playerFont = new Font("Segoe UI", 40);
+            playerTextFont = new Font("Segoe UI", 18);
+
+            RemoveFlicker();
         }
 
         private void AddPlayer(int i, float playerWidth, float playerHeight, float offset)
         {
-            Rectangle r = new Rectangle((int)(50 + ((playerWidth + offset) * i)), 100, (int)playerWidth, (int)playerHeight);
-            PlayerInfo playa = new PlayerInfo();
-            playa.EditBounds = r;
-            profile.PlayerData.Add(playa);
+            Rectangle r = RectangleUtil.Float(50 + ((playerWidth + offset) * i), 100, playerWidth, playerHeight);
+            PlayerInfo player = new PlayerInfo();
+            player.EditBounds = r;
+            profile.PlayerData.Add(player);
         }
 
         private void UpdateScreens()
         {
-            screens = ScreensUtil.AllScreens();
-            Rectangle totalBounds = RectangleUtil.Union(ScreensUtil.AllScreensRec());
-
-            // see if most screens are either vertical or horizontal
-            int vertical = 0;
-            int horizontal = 0;
-            for (int i = 0; i < screens.Length; i++)
+            if (screens == null)
             {
-                UserScreen s = screens[i];
-                if (s.bounds.Width > s.bounds.Height)
-                {
-                    horizontal++;
-                }
-                else
-                {
-                    vertical++;
-                }
-            }
-
-
-            if (horizontal > vertical)
-            {
-                // horizontal setup
-                scale = (this.Width * 0.9f) / (float)totalBounds.Width;
+                screens = ScreensUtil.AllScreens();
+                totalBounds = RectangleUtil.Union(screens);
             }
             else
             {
-                // vertical setup
-                scale = (this.Height * 0.6f) / (float)totalBounds.Height;
-                //scale = (this.Width * 0.9f) / (float)totalBounds.Width;
+                UserScreen[] newScreens = ScreensUtil.AllScreens();
+                Rectangle newBounds = RectangleUtil.Union(newScreens);
+                if (newBounds.Equals(totalBounds))
+                {
+                    return;
+                }
+
+                // screens got updated, need to reflect in our window
+                screens = newScreens;
+                totalBounds = newBounds;
+
+                // remove all players screens
+                List<PlayerInfo> playerData = profile.PlayerData;
+                if (playerData != null)
+                {
+                    for (int i = 0; i < playerData.Count; i++)
+                    {
+                        PlayerInfo player = playerData[i];
+                        player.EditBounds = GetDefaultBounds(draggingIndex);
+                        player.ScreenIndex = -1;
+                    }
+                }
             }
 
-            totalBounds = new Rectangle(
-                (int)(totalBounds.X * scale),
-                (int)(totalBounds.Y * scale),
-                (int)(totalBounds.Width * scale),
-                (int)(totalBounds.Height * scale));
-            int offsetViewsX = totalBounds.X;
-            int offsetViewsY = totalBounds.Y;
-            totalBounds = RectangleUtil.Center(totalBounds, new Rectangle(0, (int)(this.Height * 0.25f), this.Width, (int)(this.Height * 0.7f)));
+            if (totalBounds.Width > totalBounds.Height)
+            {
+                // horizontal monitor setup
+                scale = (this.Width * 0.9f) / (float)totalBounds.Width;
+                if (totalBounds.Height * scale > this.Height * 0.4f)
+                {
+                    scale = (this.Height * 0.4f) / (float)totalBounds.Height;
+                }
+            }
+            else
+            {
+                // vertical monitor setup
+                scale = (this.Height * 0.4f) / (float)totalBounds.Height;
+                if (totalBounds.Width * scale > this.Width * 0.9f)
+                {
+                    scale = (this.Width * 0.9f) / (float)totalBounds.Width;
+                }
+            }
+
+            Rectangle scaledBounds = RectangleUtil.Scale(totalBounds, scale);
+            scaledBounds = RectangleUtil.Center(scaledBounds, RectangleUtil.Float(0, this.Height * 0.25f, this.Width, this.Height * 0.7f));
 
             for (int i = 0; i < screens.Length; i++)
             {
                 UserScreen screen = screens[i];
 
-                Rectangle s = screen.bounds;
-                int width = (int)(s.Width * scale);
-                int height = (int)(s.Height * scale);
-                int x = (int)(s.X * scale);
-                int y = (int)(s.Y * scale);
-                screen.bounds = new Rectangle(x + totalBounds.X - offsetViewsX, y + totalBounds.Y - offsetViewsY, width, height);
-                screen.swapTypeRect = new Rectangle(screen.bounds.X, screen.bounds.Y, (int)(screen.bounds.Width * 0.1f), (int)(screen.bounds.Width * 0.1f));
+                Rectangle bounds = RectangleUtil.Scale(screen.MonitorBounds, scale);
+                Rectangle uiBounds = new Rectangle(bounds.X + scaledBounds.X, bounds.Y + scaledBounds.Y, bounds.Width, bounds.Height);
+                screen.UIBounds = uiBounds;
+                screen.SwapTypeBounds = RectangleUtil.Float(uiBounds.X, uiBounds.Y, uiBounds.Width * 0.1f, uiBounds.Width * 0.1f);
             }
         }
 
@@ -124,14 +145,10 @@ namespace Nucleus.Coop
 
             canProceed = false;
 
-            playerFont = new Font("Segoe UI", 40);
-            playerTextFont = new Font("Segoe UI", 18);
-
-            RemoveFlicker();
-
             float playersWidth = this.Width * 0.5f;
 
-            int playerCount = profile.PlayerCount;
+            List<PlayerInfo> playerData = profile.PlayerData;
+            int playerCount = playerData.Count;
             float playerWidth = (playersWidth * 0.9f) / (float)playerCount;
             float playerHeight = playerWidth * 0.5625f;
             float offset = (playersWidth * 0.1f) / (float)playerCount;
@@ -139,33 +156,13 @@ namespace Nucleus.Coop
 
             UpdateScreens();
 
-            List<PlayerInfo> playerData = profile.PlayerData;
-            if (playerData.Count == 0)
+            for (int i = 0; i < playerData.Count; i++)
             {
-                for (int i = 0; i < playerCount; i++)
+                PlayerInfo info = playerData[i];
+
+                if (info.ScreenIndex == -1)
                 {
-                    AddPlayer(i, playerWidth, playerHeight, offset);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < playerCount; i++)
-                {
-                    if (i >= playerData.Count)
-                    {
-                        // additional players
-                        AddPlayer(i, playerWidth, playerHeight, offset);
-                    }
-                    else
-                    {
-                        PlayerInfo info = playerData[i];
-                        Rectangle s = info.MonitorBounds;
-                        int width = (int)(s.Width * scale);
-                        int height = (int)(s.Height * scale);
-                        int x = (int)(s.X * scale);
-                        int y = (int)(s.Y * scale);
-                        info.EditBounds = new Rectangle(x, y, width, height);
-                    }
+                    info.EditBounds = GetDefaultBounds(i);
                 }
             }
         }
@@ -187,7 +184,7 @@ namespace Nucleus.Coop
                     for (int i = 0; i < screens.Length; i++)
                     {
                         UserScreen screen = screens[i];
-                        Rectangle s = screen.bounds;
+                        Rectangle s = screen.UIBounds;
                         float pc = RectangleUtil.PcInside(p, s);
 
                         // bigger than 60% = major part inside this screen
@@ -213,7 +210,7 @@ namespace Nucleus.Coop
                 }
                 else
                 {
-                    Rectangle s = screens[draggingScreen].bounds;
+                    Rectangle s = screens[draggingScreen].UIBounds;
                     float pc = RectangleUtil.PcInside(p, s);
                     if (pc < 0.6f)
                     {
@@ -235,10 +232,10 @@ namespace Nucleus.Coop
 
             var players = profile.PlayerData;
             UserScreen screen = screens[screenIndex];
-            Rectangle bounds = screen.monitorBounds;
-            Rectangle ebounds = screen.bounds;
+            Rectangle bounds = screen.MonitorBounds;
+            Rectangle ebounds = screen.UIBounds;
 
-            switch (screen.type)
+            switch (screen.Type)
             {
                 case UserScreenType.FullScreen:
                     for (int i = 0; i < players.Count; i++)
@@ -250,8 +247,8 @@ namespace Nucleus.Coop
                         }
                     }
 
-                    monitorBounds = screen.monitorBounds;
-                    editorBounds = screen.bounds;
+                    monitorBounds = screen.MonitorBounds;
+                    editorBounds = screen.UIBounds;
                     break;
                 case UserScreenType.DualHorizontal:
                     {
@@ -411,15 +408,15 @@ namespace Nucleus.Coop
                 for (int i = 0; i < screens.Length; i++)
                 {
                     UserScreen screen = screens[i];
-                    if (screen.swapTypeRect.Contains(e.Location))
+                    if (screen.SwapTypeBounds.Contains(e.Location))
                     {
-                        if (screen.type == UserScreenType.FourPlayers)
+                        if (screen.Type == UserScreenType.FourPlayers)
                         {
-                            screen.type = 0;
+                            screen.Type = 0;
                         }
                         else
                         {
-                            screen.type++;
+                            screen.Type++;
                         }
 
                         // invalidate all players inside screen
@@ -473,11 +470,11 @@ namespace Nucleus.Coop
                         if (p.ScreenIndex != -1)
                         {
                             UserScreen screen = screens[p.ScreenIndex];
-                            int halfWidth = screen.monitorBounds.Width / 2;
-                            int halfHeight = screen.monitorBounds.Height / 2;
+                            int halfWidth = screen.MonitorBounds.Width / 2;
+                            int halfHeight = screen.MonitorBounds.Height / 2;
 
                             Rectangle bounds = p.MonitorBounds;
-                            if (screen.type == UserScreenType.FourPlayers)
+                            if (screen.Type == UserScreenType.FourPlayers)
                             {
                                 // check if the size is 1/4th of screen
                                 if (bounds.Width == halfWidth &&
@@ -509,13 +506,13 @@ namespace Nucleus.Coop
                                             hasTopBottomSpace = false;
                                         }
 
-                                        if (other.MonitorBounds.X == screen.monitorBounds.X + halfWidth &&
-                                            other.MonitorBounds.Height == screen.monitorBounds.Height)
+                                        if (other.MonitorBounds.X == screen.MonitorBounds.X + halfWidth &&
+                                            other.MonitorBounds.Height == screen.MonitorBounds.Height)
                                         {
                                             hasLeftRightSpace = false;
                                         }
-                                        if (other.MonitorBounds.X == screen.monitorBounds.X &&
-                                            other.MonitorBounds.Width == screen.monitorBounds.Width)
+                                        if (other.MonitorBounds.X == screen.MonitorBounds.X &&
+                                            other.MonitorBounds.Width == screen.MonitorBounds.Width)
                                         {
                                             hasTopBottomSpace = false;
                                         }
@@ -524,7 +521,7 @@ namespace Nucleus.Coop
                                     if (hasLeftRightSpace)
                                     {
                                         Rectangle edit = p.EditBounds;
-                                        if (bounds.X == screen.monitorBounds.X + bounds.Width)
+                                        if (bounds.X == screen.MonitorBounds.X + bounds.Width)
                                         {
                                             bounds.X -= bounds.Width;
                                             edit.X -= edit.Width;
@@ -551,13 +548,13 @@ namespace Nucleus.Coop
                                 }
                                 else
                                 {
-                                    bounds.Width = screen.monitorBounds.Width / 2;
-                                    bounds.Height = screen.monitorBounds.Height / 2;
+                                    bounds.Width = screen.MonitorBounds.Width / 2;
+                                    bounds.Height = screen.MonitorBounds.Height / 2;
                                     p.MonitorBounds = bounds;
 
                                     Rectangle edit = p.EditBounds;
-                                    edit.Width = screen.bounds.Width / 2;
-                                    edit.Height = screen.bounds.Height / 2;
+                                    edit.Width = screen.UIBounds.Width / 2;
+                                    edit.Height = screen.UIBounds.Height / 2;
                                     p.EditBounds = edit;
 
                                     Invalidate();
@@ -638,23 +635,22 @@ namespace Nucleus.Coop
             for (int i = 0; i < screens.Length; i++)
             {
                 UserScreen s = screens[i];
-                g.DrawRectangle(Pens.White, s.bounds);
-                g.DrawRectangle(Pens.White, s.swapTypeRect);
+                g.DrawRectangle(Pens.White, s.UIBounds);
+                g.DrawRectangle(Pens.White, s.SwapTypeBounds);
 
-
-                switch (s.type)
+                switch (s.Type)
                 {
                     case UserScreenType.FullScreen:
-                        g.DrawImage(Resources.fullscreen, s.swapTypeRect);
+                        g.DrawImage(Resources.fullscreen, s.SwapTypeBounds);
                         break;
                     case UserScreenType.DualHorizontal:
-                        g.DrawImage(Resources.horizontal, s.swapTypeRect);
+                        g.DrawImage(Resources.horizontal, s.SwapTypeBounds);
                         break;
                     case UserScreenType.DualVertical:
-                        g.DrawImage(Resources.vertical, s.swapTypeRect);
+                        g.DrawImage(Resources.vertical, s.SwapTypeBounds);
                         break;
                     case UserScreenType.FourPlayers:
-                        g.DrawImage(Resources._4players, s.swapTypeRect);
+                        g.DrawImage(Resources._4players, s.SwapTypeBounds);
                         break;
                 }
             }
@@ -688,8 +684,8 @@ namespace Nucleus.Coop
             g.DrawString("Drag each player to\ntheir respective screen", playerTextFont, Brushes.White, new PointF(470, 100));
             g.DrawString("Players", playerTextFont, Brushes.White, new PointF(50, 50));
 
-            g.DrawString("Click on screen's top-left corner to change players on that screen", playerTextFont, Brushes.White, new PointF(20, 450));
-            g.DrawString("(4-player only) Right click player to change size", playerTextFont, Brushes.White, new PointF(20, 490));
+            g.DrawString("Click on screen's top-left corner to change players on that screen", playerTextFont, Brushes.White, new PointF(20, 500));
+            g.DrawString("(4-player only) Right click player to change size", playerTextFont, Brushes.White, new PointF(20, 530));
         }
     }
 }

@@ -87,115 +87,52 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Controls\MonitorControl.cs">
-      <SubType>UserControl</SubType>
-    </None>
-    <None Include="Controls\MonitorControl.Designer.cs">
-      <DependentUpon>MonitorControl.cs</DependentUpon>
-    </None>
-    <None Include="Controls\PlayerControl.cs">
-      <SubType>UserControl</SubType>
-    </None>
-    <None Include="Controls\PlayerControl.Designer.cs">
-      <DependentUpon>PlayerControl.cs</DependentUpon>
-    </None>
-    <None Include="Controls\PlayerCount.cs">
-      <SubType>UserControl</SubType>
-    </None>
-    <None Include="Controls\PlayerCount.Designer.cs">
-      <DependentUpon>PlayerCount.cs</DependentUpon>
-    </None>
-    <None Include="Controls\ScreenControl.cs">
-      <SubType>UserControl</SubType>
-    </None>
-    <None Include="Controls\ScreenControl.Designer.cs">
-      <DependentUpon>ScreenControl.cs</DependentUpon>
-    </None>
-    <None Include="FindGameForm.cs">
-      <SubType>Form</SubType>
-    </None>
-    <None Include="FindGameForm.Designer.cs">
-      <DependentUpon>FindGameForm.cs</DependentUpon>
-    </None>
-    <None Include="GamesViewer.cs">
-      <SubType>Form</SubType>
-    </None>
-    <None Include="GamesViewer.Designer.cs">
-      <DependentUpon>GamesViewer.cs</DependentUpon>
-    </None>
-    <None Include="PresetsForm.cs">
-      <SubType>Form</SubType>
-    </None>
-    <None Include="PresetsForm.Designer.cs">
-      <DependentUpon>PresetsForm.cs</DependentUpon>
-    </None>
-    <Compile Include="New\BaseForm.cs">
+    <Compile Include="Forms\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="New\BaseForm.Designer.cs">
+    <Compile Include="Forms\BaseForm.Designer.cs">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="New\GameControl.cs">
+    <Compile Include="Controls\GameControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\GameControl.Designer.cs">
+    <Compile Include="Controls\GameControl.Designer.cs">
       <DependentUpon>GameControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="New\GameList.cs">
+    <Compile Include="Forms\GameList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="New\GameList.Designer.cs">
+    <Compile Include="Forms\GameList.Designer.cs">
       <DependentUpon>GameList.cs</DependentUpon>
     </Compile>
-    <Compile Include="New\MainForm.cs">
+    <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="New\MainForm.Designer.cs">
+    <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="New\SearchDisksForm.cs">
+    <Compile Include="Forms\SearchDisksForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="New\SearchDisksForm.Designer.cs">
+    <Compile Include="Forms\SearchDisksForm.Designer.cs">
       <DependentUpon>SearchDisksForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Controls\MonitorControl.resx">
-      <DependentUpon>MonitorControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\PlayerControl.resx">
-      <DependentUpon>PlayerControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\PlayerCount.resx">
-      <DependentUpon>PlayerCount.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ScreenControl.resx">
-      <DependentUpon>ScreenControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FindGameForm.resx">
-      <DependentUpon>FindGameForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GamesViewer.resx">
-      <DependentUpon>GamesViewer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="New\BaseForm.resx">
+    <EmbeddedResource Include="Forms\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\GameControl.resx">
+    <EmbeddedResource Include="Controls\GameControl.resx">
       <DependentUpon>GameControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\GameList.resx">
+    <EmbeddedResource Include="Forms\GameList.resx">
       <DependentUpon>GameList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\MainForm.resx">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\SearchDisksForm.resx">
+    <EmbeddedResource Include="Forms\SearchDisksForm.resx">
       <DependentUpon>SearchDisksForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PresetsForm.resx">
-      <DependentUpon>PresetsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -314,9 +251,7 @@
     <None Include="Resources\right_arrow_press.png" />
     <None Include="Resources\right_arrow_hover.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UI\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Resources\not_found_white.png" />
   </ItemGroup>

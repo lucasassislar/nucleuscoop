@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -50,6 +51,15 @@ namespace Nucleus.Gaming
         public UserGameInfo()
         {
 
+        }
+
+        /// <summary>
+        /// If the game exists
+        /// </summary>
+        /// <returns></returns>
+        public bool IsGamePresent()
+        {
+            return File.Exists(exePath);
         }
 
         public void InitializeDefault(IGameInfo game, string exePath)

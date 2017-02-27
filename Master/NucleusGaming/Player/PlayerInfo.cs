@@ -15,12 +15,15 @@ namespace Nucleus.Gaming
         private object tag;
 
         private ProcessData processData;
+        private bool assigned;
 
         public int PlayerID;
         public bool SteamEmu;
         public bool GotLauncher;
         public bool GotGame;
         public bool IsKeyboardPlayer;
+
+
 
         // Serialized
 

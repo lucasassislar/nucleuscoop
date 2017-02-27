@@ -1,6 +1,7 @@
 ﻿using Nucleus.Coop;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -223,6 +224,15 @@ namespace Nucleus.Gaming
         public string GetFolder(Folder folder)
         {
             return parent.GetFolder(folder);
+        }
+
+        public void WriteTextFile(string path, string[] lines)
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            File.WriteAllLines(path, lines);
         }
     }
 }

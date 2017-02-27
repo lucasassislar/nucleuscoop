@@ -9,6 +9,21 @@ namespace Nucleus.Gaming
 {
     public static class RectangleUtil
     {
+        public static Rectangle Float(float x, float y, float width, float height)
+        {
+            return new Rectangle((int)x, (int)y, (int)width, (int)height);
+        }
+
+        public static Rectangle Union(params UserScreen[] rects)
+        {
+            Rectangle r = new Rectangle();
+            for (int i = 0; i < rects.Length; i++)
+            {
+                r = Rectangle.Union(r, rects[i].MonitorBounds);
+            }
+            return r;
+        }
+
         public static Rectangle Union(params Rectangle[] rects)
         {
             Rectangle r = new Rectangle();
@@ -71,6 +86,21 @@ namespace Nucleus.Gaming
 
             }
             return pc;
+        }
+
+        /// <summary>
+        /// Scales all the Rectangle parameters by the desired value
+        /// </summary>
+        /// <param name="rect"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static Rectangle Scale(Rectangle rect, float value)
+        {
+            return new Rectangle(
+                (int)(rect.X * value),
+                (int)(rect.Y * value),
+                (int)(rect.Width * value),
+                (int)(rect.Height * value));
         }
     }
 }

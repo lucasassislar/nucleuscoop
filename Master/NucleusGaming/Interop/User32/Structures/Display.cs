@@ -8,6 +8,19 @@ namespace Nucleus
 {
     public class Display
     {
+        public Rectangle Bounds
+        {
+            get { return bounds; }
+        }
+        public string DeviceName
+        {
+            get { return deviceName; }
+        }
+        public bool Primary
+        {
+            get { return primary; }
+        }
+
         private Rectangle bounds;
         private string deviceName;
         private bool primary;
@@ -18,5 +31,6 @@ namespace Nucleus
             deviceName = device;
             primary = isPrimary;
         }
+
     }
 }

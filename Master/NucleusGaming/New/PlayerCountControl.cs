@@ -48,7 +48,15 @@ namespace Nucleus.Gaming
         {
             canProceed = true;
 
-            profile.PlayerCount = int.Parse(((Button)sender).Text);
+            int playerCount = int.Parse(((Button)sender).Text);
+
+            profile.PlayerData.Clear();
+            for (int i = 0; i < playerCount; i++)
+            {
+                PlayerInfo player = new PlayerInfo();
+                profile.PlayerData.Add(player);
+            }
+
             OnCanPlayTrue(true);
         }
 

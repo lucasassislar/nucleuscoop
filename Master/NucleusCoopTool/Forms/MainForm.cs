@@ -1,21 +1,17 @@
 ﻿using Nucleus.Gaming;
-using Nucleus.Gaming.Interop;
 using Nucleus.Interop.User32;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
 {
+    /// <summary>
+    /// Central UI class to the Nucleus Coop application
+    /// </summary>
     public partial class MainForm : BaseForm
     {
         private int currentStepIndex;
@@ -80,6 +76,8 @@ namespace Nucleus.Coop
                 controls.Clear();
                 this.list_Games.Controls.Clear();
 
+                noGamesPresent = false;
+
                 List<UserGameInfo> games = gameManager.User.Games;
                 for (int i = 0; i < games.Count; i++)
                 {
@@ -102,13 +100,7 @@ namespace Nucleus.Coop
 
         public void NewUserGame(UserGameInfo game)
         {
-            if (noGamesPresent)
-            {
-                this.list_Games.Controls.Clear();
-                noGamesPresent = false;
-            }
-
-            if (game.Game == null)
+            if (game.Game == null || !game.IsGamePresent())
             {
                 return;
             }
@@ -133,17 +125,20 @@ namespace Nucleus.Coop
 
         private void GetIcon(object state)
         {
+            UserGameInfo game = (UserGameInfo)state;
+            Icon icon = Shell32.GetIcon(game.ExePath, false);
+
+            Bitmap bmp = icon.ToBitmap();
+            icon.Dispose();
+            game.Icon = bmp;
+
             lock (controls)
             {
-                UserGameInfo game = (UserGameInfo)state;
-                Icon icon = Shell32.GetIcon(game.ExePath, false);
-
-                Bitmap bmp = icon.ToBitmap();
-                icon.Dispose();
-                game.Icon = bmp;
-
-                GameControl control = controls[game];
-                control.Image = game.Icon;
+                if (controls.ContainsKey(game))
+                {
+                    GameControl control = controls[game];
+                    control.Image = game.Icon;
+                }
             }
         }
 
@@ -246,10 +241,7 @@ namespace Nucleus.Coop
 
             btn_Next.Visible = currentStep.CanProceed && step != stepsList.Count - 1;
 
-            if (currentStep.Profile != currentProfile)// dont reinitialize, user is coming back
-            {
-                currentStep.Initialize(currentGameInfo, currentProfile);
-            }
+            currentStep.Initialize(currentGameInfo, currentProfile);
 
             StepPanel.Controls.Add(currentStep);
             currentStep.Size = StepPanel.Size; // for some reason this line must exist or the PositionsControl get messed up

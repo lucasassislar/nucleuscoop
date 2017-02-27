@@ -10,10 +10,10 @@ Game.KillMutex = [ // 2nd instance won't launch without these removed
     "steam_singleton_mutext"
 ];
 Game.SymlinkIgnore = [
-    "video.txt"
+    "video.txt",
+    "autoexec.cfg"
 ];
 
-Game.Debug = true;
 Game.SymlinkExe = false;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "left4dead2.exe";
@@ -38,6 +38,13 @@ Game.Play = function () {
         new Nucleus.CfgSaveInfo("VideoConfig", "setting.defaultresheight", Context.Height),
         new Nucleus.CfgSaveInfo("VideoConfig", "setting.nowindowborder", "0"),
     ];
+
+    var autoExec = Context.GetFolder(Nucleus.Folder.InstancedGameFolder) + "\\left4dead2\\cfg\\autoexec.cfg";
+    var lines = [
+        "sv_lan 1",
+        "sv_allow_lobby_connect_only 0"
+    ]
+    Context.WriteTextFile(autoExec, lines);
 
     Context.SavePath = Context.GetFolder(Nucleus.Folder.InstancedGameFolder) + "\\left4dead2\\cfg\\video.txt";
 

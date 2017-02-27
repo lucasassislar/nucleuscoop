@@ -17,16 +17,6 @@ namespace Nucleus.Gaming
         }
 
         /// <summary>
-        /// The amount of players chosen by the user (note this is not 
-        /// directly related to the player data, this is just a value used for creating it)
-        /// </summary>
-        public int PlayerCount
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// A reference to the screens as they were
         /// when the user made the profile
         /// (so we can compare if a screen
