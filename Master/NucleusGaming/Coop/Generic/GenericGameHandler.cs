@@ -40,31 +40,65 @@ namespace Nucleus.Gaming
             get { return gen.Interval; }
         }
         
-        private Dictionary<string, byte[]> GetXInputFiles(int playerIndex)
+        //Gets the XInput file for each of the players
+        private Dictionary<string, byte[]> GetXInputFiles(GenericContext context)
         {
+            string playerXInputDir = GameManager.Instance.GetXInputFolder(gen);
+            playerXInputDir = Path.Combine(playerXInputDir, context.PlayerID.ToString());
+            Directory.CreateDirectory(playerXInputDir);
+
+            DirectoryInfo di = new DirectoryInfo(playerXInputDir);
+
             Dictionary<string, byte[]> xinputFiles = new Dictionary<string, byte[]>();
-            switch (playerIndex)
+
+            //This if statemet will attempt to grab prexisting xinput files
+            if (gen.XInputFiles != null)
             {
-                case 0:
-                    xinputFiles.Add("x360ce.ini", Properties.Resources.player1_x360ce);
-                    xinputFiles.Add("xinput1_3.dll", Properties.Resources.player1_xinput1_3);
-                    break;
-                case 1:
-                    xinputFiles.Add("x360ce.ini", Properties.Resources.player2_x360ce);
-                    xinputFiles.Add("xinput1_3.dll", Properties.Resources.player2_xinput1_3);
-                    break;
-                case 2:
-                    xinputFiles.Add("x360ce.ini", Properties.Resources.player3_x360ce);
-                    xinputFiles.Add("xinput1_3.dll", Properties.Resources.player3_xinput1_3);
-                    break;
-                case 3:
-                    xinputFiles.Add("x360ce.ini", Properties.Resources.player4_x360ce);
-                    xinputFiles.Add("xinput1_3.dll", Properties.Resources.player4_xinput1_3);
-                    break;
+                //Loop through all the xinput files labeled in the js config file
+                foreach (string xinputFileIdentifier in gen.XInputFiles)
+                {
+                    byte[] xinputFile;
+                    FileInfo[] xinputFileInfos = di.GetFiles(xinputFileIdentifier);
+
+                    //If no files matching description found, then look for a resource with the same name
+                    if (xinputFileInfos.Length == 0)
+                    {
+                        int dotIndex = xinputFileIdentifier.LastIndexOf(".");
+                        if(dotIndex != -1)
+                        {
+                            //Find and replace last dot with underscore
+                            string xinputResourceName = xinputFileIdentifier.Remove(dotIndex, 1).Insert(dotIndex, "_");
+                            xinputFile = Properties.Resources.ResourceManager.GetObject(xinputResourceName) as byte[];
+                            if(xinputFile != null)
+                            {
+                                xinputFiles.Add(xinputFileIdentifier, xinputFile);
+
+                                //Store the file in the player's xinput directory
+                                using (Stream str = File.OpenWrite(Path.Combine(playerXInputDir, xinputFileIdentifier)))
+                                {
+                                    str.Write(xinputFile, 0, xinputFile.Length);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (FileInfo xinputFileInfo in xinputFileInfos)
+                        {
+                            xinputFile = File.ReadAllBytes(xinputFileInfo.FullName);
+                            //If no xinputFile is found, then it will be null
+                            xinputFiles.Add(xinputFileInfo.Name, xinputFile);
+                        }
+                    }
+                }
+            }
+            //Create default files
+            else
+            {
+                xinputFiles.Add("xinput1_3.dll", Properties.Resources.xinput1_3_dll);
             }
 
              return xinputFiles;
-
         }
 
         public void End()
@@ -78,23 +112,7 @@ namespace Nucleus.Gaming
             GameManager.Instance.ExecuteBackup(this.userGame.Game);
 
             string backupDir = GameManager.Instance.GetBackupFolder(this.userGame.Game);
-
-            // delete symlink folder
-            try
-            {
-#if RELEASE
-                for (int i = 0; i < profile.PlayerCount; i++)
-                {
-                    string linkFolder = Path.Combine(backupDir, "Instance" + i);
-                    if (Directory.Exists(linkFolder))
-                    {
-                        Directory.Delete(linkFolder, true);
-                    }
-                }
-#endif
-            }
-            catch { }
-
+            
             if (Ended != null)
             {
                 Ended();
@@ -265,7 +283,7 @@ namespace Nucleus.Gaming
                     CmdUtil.LinkFiles(xinputDir, linkXinputDir, out exitCode, "xinput", "ncoop");
                 }
 
-                foreach (KeyValuePair<string, byte[]> xdata in GetXInputFiles(gamePadId))
+                foreach (KeyValuePair<string, byte[]> xdata in GetXInputFiles(context))
                 {
                     //TODO:NEEDS TO USE A DIFFERENT .dll FOR 32 VS 64 BIT GAMES
                     using (Stream str = File.OpenWrite(Path.Combine(linkXinputDir, xdata.Key)))

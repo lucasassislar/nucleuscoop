@@ -34,6 +34,7 @@ namespace Nucleus.Gaming
         private string binariesFolder;
         private string rootGameFolderPath;
         private string xInputFolder;
+        private string[] xInputFiles;
         private bool needsSteamEmulation;
         private string launcherExe;
         private string launcherTitle;
@@ -202,6 +203,12 @@ namespace Nucleus.Gaming
         {
             get { return xInputFolder; }
             set { xInputFolder = value; }
+        }
+
+        public string[] XInputFiles
+        {
+            get { return xInputFiles; }
+            set { xInputFiles = value; }
         }
 
         public bool NeedsSteamEmulation

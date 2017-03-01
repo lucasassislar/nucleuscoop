@@ -74,6 +74,8 @@ namespace Nucleus.Gaming
 
             string appData = GetAppDataPath();
             Directory.CreateDirectory(appData);
+            string controllerConfigDir = Path.Combine(appData, "xinput");
+            Directory.CreateDirectory(controllerConfigDir);
 
             Initialize();
             LoadUser();
@@ -268,13 +270,8 @@ namespace Nucleus.Gaming
 
         private string GetAppDataPath()
         {
-  #if ALPHA
             string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             return Path.Combine(local, "Data");
-  #else
-            string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            return Path.Combine(appData, "Nucleus Coop");
-  #endif
         }
 
         private string GetJsGamesPath()
@@ -320,8 +317,12 @@ namespace Nucleus.Gaming
 
         public string GetBackupFolder(IGameInfo game)
         {
-            string appData = GetAppDataPath();
-            return Path.Combine(appData, game.GUID);
+            return Path.Combine(GetAppDataPath(), game.GUID);
+        }
+
+        public string GetXInputFolder(IGameInfo game)
+        {
+            return Path.Combine(GetAppDataPath(), "xinput");
         }
 
         public BackupFile BackupFile(IGameInfo game, string path)

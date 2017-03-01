@@ -251,9 +251,13 @@
     <None Include="Resources\ncoop.ini" />
     <None Include="Resources\player1\x360ce.ini" />
     <None Include="Resources\player2\x360ce.ini" />
+    <None Include="Resources\player2\x360ce1.ini" />
     <None Include="Resources\player3\x360ce.ini" />
+    <None Include="Resources\player3\x360ce1.ini" />
     <None Include="Resources\player4\x360ce.ini" />
+    <None Include="Resources\player4\x360ce1.ini" />
     <None Include="Resources\SmartSteamEmu.zip" />
+    <None Include="Resources\TeamExplorer.vsix" />
     <None Include="Resources\vertical.png" />
   </ItemGroup>
   <ItemGroup>

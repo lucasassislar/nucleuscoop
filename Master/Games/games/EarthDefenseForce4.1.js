@@ -48,5 +48,6 @@ Game.SaveType = null;
 Game.SupportsPositioning = true;
 Game.HideTaskbar = false;
 Game.CustomXinput = true;
+Game.XInputFiles = [ "xinput9_1_0.dll", "x360ce.ini" ];
 
 Game.Play = function () {}
