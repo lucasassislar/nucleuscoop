@@ -25,6 +25,11 @@ Game.Options = [
         3,
         "saveid3")
 ];
+    
+Game.BinariesFolder = "binaries\\win32";
+Game.RootGameFolderPath = "..\\..";
+Game.XInputFolder = "binaries\\win32";
+Game.ExecutablePath = "binaries\\win32";
 
 Game.SymlinkExe = false;
 Game.SupportsKeyboard = true;
@@ -34,7 +39,6 @@ Game.GUID = "261640";
 Game.GameName = "Borderlands Pre-Sequel";
 Game.MaxPlayers = 4;
 Game.MaxPlayersOneMonitor = 4;
-Game.BinariesFolder = "binaries\\win32";
 Game.NeedsSteamEmulation = false;
 Game.LauncherTitle = "splashscreen";
 Game.SaveType = Nucleus.SaveType.INI;

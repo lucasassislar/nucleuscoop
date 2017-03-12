@@ -202,6 +202,8 @@ namespace Nucleus.Gaming
         }
         public int PlayerID { get; set; }
         public bool IsFullscreen { get; set; }
+        public bool NeedsSteamEmulationDll { get; set; }
+        public bool Is64Bit { get; set; }
 
         private GameProfile profile;
         private PlayerInfo pInfo;

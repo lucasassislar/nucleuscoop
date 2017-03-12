@@ -27,7 +27,7 @@ Game.Options = [
 ];
 
 Game.BinariesFolder = "binaries\\win32";
-Game.RootGamePath = "..\\..";
+Game.RootGameFolderPath = "..\\..";
 Game.XInputFolder = "binaries\\win32";
 Game.ExecutablePath = "binaries\\win32";
 

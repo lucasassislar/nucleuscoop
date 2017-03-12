@@ -18,7 +18,7 @@ Game.ExecutableName = "saintsrowthethird_dx11.exe";
 Game.SteamID = "55230";
 Game.GUID = "55230";
 Game.GameName = "Saints Row 3 (DX11)";
-Game.MaxPlayers = 4;
+Game.MaxPlayers = 2;
 Game.MaxPlayersOneMonitor = 4;
 Game.BinariesFolder = "";
 Game.NeedsSteamEmulation = true;
@@ -32,6 +32,4 @@ Game.HookNeeded = true;
 Game.HookGameWindowName = "Saints Row: The Third";
 Game.LauncherExe = "game_launcher.exe";
 
-Game.Play = function () {
-    //Context.SavePath = Context.GetFolder(Nucleus.Folder.Documents) + "\\My Games\\Borderlands\\WillowGame\\Config\\WillowEngine.ini";
-}
+Game.Play = function () { }

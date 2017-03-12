@@ -195,46 +195,51 @@ namespace Nucleus.Gaming
         }
 
         private bool hidetaskbar;
-
-        private void CreateLinkDirectory(string linkDirectory, string binFolder, string rootFolder, GenericContext context)
+         
+        private void CreateLinkDirectory(string linkDir, string rootDir, GenericContext context)
         {
-            Directory.CreateDirectory(linkDirectory);
+            List<string> exclusions = new List<string>();
+            foreach(string excl in gen.PathExclusions) {
+                exclusions.Add(excl);
+            };
 
-            int exitCode;
-            string root = GetRootFolder(binFolder);
-            //TODO: NEEDS LinkFiles HERE, AS WELL
-            CmdUtil.LinkDirectories(rootFolder, linkDirectory, out exitCode, root.ToLower());
-
-            //This is where the bin folder will go in the Instance<n> folder
-            string linkExeDir = Path.Combine(linkDirectory, gen.ExecutablePath);
-            if (!string.IsNullOrEmpty(gen.ExecutablePath))
+            if (!context.SymlinkExe)
             {
-                // this needs fixing, if there are several folder to the exe and they have important files inside, this won't work! TODO
-                Directory.CreateDirectory(linkExeDir);
-                CmdUtil.LinkDirectories(binFolder, linkExeDir, out exitCode);
+                exclusions.Add(Path.Combine(gen.ExecutablePath, gen.ExecutableName));
             }
 
-
-            if (context.SymlinkExe)
+            
+            if (!string.IsNullOrEmpty(gen.XInputFolder))
             {
-                CmdUtil.LinkFiles(binFolder, linkExeDir, out exitCode, "xinput", "ncoop");
+                foreach (KeyValuePair<string, byte[]> xdata in GetXInputFiles(context))
+                {
+                    exclusions.Add(Path.Combine(gen.XInputFolder, xdata.Key));
+                }
             }
-            else
+            
+            CreateDirectoriesRecursive(linkDir, exclusions, context);
+            
+            if (!context.SymlinkExe)
             {
-                CmdUtil.LinkFiles(binFolder, linkExeDir, out exitCode, "xinput", "ncoop", Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()));
-                string exePath = Path.Combine(linkExeDir, this.userGame.Game.ExecutableName);
-                File.Copy(userGame.ExePath, exePath, true);
+                string exeRootFilePath = Path.Combine(rootDir, gen.ExecutablePath);
+                exeRootFilePath = Path.Combine(exeRootFilePath, gen.ExecutableName);
+
+                string exeLinkFilePath = Path.Combine(linkDir, gen.ExecutablePath);
+                exeLinkFilePath = Path.Combine(exeLinkFilePath, gen.ExecutableName);
+
+                File.Copy(exeRootFilePath, exeLinkFilePath);
             }
 
             // some games have save files inside their game folder, so we need to access them inside the loop
-            this.data[Folder.GameFolder.ToString()] = linkDirectory;
+            this.data[Folder.GameFolder.ToString()] = linkDir;
+            
 
+            string configFile = context.SavePath;
 
-            string saveFile = context.SavePath;
             switch (context.SaveType)
             {
                 case SaveType.INI:
-                    IniFile file = new IniFile(saveFile);
+                    IniFile file = new IniFile(configFile);
                     foreach (SaveInfo save in context.ModifySave)
                     {
                         if (save is IniSaveInfo)
@@ -245,9 +250,8 @@ namespace Nucleus.Gaming
                     }
                     break;
                 case SaveType.CFG:
-                    //TODO: THERE NEEDS TO BE A SEPARATE FILE FOR EACH INSTANCE, TO SUPPORT DIFFERENT RESOLUTIONS
                     SourceCfgFile cfg;
-                    using (Stream str = File.OpenRead(saveFile))
+                    using (Stream str = File.OpenRead(configFile))
                     {
                         cfg = new SourceCfgFile(str);
                     }
@@ -261,27 +265,20 @@ namespace Nucleus.Gaming
                     }
 
 
-                    using (Stream str = File.OpenWrite(saveFile))
+                    using (Stream str = File.OpenWrite(configFile))
                     {
                         cfg.Write(str);
                     }
                     break;
             }
 
-            string startArgs = context.StartArguments;
 
             if (context.CustomXinput)
             {
-                string linkXinputDir = Path.Combine(linkDirectory, gen.XInputFolder);
-                if (!string.IsNullOrEmpty(gen.XInputFolder))
-                {
-                    //Deleting the symlink directory, if it exists
-                    Directory.Delete(linkXinputDir);
-                    Directory.CreateDirectory(linkXinputDir);
-                    string xinputDir = Path.Combine(rootFolder, gen.XInputFolder);
-                    CmdUtil.LinkDirectories(xinputDir, linkXinputDir, out exitCode);
-                    CmdUtil.LinkFiles(xinputDir, linkXinputDir, out exitCode, "xinput", "ncoop");
-                }
+                string linkXinputDir =
+                    String.IsNullOrEmpty(gen.XInputFolder) ? 
+                    gen.ExecutablePath : gen.XInputFolder;
+                linkXinputDir = Path.Combine(linkDir, linkXinputDir);
 
                 foreach (KeyValuePair<string, byte[]> xdata in GetXInputFiles(context))
                 {
@@ -313,7 +310,62 @@ namespace Nucleus.Gaming
                     gamePadId++;
                 }
             }
+
+            CreateLinksRecursive(linkDir, rootDir, exclusions, context);
         }
+
+
+        private void CreateDirectoriesRecursive(string linkDir, List<string> exclusions, GenericContext context)
+        {
+            Directory.CreateDirectory(linkDir);
+
+            exclusions.ForEach((hardFile) =>
+            {
+                int sepIndex = hardFile.IndexOf(Path.DirectorySeparatorChar.ToString());
+                if (sepIndex != -1)
+                {
+                    string firstDirInPath = hardFile.Substring(0, sepIndex);
+                    string nextLinkPath = Path.Combine(linkDir, firstDirInPath);
+                    string newHardFilePath = hardFile.Substring(sepIndex + 1, hardFile.Length - sepIndex - 1);
+
+                    CreateDirectoriesRecursive(
+                        nextLinkPath,
+                        new List<string>(new string[] { newHardFilePath }),
+                        context);
+                }
+            });
+
+        }
+
+
+        private void CreateLinksRecursive(string linkDir, string rootDir, List<string> exclusions, GenericContext context)
+        {
+            int exitCode;
+            exclusions.ForEach((hardFile) =>
+            {
+                string firstDirInPath = "", nextLinkPath = "", newRootPath = "";
+
+                int sepIndex = hardFile.IndexOf(Path.DirectorySeparatorChar.ToString());
+                if (sepIndex != -1)
+                {
+                    firstDirInPath = hardFile.Substring(0, sepIndex);
+                    nextLinkPath = Path.Combine(linkDir, firstDirInPath);
+                    newRootPath = Path.Combine(rootDir, firstDirInPath);
+                    string newHardFilePath = hardFile.Substring(sepIndex + 1, hardFile.Length - sepIndex - 1);
+
+                    CreateLinksRecursive(
+                        nextLinkPath,
+                        newRootPath,
+                        new List<string>(new string[] { newHardFilePath }),
+                        context);
+                }
+            });
+
+            //We shouldn't need exclusions at this point, since the hard directories should already be created
+            CmdUtil.LinkDirectories(rootDir, linkDir, out exitCode);
+            CmdUtil.LinkFiles(rootDir, linkDir, out exitCode);
+        }
+
 
         private string CreateSteamEmuDirectory(string emuDir, string linkExe, GenericContext context)
         {
@@ -322,11 +374,23 @@ namespace Nucleus.Gaming
             {
                 return "";
             }
+
+            string linkDir = Path.GetDirectoryName(linkExe);
+            string suffix64 = context.Is64Bit ? "64" : "";
+            if (context.NeedsSteamEmulationDll)
+            {
+                string steamApiDll = Path.Combine(linkDir, "steam_api" + suffix64 + ".dll");
+                string valveApiDll = Path.Combine(linkDir, "ValveApi" + suffix64 + ".dll");
+                if(File.Exists(steamApiDll)) File.Move(steamApiDll, valveApiDll);
+
+                string emuDll = Path.Combine(steamEmu, "SmartSteamEmu" + suffix64 + ".dll");
+                File.Copy(emuDll, steamApiDll);
+            }
             
             IniFile emu = new IniFile(Path.Combine(steamEmu, "SmartSteamEmu.ini"));
 
             emu.IniWriteValue("Launcher", "Target", linkExe);
-            emu.IniWriteValue("Launcher", "StartIn", Path.GetDirectoryName(linkExe));
+            emu.IniWriteValue("Launcher", "StartIn", linkDir);
             emu.IniWriteValue("Launcher", "CommandLine", context.StartArguments);
             emu.IniWriteValue("Launcher", "SteamClientPath", Path.Combine(steamEmu, "SmartSteamEmu.dll"));
             emu.IniWriteValue("Launcher", "SteamClientPath64", Path.Combine(steamEmu, "SmartSteamEmu64.dll"));
@@ -447,15 +511,17 @@ namespace Nucleus.Gaming
 
                 string linkDirectory = Path.Combine(backupDir, "Instance" + i);
                 if(!Directory.Exists(linkDirectory)){
-                    CreateLinkDirectory(linkDirectory, binFolder, rootFolder, context);
+                    CreateLinkDirectory(linkDirectory, rootFolder, context);
                 }
 
-                Process proc;
+                Process proc = null;
                 string startArgs = context.StartArguments;
-                string linkExe = Path.Combine(linkDirectory, gen.ExecutableName);
+                string linkExe = Path.Combine(linkDirectory, gen.ExecutablePath);
+                linkExe = Path.Combine(linkExe, gen.ExecutableName);
                 if (context.NeedsSteamEmulation)
                 {
-                    string emuDir = Path.Combine(linkDirectory, "SmartSteamLoader");
+                    string emuDir = Path.Combine(linkDirectory, gen.ExecutablePath);
+                    emuDir = Path.Combine(emuDir, "SmartSteamLoader");
                     string emuExe;
                     if (Directory.Exists(emuDir))
                     {
@@ -470,16 +536,32 @@ namespace Nucleus.Gaming
                         }
                     }
 
+                    Process steamEmuProc;
                     if (context.KillMutex?.Length > 0)
                     {
                         // to kill the mutexes we need to orphanize the process
-                        proc = ProcessUtil.RunOrphanProcess(emuExe);
+                        steamEmuProc = ProcessUtil.RunOrphanProcess(emuExe);
                     }
                     else
                     {
                         ProcessStartInfo startInfo = new ProcessStartInfo() {FileName = emuExe};
-                        proc = Process.Start(startInfo);
+                        steamEmuProc = Process.Start(startInfo);
                     }
+
+                    List<string> childProcPath = new List<string>(new string[] {
+                        "SmartSteamLoader", gen.ExecutableName });
+
+                    string execNameNoExe = gen.ExecutableName;
+                    if (execNameNoExe.EndsWith(".exe"))
+                    {
+                        execNameNoExe = execNameNoExe.Substring(0, execNameNoExe.Length - 4);
+                    }
+                    
+                    do
+                    {
+                        proc = ProcessUtil.GetChildProcess(steamEmuProc, childProcPath);
+                    }
+                    while (proc == null || execNameNoExe.ToLower() != proc.ProcessName.ToLower());
 
                     player.SteamEmu = true;
                 }
@@ -580,141 +662,109 @@ namespace Nucleus.Gaming
                 {
                     continue;
                 }
-
-                if (p.SteamEmu)
+                if (data.Setted)
                 {
-                    List<int> children = ProcessUtil.GetChildrenProcesses(data.Process);
-
-                    // catch the game process, that was spawned from Smart Steam Emu
-                    if (children.Count > 0)
+                    if (data.Process.HasExited)
                     {
-                        for (int j = 0; j < children.Count; j++)
-                        {
-                            int id = children[j];
-                            Process child = Process.GetProcessById(id);
-                            try
-                            {
-                                if (child.ProcessName.Contains("conhost"))
-                                {
-                                    continue;
-                                }
-                            }
-                            catch
-                            {
-                                continue;
-                            }
+                        exited++;
+                        continue;
+                    }
 
-                            data.AssignProcess(child);
-                            p.SteamEmu = child.ProcessName.Contains("SmartSteamLoader") || child.ProcessName.Contains("cmd");
-                        }
+                    uint lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE);
+                    if (lStyle != data.RegLong)
+                    {
+                        uint toRemove = User32_WS.WS_CAPTION;
+                        lStyle = lStyle & (~toRemove);
+
+                        User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE, lStyle);
+                        data.RegLong = lStyle;
+                        data.HWnd.Location = data.Position;
+                    }
+
+                    data.HWnd.TopMost = true;
+
+                    if (p.IsKeyboardPlayer)
+                    {
+                        Rectangle r = p.MonitorBounds;
+                        Cursor.Clip = r;
+                        User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
                     }
                 }
                 else
                 {
-                    if (data.Setted)
+                    data.Process.Refresh();
+
+                    if (data.Process.HasExited)
                     {
-                        if (data.Process.HasExited)
+                        if (p.GotLauncher)
                         {
-                            exited++;
-                            continue;
-                        }
-
-                        uint lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE);
-                        if (lStyle != data.RegLong)
-                        {
-                            uint toRemove = User32_WS.WS_CAPTION;
-                            lStyle = lStyle & (~toRemove);
-
-                            User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE, lStyle);
-                            data.RegLong = lStyle;
-                            data.HWnd.Location = data.Position;
-                        }
-
-                        data.HWnd.TopMost = true;
-
-                        if (p.IsKeyboardPlayer)
-                        {
-                            Rectangle r = p.MonitorBounds;
-                            Cursor.Clip = r;
-                            User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
-                        }
-                    }
-                    else
-                    {
-                        data.Process.Refresh();
-
-                        if (data.Process.HasExited)
-                        {
-                            if (p.GotLauncher)
+                            if (p.GotGame)
                             {
-                                if (p.GotGame)
-                                {
-                                    exited++;
-                                }
-                                else
-                                {
-                                    List<int> children = ProcessUtil.GetChildrenProcesses(data.Process);
-                                    if (children.Count > 0)
-                                    {
-                                        for (int j = 0; j < children.Count; j++)
-                                        {
-                                            int id = children[j];
-                                            Process pro = Process.GetProcessById(id);
-
-                                            if (!attached.Contains(pro))
-                                            {
-                                                attached.Add(pro);
-                                                data.HWnd = null;
-                                                p.GotGame = true;
-                                                data.AssignProcess(pro);
-                                            }
-                                        }
-                                    }
-                                }
+                                exited++;
                             }
                             else
                             {
-                                // Steam showing a launcher, need to find our game process
-                                string launcher = gen.LauncherExe;
-                                if (launcher.ToLower().EndsWith(".exe"))
+                                List<int> children = ProcessUtil.GetChildrenProcesses(data.Process);
+                                if (children.Count > 0)
                                 {
-                                    launcher = launcher.Remove(launcher.Length - 4, 4);
-                                }
-
-                                Process[] procs = Process.GetProcessesByName(launcher);
-                                for (int j = 0; j < procs.Length; j++)
-                                {
-                                    Process pro = procs[j];
-                                    if (!attached.Contains(pro))
+                                    for (int j = 0; j < children.Count; j++)
                                     {
-                                        attached.Add(pro);
-                                        data.AssignProcess(pro);
-                                        p.GotLauncher = true;
+                                        int id = children[j];
+                                        Process pro = Process.GetProcessById(id);
+
+                                        if (!attached.Contains(pro))
+                                        {
+                                            attached.Add(pro);
+                                            data.HWnd = null;
+                                            p.GotGame = true;
+                                            data.AssignProcess(pro);
+                                        }
                                     }
                                 }
                             }
                         }
                         else
                         {
-                            if (data.HWNDRetry || data.HWnd == null || data.HWnd.NativePtr != data.Process.MainWindowHandle)
+                            // Steam showing a launcher, need to find our game process
+                            string launcher = gen.LauncherExe;
+                            if (launcher.ToLower().EndsWith(".exe"))
                             {
-                                data.HWnd = new HwndObject(data.Process.MainWindowHandle);
-                                Point pos = data.HWnd.Location;
+                                launcher = launcher.Remove(launcher.Length - 4, 4);
+                            }
 
-                                if (String.IsNullOrEmpty(data.HWnd.Title) ||
-                                    pos.X == -32000 ||
-                                    data.HWnd.Title.ToLower() == gen.LauncherTitle.ToLower())
+                            Process[] procs = Process.GetProcessesByName(launcher);
+                            for (int j = 0; j < procs.Length; j++)
+                            {
+                                Process pro = procs[j];
+                                if (!attached.Contains(pro))
                                 {
-                                    data.HWNDRetry = true;
+                                    attached.Add(pro);
+                                    data.AssignProcess(pro);
+                                    p.GotLauncher = true;
                                 }
-                                else
-                                {
-                                    Size s = data.Size;
-                                    data.Setted = true;
-                                    data.HWnd.TopMost = true;
-                                    data.HWnd.Size = data.Size;
-                                    data.HWnd.Location = data.Position;
-                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (data.HWNDRetry || data.HWnd == null || data.HWnd.NativePtr != data.Process.MainWindowHandle)
+                        {
+                            data.HWnd = new HwndObject(data.Process.MainWindowHandle);
+                            Point pos = data.HWnd.Location;
+
+                            if (String.IsNullOrEmpty(data.HWnd.Title) ||
+                                pos.X == -32000 ||
+                                data.HWnd.Title.ToLower() == gen.LauncherTitle.ToLower())
+                            {
+                                data.HWNDRetry = true;
+                            }
+                            else
+                            {
+                                Size s = data.Size;
+                                data.Setted = true;
+                                data.HWnd.TopMost = true;
+                                data.HWnd.Size = data.Size;
+                                data.HWnd.Location = data.Position;
                             }
                         }
                     }

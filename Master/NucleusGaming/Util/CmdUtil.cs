@@ -44,13 +44,7 @@ namespace Nucleus
                     continue;
                 }
 
-                string relative = dir.FullName.Replace(rootFolder, "");
-                if (relative.StartsWith(@"\") || relative.StartsWith("/"))
-                {
-                    relative = relative.Remove(0, 1);
-                }
-
-                string linkPath = Path.Combine(destination, relative);
+                string linkPath = Path.Combine(destination, dir.Name);
                 CmdUtil.MkLinkDirectory(dir.FullName, linkPath, out exitCode);
             }
         }
@@ -82,7 +76,8 @@ namespace Nucleus
                     continue;
                 }
 
-                string relative = file.FullName.Replace(rootFolder + @"\", "");
+                string cleanRootDir = Path.GetFullPath(rootFolder);
+                string relative = file.FullName.Replace(cleanRootDir + @"\", "");
                 string linkPath = Path.Combine(destination, relative);
                 CmdUtil.MkLinkFile(file.FullName, linkPath, out exitCode);
             }

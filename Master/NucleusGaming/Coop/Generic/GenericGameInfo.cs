@@ -21,7 +21,8 @@ namespace Nucleus.Gaming
         private bool supportsKeyboard;
         private string[] executableContext;
         private string executableName;
-        private string executablePath;
+        private string executablePath = "";
+        private string[] pathExclusions = new string[] { };
         private string steamID;
         private string guid;
         private string gameName;
@@ -32,10 +33,12 @@ namespace Nucleus.Gaming
         private string savePath;
         private string startArguments;
         private string binariesFolder;
-        private string rootGameFolderPath;
-        private string xInputFolder;
+        private string rootGameFolderPath = "";
+        private string xInputFolder = "";
+        private bool is64Bit = false;
         private string[] xInputFiles;
         private bool needsSteamEmulation;
+        private bool needsSteamEmulationDll = false;
         private string launcherExe;
         private string launcherTitle;
         private bool supportsPositioning;
@@ -193,6 +196,12 @@ namespace Nucleus.Gaming
             set { executablePath = value; }
         }
 
+        public string[] PathExclusions
+        {
+            get { return pathExclusions; }
+            set { pathExclusions = value; }
+        }
+
         public string RootGameFolderPath
         {
             get { return rootGameFolderPath; }
@@ -205,6 +214,12 @@ namespace Nucleus.Gaming
             set { xInputFolder = value; }
         }
 
+        public bool Is64Bit
+        {
+            get { return is64Bit; }
+            set { is64Bit = value; }
+        }
+
         public string[] XInputFiles
         {
             get { return xInputFiles; }
@@ -215,6 +230,12 @@ namespace Nucleus.Gaming
         {
             get { return needsSteamEmulation; }
             set { needsSteamEmulation = value; }
+        }
+
+        public bool NeedsSteamEmulationDll
+        {
+            get { return needsSteamEmulationDll; }
+            set { needsSteamEmulationDll = value; }
         }
 
         public string[] KillMutex

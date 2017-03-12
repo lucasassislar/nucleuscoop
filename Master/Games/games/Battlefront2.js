@@ -6,6 +6,10 @@ Game.Options = [
         "KeyboardPlayer"),
 ];
 
+Game.BinariesFolder = "";
+Game.RootGameFolderPath = "..";
+Game.ExecutablePath = "GameData";
+
 Game.Debug = true;
 Game.SymlinkExe = false;
 Game.SupportsKeyboard = true;
@@ -15,8 +19,8 @@ Game.GUID = "6060";
 Game.GameName = "Star Wars: Battlefront 2";
 Game.MaxPlayers = 4;
 Game.MaxPlayersOneMonitor = 4;
-Game.BinariesFolder = "";
 Game.NeedsSteamEmulation = true;
+Game.NeedsSteamEmulationDll = true;
 Game.LauncherTitle = "";
 Game.SaveType = Nucleus.SaveType.None;
 Game.SupportsPositioning = true;
@@ -27,6 +31,4 @@ Game.HookNeeded = true;
 Game.HookGameWindowName = "Star Wars Battlefront II";
 Game.LauncherExe = "";
 
-Game.Play = function () {
-    //Context.SavePath = Context.GetFolder(Nucleus.Folder.Documents) + "\\My Games\\Borderlands\\WillowGame\\Config\\WillowEngine.ini";
-}
+Game.Play = function () { }

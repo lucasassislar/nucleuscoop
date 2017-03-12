@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Nucleus.Gaming.Interop;
-using System.Threading;
 using System.Management;
 
 namespace Nucleus
@@ -14,7 +11,7 @@ namespace Nucleus
     {
         public static Process RunOrphanProcess(string path, string arguments = "")
         {
-            ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
+            ProcessStartInfo psi = new ProcessStartInfo();
             psi.FileName = @"cmd";
             psi.Arguments = "/C \"" + path + "\" " + arguments;
             return Process.Start(psi);
@@ -68,6 +65,59 @@ namespace Nucleus
             }
 
             return ids;
+        }
+
+        public static Process GetChildProcess(Process proc, List<string> childProcessPath)
+        {
+            if (childProcessPath.Count <= 0) return null;
+
+            Process childProcess = null;
+            bool firstFound = false;
+            List<string> newProcessPath = new List<string>();
+            
+            childProcessPath.ForEach((procName) =>
+            {
+                if (!firstFound)
+                {
+                    firstFound = true;
+                }
+                else
+                {
+                    newProcessPath.Add(procName);
+                }
+            });
+
+            string nextProcName = childProcessPath[0];
+            List<int> childrenIds = GetChildrenProcesses(proc);
+            if (childrenIds.Count > 0)
+            {
+                childrenIds.ForEach((id) =>
+                {
+                    Process child = Process.GetProcessById(id);
+                    try
+                    {
+                        string withoutExe = nextProcName.Replace(".exe", "");
+                        if (child.ProcessName.ToLower() == withoutExe.ToLower())
+                        {
+                            if(newProcessPath.Count == 0)
+                            {
+                                childProcess = child;
+                            }
+                            else
+                            {
+                                childProcess = GetChildProcess(child, newProcessPath);
+                            }
+                            return;
+                        }
+                    }
+                    catch
+                    {
+                        return;
+                    }
+
+                });
+            }
+            return childProcess;
         }
 
         public static bool KillMutex(Process process, string mutexName)
