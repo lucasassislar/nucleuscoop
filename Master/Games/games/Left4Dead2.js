@@ -51,7 +51,8 @@ Game.SaveType = Nucleus.SaveType.CFG;
 Game.SupportsPositioning = true;
 Game.HideTaskbar = false;
 Game.CustomXinput = true;
-Game.StartArguments = "-novid";
+Game.StartArguments = "-novid -steam";
+Game.XInputFiles = ["xinput1_3.dll", "x360ce.ini"];
 
 Game.Play = function () {
     var isFullscreen = Context.IsFullscreen ? 1 : 0;
