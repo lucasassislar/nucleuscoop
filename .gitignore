@@ -211,4 +211,5 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
-/Master/NucleusCoop.VC.VC.opendb
+**/*.VC.VC.opendb
+**/*.VC.db

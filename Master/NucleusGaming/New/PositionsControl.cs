@@ -58,15 +58,16 @@ namespace Nucleus.Coop
 
         private void UpdateScreens()
         {
-            screens = ScreensUtil.AllScreens();
+            UserScreen[] newScreens = ScreensUtil.AllScreens();
             Rectangle totalBounds = RectangleUtil.Union(ScreensUtil.AllScreensRec());
 
             // see if most screens are either vertical or horizontal
             int vertical = 0;
             int horizontal = 0;
-            for (int i = 0; i < screens.Length; i++)
+            for (int i = 0; i < newScreens.Length; i++)
             {
-                UserScreen s = screens[i];
+                UserScreen s = newScreens[i];
+                screens[i].bounds = newScreens[i].bounds;
                 if (s.bounds.Width > s.bounds.Height)
                 {
                     horizontal++;
@@ -132,6 +133,7 @@ namespace Nucleus.Coop
             float offset = (playersWidth * 0.1f) / (float)playerCount;
             playersArea = new RectangleF(50, 100, playersWidth, playerHeight);
 
+            screens = ScreensUtil.AllScreens();
             UpdateScreens();
 
             List<PlayerInfo> playerData = profile.PlayerData;
