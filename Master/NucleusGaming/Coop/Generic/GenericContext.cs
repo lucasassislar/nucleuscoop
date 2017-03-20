@@ -38,6 +38,12 @@ namespace Nucleus.Gaming
         private bool debug;
         private double handlerInterval;
         private string[] symlinkIgnore;
+        private string[] backupFiles;
+
+        public string[] BackupFiles
+        {
+            get { return backupFiles; }
+        }
 
         public string[] SymlinkIgnore
         {

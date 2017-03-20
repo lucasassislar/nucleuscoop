@@ -42,6 +42,12 @@ namespace Nucleus.Gaming
         private bool debug;
         private double handlerInterval = 500;
         private string[] symlinkIgnore;
+        private string[] backupFiles;
+
+        public string[] BackupFiles
+        {
+            get { return backupFiles; }
+        }
 
         public string[] SymlinkIgnore
         {
@@ -233,10 +239,7 @@ namespace Nucleus.Gaming
             engine.SetValue("Context", context);
             engine.SetValue("Handler", handler);
 
-            if (play != null)
-            {
-                play();
-            }
+            play?.Invoke();
         }
 
         /// <summary>

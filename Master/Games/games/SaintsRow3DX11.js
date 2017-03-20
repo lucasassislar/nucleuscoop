@@ -21,17 +21,25 @@ Game.GameName = "Saints Row 3 (DX11)";
 Game.MaxPlayers = 4;
 Game.MaxPlayersOneMonitor = 4;
 Game.BinariesFolder = "";
-Game.NeedsSteamEmulation = true;
+Game.NeedsSteamEmulation = false;
 Game.LauncherTitle = "";
 Game.SaveType = Nucleus.SaveType.None;
 Game.SupportsPositioning = true;
 Game.HideTaskbar = false;
 Game.CustomXinput = true;
-Game.StartArguments = "-windowed -NoLauncher -nostartupmovies";
+Game.StartArguments = "";
 Game.HookNeeded = true;
 Game.HookGameWindowName = "Saints Row: The Third";
 Game.LauncherExe = "game_launcher.exe";
 
 Game.Play = function () {
-    //Context.SavePath = Context.GetFolder(Nucleus.Folder.Documents) + "\\My Games\\Borderlands\\WillowGame\\Config\\WillowEngine.ini";
+    Context.ModifySave = [
+       new Nucleus.IniSaveInfo("", "ResolutionWidth", Context.Width),
+       new Nucleus.IniSaveInfo("", "ResolutionHeight", Context.Height),
+       new Nucleus.IniSaveInfo("", "Fullscreen", false),
+       new Nucleus.IniSaveInfo("", "VerifyResolution", false),
+       new Nucleus.IniSaveInfo("", "SkipIntroVideo", true),
+    ];
+
+    Context.SavePath = Context.GetFolder(Nucleus.Folder.InstancedGameFolder) + "\\display.ini";
 }

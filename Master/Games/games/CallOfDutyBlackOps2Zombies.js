@@ -5,9 +5,12 @@ Game.Options = [
         Nucleus.KeyboardPlayer.NoKeyboardPlayer,
         "KeyboardPlayer"),
 ];
+//Game.SymlinkIgnore = [
+//    "steam_api.dll"
+//];
 
 Game.Debug = true;
-Game.NeedsSteamEmulation = true;
+Game.NeedsSteamEmulation = false;
 Game.SymlinkExe = false;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "t6zm.exe";

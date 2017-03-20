@@ -305,6 +305,15 @@ namespace Nucleus.Gaming
                     GameManager.Instance.BackupFile(gen, saveFile);
                 }
 
+                if (context.BackupFiles != null)
+                {
+                    string[] backupFiles = context.BackupFiles;
+                    for (int j = 0; j < backupFiles.Length; j++)
+                    {
+                        GameManager.Instance.BackupFile(gen, backupFiles[j]);
+                    }
+                }
+
                 List<string> exclusions = new List<string>();
                 exclusions.Add("xinput");
                 exclusions.Add("ncoop");
@@ -415,7 +424,8 @@ namespace Nucleus.Gaming
                     emu.IniWriteValue("Launcher", "CommandLine", startArgs);
                     emu.IniWriteValue("Launcher", "SteamClientPath", Path.Combine(steamEmu, "SmartSteamEmu.dll"));
                     emu.IniWriteValue("Launcher", "SteamClientPath64", Path.Combine(steamEmu, "SmartSteamEmu64.dll"));
-                    emu.IniWriteValue("Launcher", "InjectDll", "0");
+                    emu.IniWriteValue("Launcher", "InjectDll", "1");
+
                     emu.IniWriteValue("SmartSteamEmu", "AppId", context.SteamID);
                     //emu.IniWriteValue("SmartSteamEmu", "SteamIdGeneration", "Static");
 
@@ -718,10 +728,15 @@ namespace Nucleus.Gaming
                                 {
                                     data.HWnd = new HwndObject(data.Process.MainWindowHandle);
                                     Point pos = data.HWnd.Location;
-
+                                    
                                     if (String.IsNullOrEmpty(data.HWnd.Title) ||
                                         pos.X == -32000 ||
                                         data.HWnd.Title.ToLower() == gen.LauncherTitle.ToLower())
+                                    {
+                                        data.HWNDRetry = true;
+                                    }
+                                    else if (!string.IsNullOrEmpty(gen.HookGameWindowName) &&
+                                        data.HWnd.Title != gen.HookGameWindowName)
                                     {
                                         data.HWNDRetry = true;
                                     }
