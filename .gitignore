@@ -77,6 +77,7 @@ ipch/
 *.opensdf
 *.sdf
 *.VC.db
+*.VC.VC.opendb
 *.cachefile
 
 # Visual Studio profiler
@@ -211,5 +212,3 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
-**/*.VC.VC.opendb
-**/*.VC.db
