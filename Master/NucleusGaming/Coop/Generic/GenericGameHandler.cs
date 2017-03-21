@@ -55,7 +55,7 @@ namespace Nucleus.Gaming
             try
             {
 #if RELEASE
-                for (int i = 0; i < profile.PlayerCount; i++)
+                for (int i = 0; i < profile.PlayerData.Count; i++)
                 {
                     string linkFolder = Path.Combine(backupDir, "Instance" + i);
                     if (Directory.Exists(linkFolder))

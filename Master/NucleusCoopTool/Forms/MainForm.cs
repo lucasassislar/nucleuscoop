@@ -63,20 +63,17 @@ namespace Nucleus.Coop
 
         public void RefreshGames()
         {
-            foreach (var con in controls)
-            {
-                if (con.Value != null)
-                {
-                    con.Value.Dispose();
-                }
-            }
-
             lock (controls)
             {
-                controls.Clear();
+                foreach (var con in controls)
+                {
+                    if (con.Value != null)
+                    {
+                        con.Value.Dispose();
+                    }
+                }
                 this.list_Games.Controls.Clear();
-
-                noGamesPresent = false;
+                controls.Clear();
 
                 List<UserGameInfo> games = gameManager.User.Games;
                 for (int i = 0; i < games.Count; i++)
@@ -102,6 +99,13 @@ namespace Nucleus.Coop
         {
             if (game.Game == null || !game.IsGamePresent())
             {
+                return;
+            }
+
+            if (noGamesPresent)
+            {
+                noGamesPresent = false;
+                RefreshGames();
                 return;
             }
 

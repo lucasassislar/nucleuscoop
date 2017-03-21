@@ -183,6 +183,13 @@ namespace Nucleus.Gaming
                     continue;
                 }
 
+#if RELEASE
+                if (game.Debug)
+                {
+                    continue;
+                }
+#endif
+
                 LogManager.Log("Found game: {0}, full path: {1}", game.GameName, exePath);
                 UserGameInfo uinfo = new UserGameInfo();
                 uinfo.InitializeDefault(game, exePath);
