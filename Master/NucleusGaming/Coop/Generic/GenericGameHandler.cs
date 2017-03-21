@@ -572,7 +572,10 @@ namespace Nucleus.Gaming
 
                     Rectangle r = p.MonitorBounds;
                     Cursor.Clip = r;
-                    User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
+                    if (data.HWnd != null)
+                    {
+                        User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
+                    }
                 }
             }
         }

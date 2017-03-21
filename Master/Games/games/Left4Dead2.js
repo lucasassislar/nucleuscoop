@@ -14,6 +14,7 @@ Game.SymlinkIgnore = [
     "autoexec.cfg"
 ];
 
+Game.Debug = true;
 Game.SymlinkExe = false;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "left4dead2.exe";
