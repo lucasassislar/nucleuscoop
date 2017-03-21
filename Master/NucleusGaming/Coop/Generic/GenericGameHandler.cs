@@ -49,6 +49,7 @@ namespace Nucleus.Gaming
             hasEnded = true;
             GameManager.Instance.ExecuteBackup(this.userGame.Game);
 
+            Cursor.Clip = Rectangle.Empty; // guarantee were not clipping anymore
             string backupDir = GameManager.Instance.GetBackupFolder(this.userGame.Game);
 
             // delete symlink folder
@@ -756,13 +757,13 @@ namespace Nucleus.Gaming
                         }
                     }
                 }
+            }
 
-                if (exited == players.Count)
+            if (exited == players.Count)
+            {
+                if (!hasEnded)
                 {
-                    if (!hasEnded)
-                    {
-                        End();
-                    }
+                    End();
                 }
             }
         }
