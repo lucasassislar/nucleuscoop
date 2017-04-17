@@ -18,7 +18,7 @@ namespace Nucleus.Gaming
 {
     public class GenericGameHandler : IGameHandler
     {
-        private const float HWndInterval = 1000;
+        private const float HWndInterval = 10000;
 
         private UserGameInfo userGame;
         private GameProfile profile;

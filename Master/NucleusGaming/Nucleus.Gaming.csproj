@@ -261,18 +261,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\xinput1.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\xinput2.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\xinput3.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\xinput4.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\xinput1_3.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

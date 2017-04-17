@@ -19,7 +19,7 @@ namespace Nucleus.Gaming
 
         public GameProfile Profile { get { return profile; } }
 
-        public event Action<UserControl, bool> OnCanPlay;
+        public event Action<UserControl, bool, bool> OnCanPlayUpdated;
 
         protected virtual void RemoveFlicker()
         {
@@ -36,11 +36,11 @@ namespace Nucleus.Gaming
             this.game = game;
         }
 
-        protected virtual void OnCanPlayTrue(bool autoProceed)
+        protected virtual void CanPlayUpdated(bool canPlay, bool autoProceed)
         {
-            if (OnCanPlay != null)
+            if (OnCanPlayUpdated != null)
             {
-                OnCanPlay(this, autoProceed);
+                OnCanPlayUpdated(this, canPlay, autoProceed);
             }
         }
     }

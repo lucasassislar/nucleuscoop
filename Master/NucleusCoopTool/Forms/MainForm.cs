@@ -48,10 +48,11 @@ namespace Nucleus.Coop
             positionsControl = new PositionsControl();
             optionsControl = new PlayerOptionsControl();
 
-            countControl.OnCanPlay += StepCanPlay;
-            positionsControl.OnCanPlay += StepCanPlay;
-            optionsControl.OnCanPlay += StepCanPlay;
+            countControl.OnCanPlayUpdated += StepCanPlay;
+            positionsControl.OnCanPlayUpdated += StepCanPlay;
+            optionsControl.OnCanPlayUpdated += StepCanPlay;
         }
+
 
         protected override void WndProc(ref Message m)
         {
@@ -200,8 +201,14 @@ namespace Nucleus.Coop
             btn_Play.Enabled = true;
         }
 
-        private void StepCanPlay(UserControl obj, bool autoProceed)
+        private void StepCanPlay(UserControl obj, bool canProceed, bool autoProceed)
         {
+            if (!canProceed)
+            {
+                btn_Next.Visible = false;
+                return;
+            }
+
             if (currentStepIndex + 1 > stepsList.Count - 1)
             {
                 EnablePlay();
@@ -243,9 +250,9 @@ namespace Nucleus.Coop
             currentStep.Size = StepPanel.Size;
             currentStep.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
 
-            btn_Next.Visible = currentStep.CanProceed && step != stepsList.Count - 1;
-
             currentStep.Initialize(currentGameInfo, currentProfile);
+
+            btn_Next.Visible = currentStep.CanProceed && step != stepsList.Count - 1;
 
             StepPanel.Controls.Add(currentStep);
             currentStep.Size = StepPanel.Size; // for some reason this line must exist or the PositionsControl get messed up

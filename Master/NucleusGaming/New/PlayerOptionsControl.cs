@@ -159,7 +159,7 @@ namespace Nucleus.Gaming
             this.Controls.Add(list);
 
             list.UpdateSizes();
-            OnCanPlayTrue(false);
+            CanPlayUpdated(true, false);
         }
 
         private void ChangeOption(object tag, object value)

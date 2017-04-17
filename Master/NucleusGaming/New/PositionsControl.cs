@@ -128,12 +128,26 @@ namespace Nucleus.Coop
             Rectangle scaledBounds = RectangleUtil.Scale(totalBounds, scale);
             scaledBounds = RectangleUtil.Center(scaledBounds, RectangleUtil.Float(0, this.Height * 0.25f, this.Width, this.Height * 0.7f));
 
+            int minY = 0;
             for (int i = 0; i < screens.Length; i++)
             {
                 UserScreen screen = screens[i];
 
                 Rectangle bounds = RectangleUtil.Scale(screen.MonitorBounds, scale);
                 Rectangle uiBounds = new Rectangle(bounds.X + scaledBounds.X, bounds.Y + scaledBounds.Y, bounds.Width, bounds.Height);
+                screen.UIBounds = uiBounds;
+
+                minY = Math.Min(minY, uiBounds.X);
+            }
+            
+            // remove negative monitors
+            minY = -minY;
+            for (int i = 0; i < screens.Length; i++)
+            {
+                UserScreen screen = screens[i];
+
+                Rectangle uiBounds = screen.UIBounds;
+                uiBounds.X += minY;
                 screen.UIBounds = uiBounds;
                 screen.SwapTypeBounds = RectangleUtil.Float(uiBounds.X, uiBounds.Y, uiBounds.Width * 0.1f, uiBounds.Width * 0.1f);
             }
@@ -593,23 +607,17 @@ namespace Nucleus.Coop
                     }
 
 
-                    bool allReady = true;
+                    canProceed = true;
                     for (int i = 0; i < profile.PlayerData.Count; i++)
                     {
                         PlayerInfo player = profile.PlayerData[i];
                         if (player.ScreenIndex == -1)
                         {
-                            allReady = false;
                             canProceed = false;
                             break;
                         }
                     }
-
-                    if (allReady)
-                    {
-                        canProceed = true;
-                        OnCanPlayTrue(false);
-                    }
+                    CanPlayUpdated(canProceed, false);
 
                     Invalidate();
                 }

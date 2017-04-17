@@ -57,7 +57,7 @@ namespace Nucleus.Gaming
                 profile.PlayerData.Add(player);
             }
 
-            OnCanPlayTrue(true);
+            CanPlayUpdated(true, true);
         }
 
         protected override void OnSizeChanged(EventArgs e)
