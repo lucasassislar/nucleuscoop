@@ -79,11 +79,11 @@ namespace WindowScrape.Static
         }
         public static bool SetHwndPos(IntPtr hwnd, int x, int y)
         {
-            return SetWindowPos(hwnd, IntPtr.Zero, x, y, 0, 0, (uint)(PositioningFlags.SWP_NOSIZE));
+            return SetWindowPos(hwnd, IntPtr.Zero, x, y, 0, 0, (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOZORDER));
         }
         public static bool SetHwndPosTopMost(IntPtr hwnd, int x, int y)
         {
-            return SetWindowPos(hwnd, new IntPtr(-1), x, y, 0, 0, (uint)(PositioningFlags.SWP_NOSIZE));
+            return SetWindowPos(hwnd, new IntPtr(-1), x, y, 0, 0, (uint)PositioningFlags.SWP_NOSIZE);
         }
         public static Point GetHwndPos(IntPtr hwnd)
         {
@@ -94,11 +94,11 @@ namespace WindowScrape.Static
         }
         public static bool SetHwndSize(IntPtr hwnd, int w, int h)
         {
-            return SetWindowPos(hwnd, IntPtr.Zero, 0, 0, w, h, (uint)(PositioningFlags.SWP_NOMOVE));
+            return SetWindowPos(hwnd, IntPtr.Zero, 0, 0, w, h, (uint)(PositioningFlags.SWP_NOMOVE | PositioningFlags.SWP_NOZORDER));
         }
         public static bool SetHwndSizeTopMost(IntPtr hWnd, int w, int h)
         {
-            return SetWindowPos(hWnd, new IntPtr(-1), 0, 0, w, h, (uint)(PositioningFlags.SWP_NOMOVE));
+            return SetWindowPos(hWnd, new IntPtr(-1), 0, 0, w, h, (uint)PositioningFlags.SWP_NOMOVE);
         }
 
         public static bool MakeTopMost(IntPtr hWnd)
@@ -112,6 +112,11 @@ namespace WindowScrape.Static
             GetWindowRect(hwnd, out rect);
             var result = new Size(rect.Right - rect.Left, rect.Bottom - rect.Top);
             return result;
+        }
+
+        public static bool MoveWindow(IntPtr hWnd, int x, int y, int w, int h)
+        {
+            return MoveWindow(hWnd, x, y, w, h, true);
         }
 
         #endregion
@@ -178,6 +183,9 @@ namespace WindowScrape.Static
         static readonly IntPtr HWND_NOTOPMOST = new IntPtr(-2);
         static readonly IntPtr HWND_TOP = new IntPtr(0);
         static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRepaint);
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern int GetWindowLong(IntPtr hWnd, int nIndex);

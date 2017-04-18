@@ -41,6 +41,8 @@ Game.LauncherTitle = "splashscreen";
 Game.SaveType = Nucleus.SaveType.INI;
 Game.SupportsPositioning = true;
 Game.HideTaskbar = true;
+Game.HookNeeded = true;
+Game.HookGameWindowName = "Borderlands 2 (32-bit, DX9)";
 
 Game.Play = function () {
     Context.ModifySave = [
@@ -60,10 +62,11 @@ Game.Play = function () {
         Handler.StartPlayTick(1, function () {
             Handler.CenterCursor();
         });
-        Context.StartArguments = "-windowed -AlwaysFocus -NoController -nostartupmovies -SaveDataId=" + Context.Options[playerStr];
+        // -nostartupmovies
+        Context.StartArguments = "-windowed -AlwaysFocus -NoController -SaveDataId=" + Context.Options[playerStr];
     }
     else {
-        Context.StartArguments = "-windowed -AlwaysFocus -nostartupmovies -SaveDataId=" + Context.Options[playerStr];
+        Context.StartArguments = "-windowed -AlwaysFocus -SaveDataId=" + Context.Options[playerStr];
     }
 
     Context.SavePath = Context.GetFolder(Nucleus.Folder.Documents) + "\\My Games\\Borderlands 2\\WillowGame\\Config\\WillowEngine.ini";

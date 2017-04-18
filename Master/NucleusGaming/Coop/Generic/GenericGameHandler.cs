@@ -12,6 +12,8 @@ using System.Management;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using WindowScrape.Constants;
+using WindowScrape.Static;
 using WindowScrape.Types;
 
 namespace Nucleus.Gaming
@@ -46,6 +48,8 @@ namespace Nucleus.Gaming
 
         public void End()
         {
+            User32Util.ShowTaskBar();
+
             hasEnded = true;
             GameManager.Instance.ExecuteBackup(this.userGame.Game);
 
@@ -394,6 +398,8 @@ namespace Nucleus.Gaming
                     IniFile x360 = new IniFile(ncoopIni);
                     x360.IniWriteValue("Options", "HookNeeded", context.HookNeeded.ToString(CultureInfo.InvariantCulture));
                     x360.IniWriteValue("Options", "GameWindowName", context.HookGameWindowName.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "ResX", context.Width.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "ResY", context.Height.ToString(CultureInfo.InvariantCulture));
 
                     if (context.IsKeyboardPlayer)
                     {
@@ -603,7 +609,7 @@ namespace Nucleus.Gaming
             {
                 PlayerInfo p = players[i];
                 ProcessData data = p.ProcessData;
-                if (data == null)
+                if (data == null || data.Finished)
                 {
                     continue;
                 }
@@ -648,24 +654,44 @@ namespace Nucleus.Gaming
                                 continue;
                             }
 
-                            uint lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE);
-                            if (lStyle != data.RegLong)
+                            data.HWnd.TopMost = true;
+
+                            if (data.Status == 2)
                             {
-                                uint toRemove = User32_WS.WS_CAPTION;
-                                lStyle = lStyle & (~toRemove);
+                                uint lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE);
+                                lStyle = lStyle & ~User32_WS.WS_CAPTION;
+                                lStyle = lStyle & ~User32_WS.WS_SYSMENU;
+                                lStyle = lStyle & ~User32_WS.WS_THICKFRAME;
+                                lStyle = lStyle & ~User32_WS.WS_MINIMIZE;
+                                lStyle = lStyle & ~User32_WS.WS_MAXIMIZEBOX;
 
                                 User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE, lStyle);
-                                data.RegLong = lStyle;
+                                lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_EXSTYLE);
+                                User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_EXSTYLE, lStyle | User32_WS.WS_EX_DLGMODALFRAME);
+
+                                data.Finished = true;
+                                Debug.WriteLine("State 2");
+                            }
+                            else if (data.Status == 1)
+                            {
                                 data.HWnd.Location = data.Position;
+                                data.Status++;
+                                Debug.WriteLine("State 1");
+                            }
+                            else if (data.Status == 0)
+                            {
+                                data.HWnd.Size = data.Size;
+
+                                data.Status++;
+                                Debug.WriteLine("State 0");
                             }
 
-                            data.HWnd.TopMost = true;
 
                             if (p.IsKeyboardPlayer)
                             {
                                 Rectangle r = p.MonitorBounds;
                                 Cursor.Clip = r;
-                                User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
+                                //User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
                             }
                         }
                         else
@@ -732,7 +758,7 @@ namespace Nucleus.Gaming
                                 {
                                     data.HWnd = new HwndObject(data.Process.MainWindowHandle);
                                     Point pos = data.HWnd.Location;
-                                    
+
                                     if (String.IsNullOrEmpty(data.HWnd.Title) ||
                                         pos.X == -32000 ||
                                         data.HWnd.Title.ToLower() == gen.LauncherTitle.ToLower())
@@ -748,9 +774,11 @@ namespace Nucleus.Gaming
                                     {
                                         Size s = data.Size;
                                         data.Setted = true;
-                                        data.HWnd.TopMost = true;
-                                        data.HWnd.Size = data.Size;
-                                        data.HWnd.Location = data.Position;
+                                        //data.HWnd.Size = data.Size;
+                                        //data.HWnd.Location = data.Position;
+                                        //data.HWnd.TopMost = true;
+                                        //data.HWnd.Size = data.Size;
+                                        //data.HWnd.Location = data.Position;
                                     }
                                 }
                             }

@@ -17,5 +17,10 @@ namespace Nucleus.Gaming
             this.Key = key;
             this.Value = value;
         }
+
+        public override string ToString()
+        {
+            return "[" + Section + "]" + Key + "=" + Value;
+        }
     }
 }

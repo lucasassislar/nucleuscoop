@@ -11,6 +11,7 @@ namespace Nucleus.Gaming
     public class ProcessData
     {
         private Process process;
+        public bool Finished;
 
         public Point Position;
         private HwndObject hWnd;
@@ -23,6 +24,7 @@ namespace Nucleus.Gaming
 
         public bool KilledMutexes;
         public long RegLong;
+        public int Status;
 
         /// <summary>
         /// A reference to the game's process, if it's running

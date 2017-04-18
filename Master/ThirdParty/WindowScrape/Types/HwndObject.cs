@@ -216,6 +216,11 @@ namespace WindowScrape.Types
             return new HwndObject(hwnd);
         }
 
+        public bool MoveWindow(Point location, Size size)
+        {
+            return HwndInterface.MoveWindow(NativePtr, location.X, location.Y, size.Width, size.Height);
+        }
+
         public override string ToString()
         {
             var pt = Location;

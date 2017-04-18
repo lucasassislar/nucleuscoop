@@ -8,6 +8,9 @@ namespace Nucleus.Interop.User32
 {
     public static class User32Interop
     {
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRepaint);
+
         /// <summary>
         /// The EnumDisplayMonitors function enumerates display monitors
         /// (including invisible pseudo-monitors associated with the mirroring drivers) that intersect a region formed by 
@@ -71,6 +74,9 @@ namespace Nucleus.Interop.User32
         /// If the function fails, the return value is zero. To get extended error information, call GetLastError. </returns>
         [DllImport("user32.dll")]
         public static extern int SetWindowLong(IntPtr hWnd, int nIndex, uint dwNewLong);
+
+        [DllImport("user32.dll")]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
         /// <summary>Shows a Window</summary>
         [DllImport("user32.dll")]
