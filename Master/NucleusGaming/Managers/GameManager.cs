@@ -21,8 +21,8 @@ namespace Nucleus.Gaming
     {
         private static GameManager instance;
 
-        private Dictionary<string, IGameInfo> games;
-        private Dictionary<string, IGameInfo> gameInfos;
+        private Dictionary<string, GenericGameInfo> games;
+        private Dictionary<string, GenericGameInfo> gameInfos;
         private UserProfile user;
         private List<BackupFile> backupFiles;
         private string error;
@@ -38,8 +38,8 @@ namespace Nucleus.Gaming
         /// <summary>
         /// A dictionary containing GameInfos. The key is the game's guid
         /// </summary>
-        public Dictionary<string, IGameInfo> Games { get { return games; } }
-        public Dictionary<string, IGameInfo> GameInfos { get { return gameInfos; } }
+        public Dictionary<string, GenericGameInfo> Games { get { return games; } }
+        public Dictionary<string, GenericGameInfo> GameInfos { get { return gameInfos; } }
 
         public static GameManager Instance { get { return instance; } }
 
@@ -52,8 +52,8 @@ namespace Nucleus.Gaming
         public GameManager()
         {
             instance = this;
-            games = new Dictionary<string, IGameInfo>();
-            gameInfos = new Dictionary<string, IGameInfo>();
+            games = new Dictionary<string, GenericGameInfo>();
+            gameInfos = new Dictionary<string, GenericGameInfo>();
 
             string appData = GetAppDataPath();
             Directory.CreateDirectory(appData);
@@ -77,7 +77,7 @@ namespace Nucleus.Gaming
         /// </summary>
         /// <param name="exePath"></param>
         /// <returns></returns>
-        public IGameInfo GetGame(string exePath)
+        public GenericGameInfo GetGame(string exePath)
         {
             string lower = exePath.ToLower();
             string fileName = Path.GetFileName(exePath).ToLower();
@@ -85,7 +85,7 @@ namespace Nucleus.Gaming
 
             var possibilities = Games.Values.Where(c => c.ExecutableName == fileName);
 
-            foreach (IGameInfo game in possibilities)
+            foreach (GenericGameInfo game in possibilities)
             {
                 // check if the Context matches
                 string[] context = game.ExecutableContext;
@@ -121,7 +121,7 @@ namespace Nucleus.Gaming
         /// </summary>
         /// <param name="exePath"></param>
         /// <returns></returns>
-        public UserGameInfo TryAddGame(string exePath, IGameInfo game)
+        public UserGameInfo TryAddGame(string exePath, GenericGameInfo game)
         {
             string lower = exePath.ToLower();
 
@@ -153,7 +153,7 @@ namespace Nucleus.Gaming
 
             var possibilities = Games.Values.Where(c => c.ExecutableName == fileName);
 
-            foreach (IGameInfo game in possibilities)
+            foreach (GenericGameInfo game in possibilities)
             {
                 // check if the Context matches
                 string[] context = game.ExecutableContext;
@@ -284,7 +284,7 @@ namespace Nucleus.Gaming
             return x.Game.GameName.CompareTo(y.Game.GameName);
         }
 
-        public UserGameInfo AddGame(IGameInfo game, string exePath)
+        public UserGameInfo AddGame(GenericGameInfo game, string exePath)
         {
             UserGameInfo gInfo = new UserGameInfo();
             gInfo.InitializeDefault(game, exePath);
@@ -295,7 +295,7 @@ namespace Nucleus.Gaming
             return gInfo;
         }
 
-        public void BeginBackup(IGameInfo game)
+        public void BeginBackup(GenericGameInfo game)
         {
             string appData = GetAppDataPath();
             string gamePath = Path.Combine(appData, game.GUID);
@@ -304,18 +304,18 @@ namespace Nucleus.Gaming
             backupFiles = new List<BackupFile>();
         }
 
-        public IGameHandler MakeHandler(IGameInfo game)
+        public IGameHandler MakeHandler(GenericGameInfo game)
         {
             return (IGameHandler)Activator.CreateInstance(game.HandlerType);
         }
 
-        public string GempTempFolder(IGameInfo game)
+        public string GempTempFolder(GenericGameInfo game)
         {
             string appData = GetAppDataPath();
             return Path.Combine(appData, game.GUID);
         }
 
-        public BackupFile BackupFile(IGameInfo game, string path)
+        public BackupFile BackupFile(GenericGameInfo game, string path)
         {
             string appData = GetAppDataPath();
             string gamePath = Path.Combine(appData, game.GUID);
@@ -344,7 +344,7 @@ namespace Nucleus.Gaming
             return bkp;
         }
 
-        public void ExecuteBackup(IGameInfo game)
+        public void ExecuteBackup(GenericGameInfo game)
         {
             // we didnt backup anything
             if (backupFiles == null)
@@ -491,7 +491,28 @@ namespace Nucleus.Gaming
 
         private void play(object state)
         {
+#if RELEASE
+            try
+            {
+                error = ((IGameHandler)state).Play();
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+                try
+                {
+                    // try to save the exception
+                    LogManager.Instance.LogExceptionFile(ex);
+                }
+                catch
+                {
+                    error = "We failed so hard we failed while trying to record the reason we failed initially. Sorry.";
+                    return;
+                }
+            }
+#else
             error = ((IGameHandler)state).Play();
+#endif
         }
     }
 }

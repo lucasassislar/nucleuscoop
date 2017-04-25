@@ -10,12 +10,12 @@ namespace Nucleus.Gaming
 {
     public class UserGameInfo
     {
-        private IGameInfo game;
+        private GenericGameInfo game;
         private List<GameProfile> profiles;
         private string exePath;
 
         [JsonIgnore]
-        public IGameInfo Game
+        public GenericGameInfo Game
         {
             get { return game; }
         }
@@ -62,7 +62,7 @@ namespace Nucleus.Gaming
             return File.Exists(exePath);
         }
 
-        public void InitializeDefault(IGameInfo game, string exePath)
+        public void InitializeDefault(GenericGameInfo game, string exePath)
         {
             this.game = game;
             this.exePath = exePath;

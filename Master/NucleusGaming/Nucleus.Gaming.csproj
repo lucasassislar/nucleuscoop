@@ -129,16 +129,22 @@
     <Compile Include="Controls\TextMessageBox.Designer.cs">
       <DependentUpon>TextMessageBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Coop\DInput\DInputManager.cs" />
     <Compile Include="Coop\GameOption.cs" />
     <Compile Include="Coop\GameOptionValue.cs" />
     <Compile Include="Coop\GameProfile.cs" />
+    <Compile Include="Coop\Generic\DynamicAttribute.cs" />
     <Compile Include="Coop\Generic\GenericContext.cs" />
     <Compile Include="Coop\Generic\GenericGameInfo.cs" />
     <Compile Include="Coop\Generic\Save\CfgSaveInfo.cs" />
     <Compile Include="Coop\Generic\Save\IniSaveInfo.cs" />
     <Compile Include="Coop\Generic\SaveInfo.cs" />
+    <Compile Include="Coop\Generic\XInputInfo.cs" />
+    <Compile Include="Coop\Generic\XInputManager.cs" />
+    <Compile Include="Globals.cs" />
     <Compile Include="Interop\User32\Structures\Display.cs" />
     <Compile Include="Interop\User32\C\Rect.cs" />
+    <Compile Include="IO\Logging\ILogNode.cs" />
     <Compile Include="IO\SourceCfgFile.cs" />
     <Compile Include="Coop\IGameHandler.cs" />
     <Compile Include="Coop\IGameInfo.cs" />
@@ -192,7 +198,7 @@
       <DependentUpon>PositionsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="New\Utils\RectangleUtil.cs" />
-    <Compile Include="New\Utils\ScreenUtil.cs" />
+    <Compile Include="PlayerID.cs" />
     <Compile Include="Player\PlayerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Coop\Generic\ProcessData.cs" />

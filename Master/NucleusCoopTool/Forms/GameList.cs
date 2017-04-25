@@ -13,20 +13,20 @@ namespace Nucleus.Coop
 {
     public partial class GameList : BaseForm
     {
-        private IGameInfo clicked;
+        private GenericGameInfo clicked;
 
-        public IGameInfo Selected
+        public GenericGameInfo Selected
         {
             get { return clicked; }
         }
 
-        public GameList(IGameInfo highlight)
+        public GameList(GenericGameInfo highlight)
         {
             InitializeComponent();
 
             GameManager manager = GameManager.Instance;
             var games = manager.Games;
-            foreach (IGameInfo game in games.Values)
+            foreach (GenericGameInfo game in games.Values)
             {
                 GameControl con = new GameControl();
                 con.Width = listGames.Width;

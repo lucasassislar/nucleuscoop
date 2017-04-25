@@ -103,7 +103,7 @@ namespace Nucleus.Coop
             List<PlayerInfo> data = profile.PlayerData;
             bool changed = false;
 
-            if (game.Game.SupportsDirectInput)
+            if (game.Game.XInput.DInputEnabled)
             {
                 IList<DeviceInstance> devices = dinput.GetDevices(SlimDX.DirectInput.DeviceType.Gamepad, DeviceEnumerationFlags.AttachedOnly);
 
@@ -165,7 +165,8 @@ namespace Nucleus.Coop
                     data.Add(player);
                 }
             }
-            if (game.Game.SupportsXInput)
+
+            if (game.Game.XInput.XInputEnabled)
             {
                 for (int j = 0; j < data.Count; j++)
                 {
@@ -322,7 +323,6 @@ namespace Nucleus.Coop
             base.Initialize(game, profile);
 
             gamepadTimer.Enabled = true;
-            canProceed = false;
             UpdatePlayers();
         }
 
@@ -339,12 +339,14 @@ namespace Nucleus.Coop
 
             UpdateScreens();
 
+            canProceed = true;
             for (int i = 0; i < playerData.Count; i++)
             {
                 PlayerInfo info = playerData[i];
 
                 if (info.ScreenIndex == -1)
                 {
+                    canProceed = false;
                     info.EditBounds = GetDefaultBounds(i);
                 }
             }
@@ -445,7 +447,7 @@ namespace Nucleus.Coop
                             if (p.ScreenIndex == screenIndex)
                             {
                                 playersUsing++;
-                                areaUsed = Rectangle.Union(areaUsed, p.MonitorBounds);
+                                areaUsed = p.MonitorBounds;
                             }
                         }
 
@@ -455,7 +457,6 @@ namespace Nucleus.Coop
                         }
 
                         int half = (int)(bounds.Height / 2.0f);
-
                         for (int i = 0; i < 2; i++)
                         {
                             Rectangle area = new Rectangle(bounds.X, bounds.Y + (half * i), bounds.Width, half);
@@ -481,17 +482,7 @@ namespace Nucleus.Coop
                             if (p.ScreenIndex == screenIndex)
                             {
                                 playersUsing++;
-
-                                if (i == 0)
-                                {
-                                    // this check needs to exist, because if the coordinates in the monitor
-                                    // are negative the Union method will extend from 0 to the negative and we'll end up messing everything up
-                                    areaUsed = p.MonitorBounds;
-                                }
-                                else
-                                {
-                                    areaUsed = Rectangle.Union(areaUsed, p.MonitorBounds);
-                                }
+                                areaUsed = p.MonitorBounds;
                             }
                         }
 
@@ -501,7 +492,6 @@ namespace Nucleus.Coop
                         }
 
                         int half = (int)(bounds.Width / 2.0f);
-
                         for (int i = 0; i < 2; i++)
                         {
                             Rectangle area = new Rectangle(bounds.X + (half * i), bounds.Y, half, bounds.Height);
@@ -518,15 +508,12 @@ namespace Nucleus.Coop
                 case UserScreenType.FourPlayers:
                     {
                         int playersUsing = 0;
-                        Rectangle areaUsed = new Rectangle();
-
                         for (int i = 0; i < players.Count; i++)
                         {
                             PlayerInfo p = players[i];
                             if (p.ScreenIndex == screenIndex)
                             {
                                 playersUsing++;
-                                areaUsed = Rectangle.Union(areaUsed, p.MonitorBounds);
                             }
                         }
 
@@ -763,6 +750,7 @@ namespace Nucleus.Coop
 
                     if (draggingScreen != -1)
                     {
+                        p.Owner = screens[draggingScreen];
                         p.ScreenIndex = draggingScreen;
                         p.MonitorBounds = draggingScreenBounds;
                         p.EditBounds = draggingScreenRec;
@@ -772,6 +760,7 @@ namespace Nucleus.Coop
                     else
                     {
                         // return to default position
+                        p.Owner = null;
                         p.EditBounds = GetDefaultBounds(draggingIndex);
                         p.ScreenIndex = -1;
                     }
@@ -855,7 +844,7 @@ namespace Nucleus.Coop
                 {
                     loc.Y -= gamepadRect.Height * 0.1f;
                     GamepadButtonFlags flags = (GamepadButtonFlags)info.GamepadMask;
-                    g.DrawString(flags.ToString(), smallTextFont, Brushes.White, new PointF(loc.X, loc.Y + gamepadRect.Height * 0.01f));
+                    //g.DrawString(flags.ToString(), smallTextFont, Brushes.White, new PointF(loc.X, loc.Y + gamepadRect.Height * 0.01f));
 
                     g.DrawString((info.GamepadId + 1).ToString(), playerFont, Brushes.White, loc);
                     g.DrawImage(gamepadImg, gamepadRect);
@@ -869,6 +858,12 @@ namespace Nucleus.Coop
 
                 if (info.ScreenIndex != -1)
                 {
+                    UserScreen screen = screens[info.ScreenIndex];
+                    if ((s.Height + s.Y) - (screen.UIBounds.Height + screen.UIBounds.Y) == -1)
+                    {
+                        s.Height += 1;
+                    }
+                    g.Clip = new Region(new RectangleF(s.X, s.Y, s.Width + 1, s.Height + 1));
                     g.DrawRectangle(Pens.Green, s);
                 }
             }

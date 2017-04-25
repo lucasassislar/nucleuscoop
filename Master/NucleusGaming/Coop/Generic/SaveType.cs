@@ -7,7 +7,7 @@ namespace Nucleus.Gaming
 {
     public enum SaveType
     {
-        None, Unknown,
+        None,
         INI, CFG
     }
 }

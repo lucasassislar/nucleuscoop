@@ -25,7 +25,7 @@ namespace Nucleus.Coop
 
         private GameControl currentControl;
         private UserGameInfo currentGameInfo;
-        private IGameInfo currentGame;
+        private GenericGameInfo currentGame;
         private GameProfile currentProfile;
         private bool noGamesPresent;
         private List<UserInputControl> stepsList;
@@ -51,6 +51,9 @@ namespace Nucleus.Coop
             countControl.OnCanPlayUpdated += StepCanPlay;
             positionsControl.OnCanPlayUpdated += StepCanPlay;
             optionsControl.OnCanPlayUpdated += StepCanPlay;
+
+            // selects the list of games, so the buttons look equal
+            list_Games.Select();
         }
 
 
@@ -362,7 +365,7 @@ namespace Nucleus.Coop
                 {
                     string path = open.FileName;
 
-                    IGameInfo info = gameManager.GetGame(path);
+                    GenericGameInfo info = gameManager.GetGame(path);
                     GameList list = new GameList(info);
                     if (list.ShowDialog() == DialogResult.OK)
                     {

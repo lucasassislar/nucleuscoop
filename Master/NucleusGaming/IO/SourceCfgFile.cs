@@ -41,14 +41,19 @@ namespace Nucleus.Gaming
         /// <summary>
         /// Flushes all changes to disk
         /// </summary>
-        public void Save()
+        public void Save(string newPath = "")
         {
-            if (File.Exists(path))
+            if (string.IsNullOrEmpty(newPath))
             {
-                File.Delete(path);
+                newPath = path;
             }
 
-            using (Stream str = File.OpenWrite(path))
+            if (File.Exists(newPath))
+            {
+                File.Delete(newPath);
+            }
+
+            using (Stream str = File.OpenWrite(newPath))
             {
                 using (StreamWriter writer = new StreamWriter(str))
                 {

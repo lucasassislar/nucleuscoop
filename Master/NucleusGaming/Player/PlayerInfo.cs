@@ -17,6 +17,8 @@ namespace Nucleus.Gaming
         private ProcessData processData;
         private bool assigned;
 
+        public UserScreen Owner;
+
         public int PlayerID;
         public bool SteamEmu;
         public bool GotLauncher;

@@ -10,110 +10,47 @@ using System.Text;
 
 namespace Nucleus.Gaming
 {
-    public class GenericGameInfo : IGenericGameInfo
+    public class GenericGameInfo// : IGenericGameInfo
     {
         private Engine engine;
         private string js;
-        private Action play;
 
-        private SaveInfo[] modifySave;
-        private bool symlinkExe;
-        private bool supportsKeyboard;
-        private string[] executableContext;
-        private string executableName;
-        private string steamID;
-        private string guid;
-        private string gameName;
-        private int maxPlayers;
-        private GameOption[] options;
-        private int maxPlayersOneMonitor;
-        private SaveType saveType;
-        private string savePath;
-        private string startArguments;
-        private string binariesFolder;
-        private string workingFolder;
-        private bool needsSteamEmulation;
-        private string launcherExe;
-        private string launcherTitle;
-        private bool supportsPositioning;
-        private bool customXinput = true;
-        private bool hookNeeded = false;
-        private string hookGameWindowName = "";
-        private string[] killMutex;
-        private bool debug;
-        private double handlerInterval = 500;
-        private string[] fileSymlinkExclusions;
-        private string[] dirSymlinkExclusions;
-        private bool supportsXInput;
-        private bool supportsDirectInput;
+        public XInputInfo XInput = new XInputInfo();
+        public string[] DirSymlinkExclusions;
+        public string[] FileSymlinkExclusions;
+        public double HandlerInterval;
+        public bool Debug;
+        public bool SupportsPositioning;
+        public bool SymlinkExe;
+        public bool SupportsKeyboard;
+        public string[] ExecutableContext;
+        public string ExecutableName;
+        public string SteamID;
+        public string GUID;
+        public string GameName;
+        public int MaxPlayers;
+        public GameOption[] Options;
+        public int MaxPlayersOneMonitor;
+        public SaveType SaveType;
+        public string SavePath;
+        public SaveInfo[] ModifySave;
+        public string StartArguments;
+        public string BinariesFolder;
+        /// <summary>
+        /// The relative path to where the games starts in
+        /// </summary>
+        public string WorkingFolder;
+        public bool NeedsSteamEmulation;
+        public string[] KillMutex;
+        public string LauncherExe;
+        public string LauncherTitle;
+        public Action Play;
 
-        public bool SupportsXInput
+        public Type HandlerType
         {
-            get { return supportsXInput; }
-            set { supportsXInput = value; }
+            get { return typeof(GenericGameHandler); }
         }
 
-        public bool SupportsDirectInput
-        {
-            get { return supportsDirectInput; }
-            set { supportsDirectInput = value; }
-        }
-
-        public string[] DirSymlinkExclusions
-        {
-            get { return dirSymlinkExclusions; }
-            set { dirSymlinkExclusions = value; }
-        }
-        public string[] FileSymlinkExclusions
-        {
-            get { return fileSymlinkExclusions; }
-            set { fileSymlinkExclusions = value; }
-        }
-
-        public double HandlerInterval
-        {
-            get { return handlerInterval; }
-            set { handlerInterval = value; }
-        }
-
-        public bool Debug
-        {
-            get { return debug; }
-            set { debug = value; }
-        }
-
-        public bool HookNeeded
-        {
-            get { return hookNeeded; }
-            set { hookNeeded = value; }
-        }
-        public string HookGameWindowName
-        {
-            get { return hookGameWindowName; }
-            set { hookGameWindowName = value; }
-        }
-
-        public bool CustomXinput
-        {
-            get { return customXinput; }
-            set { customXinput = value; }
-        }
-
-        public bool SupportsPositioning
-        {
-            get { return supportsPositioning; }
-            set { supportsPositioning = value; }
-        }
-        public bool SymlinkExe
-        {
-            get { return symlinkExe; }
-            set { symlinkExe = value; }
-        }
-        public bool SupportsKeyboard
-        {
-            get { return supportsKeyboard; }
-            set { supportsKeyboard = value; }
-        }
         public Type[] AdditionalSteps
         {
             get
@@ -125,123 +62,6 @@ namespace Nucleus.Gaming
                     typeof(PlayerOptionsControl)
                 };
             }
-        }
-        public string[] ExecutableContext
-        {
-            get { return executableContext; }
-            set { executableContext = value; }
-        }
-        public string ExecutableName
-        {
-            get { return executableName; }
-            set { executableName = value; }
-        }
-        public string SteamID
-        {
-            get { return steamID; }
-            set { steamID = value; }
-        }
-        public string GUID
-        {
-            get { return guid; }
-            set { guid = value; }
-        }
-
-        public string GameName
-        {
-            get { return gameName; }
-            set { gameName = value; }
-        }
-
-        public Type HandlerType
-        {
-            get { return typeof(GenericGameHandler); }
-        }
-
-        public int MaxPlayers
-        {
-            get { return maxPlayers; }
-            set { maxPlayers = value; }
-        }
-
-        public GameOption[] Options
-        {
-            get { return options; }
-            set { options = value; }
-        }
-
-        public int MaxPlayersOneMonitor
-        {
-            get { return maxPlayersOneMonitor; }
-            set { maxPlayersOneMonitor = value; }
-        }
-
-        public SaveType SaveType
-        {
-            get { return saveType; }
-            set { saveType = value; }
-        }
-
-        public string SavePath
-        {
-            get { return savePath; }
-            set { savePath = value; }
-        }
-
-        public SaveInfo[] ModifySave
-        {
-            get { return modifySave; }
-            set { modifySave = value; }
-        }
-
-        public string StartArguments
-        {
-            get { return startArguments; }
-            set { startArguments = value; }
-        }
-
-        public string BinariesFolder
-        {
-            get { return binariesFolder; }
-            set { binariesFolder = value; }
-        }
-
-        /// <summary>
-        /// Folder path relative to directory that holds the game executable
-        /// </summary>
-        public string WorkingFolder
-        {
-            get { return workingFolder; }
-            set { workingFolder = value; }
-        }
-
-        public bool NeedsSteamEmulation
-        {
-            get { return needsSteamEmulation; }
-            set { needsSteamEmulation = value; }
-        }
-
-        public string[] KillMutex
-        {
-            get { return killMutex; }
-            set { killMutex = value; }
-        }
-
-        public string LauncherExe
-        {
-            get { return launcherExe; }
-            set { launcherExe = value; }
-        }
-        public string LauncherTitle
-        {
-            get { return launcherTitle; }
-            set { launcherTitle = value; }
-        }
-
-        public Action Play
-        {
-            get { return play; }
-            set { play = value; }
         }
 
         public GenericGameInfo(Stream str)
@@ -258,12 +78,13 @@ namespace Nucleus.Gaming
             engine.SetValue("Game", (object)null);
         }
 
-        public void PrePlay(GenericContext context, GenericGameHandler handler)
+        public void PrePlay(GenericContext context, GenericGameHandler handler, PlayerInfo player)
         {
             engine.SetValue("Context", context);
             engine.SetValue("Handler", handler);
+            engine.SetValue("Player", player);
 
-            play?.Invoke();
+            Play?.Invoke();
         }
 
         /// <summary>

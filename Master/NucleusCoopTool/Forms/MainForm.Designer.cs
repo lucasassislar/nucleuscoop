@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.StepPanel = new System.Windows.Forms.Panel();
             this.panelGameName = new System.Windows.Forms.Panel();
             this.label_GameTitle = new System.Windows.Forms.Label();
@@ -191,6 +192,7 @@
             this.Controls.Add(this.panelGameName);
             this.Controls.Add(this.StepPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(275, 360);
             this.Name = "MainForm";
             this.Text = "Nucleus Coop";

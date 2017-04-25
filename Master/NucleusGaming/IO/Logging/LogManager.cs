@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace Nucleus.Gaming
 {
@@ -29,6 +30,7 @@ namespace Nucleus.Gaming
         private Stream logStream;
         private StreamWriter writer;
         private object locker;
+        private List<ILogNode> logCallbacks;
 
         public LogManager()
         {
@@ -37,13 +39,25 @@ namespace Nucleus.Gaming
             instance = this;
             logPath = GetLogPath();
 
+            logCallbacks = new List<ILogNode>();
+
             logStream = new FileStream(GetLogPath(), FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
             logStream.Position = logStream.Length; // keep writing from where we left
 
             writer = new StreamWriter(logStream);
         }
 
-        private string GetAppDataPath()
+        public static void RegisterForLogCallback(ILogNode node)
+        {
+            instance.logCallbacks.Add(node);
+        }
+
+        public static void UnregisterForLogCallback(ILogNode node)
+        {
+            instance.logCallbacks.Remove(node);
+        }
+
+        private static string GetAppDataPath()
         {
 #if ALPHA
             string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
@@ -54,7 +68,7 @@ namespace Nucleus.Gaming
 #endif
         }
 
-        protected string GetLogPath()
+        protected static string GetLogPath()
         {
             return Path.Combine(GetAppDataPath(), "app.log");
         }
@@ -83,6 +97,45 @@ namespace Nucleus.Gaming
         public static void Log(string str)
         {
             Instance.PLog(str);
+        }
+
+        public void LogExceptionFile(Exception ex)
+        {
+            string local = GetAppDataPath();
+            DateTime now = DateTime.Now;
+            string file = string.Format("{0}{1}{2}_{3}{4}{5}", now.Day.ToString("00"), now.Month.ToString("00"), now.Year.ToString("0000"), now.Hour.ToString("00"), now.Minute.ToString("00"), now.Second.ToString("00")) + ".log";
+            string path = Path.Combine(local, file);
+
+            using (Stream stream = File.OpenWrite(path))
+            {
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    writer.WriteLine("[Header]");
+                    writer.WriteLine(now.ToLongDateString());
+                    writer.WriteLine(now.ToLongTimeString());
+                    writer.WriteLine("Nucleus Coop Alpha v" + Globals.Version);
+                    writer.WriteLine("[Message]");
+                    writer.WriteLine(ex.Message);
+                    writer.WriteLine("[Stacktrace]");
+                    writer.WriteLine(ex.StackTrace);
+
+                    for (int i = 0; i < logCallbacks.Count; i++)
+                    {
+                        ILogNode node = logCallbacks[i];
+                        try
+                        {
+                            node.Log(writer);
+                        }
+                        catch
+                        {
+                            writer.WriteLine("LogNode failed to log: " + node.ToString());
+                        }
+                    }
+                }
+            }
+
+            MessageBox.Show("Application crash. Log generated at Data/" + file);
+            Application.Exit();
         }
 
         public static void Log(string str, object par1)

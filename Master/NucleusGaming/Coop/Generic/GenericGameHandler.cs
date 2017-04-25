@@ -18,7 +18,7 @@ using WindowScrape.Types;
 
 namespace Nucleus.Gaming
 {
-    public class GenericGameHandler : IGameHandler
+    public class GenericGameHandler : IGameHandler, ILogNode
     {
         private const float HWndInterval = 10000;
 
@@ -52,6 +52,8 @@ namespace Nucleus.Gaming
 
             hasEnded = true;
             GameManager.Instance.ExecuteBackup(this.userGame.Game);
+
+            LogManager.UnregisterForLogCallback(this);
 
             Cursor.Clip = Rectangle.Empty; // guarantee were not clipping anymore
             string backupDir = GameManager.Instance.GempTempFolder(this.userGame.Game);
@@ -109,6 +111,8 @@ namespace Nucleus.Gaming
 
             timerInterval = gen.HandlerInterval;
 
+            LogManager.RegisterForLogCallback(this);
+
             return true;
         }
 
@@ -164,19 +168,19 @@ namespace Nucleus.Gaming
                 players[i].PlayerID = i;
             }
 
-            Screen[] all = Screen.AllScreens;
+            UserScreen[] all = ScreensUtil.AllScreens();
 
             string tempDir = GameManager.Instance.GempTempFolder(gen);
-            string exeFolder = Path.GetDirectoryName(userGame.ExePath);
+            string exeFolder = Path.GetDirectoryName(userGame.ExePath).ToLower();
             string rootFolder = exeFolder;
             string workingFolder = exeFolder;
             if (!string.IsNullOrEmpty(gen.BinariesFolder))
             {
-                rootFolder = ReplaceCaseInsensitive(exeFolder, gen.BinariesFolder, "");
+                rootFolder = ReplaceCaseInsensitive(exeFolder, gen.BinariesFolder.ToLower(), "");
             }
             if (!string.IsNullOrEmpty(gen.WorkingFolder))
             {
-                workingFolder = Path.Combine(exeFolder, gen.WorkingFolder);
+                workingFolder = Path.Combine(exeFolder, gen.WorkingFolder.ToLower());
             }
 
             bool first = true;
@@ -250,34 +254,14 @@ namespace Nucleus.Gaming
                 }
 
                 Rectangle playerBounds = player.MonitorBounds;
-
-                // find the monitor that has this screen
-                Screen owner = null;
-                for (int j = 0; j < all.Length; j++)
-                {
-                    Screen s = all[j];
-                    if (s.Bounds.Contains(playerBounds))
-                    {
-                        owner = s;
-                        break;
-                    }
-                }
+                UserScreen owner = player.Owner;
 
                 int width = playerBounds.Width;
                 int height = playerBounds.Height;
-                bool isFullscreen = false;
+                bool isFullscreen = owner.Type == UserScreenType.FullScreen;
 
-                if (owner != null)
-                {
-                    Rectangle ob = owner.Bounds;
-                    if (playerBounds.X == ob.X &&
-                        playerBounds.Y == ob.Y &&
-                        playerBounds.Width == ob.Width &&
-                        playerBounds.Height == ob.Height)
-                    {
-                        isFullscreen = true;
-                    }
-                }
+                List<string> dirExclusions = new List<string>();
+                List<string> fileExclusions = new List<string>();
 
                 // symlink the game folder (and not the bin folder, if we have one)
                 string linkFolder = Path.Combine(tempDir, "Instance" + i);
@@ -287,10 +271,10 @@ namespace Nucleus.Gaming
                 if (!string.IsNullOrEmpty(gen.BinariesFolder))
                 {
                     linkBinFolder = Path.Combine(linkFolder, gen.BinariesFolder);
+                    dirExclusions.Add(gen.BinariesFolder);
                 }
                 string exePath = Path.Combine(linkBinFolder, this.userGame.Game.ExecutableName);
 
-                List<string> dirExclusions = new List<string>();
                 if (!string.IsNullOrEmpty(gen.WorkingFolder))
                 {
                     linkBinFolder = Path.Combine(linkFolder, gen.WorkingFolder);
@@ -300,9 +284,11 @@ namespace Nucleus.Gaming
                 // some games have save files inside their game folder, so we need to access them inside the loop
                 jsData[Folder.InstancedGameFolder.ToString()] = linkFolder;
 
-                List<string> fileExclusions = new List<string>();
-                fileExclusions.Add("xinput");
-                fileExclusions.Add("ncoop");
+                if (gen.XInput.CustomDllEnabled)
+                {
+                    fileExclusions.Add("xinput");
+                    fileExclusions.Add("ncoop");
+                }
                 if (!gen.SymlinkExe)
                 {
                     fileExclusions.Add(Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()));
@@ -353,64 +339,18 @@ namespace Nucleus.Gaming
                 context.PlayerID = player.PlayerID;
                 context.IsFullscreen = isFullscreen;
                 context.IsKeyboardPlayer = keyboard && i == players.Count - 1;
-                gen.PrePlay(context, this);
+
+                context.ExePath = exePath;
+                context.RootInstallFolder = exeFolder;
+                context.RootFolder = linkFolder;
+
+                gen.PrePlay(context, this, player);
 
                 player.IsKeyboardPlayer = context.IsKeyboardPlayer;
-
-                string saveFile = context.SavePath;
-                if (first)
-                {
-                    // only run on the first instance
-                    if (gen.SaveType != SaveType.None)
-                    {
-                        // backup the game's save files
-                        GameManager.Instance.BeginBackup(gen);
-                        GameManager.Instance.BackupFile(gen, saveFile);
-                    }
-                    //if (context.BackupFiles != null)
-                    //{
-                    //    string[] backupFiles = context.BackupFiles;
-                    //    for (int j = 0; j < backupFiles.Length; j++)
-                    //    {
-                    //        GameManager.Instance.BackupFile(gen, backupFiles[j]);
-                    //    }
-                    //}
-                }
-
-                switch (context.SaveType)
-                {
-                    case SaveType.INI:
-                        IniFile file = new IniFile(saveFile);
-                        for (int j = 0; j < context.ModifySave.Length; j++)
-                        {
-                            SaveInfo save = context.ModifySave[j];
-                            if (save is IniSaveInfo)
-                            {
-                                IniSaveInfo ini = (IniSaveInfo)save;
-                                file.IniWriteValue(ini.Section, ini.Key, ini.Value);
-                            }
-                        }
-                        break;
-                    case SaveType.CFG:
-                        SourceCfgFile cfg = new SourceCfgFile(saveFile);
-                        for (int j = 0; j < context.ModifySave.Length; j++)
-                        {
-                            SaveInfo save = context.ModifySave[j];
-                            if (save is CfgSaveInfo)
-                            {
-                                CfgSaveInfo option = (CfgSaveInfo)save;
-                                cfg.ChangeProperty(option.Key, option.Value);
-                            }
-                        }
-
-                        cfg.Save();
-
-                        break;
-                }
-
+                
                 string startArgs = context.StartArguments;
 
-                if (context.CustomXinput)
+                if (context.XInput.CustomDllEnabled)
                 {
                     byte[] xdata = Properties.Resources.xinput1_3;
                     using (Stream str = File.OpenWrite(Path.Combine(linkBinFolder, "xinput1_3.dll")))
@@ -425,11 +365,16 @@ namespace Nucleus.Gaming
                         str.Write(ini, 0, ini.Length);
                     }
 
+
                     IniFile x360 = new IniFile(ncoopIni);
-                    x360.IniWriteValue("Options", "HookNeeded", context.HookNeeded.ToString(CultureInfo.InvariantCulture));
-                    x360.IniWriteValue("Options", "GameWindowName", context.HookGameWindowName.ToString(CultureInfo.InvariantCulture));
-                    x360.IniWriteValue("Options", "ResX", context.Width.ToString(CultureInfo.InvariantCulture));
-                    x360.IniWriteValue("Options", "ResY", context.Height.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "ForceFocus", context.XInput.ForceFocus.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "ForceFocusWindowName", context.XInput.ForceFocusWindowName.ToString(CultureInfo.InvariantCulture));
+
+                    if (context.XInput.SetWindowSize)
+                    {
+                        x360.IniWriteValue("Options", "ResWidth", context.Width.ToString(CultureInfo.InvariantCulture));
+                        x360.IniWriteValue("Options", "ResHeight", context.Height.ToString(CultureInfo.InvariantCulture));
+                    }
 
                     if (context.IsKeyboardPlayer)
                     {
@@ -438,7 +383,8 @@ namespace Nucleus.Gaming
 
                     if (player.IsXInput)
                     {
-                        x360.IniWriteValue("Options", "PlayerOverride", player.GamepadId.ToString(CultureInfo.InvariantCulture));
+                        x360.IniWriteValue("Options", "XInputEnabled", "true");
+                        x360.IniWriteValue("Options", "XInputPlayerID", player.GamepadId.ToString(CultureInfo.InvariantCulture));
                     }
                     else
                     {
@@ -449,11 +395,14 @@ namespace Nucleus.Gaming
                         UInt16 data3 = BitConverter.ToUInt16(bytes, 6);
                         UInt32 data41 = BitConverter.ToUInt32(bytes, 8);
                         UInt32 data42 = BitConverter.ToUInt32(bytes, 12);
-                        x360.IniWriteValue("Options", "Guid1", data1.ToString(CultureInfo.InvariantCulture));
-                        x360.IniWriteValue("Options", "Guid2", data2.ToString(CultureInfo.InvariantCulture));
-                        x360.IniWriteValue("Options", "Guid3", data3.ToString(CultureInfo.InvariantCulture));
-                        x360.IniWriteValue("Options", "Guid41", data41.ToString(CultureInfo.InvariantCulture));
-                        x360.IniWriteValue("Options", "Guid42", data42.ToString(CultureInfo.InvariantCulture));
+
+                        x360.IniWriteValue("Options", "DInputEnabled", "true");
+                        x360.IniWriteValue("Options", "DInputLibrary", DInputManager.Library.ID.ToString(CultureInfo.InvariantCulture));
+                        x360.IniWriteValue("Options", "DInputGuid1", data1.ToString(CultureInfo.InvariantCulture));
+                        x360.IniWriteValue("Options", "DInputGuid2", data2.ToString(CultureInfo.InvariantCulture));
+                        x360.IniWriteValue("Options", "DInputGuid3", data3.ToString(CultureInfo.InvariantCulture));
+                        x360.IniWriteValue("Options", "DInputGuid41", data41.ToString(CultureInfo.InvariantCulture));
+                        x360.IniWriteValue("Options", "DInputGuid42", data42.ToString(CultureInfo.InvariantCulture));
                     }
                 }
 
@@ -810,8 +759,8 @@ namespace Nucleus.Gaming
                                     {
                                         data.HWNDRetry = true;
                                     }
-                                    else if (!string.IsNullOrEmpty(gen.HookGameWindowName) &&
-                                        data.HWnd.Title != gen.HookGameWindowName)
+                                    else if (!string.IsNullOrEmpty(gen.XInput.ForceFocusWindowName) &&
+                                        data.HWnd.Title != gen.XInput.ForceFocusWindowName)
                                     {
                                         data.HWNDRetry = true;
                                     }
@@ -834,6 +783,10 @@ namespace Nucleus.Gaming
                     End();
                 }
             }
+        }
+
+        public void Log(StreamWriter writer)
+        {
         }
     }
 }

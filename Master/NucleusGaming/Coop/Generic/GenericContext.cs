@@ -12,135 +12,37 @@ namespace Nucleus.Gaming
     // Comments can be found on the original class if no specific feature is implemented here
     public class GenericContext
     {
-        private SaveInfo[] modifySave;
-        private bool symlinkExe;
-        private bool supportsKeyboard;
-        private string[] executableContext;
-        private string executableName;
-        private string steamID;
-        private string guid;
-        private string gameName;
-        private int maxPlayers;
-        private int maxPlayersOneMonitor;
-        private SaveType saveType;
-        private string savePath;
-        private string startArguments;
-        private string binariesFolder;
-        private string workingFolder;
-        private bool needsSteamEmulation;
-        private string launcherExe;
-        private string launcherTitle;
-        private int interval;
-        private bool customXinput;
-        private bool hookNeeded = false;
-        private string hookGameWindowName = "";
-        private string[] killMutex;
-        private string error;
-        private bool debug;
-        private double handlerInterval;
-        private bool supportsXInput;
-        private bool supportsDirectInput;
-
-        public bool SupportsXInput
-        {
-            get { return supportsXInput; }
-            set { supportsXInput = value; }
-        }
-
-        public bool SupportsDirectInput
-        {
-            get { return supportsDirectInput; }
-            set { supportsDirectInput = value; }
-        }
-
-        public double HandlerInterval
-        {
-            get { return handlerInterval; }
-            set { handlerInterval = value; }
-        }
-        public bool Debug
-        {
-            get { return debug; }
-            set { debug = value; }
-        }
-
-        public string Error
-        {
-            get { return error; }
-            set { error = value; }
-        }
-
-        public bool HookNeeded
-        {
-            get { return hookNeeded; }
-            set { hookNeeded = value; }
-        }
-        public string HookGameWindowName
-        {
-            get { return hookGameWindowName; }
-            set { hookGameWindowName = value; }
-        }
-
-        public bool CustomXinput
-        {
-            get { return customXinput; }
-            set { customXinput = value; }
-        }
-
-        public int Interval
-        {
-            get { return interval; }
-            set { interval = value; }
-        }
-
-        public bool SymlinkExe
-        {
-            get { return symlinkExe; }
-            set { symlinkExe = value; }
-        }
-
-        public bool SupportsKeyboard
-        {
-            get { return supportsKeyboard; }
-            set { supportsKeyboard = value; }
-        }
-
-        public string[] ExecutableContext
-        {
-            get { return executableContext; }
-            set { executableContext = value; }
-        }
-        public string ExecutableName
-        {
-            get { return executableName; }
-            set { executableName = value; }
-        }
-        public string SteamID
-        {
-            get { return steamID; }
-            set { steamID = value; }
-        }
-        public string GUID
-        {
-            get { return guid; }
-            set { guid = value; }
-        }
-
-        public string GameName
-        {
-            get { return gameName; }
-            set { gameName = value; }
-        }
+        public XInputInfo XInput = new XInputInfo();
+        public double HandlerInterval;
+        public bool Debug;
+        public string Error;
+        public int Interval;
+        public bool SymlinkExe;
+        public bool SupportsKeyboard;
+        public string[] ExecutableContext;
+        public string ExecutableName;
+        public string SteamID;
+        public string GUID;
+        public string GameName;
+        public int MaxPlayers;
+        public int MaxPlayersOneMonitor;
+        public SaveType SaveType;
+        public string SavePath;
+        public SaveInfo[] ModifySave;
+        public string StartArguments;
+        public string BinariesFolder;
+        public string WorkingFolder;
+        public bool NeedsSteamEmulation;
+        public string[] KillMutex;
+        public string LauncherExe;
+        public string LauncherTitle;
+        public bool IsKeyboardPlayer;
+        public int PlayerID;
+        public bool IsFullscreen;
 
         public Type HandlerType
         {
             get { return typeof(GenericGameHandler); }
-        }
-
-        public int MaxPlayers
-        {
-            get { return maxPlayers; }
-            set { maxPlayers = value; }
         }
 
         public Dictionary<string, object> Options
@@ -148,72 +50,6 @@ namespace Nucleus.Gaming
             get { return profile.Options; }
         }
 
-        public int MaxPlayersOneMonitor
-        {
-            get { return maxPlayersOneMonitor; }
-            set { maxPlayersOneMonitor = value; }
-        }
-
-        public SaveType SaveType
-        {
-            get { return saveType; }
-            set { saveType = value; }
-        }
-
-        public string SavePath
-        {
-            get { return savePath; }
-            set { savePath = value; }
-        }
-
-        public SaveInfo[] ModifySave
-        {
-            get { return modifySave; }
-            set { modifySave = value; }
-        }
-
-        public string StartArguments
-        {
-            get { return startArguments; }
-            set { startArguments = value; }
-        }
-
-        public string BinariesFolder
-        {
-            get { return binariesFolder; }
-            set { binariesFolder = value; }
-        }
-
-        public string WorkingFolder
-        {
-            get { return workingFolder; }
-            set { workingFolder = value; }
-        }
-
-        public bool NeedsSteamEmulation
-        {
-            get { return needsSteamEmulation; }
-            set { needsSteamEmulation = value; }
-        }
-
-        public string[] KillMutex
-        {
-            get { return killMutex; }
-            set { killMutex = value; }
-        }
-
-        public string LauncherExe
-        {
-            get { return launcherExe; }
-            set { launcherExe = value; }
-        }
-        public string LauncherTitle
-        {
-            get { return launcherTitle; }
-            set { launcherTitle = value; }
-        }
-
-        public bool IsKeyboardPlayer { get; set; }
         public int Width
         {
             get { return pInfo.MonitorBounds.Width; }
@@ -222,8 +58,13 @@ namespace Nucleus.Gaming
         {
             get { return pInfo.MonitorBounds.Height; }
         }
-        public int PlayerID { get; set; }
-        public bool IsFullscreen { get; set; }
+
+        [Dynamic(AutoHandles = true)]
+        public string ExePath;
+        [Dynamic(AutoHandles = true)]
+        public string RootInstallFolder;
+        [Dynamic(AutoHandles = true)]
+        public string RootFolder;
 
         private GameProfile profile;
         private PlayerInfo pInfo;
@@ -247,6 +88,47 @@ namespace Nucleus.Gaming
                 File.Delete(path);
             }
             File.WriteAllLines(path, lines);
+        }
+
+        public void ModifySaveFile(string installSavePath, string saveFullPath, SaveType type, params SaveInfo[] info)
+        {
+            // this needs to be dynamic someday
+            switch (type)
+            {
+                case SaveType.CFG:
+                    {
+                        SourceCfgFile cfg = new SourceCfgFile(installSavePath);
+                        for (int j = 0; j < info.Length; j++)
+                        {
+                            SaveInfo save = info[j];
+                            if (save is CfgSaveInfo)
+                            {
+                                CfgSaveInfo option = (CfgSaveInfo)save;
+                                cfg.ChangeProperty(option.Key, option.Value);
+                            }
+                        }
+                        cfg.Save(saveFullPath);
+                    }
+                    break;
+                case SaveType.INI:
+                    {
+                        if (!installSavePath.Equals(saveFullPath))
+                        {
+                            File.Copy(installSavePath, saveFullPath);
+                        }
+                        IniFile file = new IniFile(saveFullPath);
+                        for (int j = 0; j < info.Length; j++)
+                        {
+                            SaveInfo save = info[j];
+                            if (save is IniSaveInfo)
+                            {
+                                IniSaveInfo ini = (IniSaveInfo)save;
+                                file.IniWriteValue(ini.Section, ini.Key, ini.Value);
+                            }
+                        }
+                    }
+                    break;
+            }
         }
     }
 }

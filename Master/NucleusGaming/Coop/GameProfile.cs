@@ -40,7 +40,7 @@ namespace Nucleus.Gaming
 
         }
 
-        public void InitializeDefault(IGameInfo game)
+        public void InitializeDefault(GenericGameInfo game)
         {
             if (playerData == null)
             {

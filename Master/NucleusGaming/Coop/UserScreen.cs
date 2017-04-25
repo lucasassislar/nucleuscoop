@@ -45,5 +45,25 @@ namespace Nucleus.Gaming
 
             type = UserScreenType.FullScreen;
         }
+
+        public bool IsFullscreen()
+        {
+            return type == UserScreenType.FullScreen;
+        }
+
+        public bool IsDualHorizontal()
+        {
+            return type == UserScreenType.DualHorizontal;
+        }
+
+        public bool IsDualVertical()
+        {
+            return type == UserScreenType.DualVertical;
+        }
+
+        public bool IsFourPlayers()
+        {
+            return type == UserScreenType.FourPlayers;
+        }
     }
 }

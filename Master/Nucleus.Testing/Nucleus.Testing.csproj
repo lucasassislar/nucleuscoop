@@ -49,10 +49,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Games\Nucleus.Coop.Games.csproj">
-      <Project>{3f7c8608-41b3-4831-9351-980bc4499ffb}</Project>
-      <Name>Nucleus.Coop.Games</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NucleusGaming\Nucleus.Gaming.csproj">
       <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
       <Name>Nucleus.Gaming</Name>
