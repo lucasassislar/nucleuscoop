@@ -309,7 +309,7 @@ namespace Nucleus.Gaming
             return (IGameHandler)Activator.CreateInstance(game.HandlerType);
         }
 
-        public string GetBackupFolder(IGameInfo game)
+        public string GempTempFolder(IGameInfo game)
         {
             string appData = GetAppDataPath();
             return Path.Combine(appData, game.GUID);

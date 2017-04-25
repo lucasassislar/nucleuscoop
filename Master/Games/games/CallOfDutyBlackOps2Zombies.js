@@ -28,6 +28,7 @@ Game.CustomXinput = true;
 Game.StartArguments = "";
 Game.HookNeeded = true;
 Game.HookGameWindowName = "Call of Duty®: Black Ops II - Zombies";
+Game.SupportsXInput = true;
 
 Game.Play = function () {
 }

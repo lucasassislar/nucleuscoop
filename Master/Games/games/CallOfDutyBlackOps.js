@@ -25,6 +25,7 @@ Game.CustomXinput = true;
 Game.StartArguments = "";
 Game.HookNeeded = true;
 Game.HookGameWindowName = "Call of Duty®: BlackOps";
+Game.SupportsXInput = true;
 
 Game.Play = function () {
 }

@@ -8,7 +8,7 @@ namespace Nucleus.Gaming
     public interface IGameInfo
     {
         /// <summary>
-        /// If this game's implementation is unfinished (should not add in a release build)
+        /// If this game's implementation is unfinished (should not show up in a release build)
         /// </summary>
         bool Debug { get; }
 
@@ -70,5 +70,8 @@ namespace Nucleus.Gaming
         /// An unique GUID specific to the game
         /// </summary>
         string GUID { get; }
+
+        bool SupportsXInput { get; }
+        bool SupportsDirectInput { get; }
     }
 }

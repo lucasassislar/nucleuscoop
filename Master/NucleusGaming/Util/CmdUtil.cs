@@ -29,29 +29,41 @@ namespace Nucleus
             ExecuteCommand(fromFile, out exitCode, cmd);
         }
 
-        public static void LinkDirectories(string rootFolder, string destination, out int exitCode, params string[] exclusions)
+        public static void LinkDirectory(string root, DirectoryInfo currentDir, string destination, out int exitCode, string[] dirExclusions, string[] fileExclusions, bool overrideSpecial = false)
         {
             exitCode = 1;
 
-            DirectoryInfo[] dirs = new DirectoryInfo(rootFolder).GetDirectories();
-
-            for (int i = 0; i < dirs.Length; i++)
+            bool special = overrideSpecial;
+            for (int j = 0; j < dirExclusions.Length; j++)
             {
-                DirectoryInfo dir = dirs[i];
+                string exclusion = dirExclusions[j];
+                string fullPath = Path.Combine(root, exclusion);
 
-                if (exclusions.Contains(dir.Name.ToLower()))
+                if (fullPath.Contains(currentDir.FullName.ToLower()))
                 {
-                    continue;
+                    // special case, one of our subfolders is excluded
+                    special = true;
+                    break;
                 }
+            }
 
-                string relative = dir.FullName.Replace(rootFolder, "");
-                if (relative.StartsWith(@"\") || relative.StartsWith("/"))
+            if (special)
+            {
+                // this folder has a child that cant be symlinked
+                Directory.CreateDirectory(destination);
+                CmdUtil.LinkFiles(currentDir.FullName, destination, out exitCode, fileExclusions);
+
+                DirectoryInfo[] children = currentDir.GetDirectories();
+                for (int i = 0; i < children.Length; i++)
                 {
-                    relative = relative.Remove(0, 1);
+                    DirectoryInfo child = children[i];
+                    LinkDirectory(root, child, Path.Combine(destination, child.Name), out exitCode, dirExclusions, fileExclusions);
                 }
-
-                string linkPath = Path.Combine(destination, relative);
-                CmdUtil.MkLinkDirectory(dir.FullName, linkPath, out exitCode);
+            }
+            else
+            {
+                // we symlink this directly
+                CmdUtil.MkLinkDirectory(currentDir.FullName, destination, out exitCode);
             }
         }
 

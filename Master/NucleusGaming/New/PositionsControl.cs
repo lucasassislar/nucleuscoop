@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SlimDX.DirectInput;
+using SlimDX.XInput;
 
 namespace Nucleus.Coop
 {
@@ -26,6 +28,7 @@ namespace Nucleus.Coop
         private Rectangle totalBounds;
 
         private Font playerFont;
+        private Font smallTextFont;
         private Font playerTextFont;
 
         private RectangleF playersArea;
@@ -37,6 +40,9 @@ namespace Nucleus.Coop
         private int draggingScreen = -1;
         private Rectangle draggingScreenRec;
         private Rectangle draggingScreenBounds;
+
+        private Image gamepadImg;
+        private Image genericImg;
 
         public override bool CanProceed
         {
@@ -51,6 +57,11 @@ namespace Nucleus.Coop
             get { return false; }
         }
 
+        private DirectInput dinput;
+        private List<Controller> controllers;
+
+        private Timer gamepadTimer;
+
         public PositionsControl()
         {
             InitializeComponent();
@@ -59,10 +70,164 @@ namespace Nucleus.Coop
 
         private void Initialize()
         {
+            dinput = new DirectInput();
+            controllers = new List<Controller>();
+            for (int i = 0; i < 4; i++)
+            {
+                controllers.Add(new Controller((UserIndex)i));
+            }
+
+            gamepadTimer = new Timer();
+            gamepadTimer.Interval = 100;
+            gamepadTimer.Tick += GamepadTimer_Tick;
+
             playerFont = new Font("Segoe UI", 40);
             playerTextFont = new Font("Segoe UI", 18);
+            smallTextFont = new Font("Segoe UI", 12);
+
+            gamepadImg = Resources.gamepad;
+            genericImg = Resources.generic;
 
             RemoveFlicker();
+        }
+
+        public override void Ended()
+        {
+            base.Ended();
+
+            gamepadTimer.Enabled = false;
+        }
+
+        private void GamepadTimer_Tick(object sender, EventArgs e)
+        {
+            List<PlayerInfo> data = profile.PlayerData;
+            bool changed = false;
+
+            if (game.Game.SupportsDirectInput)
+            {
+                IList<DeviceInstance> devices = dinput.GetDevices(SlimDX.DirectInput.DeviceType.Gamepad, DeviceEnumerationFlags.AttachedOnly);
+
+                // first search for disconnected gamepads
+                for (int j = 0; j < data.Count; j++)
+                {
+                    PlayerInfo p = data[j];
+                    if (p.IsXInput)
+                    {
+                        continue;
+                    }
+
+                    bool foundGamepad = false;
+                    for (int i = 0; i < devices.Count; i++)
+                    {
+                        DeviceInstance device = devices[i];
+                        if (device.InstanceGuid == p.GamepadGuid)
+                        {
+                            foundGamepad = true;
+                            break;
+                        }
+                    }
+
+                    if (!foundGamepad)
+                    {
+                        changed = true;
+                        data.RemoveAt(j);
+                        j--;
+                    }
+                }
+
+                for (int i = 0; i < devices.Count; i++)
+                {
+                    DeviceInstance device = devices[i];
+                    bool already = false;
+
+                    // see if this gamepad is already on a player
+                    for (int j = 0; j < data.Count; j++)
+                    {
+                        PlayerInfo p = data[j];
+                        if (p.GamepadGuid == device.InstanceGuid)
+                        {
+                            already = true;
+                            break;
+                        }
+                    }
+
+                    if (already)
+                    {
+                        continue;
+                    }
+
+                    changed = true;
+
+                    // new gamepad
+                    PlayerInfo player = new PlayerInfo();
+                    player.GamepadGuid = device.InstanceGuid;
+                    player.GamepadName = device.InstanceName;
+                    data.Add(player);
+                }
+            }
+            if (game.Game.SupportsXInput)
+            {
+                for (int j = 0; j < data.Count; j++)
+                {
+                    PlayerInfo p = data[j];
+                    if (p.IsXInput)
+                    {
+                        Controller c = controllers[p.GamepadId];
+                        if (!c.IsConnected)
+                        {
+                            changed = true;
+                            data.RemoveAt(j);
+                            j--;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < 4; i++)
+                {
+                    Controller c = controllers[i];
+                    bool already = false;
+
+                    if (c.IsConnected)
+                    {
+                        // see if this gamepad is already on a player
+                        for (int j = 0; j < data.Count; j++)
+                        {
+                            PlayerInfo p = data[j];
+                            if (p.IsXInput && p.GamepadId == i)
+                            {
+                                State s = c.GetState();
+                                int newmask = (int)s.Gamepad.Buttons;
+                                if (p.GamepadMask != newmask)
+                                {
+                                    changed = true;
+                                    p.GamepadMask = newmask;
+                                }
+
+                                already = true;
+                                break;
+                            }
+                        }
+                        if (already)
+                        {
+                            continue;
+                        }
+
+                        changed = true;
+
+                        // new gamepad
+                        PlayerInfo player = new PlayerInfo();
+                        player.IsXInput = true;
+                        player.GamepadId = i;
+                        data.Add(player);
+                    }
+                }
+            }
+
+            if (changed)
+            {
+                UpdatePlayers();
+                Refresh();
+            }
         }
 
         private void AddPlayer(int i, float playerWidth, float playerHeight, float offset)
@@ -139,7 +304,7 @@ namespace Nucleus.Coop
 
                 minY = Math.Min(minY, uiBounds.X);
             }
-            
+
             // remove negative monitors
             minY = -minY;
             for (int i = 0; i < screens.Length; i++)
@@ -152,19 +317,23 @@ namespace Nucleus.Coop
                 screen.SwapTypeBounds = RectangleUtil.Float(uiBounds.X, uiBounds.Y, uiBounds.Width * 0.1f, uiBounds.Width * 0.1f);
             }
         }
-
         public override void Initialize(UserGameInfo game, GameProfile profile)
         {
             base.Initialize(game, profile);
 
+            gamepadTimer.Enabled = true;
             canProceed = false;
+            UpdatePlayers();
+        }
 
+        private void UpdatePlayers()
+        {
             float playersWidth = this.Width * 0.5f;
 
             List<PlayerInfo> playerData = profile.PlayerData;
             int playerCount = playerData.Count;
             float playerWidth = (playersWidth * 0.9f) / (float)playerCount;
-            float playerHeight = playerWidth * 0.5625f;
+            float playerHeight = Math.Min(this.Height * 0.07f, playerWidth * 0.5625f);
             float offset = (playersWidth * 0.1f) / (float)playerCount;
             playersArea = new RectangleF(50, 100, playersWidth, playerHeight);
 
@@ -179,6 +348,7 @@ namespace Nucleus.Coop
                     info.EditBounds = GetDefaultBounds(i);
                 }
             }
+
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -606,16 +776,22 @@ namespace Nucleus.Coop
                         p.ScreenIndex = -1;
                     }
 
-
-                    canProceed = true;
-                    for (int i = 0; i < profile.PlayerData.Count; i++)
+                    if (profile.PlayerData.Count > 1)
                     {
-                        PlayerInfo player = profile.PlayerData[i];
-                        if (player.ScreenIndex == -1)
+                        canProceed = true;
+                        for (int i = 0; i < profile.PlayerData.Count; i++)
                         {
-                            canProceed = false;
-                            break;
+                            PlayerInfo player = profile.PlayerData[i];
+                            if (player.ScreenIndex == -1)
+                            {
+                                canProceed = false;
+                                break;
+                            }
                         }
+                    }
+                    else
+                    {
+                        canProceed = false;
                     }
                     CanPlayUpdated(canProceed, false);
 
@@ -627,7 +803,7 @@ namespace Nucleus.Coop
         private Rectangle GetDefaultBounds(int index)
         {
             float playersWidth = this.Width * 0.5f;
-            float playerWidth = (playersWidth * 0.9f) / (float)profile.PlayerData.Count;
+            float playerWidth = Math.Min(this.Width * 0.23f, (playersWidth * 0.9f) / (float)profile.PlayerData.Count);
             float playerHeight = playerWidth * 0.5625f;
             float offset = (playersWidth * 0.1f) / (float)profile.PlayerData.Count;
             return new Rectangle((int)(50 + ((playerWidth + offset) * index)), 100, (int)playerWidth, (int)playerHeight);
@@ -668,21 +844,35 @@ namespace Nucleus.Coop
             {
                 PlayerInfo info = players[i];
                 Rectangle s = info.EditBounds;
+                g.Clip = new Region(new RectangleF(s.X, s.Y, s.Width + 1, s.Height + 1));
 
-                if (info.ScreenIndex == -1)
-                {
-                    g.DrawRectangle(Pens.White, s);
-                }
-                else
-                {
-                    g.DrawRectangle(Pens.Green, s);
-                }
+                Rectangle gamepadRect = RectangleUtil.ScaleAndCenter(gamepadImg.Size, s);
 
                 string str = (i + 1).ToString();
                 SizeF size = g.MeasureString(str, playerFont);
                 PointF loc = RectangleUtil.Center(size, s);
-                g.DrawString((i + 1).ToString(), playerFont, Brushes.White, loc);
+                if (info.IsXInput)
+                {
+                    loc.Y -= gamepadRect.Height * 0.1f;
+                    GamepadButtonFlags flags = (GamepadButtonFlags)info.GamepadMask;
+                    g.DrawString(flags.ToString(), smallTextFont, Brushes.White, new PointF(loc.X, loc.Y + gamepadRect.Height * 0.01f));
+
+                    g.DrawString((info.GamepadId + 1).ToString(), playerFont, Brushes.White, loc);
+                    g.DrawImage(gamepadImg, gamepadRect);
+                }
+                else
+                {
+                    loc.X = s.X;
+                    g.DrawString(info.GamepadName, playerTextFont, Brushes.White, loc);
+                    g.DrawImage(genericImg, gamepadRect);
+                }
+
+                if (info.ScreenIndex != -1)
+                {
+                    g.DrawRectangle(Pens.Green, s);
+                }
             }
+            g.ResetClip();
 
             if (dragging && draggingScreen != -1)
             {

@@ -45,6 +45,12 @@ namespace Nucleus.Coop
             {
                 DriveInfo drive = drives[i];
 
+                if (drive.DriveType == DriveType.CDRom)
+                {
+                    // CDs cannot use ntfs
+                    continue;
+                }
+
                 SearchDriveInfo d = new SearchDriveInfo();
                 d.drive = drive;
 

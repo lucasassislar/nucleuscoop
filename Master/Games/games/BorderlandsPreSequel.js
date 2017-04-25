@@ -41,6 +41,7 @@ Game.LauncherTitle = "splashscreen";
 Game.SaveType = Nucleus.SaveType.INI;
 Game.SupportsPositioning = true;
 Game.HideTaskbar = true;
+Game.SupportsXInput = true;
 
 Game.Play = function () {
     Context.ModifySave = [

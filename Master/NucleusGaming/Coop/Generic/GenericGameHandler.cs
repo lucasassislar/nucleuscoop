@@ -54,7 +54,7 @@ namespace Nucleus.Gaming
             GameManager.Instance.ExecuteBackup(this.userGame.Game);
 
             Cursor.Clip = Rectangle.Empty; // guarantee were not clipping anymore
-            string backupDir = GameManager.Instance.GetBackupFolder(this.userGame.Game);
+            string backupDir = GameManager.Instance.GempTempFolder(this.userGame.Game);
 
             // delete symlink folder
             try
@@ -166,13 +166,20 @@ namespace Nucleus.Gaming
 
             Screen[] all = Screen.AllScreens;
 
-            string backupDir = GameManager.Instance.GetBackupFolder(this.userGame.Game);
-            string binFolder = Path.GetDirectoryName(userGame.ExePath);
-            string rootFolder = ReplaceCaseInsensitive(binFolder, gen.BinariesFolder, "");
+            string tempDir = GameManager.Instance.GempTempFolder(gen);
+            string exeFolder = Path.GetDirectoryName(userGame.ExePath);
+            string rootFolder = exeFolder;
+            string workingFolder = exeFolder;
+            if (!string.IsNullOrEmpty(gen.BinariesFolder))
+            {
+                rootFolder = ReplaceCaseInsensitive(exeFolder, gen.BinariesFolder, "");
+            }
+            if (!string.IsNullOrEmpty(gen.WorkingFolder))
+            {
+                workingFolder = Path.Combine(exeFolder, gen.WorkingFolder);
+            }
 
-            int gamePadId = 0;
             bool first = true;
-
             bool keyboard = false;
 
             if (gen.SupportsKeyboard)
@@ -272,28 +279,75 @@ namespace Nucleus.Gaming
                     }
                 }
 
-                // symlink the game folder
-                // find out the folder that contains the game executable
-                string root = GetRootFolder(gen.BinariesFolder);
-
-                string linkFolder = Path.Combine(backupDir, "Instance" + i);
+                // symlink the game folder (and not the bin folder, if we have one)
+                string linkFolder = Path.Combine(tempDir, "Instance" + i);
                 Directory.CreateDirectory(linkFolder);
-                int exitCode;
-                CmdUtil.LinkDirectories(rootFolder, linkFolder, out exitCode, root.ToLower());
 
-                string linkBin = Path.Combine(linkFolder, gen.BinariesFolder);
-
+                string linkBinFolder = linkFolder;
                 if (!string.IsNullOrEmpty(gen.BinariesFolder))
                 {
-                    // this needs fixing, if there are several folder to the exe and they have important files inside, this won't work! TODO
-                    Directory.CreateDirectory(linkBin);
-                    CmdUtil.LinkDirectories(binFolder, linkBin, out exitCode);
+                    linkBinFolder = Path.Combine(linkFolder, gen.BinariesFolder);
                 }
+                string exePath = Path.Combine(linkBinFolder, this.userGame.Game.ExecutableName);
 
-                string exePath = Path.Combine(linkBin, this.userGame.Game.ExecutableName);
+                List<string> dirExclusions = new List<string>();
+                if (!string.IsNullOrEmpty(gen.WorkingFolder))
+                {
+                    linkBinFolder = Path.Combine(linkFolder, gen.WorkingFolder);
+                    dirExclusions.Add(gen.WorkingFolder);
+                }
 
                 // some games have save files inside their game folder, so we need to access them inside the loop
                 jsData[Folder.InstancedGameFolder.ToString()] = linkFolder;
+
+                List<string> fileExclusions = new List<string>();
+                fileExclusions.Add("xinput");
+                fileExclusions.Add("ncoop");
+                if (!gen.SymlinkExe)
+                {
+                    fileExclusions.Add(Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()));
+                }
+
+                // additional ignored files by the generic info
+                if (gen.FileSymlinkExclusions != null)
+                {
+                    string[] symlinkExclusions = gen.FileSymlinkExclusions;
+                    for (int k = 0; k < symlinkExclusions.Length; k++)
+                    {
+                        string s = symlinkExclusions[k];
+                        // make sure it's lower case
+                        fileExclusions.Add(s.ToLower());
+                    }
+                }
+                if (gen.DirSymlinkExclusions != null)
+                {
+                    string[] symlinkExclusions = gen.DirSymlinkExclusions;
+                    for (int k = 0; k < symlinkExclusions.Length; k++)
+                    {
+                        string s = symlinkExclusions[k];
+                        // make sure it's lower case
+                        dirExclusions.Add(s.ToLower());
+                    }
+                }
+
+                string[] fileExclusionsArr = fileExclusions.ToArray();
+
+                int exitCode;
+                CmdUtil.LinkDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, true);
+
+                //CmdUtil.LinkFiles(exeFolder, linkBinFolder, out exitCode, exclusions.ToArray());
+                //for (int j = 0; j < dirExclusions.Count; j++)
+                //{
+                //    string exc = dirExclusions[j];
+                //    string from = Path.Combine(rootFolder, exc);
+                //    string to = Path.Combine(linkFolder, exc);
+                //    CmdUtil.LinkFiles(from, to, out exitCode, fileExclusions.ToArray());
+                //}
+
+                if (!gen.SymlinkExe)
+                {
+                    File.Copy(userGame.ExePath, exePath, true);
+                }
 
                 GenericContext context = gen.CreateContext(profile, player, this);
                 context.PlayerID = player.PlayerID;
@@ -304,47 +358,23 @@ namespace Nucleus.Gaming
                 player.IsKeyboardPlayer = context.IsKeyboardPlayer;
 
                 string saveFile = context.SavePath;
-                if (gen.SaveType != SaveType.None && first)
+                if (first)
                 {
-                    GameManager.Instance.BeginBackup(gen);
-                    GameManager.Instance.BackupFile(gen, saveFile);
-                }
-
-                if (context.BackupFiles != null)
-                {
-                    string[] backupFiles = context.BackupFiles;
-                    for (int j = 0; j < backupFiles.Length; j++)
+                    // only run on the first instance
+                    if (gen.SaveType != SaveType.None)
                     {
-                        GameManager.Instance.BackupFile(gen, backupFiles[j]);
+                        // backup the game's save files
+                        GameManager.Instance.BeginBackup(gen);
+                        GameManager.Instance.BackupFile(gen, saveFile);
                     }
-                }
-
-                List<string> exclusions = new List<string>();
-                exclusions.Add("xinput");
-                exclusions.Add("ncoop");
-
-                if (!context.SymlinkExe)
-                {
-                    exclusions.Add(Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()));
-                }
-
-                // additional ignored files by the generic info
-                if (context.SymlinkIgnore != null)
-                {
-                    string[] symlinkIgnore = context.SymlinkIgnore;
-                    for (int k = 0; k < symlinkIgnore.Length; k++)
-                    {
-                        string s = symlinkIgnore[k];
-                        // make sure it's lower case
-                        exclusions.Add(s.ToLower());
-                    }
-                }
-
-                CmdUtil.LinkFiles(binFolder, linkBin, out exitCode, exclusions.ToArray());
-
-                if (!context.SymlinkExe)
-                {
-                    File.Copy(userGame.ExePath, exePath, true);
+                    //if (context.BackupFiles != null)
+                    //{
+                    //    string[] backupFiles = context.BackupFiles;
+                    //    for (int j = 0; j < backupFiles.Length; j++)
+                    //    {
+                    //        GameManager.Instance.BackupFile(gen, backupFiles[j]);
+                    //    }
+                    //}
                 }
 
                 switch (context.SaveType)
@@ -383,12 +413,12 @@ namespace Nucleus.Gaming
                 if (context.CustomXinput)
                 {
                     byte[] xdata = Properties.Resources.xinput1_3;
-                    using (Stream str = File.OpenWrite(Path.Combine(linkBin, "xinput1_3.dll")))
+                    using (Stream str = File.OpenWrite(Path.Combine(linkBinFolder, "xinput1_3.dll")))
                     {
                         str.Write(xdata, 0, xdata.Length);
                     }
 
-                    string ncoopIni = Path.Combine(linkBin, "ncoop.ini");
+                    string ncoopIni = Path.Combine(linkBinFolder, "ncoop.ini");
                     using (Stream str = File.OpenWrite(ncoopIni))
                     {
                         byte[] ini = Properties.Resources.ncoop;
@@ -403,12 +433,27 @@ namespace Nucleus.Gaming
 
                     if (context.IsKeyboardPlayer)
                     {
-                        x360.IniWriteValue("Options", "PlayerOverride", "3");
+                        x360.IniWriteValue("Options", "IsKeyboard", "true");
+                    }
+
+                    if (player.IsXInput)
+                    {
+                        x360.IniWriteValue("Options", "PlayerOverride", player.GamepadId.ToString(CultureInfo.InvariantCulture));
                     }
                     else
                     {
-                        x360.IniWriteValue("Options", "PlayerOverride", gamePadId.ToString(CultureInfo.InvariantCulture));
-                        gamePadId++;
+                        Guid g = player.GamepadGuid;
+                        byte[] bytes = g.ToByteArray();
+                        UInt32 data1 = BitConverter.ToUInt32(bytes, 0);
+                        UInt16 data2 = BitConverter.ToUInt16(bytes, 4);
+                        UInt16 data3 = BitConverter.ToUInt16(bytes, 6);
+                        UInt32 data41 = BitConverter.ToUInt32(bytes, 8);
+                        UInt32 data42 = BitConverter.ToUInt32(bytes, 12);
+                        x360.IniWriteValue("Options", "Guid1", data1.ToString(CultureInfo.InvariantCulture));
+                        x360.IniWriteValue("Options", "Guid2", data2.ToString(CultureInfo.InvariantCulture));
+                        x360.IniWriteValue("Options", "Guid3", data3.ToString(CultureInfo.InvariantCulture));
+                        x360.IniWriteValue("Options", "Guid41", data41.ToString(CultureInfo.InvariantCulture));
+                        x360.IniWriteValue("Options", "Guid42", data42.ToString(CultureInfo.InvariantCulture));
                     }
                 }
 
@@ -774,11 +819,6 @@ namespace Nucleus.Gaming
                                     {
                                         Size s = data.Size;
                                         data.Setted = true;
-                                        //data.HWnd.Size = data.Size;
-                                        //data.HWnd.Location = data.Position;
-                                        //data.HWnd.TopMost = true;
-                                        //data.HWnd.Size = data.Size;
-                                        //data.HWnd.Location = data.Position;
                                     }
                                 }
                             }

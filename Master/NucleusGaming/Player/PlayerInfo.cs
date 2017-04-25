@@ -23,7 +23,11 @@ namespace Nucleus.Gaming
         public bool GotGame;
         public bool IsKeyboardPlayer;
 
-
+        public bool IsXInput;
+        public Guid GamepadGuid;
+        public int GamepadId;
+        public string GamepadName;
+        public int GamepadMask;
 
         // Serialized
 

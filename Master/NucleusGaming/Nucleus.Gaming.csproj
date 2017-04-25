@@ -62,6 +62,10 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
+      <HintPath>..\packages\SlimDX.4.0.13.44\lib\NET40\SlimDX.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -262,6 +266,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\xinput1_3.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gamepad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\generic.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

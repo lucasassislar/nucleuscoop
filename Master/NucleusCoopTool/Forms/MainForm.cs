@@ -179,7 +179,7 @@ namespace Nucleus.Coop
             stepsList = new List<UserInputControl>();
             if (currentGame.SupportsPositioning)
             {
-                stepsList.Add(countControl);
+                //stepsList.Add(countControl);
                 stepsList.Add(positionsControl);
             }
             if (currentGame.Options.Length != 0)
@@ -232,6 +232,7 @@ namespace Nucleus.Coop
 
         private void KillCurrentStep()
         {
+            currentStep?.Ended();
             this.StepPanel.Controls.Clear();
         }
 

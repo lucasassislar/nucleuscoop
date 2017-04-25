@@ -26,6 +26,7 @@ namespace Nucleus.Gaming
         private string savePath;
         private string startArguments;
         private string binariesFolder;
+        private string workingFolder;
         private bool needsSteamEmulation;
         private string launcherExe;
         private string launcherTitle;
@@ -37,18 +38,19 @@ namespace Nucleus.Gaming
         private string error;
         private bool debug;
         private double handlerInterval;
-        private string[] symlinkIgnore;
-        private string[] backupFiles;
+        private bool supportsXInput;
+        private bool supportsDirectInput;
 
-        public string[] BackupFiles
+        public bool SupportsXInput
         {
-            get { return backupFiles; }
+            get { return supportsXInput; }
+            set { supportsXInput = value; }
         }
 
-        public string[] SymlinkIgnore
+        public bool SupportsDirectInput
         {
-            get { return symlinkIgnore; }
-            set { symlinkIgnore = value; }
+            get { return supportsDirectInput; }
+            set { supportsDirectInput = value; }
         }
 
         public double HandlerInterval
@@ -180,6 +182,12 @@ namespace Nucleus.Gaming
         {
             get { return binariesFolder; }
             set { binariesFolder = value; }
+        }
+
+        public string WorkingFolder
+        {
+            get { return workingFolder; }
+            set { workingFolder = value; }
         }
 
         public bool NeedsSteamEmulation

@@ -43,6 +43,7 @@ Game.SupportsPositioning = true;
 Game.HideTaskbar = true;
 Game.HookNeeded = true;
 Game.HookGameWindowName = "Borderlands 2 (32-bit, DX9)";
+Game.SupportsXInput = true;
 
 Game.Play = function () {
     Context.ModifySave = [

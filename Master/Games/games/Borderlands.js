@@ -29,6 +29,7 @@ Game.CustomXinput = true;
 Game.StartArguments = "-windowed -NoLauncher -nostartupmovies";
 Game.HookNeeded = true;
 Game.HookGameWindowName = "Borderlands";
+Game.SupportsXInput = true;
 
 Game.Play = function () {
     if (Context.IsKeyboardPlayer) {

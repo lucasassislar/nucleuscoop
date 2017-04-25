@@ -36,6 +36,11 @@ namespace Nucleus.Gaming
             this.game = game;
         }
 
+        public virtual void Ended()
+        {
+
+        }
+
         protected virtual void CanPlayUpdated(bool canPlay, bool autoProceed)
         {
             if (OnCanPlayUpdated != null)

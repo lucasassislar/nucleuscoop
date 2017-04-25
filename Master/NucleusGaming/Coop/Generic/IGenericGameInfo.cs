@@ -11,11 +11,12 @@ namespace Nucleus.Gaming
         string SavePath { get; }
 
         double HandlerInterval { get; }
-        //Dictionary<string, string> ModifySave { get; }
 
         string StartArguments { get; }
 
         string BinariesFolder { get; }
+        string WorkingFolder { get; }
+
         bool NeedsSteamEmulation { get; }
 
         string SteamID { get; }
@@ -24,6 +25,8 @@ namespace Nucleus.Gaming
 
         string LauncherExe { get; }
         string LauncherTitle { get; }
-        bool SymlinkExe { get; }
+
+        string[] FileSymlinkExclusions { get; }
+        //bool SymlinkExe { get; }
     }
 }

@@ -25,8 +25,17 @@ namespace Nucleus.Gaming
         public SourceCfgFile(string filePath)
         {
             path = filePath;
-            rawData = File.ReadAllText(path);
-            backupData = string.Copy(rawData);
+
+            if (File.Exists(path))
+            {
+                rawData = File.ReadAllText(path);
+                backupData = string.Copy(rawData);
+            }
+            else
+            {
+                rawData = "";
+                backupData = "";
+            }
         }
 
         /// <summary>
@@ -39,7 +48,16 @@ namespace Nucleus.Gaming
                 File.Delete(path);
             }
 
-            File.WriteAllText(path, rawData);
+            using (Stream str = File.OpenWrite(path))
+            {
+                using (StreamWriter writer = new StreamWriter(str))
+                {
+                    writer.Write(rawData);
+
+                    writer.Flush();
+                    writer.Close();
+                }
+            }
         }
 
         /// <summary>

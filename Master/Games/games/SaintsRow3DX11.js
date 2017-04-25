@@ -31,6 +31,7 @@ Game.StartArguments = "";
 Game.HookNeeded = true;
 Game.HookGameWindowName = "Saints Row: The Third";
 Game.LauncherExe = "game_launcher.exe";
+Game.SupportsXInput = true;
 
 Game.Play = function () {
     Context.ModifySave = [

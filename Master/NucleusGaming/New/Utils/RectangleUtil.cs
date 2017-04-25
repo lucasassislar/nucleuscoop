@@ -34,6 +34,35 @@ namespace Nucleus.Gaming
             return r;
         }
 
+        public static Rectangle ScaleAndCenter(Size srcSize, Rectangle parent)
+        {
+            float width = srcSize.Width;
+            float height = srcSize.Height;
+
+            float pwidth = parent.Width;
+            float pheight = parent.Height;
+
+            float pratio = pwidth / pheight;
+            float ratio = width / height;
+
+            if (pratio > ratio)
+            {
+                height = pheight;
+                width = pheight * ratio;
+            }
+            else
+            {
+                width = pwidth;
+                height = pwidth * ( 1 / ratio);
+            }
+
+            return new Rectangle(
+                (int)((parent.Width / 2.0f) - (width / 2.0f)) + parent.X,
+                (int)((parent.Height / 2.0f) - (height / 2.0f)) + parent.Y,
+                (int)width,
+                (int)height);
+        }
+
         public static Rectangle Center(Rectangle rect, Rectangle parent)
         {
             float rectWidth = rect.Width / 2.0f;
