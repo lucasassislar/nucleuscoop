@@ -13,11 +13,19 @@ namespace Nucleus.Gaming
         private GenericGameInfo game;
         private List<GameProfile> profiles;
         private string exePath;
+        private string gameGuid = "";
 
         [JsonIgnore]
         public GenericGameInfo Game
         {
-            get { return game; }
+            get
+            {
+                if (game == null)
+                {
+                    GameManager.Instance.Games.TryGetValue(gameGuid, out game);
+                }
+                return game;
+            }
         }
 
         [JsonIgnore]
@@ -29,11 +37,8 @@ namespace Nucleus.Gaming
 
         public string GameGuid
         {
-            get { return game.GUID; }
-            set
-            {
-                GameManager.Instance.Games.TryGetValue(value, out game);
-            }
+            get { return gameGuid; }
+            set { gameGuid = value; }
         }
 
         public List<GameProfile> Profiles
@@ -65,6 +70,8 @@ namespace Nucleus.Gaming
         public void InitializeDefault(GenericGameInfo game, string exePath)
         {
             this.game = game;
+            gameGuid = game.GUID;
+
             this.exePath = exePath;
             this.profiles = new List<GameProfile>();
         }

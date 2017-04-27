@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameList));
             this.listGames = new Nucleus.Gaming.ControlListBox();
             this.btnOk = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -67,6 +68,7 @@
             this.ClientSize = new System.Drawing.Size(420, 672);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.listGames);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.Name = "GameList";
             this.Text = "Split Play PC";

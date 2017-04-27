@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace Nucleus.Gaming
         private string description;
         private object value;
         private string key;
+        private IList list;
 
         /// <summary>
         /// The name of the variable
@@ -48,17 +50,32 @@ namespace Nucleus.Gaming
             get { return key; }
         }
 
-        public GameOption(string name, string desc, object value, string key)
+        public IList List { get { return list; } }
+        public bool Hidden { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="desc"></param>
+        /// <param name="value"></param>
+        /// <param name="key"></param>
+        public GameOption(string name, string desc, string key, object value)
         {
             this.name = name;
             this.description = desc;
             this.value = value;
             this.key = key;
+            if (value is IList)
+            {
+                this.list = (IList)value;
+                this.value = 0;
+            }
         }
 
         public GameOption Instantiate()
         {
-            return new GameOption(this.Name, this.Description, this.Value, this.Key);
+            return new GameOption(this.Name, this.Description, this.Key, this.Value);
         }
 
         public override string ToString()

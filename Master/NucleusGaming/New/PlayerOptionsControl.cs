@@ -17,6 +17,8 @@ namespace Nucleus.Gaming
     public partial class PlayerOptionsControl : UserInputControl
     {
         private ControlListBox list;
+        private Font nameFont;
+        private Font detailsFont;
 
         public override bool CanProceed
         {
@@ -35,6 +37,8 @@ namespace Nucleus.Gaming
 
         public PlayerOptionsControl()
         {
+            nameFont = new Font("Segoe UI", 18);
+            detailsFont = new Font("Segoe UI", 12);
         }
 
         public override void Initialize(UserGameInfo game, GameProfile profile)
@@ -51,6 +55,8 @@ namespace Nucleus.Gaming
             for (int j = 0; j < options.Length; j++)
             {
                 GameOption opt = options[j];
+                if (opt.Hidden)
+                { continue; }
 
                 object val;
                 if (!vals.TryGetValue(opt.Key, out val))
@@ -58,15 +64,51 @@ namespace Nucleus.Gaming
                     continue;
                 }
 
-                CoolListControl cool = new CoolListControl();
-                cool.Text = opt.Name;
-                cool.Description = opt.Description;
+                CoolListControl cool = new CoolListControl(false);
+                cool.Title = opt.Name;
+                cool.Details = opt.Description;
                 cool.Width = this.Width;
+                cool.TitleFont = nameFont;
+                cool.DetailsFont = detailsFont;
 
                 list.Controls.Add(cool);
 
                 // Check the value type and add a control for it
-                if (opt.Value is bool)
+                if (opt.Value is Enum || opt.List != null)
+                {
+                    ComboBox box = new ComboBox();
+                    int border = 10;
+
+                    object value;
+                    IList values;
+                    if (opt.Value is Enum)
+                    {
+                        value = (Enum)val;
+                        values = Enum.GetValues(value.GetType());
+                    }
+                    else
+                    {
+                        value = opt.List[0];
+                        values = opt.List;
+                    }
+
+                    for (int i = 0; i < values.Count; i++)
+                    {
+                        box.Items.Add(values[i]);
+                    }
+                    box.SelectedIndex = box.Items.IndexOf(value);
+
+                    box.Width = wid;
+                    box.Height = 40;
+                    box.Left = cool.Width - box.Width - border;
+                    box.Top = (cool.Height / 2) - (box.Height / 2);
+                    box.Anchor = AnchorStyles.Right;
+                    cool.Controls.Add(box);
+
+                    box.Tag = opt;
+                    box.SelectedValueChanged += box_SelectedValueChanged;
+                }
+                else if (opt.Value is bool)
                 {
                     SizeableCheckbox box = new SizeableCheckbox();
                     int border = 10;
@@ -77,7 +119,7 @@ namespace Nucleus.Gaming
                     box.Left = cool.Width - box.Width - border;
                     box.Top = (cool.Height / 2) - (box.Height / 2);
                     box.Anchor = AnchorStyles.Right;
-                    cool.AddControl(box, false);
+                    cool.Controls.Add(box);
 
                     box.Tag = opt;
                     box.CheckedChanged += box_CheckedChanged;
@@ -100,33 +142,10 @@ namespace Nucleus.Gaming
                     num.Left = cool.Width - num.Width - border;
                     num.Top = (cool.Height / 2) - (num.Height / 2);
                     num.Anchor = AnchorStyles.Right;
-                    cool.AddControl(num, false);
+                    cool.Controls.Add(num);
 
                     num.Tag = opt;
                     num.ValueChanged += num_ValueChanged;
-                }
-                else if (opt.Value is Enum)
-                {
-                    ComboBox box = new ComboBox();
-                    int border = 10;
-
-                    Enum value = (Enum)val;
-                    Array values = Enum.GetValues(value.GetType());
-                    for (int i = 0; i < values.Length; i++)
-                    {
-                        box.Items.Add(((IList)values)[i]);
-                    }
-                    box.SelectedIndex = box.Items.IndexOf(value);
-
-                    box.Width = wid;
-                    box.Height = 40;
-                    box.Left = cool.Width - box.Width - border;
-                    box.Top = (cool.Height / 2) - (box.Height / 2);
-                    box.Anchor = AnchorStyles.Right;
-                    cool.AddControl(box, false);
-
-                    box.Tag = opt;
-                    box.SelectedValueChanged += box_SelectedValueChanged;
                 }
                 else if (opt.Value is GameOptionValue)
                 {
@@ -148,7 +167,7 @@ namespace Nucleus.Gaming
                     box.Left = cool.Width - box.Width - border;
                     box.Top = (cool.Height / 2) - (box.Height / 2);
                     box.Anchor = AnchorStyles.Right;
-                    cool.AddControl(box, false);
+                    cool.Controls.Add(box);
 
                     box.Tag = opt;
                     box.SelectedValueChanged += box_SelectedValueChanged;

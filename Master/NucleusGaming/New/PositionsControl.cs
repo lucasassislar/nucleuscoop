@@ -70,6 +70,8 @@ namespace Nucleus.Coop
 
         private void Initialize()
         {
+            this.BackColor = Color.FromArgb(40, 40, 40);
+
             dinput = new DirectInput();
             controllers = new List<Controller>();
             for (int i = 0; i < 4; i++)
@@ -340,6 +342,10 @@ namespace Nucleus.Coop
             UpdateScreens();
 
             canProceed = true;
+            if (playerData.Count == 0)
+            {
+                canProceed = false;
+            }
             for (int i = 0; i < playerData.Count; i++)
             {
                 PlayerInfo info = playerData[i];

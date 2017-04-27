@@ -87,9 +87,6 @@
     <Compile Include="Controls\ControlListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ControlListBox.Designer.cs">
-      <DependentUpon>ControlListBox.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\CoolCheckbox.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -98,9 +95,6 @@
     </Compile>
     <Compile Include="Controls\CoolListControl.cs">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\CoolListControl.Designer.cs">
-      <DependentUpon>CoolListControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Font2.cs" />
     <Compile Include="Controls\HotkeyListener.cs">
@@ -139,11 +133,17 @@
     <Compile Include="Coop\Generic\Save\CfgSaveInfo.cs" />
     <Compile Include="Coop\Generic\Save\IniSaveInfo.cs" />
     <Compile Include="Coop\Generic\SaveInfo.cs" />
+    <Compile Include="Coop\Generic\Step\CustomStep.cs" />
+    <Compile Include="Coop\Generic\Step\CustomStepType.cs" />
     <Compile Include="Coop\Generic\XInputInfo.cs" />
     <Compile Include="Coop\Generic\XInputManager.cs" />
+    <Compile Include="Coop\Javascript\JSUserInputControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Globals.cs" />
     <Compile Include="Interop\User32\Structures\Display.cs" />
     <Compile Include="Interop\User32\C\Rect.cs" />
+    <Compile Include="IO\Content\ContentManager.cs" />
     <Compile Include="IO\Logging\ILogNode.cs" />
     <Compile Include="IO\SourceCfgFile.cs" />
     <Compile Include="Coop\IGameHandler.cs" />
@@ -221,9 +221,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Controls\CoolCheckbox.resx">
       <DependentUpon>CoolCheckbox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\CoolListControl.resx">
-      <DependentUpon>CoolListControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\PictureButton.resx">
       <DependentUpon>PictureButton.cs</DependentUpon>

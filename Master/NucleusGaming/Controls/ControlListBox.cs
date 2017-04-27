@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 namespace Nucleus.Gaming
 {
-    public partial class ControlListBox : Panel
+    public class ControlListBox : Panel
     {
         private int totalHeight;
         private int border = 1;
@@ -27,8 +27,6 @@ namespace Nucleus.Gaming
 
         public ControlListBox()
         {
-            InitializeComponent();
-
             this.AutoScroll = true;
         }
 
@@ -61,17 +59,30 @@ namespace Nucleus.Gaming
             base.OnScroll(se);
         }
 
+        private bool updatingSize;
         public void UpdateSizes()
         {
+            if (updatingSize)
+            {
+                return;
+            }
+
+            updatingSize = true;
+            
             totalHeight = 0;
             for (int i = 0; i < this.Controls.Count; i++)
             {
                 var con = Controls[i];
-                con.Width = this.Width;
+                con.Width = this.Width - SystemInformation.VerticalScrollBarWidth;
 
                 con.Location = new Point(0, totalHeight);
                 totalHeight += con.Height + border;
+
+                con.Invalidate();
             }
+
+
+            updatingSize = false;
         }
 
         protected override void OnControlAdded(ControlEventArgs e)
@@ -84,8 +95,8 @@ namespace Nucleus.Gaming
                 c.Click += new EventHandler(c_Click);
                 if (c is IHighlightControl)
                 {
-                    c.MouseMove += new MouseEventHandler(c_MouseMove);
-                    c.MouseLeave += new EventHandler(c_MouseLeave);
+                    //c.MouseMove += new MouseEventHandler(c_MouseMove);
+                    //c.MouseLeave += new EventHandler(c_MouseLeave);
                 }
 
                 int index = this.Controls.IndexOf(c);
@@ -143,11 +154,11 @@ namespace Nucleus.Gaming
                     if (parent == c)
                     {
                         // highlight
-                        high.Highlight();
+                        //high.Highlight();
                     }
                     else
                     {
-                        high.Darken();
+                        //high.Darken();
                     }
                 }
             }

@@ -1,10 +1,66 @@
-﻿Game.Options = [
-    new Nucleus.GameOption(
-        "Keyboard Player",
-        "The player that will be playing on keyboard and mouse (if any)",
-        Nucleus.KeyboardPlayer.NoKeyboardPlayer,
-        "KeyboardPlayer"),
+﻿// List for all the maps we have a picture for/know the name and command
+var listMaps = [
+    { Name: "Dead Center", Details: "Hotel", Console: "c1m1_hotel", ImageUrl: "deadcenter.jpg" },
+    { Name: "Dead Center", Details: "Streets", Console: "c1m2_streets", ImageUrl: "deadcenter.jpg" },
+    { Name: "Dead Center", Details: "Mall", Console: "c1m3_mall", ImageUrl: "deadcenter.jpg" },
+    { Name: "Dead Center", Details: "Atrium", Console: "c1m4_atrium", ImageUrl: "deadcenter.jpg" },
+    { Name: "The Passing", Details: "Riverbank", Console: "c6m1_riverbank", ImageUrl: "" },
+    { Name: "The Passing", Details: "Underground", Console: "c6m2_bedlam", ImageUrl: "" },
+    { Name: "The Passing", Details: "Port", Console: "c6m1_port", ImageUrl: "" },
+    { Name: "Dark Carnival", Details: "Atrium", Console: "c2m1_highway", ImageUrl: "darkcarnival.jpg" },
+    { Name: "Dark Carnival", Details: "Atrium", Console: "c2m2_fairgrounds", ImageUrl: "darkcarnival.jpg" },
+    { Name: "Dark Carnival", Details: "Atrium", Console: "c2m3_coaster", ImageUrl: "darkcarnival.jpg" },
+    { Name: "Dark Carnival", Details: "Atrium", Console: "c2m4_barns", ImageUrl: "darkcarnival.jpg" },
+    { Name: "Dark Carnival", Details: "Atrium", Console: "c2m5_concert", ImageUrl: "darkcarnival.jpg" },
+    { Name: "Swamp Fever", Details: "Atrium", Console: "c3m1_plankcountry", ImageUrl: "swampfever.jpg" },
+    { Name: "Swamp Fever", Details: "Atrium", Console: "c3m2_swamp", ImageUrl: "swampfever.jpg" },
+    { Name: "Swamp Fever", Details: "Atrium", Console: "c3m3_shantytown", ImageUrl: "swampfever.jpg" },
+    { Name: "Swamp Fever", Details: "Atrium", Console: "c3m4_plantation", ImageUrl: "swampfever.jpg" },
+    { Name: "Hard Rain", Details: "Atrium", Console: "c4m1_milltown_a", ImageUrl: "hardrain.jpg" },
+    { Name: "Hard Rain", Details: "Atrium", Console: "c4m2_sugarmill_a", ImageUrl: "hardrain.jpg" },
+    { Name: "Hard Rain", Details: "Atrium", Console: "c4m3_sugarmill_b", ImageUrl: "hardrain.jpg" },
+    { Name: "Hard Rain", Details: "Atrium", Console: "c4m4_milltown_b", ImageUrl: "hardrain.jpg" },
+    { Name: "Hard Rain", Details: "Atrium", Console: "c4m5_milltown_escape", ImageUrl: "hardrain.jpg" },
+    { Name: "The Parish", Details: "Atrium", Console: "c5m1_waterfront", ImageUrl: "theparish.jpg" },
+    { Name: "The Parish", Details: "Atrium", Console: "c5m2_park", ImageUrl: "theparish.jpg" },
+    { Name: "The Parish", Details: "Atrium", Console: "c5m3_cemetery", ImageUrl: "theparish.jpg" },
+    { Name: "The Parish", Details: "Atrium", Console: "c5m4_quarter", ImageUrl: "theparish.jpg" },
+    { Name: "The Parish", Details: "Atrium", Console: "c5m5_bridge", ImageUrl: "theparish.jpg" },
+    { Name: "No Map (unsupported)", Details: "None", Console: "none", ImageUrl: "" }
 ];
+// List of all the game modes
+var listGameModes = [
+    "campaign",
+    "scavenge",
+    "realism",
+    "survival",
+    "versus",
+    "mutation",
+    "none"
+];
+
+// List all our game options before trying to write code that uses them
+Game.Options = [
+    // these 2 are going to be shown as steps
+    new Nucleus.GameOption(
+        "Map", "The map the game will use",
+        "MapID", listMaps),
+    new Nucleus.GameOption(
+        "Game Mode", "The game mode",
+        "GameMode", listGameModes),
+    new Nucleus.GameOption(
+        "Keyboard Player", "The player that will be playing on keyboard and mouse (if any)",
+        "KeyboardPlayer", Nucleus.KeyboardPlayer.NoKeyboardPlayer),
+];
+
+var MapStep = Game.ShowOptionAsStep("MapID", true, "Choose a Campaign");
+// This doesn't work yet
+//var CustomMapStep = Game.ShowOptionAsStep("CustomMap", false);
+//CustomMapStep.UpdateRequired = function () {
+//    CustomMapStep.Required = (Context.Options["MapID"].Value.Console == "custom");
+//};
+
+
 Game.KillMutex = [ // 2nd instance won't launch without these removed
     "hl2_singleton_mutex",
     "steam_singleton_mutext"
@@ -12,7 +68,7 @@ Game.KillMutex = [ // 2nd instance won't launch without these removed
 Game.DirSymlinkExclusions = [
     "left4dead2\\cfg",
 ];
-Game.FileSymlinkExclusions =[
+Game.FileSymlinkExclusions = [
     "autoexec.cfg",
     "video.txt"
 ];
@@ -33,8 +89,6 @@ Game.SaveType = Nucleus.SaveType.CFG;
 Game.SupportsPositioning = true;
 Game.HideTaskbar = false;
 Game.WorkingFolder = "bin";
-// -insecure will get enabled anyway, but we add it just to make sure;
-// omitting it could result in VAC bans
 Game.StartArguments = "-novid -insecure -window";
 Game.XInput.DInputEnabled = true;
 Game.XInput.XInputEnabled = false;
@@ -71,12 +125,15 @@ Game.Play = function () {
         lines.push("exec 360controller.cfg");
     }
 
-    if (Context.PlayerID != 0) {
-        lines.push("bind \"BACK\" \"connect 192.168.15.10\"");
+    if (Context.PlayerID == 0) {
+        var map = Context.Options["MapID"].Console;
+        if (map != "")
+        {
+            lines.push("map " + map);
+        }
+    } else {
+        lines.push("connect 192.168.15.10");
     }
 
-    // To play the game:
-    // Open console on first player, type "map nameOfMapHere gameType"
-    // Open console on other players, press Back
     Context.WriteTextFile(autoExec, lines);
 };

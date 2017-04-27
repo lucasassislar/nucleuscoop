@@ -268,7 +268,7 @@ namespace Nucleus.Gaming
 #endif
         }
 
-        private string GetJsGamesPath()
+        public string GetJsGamesPath()
         {
             string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             return Path.Combine(local, "games");
@@ -281,6 +281,10 @@ namespace Nucleus.Gaming
 
         public int Compare(UserGameInfo x, UserGameInfo y)
         {
+            if (x.Game == null || y.Game == null)
+            {
+                return 0;
+            }
             return x.Game.GameName.CompareTo(y.Game.GameName);
         }
 
@@ -397,6 +401,19 @@ namespace Nucleus.Gaming
                                 // json doesn't save empty lists, and user didn't add any game
                                 user.InitializeDefault();
                             }
+                            else
+                            {
+                                // delete invalid games
+                                for (int i = 0; i < user.Games.Count; i++)
+                                {
+                                    UserGameInfo gameInfo = user.Games[i];
+                                    if (gameInfo.Game == null)
+                                    {
+                                        user.Games.RemoveAt(i);
+                                        i--;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -471,7 +488,7 @@ namespace Nucleus.Gaming
                 FileInfo f = files[i];
                 using (Stream str = f.OpenRead())
                 {
-                    GenericGameInfo info = new GenericGameInfo(str);
+                    GenericGameInfo info = new GenericGameInfo(f.Name, str);
                     LogManager.Log("Found game info: " + info.GameName);
 
                     games.Add(info.GUID, info);

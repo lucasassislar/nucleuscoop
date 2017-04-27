@@ -16,6 +16,7 @@ namespace Nucleus.Coop
     {
         private int currentStepIndex;
         private bool formClosing;
+        private ContentManager content;
         private IGameHandler handler;
 
         private GameManager gameManager;
@@ -31,9 +32,9 @@ namespace Nucleus.Coop
         private List<UserInputControl> stepsList;
         private UserInputControl currentStep;
 
-        private PlayerCountControl countControl;
         private PositionsControl positionsControl;
         private PlayerOptionsControl optionsControl;
+        private JSUserInputControl jsControl;
 
         private Thread handlerThread;
 
@@ -44,13 +45,13 @@ namespace Nucleus.Coop
             controls = new Dictionary<UserGameInfo, GameControl>();
             gameManager = new GameManager();
 
-            countControl = new PlayerCountControl();
             positionsControl = new PositionsControl();
             optionsControl = new PlayerOptionsControl();
+            jsControl = new JSUserInputControl();
 
-            countControl.OnCanPlayUpdated += StepCanPlay;
             positionsControl.OnCanPlayUpdated += StepCanPlay;
             optionsControl.OnCanPlayUpdated += StepCanPlay;
+            jsControl.OnCanPlayUpdated += StepCanPlay;
 
             // selects the list of games, so the buttons look equal
             list_Games.Select();
@@ -160,34 +161,17 @@ namespace Nucleus.Coop
             }
 
             StepPanel.Visible = true;
-            btnBack.Visible = true;
-            btn_Play.Visible = true;
 
             currentGame = currentGameInfo.Game;
 
             btn_Play.Enabled = false;
 
-            if (!currentGame.SupportsPositioning &&
-                currentGame.Options.Length == 0)
-            {
-                // can play
-                btn_Play.Enabled = true;
-
-                // remove the current step if there's one
-                KillCurrentStep();
-
-                btnBack.Visible = false;
-            }
-
             stepsList = new List<UserInputControl>();
-            if (currentGame.SupportsPositioning)
+            stepsList.Add(positionsControl);
+            stepsList.Add(optionsControl);
+            for (int i = 0; i < currentGame.CustomSteps.Count; i++)
             {
-                //stepsList.Add(countControl);
-                stepsList.Add(positionsControl);
-            }
-            if (currentGame.Options.Length != 0)
-            {
-                stepsList.Add(optionsControl);
+                stepsList.Add(jsControl);
             }
 
             currentProfile = new GameProfile();
@@ -196,6 +180,13 @@ namespace Nucleus.Coop
             this.label_GameTitle.Text = currentGame.GameName;
             this.pic_Game.Image = currentGameInfo.Icon;
 
+            if (content != null)
+            {
+                content.Dispose();
+            }
+
+            // contnet manager is shared withing the same game
+            content = new ContentManager(currentGame);
             GoToStep(0);
         }
 
@@ -208,7 +199,7 @@ namespace Nucleus.Coop
         {
             if (!canProceed)
             {
-                btn_Next.Visible = false;
+                btn_Next.Enabled = false;
                 return;
             }
 
@@ -224,7 +215,7 @@ namespace Nucleus.Coop
             }
             else
             {
-                btn_Next.Visible = true;
+                btn_Next.Enabled = true;
             }
         }
 
@@ -247,6 +238,32 @@ namespace Nucleus.Coop
                 return;
             }
 
+           
+
+            if (step >= 2)
+            {
+                // Custom steps
+                List<CustomStep> customSteps = currentGame.CustomSteps;
+                int customStepIndex = step - 2;
+                CustomStep customStep = customSteps[0];
+
+                if (customStep.UpdateRequired != null)
+                {
+                    customStep.UpdateRequired();
+                }
+
+                if (customStep.Required)
+                {
+                    jsControl.CustomStep = customStep;
+                    jsControl.Content = content;
+                }
+                else
+                {
+                    EnablePlay();
+                    return;
+                }
+            }
+
             KillCurrentStep();
 
             currentStepIndex = step;
@@ -256,7 +273,7 @@ namespace Nucleus.Coop
 
             currentStep.Initialize(currentGameInfo, currentProfile);
 
-            btn_Next.Visible = currentStep.CanProceed && step != stepsList.Count - 1;
+            btn_Next.Enabled = currentStep.CanProceed && step != stepsList.Count - 1;
 
             StepPanel.Controls.Add(currentStep);
             currentStep.Size = StepPanel.Size; // for some reason this line must exist or the PositionsControl get messed up

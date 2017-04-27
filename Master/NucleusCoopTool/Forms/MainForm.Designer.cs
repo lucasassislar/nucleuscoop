@@ -49,7 +49,7 @@
             this.StepPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.StepPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.StepPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.StepPanel.Location = new System.Drawing.Point(254, 101);
             this.StepPanel.Name = "StepPanel";
             this.StepPanel.Size = new System.Drawing.Size(788, 588);
@@ -92,6 +92,7 @@
             this.list_Games.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.list_Games.AutoScroll = true;
+            this.list_Games.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.list_Games.Border = 1;
             this.list_Games.Location = new System.Drawing.Point(12, 12);
             this.list_Games.Name = "list_Games";
@@ -113,6 +114,7 @@
             // btn_Play
             // 
             this.btn_Play.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Play.Enabled = false;
             this.btn_Play.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btn_Play.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Play.Location = new System.Drawing.Point(945, 63);
@@ -121,7 +123,6 @@
             this.btn_Play.TabIndex = 4;
             this.btn_Play.Text = "P L A Y";
             this.btn_Play.UseVisualStyleBackColor = true;
-            this.btn_Play.Visible = false;
             this.btn_Play.Click += new System.EventHandler(this.btn_Play_Click);
             // 
             // btnSearch
@@ -139,16 +140,16 @@
             // btnBack
             // 
             this.btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBack.Enabled = false;
             this.btnBack.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBack.Location = new System.Drawing.Point(906, 63);
+            this.btnBack.Location = new System.Drawing.Point(868, 63);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(33, 35);
             this.btnBack.TabIndex = 9;
             this.btnBack.Text = "<";
             this.btnBack.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.btnBack.UseVisualStyleBackColor = true;
-            this.btnBack.Visible = false;
             this.btnBack.Click += new System.EventHandler(this.arrow_Back_Click);
             // 
             // btnAutoSearch
@@ -166,15 +167,16 @@
             // btn_Next
             // 
             this.btn_Next.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Next.Enabled = false;
             this.btn_Next.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btn_Next.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Next.Location = new System.Drawing.Point(945, 101);
+            this.btn_Next.Location = new System.Drawing.Point(907, 63);
             this.btn_Next.Name = "btn_Next";
-            this.btn_Next.Size = new System.Drawing.Size(97, 35);
+            this.btn_Next.Size = new System.Drawing.Size(33, 35);
             this.btn_Next.TabIndex = 11;
-            this.btn_Next.Text = "N E X T";
+            this.btn_Next.Text = ">";
+            this.btn_Next.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.btn_Next.UseVisualStyleBackColor = true;
-            this.btn_Next.Visible = false;
             this.btn_Next.Click += new System.EventHandler(this.btnNext_Click);
             // 
             // MainForm

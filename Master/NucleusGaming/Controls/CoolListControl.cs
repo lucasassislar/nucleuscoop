@@ -11,33 +11,57 @@ using Nucleus.Gaming;
 
 namespace SplitTool.Controls
 {
-    public partial class CoolListControl : UserControl, IHighlightControl
+    public class CoolListControl : UserControl
     {
-        public string Text
+        private Label titleLabel;
+        protected Label descLabel;
+
+        protected int defaultHeight = 72;
+        protected int expandedHeight = 156;
+
+        public Font TitleFont
         {
-            get { return label1.Text; }
-            set { this.label1.Text = value; }
+            get { return titleLabel.Font; }
+            set { titleLabel.Font = value; }
         }
-        protected string description;
-        public string Description
+        public Font DetailsFont
         {
-            get { return description; }
-            set { description = value; }
+            get { return descLabel.Font; }
+            set { descLabel.Font = value; }
         }
 
-        public CoolListControl()
+        public string Title
         {
-            InitializeComponent();
-            connectMouse = true;
-            this.Height = defaultHeight;
+            get { return titleLabel.Text; }
+            set { this.titleLabel.Text = value; }
         }
 
-        protected bool connectMouse;
-        public void AddControl(Control c, bool connectMouse)
+        public string Details
         {
-            this.connectMouse = connectMouse;
-            this.Controls.Add(c);
-            connectMouse = true;
+            get { return descLabel.Text; }
+            set { descLabel.Text = value; }
+        }
+
+        public bool EnableHighlighting { get; private set; }
+        public object Data { get; set; }
+        public event Action<object> OnSelected;
+
+        public CoolListControl(bool enableHightlighting)
+        {
+            EnableHighlighting = enableHightlighting;
+
+            Size = new Size(400, 120);
+            BackColor = Color.FromArgb(30, 30, 30);
+
+            titleLabel = new Label();
+            titleLabel.Location = new Point(10, 10);
+            titleLabel.AutoSize = true;
+            Controls.Add(titleLabel);
+
+            descLabel = new Label();
+            descLabel.Location = new Point(10, 50);
+            descLabel.AutoSize = true;
+            Controls.Add(descLabel);
         }
 
         protected override void OnControlAdded(ControlEventArgs e)
@@ -45,93 +69,63 @@ namespace SplitTool.Controls
             base.OnControlAdded(e);
 
             Control c = e.Control;
-            if (connectMouse)
+            c.Click += C_Click;
+
+            if (EnableHighlighting)
             {
-                c.MouseMove += c_MouseMove;
-                c.MouseLeave += c_MouseLeave;
-                c.MouseDown += c_MouseDown;
+                c.MouseEnter += C_MouseEnter;
+                c.MouseLeave += C_MouseLeave;
             }
         }
 
-        void c_MouseDown(object sender, MouseEventArgs e)
+        private void C_MouseEnter(object sender, EventArgs e)
         {
-            this.OnMouseDown(e);
+            OnMouseEnter(e);
         }
 
-        void c_MouseLeave(object sender, EventArgs e)
+        private void C_MouseLeave(object sender, EventArgs e)
         {
-            this.OnMouseLeave(e);
+            OnMouseLeave(e);
         }
 
-        void c_MouseMove(object sender, MouseEventArgs e)
+        private void C_Click(object sender, EventArgs e)
         {
-            this.OnMouseMove(e);
+            OnClick(e);
         }
 
-        protected int defaultHeight = 72;
-        protected int expandedHeight = 156;
-        protected bool expanded;
-        private void CoolListControl_MouseDown(object sender, MouseEventArgs e)
+        protected override void OnLostFocus(EventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            base.OnLostFocus(e);
+            BackColor = Color.FromArgb(30, 30, 30);
+        }
+
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            base.OnMouseEnter(e);
+            if (!ContainsFocus)
             {
-                expanded = !expanded;
-                if (expanded)
-                {
-                    Expand();
-                }
-                else
-                {
-                    Dispand();
-                }
+                BackColor = Color.FromArgb(60, 60, 60);
             }
         }
 
-        protected void Dispand()
+        protected override void OnMouseLeave(EventArgs e)
         {
-            //?? what's the contrary of expand XD
-            this.Height = defaultHeight;
-            
-            this.Controls.Remove(descLabel);
-        }
-        protected void Expand()
-        {
-            this.Height = expandedHeight;
-
-            if (descLabel == null)
+            base.OnMouseLeave(e);
+            if (!ContainsFocus)
             {
-                int offset = 10;
-                descLabel = new Label();
-                descLabel.Location = new Point(offset, (int)(expandedHeight * 0.425f));
-                descLabel.Text = description;
-                descLabel.Width = this.Width - (offset*2);
-                descLabel.AutoSize = true;
-                descLabel.MaximumSize = new Size(descLabel.Width, this.Height - descLabel.Location.Y);
+                BackColor = Color.FromArgb(30, 30, 30);
             }
-            this.Controls.Add(descLabel);
         }
 
-        protected Label descLabel;
-
-        public void Highlight()
+        protected override void OnClick(EventArgs e)
         {
-            this.BackColor = Color.FromArgb(25, 25, 25);
-        }
+            base.OnClick(e);
 
-        public void SoftHighlight()
-        {
-            this.BackColor = Color.FromArgb(40,40,40);
-        }
-
-        public void Darken()
-        {
-            this.BackColor = Color.FromArgb(50, 50, 50);
-
-            if (expanded)
+            BackColor = Color.FromArgb(80, 80, 80);
+            if (OnSelected != null)
             {
-                expanded = !expanded;
+                OnSelected(Data);
             }
-            Dispand();
         }
     }
 }

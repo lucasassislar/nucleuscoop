@@ -45,27 +45,18 @@ namespace Nucleus.Gaming
         public string LauncherExe;
         public string LauncherTitle;
         public Action Play;
+        public List<CustomStep> CustomSteps = new List<CustomStep>();
+        public string JsFileName;
 
         public Type HandlerType
         {
             get { return typeof(GenericGameHandler); }
         }
 
-        public Type[] AdditionalSteps
+        public GenericGameInfo(string fileName, Stream str)
         {
-            get
-            {
-                return new Type[]
-                {
-                    typeof(PlayerCountControl),
-                    typeof(PositionsControl),
-                    typeof(PlayerOptionsControl)
-                };
-            }
-        }
+            JsFileName = fileName;
 
-        public GenericGameInfo(Stream str)
-        {
             StreamReader reader = new StreamReader(str);
             js = reader.ReadToEnd();
 
@@ -76,6 +67,21 @@ namespace Nucleus.Gaming
             engine.Execute("var Nucleus = importNamespace('Nucleus.Gaming');");
             engine.Execute(js);
             engine.SetValue("Game", (object)null);
+        }
+
+
+        public CustomStep ShowOptionAsStep(string optionKey, bool required, string title)
+        {
+            GameOption option = Options.First(c => c.Key == optionKey);
+            option.Hidden = true;
+
+            CustomStep step = new CustomStep();
+            step.Option = option;
+            step.Required = required;
+            step.Title = title;
+
+            CustomSteps.Add(step);
+            return step;
         }
 
         public void PrePlay(GenericContext context, GenericGameHandler handler, PlayerInfo player)

@@ -654,14 +654,18 @@ namespace Nucleus.Gaming
                             {
                                 uint lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE);
                                 lStyle = lStyle & ~User32_WS.WS_CAPTION;
-                                lStyle = lStyle & ~User32_WS.WS_SYSMENU;
                                 lStyle = lStyle & ~User32_WS.WS_THICKFRAME;
                                 lStyle = lStyle & ~User32_WS.WS_MINIMIZE;
-                                lStyle = lStyle & ~User32_WS.WS_MAXIMIZEBOX;
-
+                                lStyle = lStyle & ~User32_WS.WS_MAXIMIZE;
+                                lStyle = lStyle & ~User32_WS.WS_SYSMENU;
                                 User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE, lStyle);
+
                                 lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_EXSTYLE);
-                                User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_EXSTYLE, lStyle | User32_WS.WS_EX_DLGMODALFRAME);
+                                lStyle = lStyle & ~User32_WS.WS_EX_DLGMODALFRAME;
+                                lStyle = lStyle & ~User32_WS.WS_EX_CLIENTEDGE;
+                                lStyle = lStyle & ~User32_WS.WS_EX_STATICEDGE;
+                                User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_EXSTYLE, lStyle);
+                                User32Interop.SetWindowPos(data.HWnd.NativePtr, IntPtr.Zero, 0, 0, 0, 0, (uint)(PositioningFlags.SWP_FRAMECHANGED | PositioningFlags.SWP_NOMOVE | PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOZORDER | PositioningFlags.SWP_NOOWNERZORDER));
 
                                 data.Finished = true;
                                 Debug.WriteLine("State 2");
