@@ -148,9 +148,6 @@ Game.Play = function () {
     ];
 
     if (Context.IsKeyboardPlayer) {
-        Handler.StartPlayTick(1, function () {
-            Handler.CenterCursor();
-        });
         lines.push("joystick 0");
     }
     else {

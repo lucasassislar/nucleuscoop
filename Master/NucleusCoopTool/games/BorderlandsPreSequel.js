@@ -1,10 +1,5 @@
 Game.Options = [
     new Nucleus.GameOption(
-        "Keyboard Player",
-        "The player that will be playing on keyboard and mouse (if any)",
-        Nucleus.KeyboardPlayer.NoKeyboardPlayer,
-        "KeyboardPlayer"),
-    new Nucleus.GameOption(
         "Save ID - Player 1",
         "Save ID to use for Player 1 (default 0)",
         0,
@@ -44,28 +39,24 @@ Game.HideTaskbar = true;
 Game.SupportsXInput = true;
 
 Game.Play = function () {
-    Context.ModifySave = [
-        new Nucleus.IniSaveInfo("SystemSettings", "WindowedFullscreen", Context.IsFullscreen),
-        new Nucleus.IniSaveInfo("SystemSettings", "ResX", Context.Width),
-        new Nucleus.IniSaveInfo("SystemSettings", "ResY", Context.Height),
-        new Nucleus.IniSaveInfo("SystemSettings", "Fullscreen", false),
-        new Nucleus.IniSaveInfo("Engine.Engine", "bPauseOnLossOfFocus", false),
-        new Nucleus.IniSaveInfo("WillowGame.WillowGameEngine", "bPauseLostFocusWindowed", false),
-        new Nucleus.IniSaveInfo("Engine.Engine", "bMuteAudioWhenNotInFocus", false),
-        new Nucleus.IniSaveInfo("Engine.Engine", "bPauseOnLossOfFocus", false),
-        new Nucleus.IniSaveInfo("WillowGame.WillowGameEngine", "bMuteAudioWhenNotInFocus", false),
-    ];
+    var savePath = Context.GetFolder(Nucleus.Folder.Documents) + "\\My Games\\Borderlands The Pre-Sequel\\WillowGame\\Config\\WillowEngine.ini";
+    Context.ModifySaveFile(savePath, savePath, Nucleus.SaveType.INI, [
+       new Nucleus.IniSaveInfo("SystemSettings", "WindowedFullscreen", Context.IsFullscreen),
+       new Nucleus.IniSaveInfo("SystemSettings", "ResX", Context.Width),
+       new Nucleus.IniSaveInfo("SystemSettings", "ResY", Context.Height),
+       new Nucleus.IniSaveInfo("SystemSettings", "Fullscreen", false),
+       new Nucleus.IniSaveInfo("Engine.Engine", "bPauseOnLossOfFocus", false),
+       new Nucleus.IniSaveInfo("WillowGame.WillowGameEngine", "bPauseLostFocusWindowed", false),
+       new Nucleus.IniSaveInfo("Engine.Engine", "bMuteAudioWhenNotInFocus", false),
+       new Nucleus.IniSaveInfo("Engine.Engine", "bPauseOnLossOfFocus", false),
+       new Nucleus.IniSaveInfo("WillowGame.WillowGameEngine", "bMuteAudioWhenNotInFocus", false),
+    ]);
 
     var playerStr = "saveid" + Context.PlayerID;
     if (Context.IsKeyboardPlayer) {
-        Handler.StartPlayTick(1, function () {
-            Handler.CenterCursor();
-        });
         Context.StartArguments = "-windowed -AlwaysFocus -NoController -nostartupmovies -SaveDataId=" + Context.Options[playerStr];
     }
     else {
         Context.StartArguments = "-windowed -AlwaysFocus -nostartupmovies -SaveDataId=" + Context.Options[playerStr];
     }
-
-    Context.SavePath = Context.GetFolder(Nucleus.Folder.Documents) + "\\My Games\\Borderlands The Pre-Sequel\\WillowGame\\Config\\WillowEngine.ini";
 }

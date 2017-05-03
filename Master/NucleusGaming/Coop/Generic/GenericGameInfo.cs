@@ -29,7 +29,7 @@ namespace Nucleus.Gaming
         public string GUID;
         public string GameName;
         public int MaxPlayers;
-        public GameOption[] Options;
+        public GameOption[] Options = new GameOption[0];
         public int MaxPlayersOneMonitor;
         public SaveType SaveType;
         public string SavePath;
@@ -103,9 +103,11 @@ namespace Nucleus.Gaming
 
             Type t = GetType();
             PropertyInfo[] props = t.GetProperties();
+            FieldInfo[] fields = t.GetFields();
 
             Type c = context.GetType();
             PropertyInfo[] cprops = c.GetProperties();
+            FieldInfo[] cfields = c.GetFields();
 
             for (int i = 0; i < props.Length; i++)
             {
@@ -124,6 +126,24 @@ namespace Nucleus.Gaming
 
                 object value = p.GetValue(this, null);
                 d.SetValue(context, value, null);
+            }
+
+            for (int i = 0; i < fields.Length; i++)
+            {
+                FieldInfo source = fields[i];
+                FieldInfo dest = cfields.FirstOrDefault(k => k.Name == source.Name);
+                if (dest == null)
+                {
+                    continue;
+                }
+
+                if (source.FieldType != dest.FieldType)
+                {
+                    continue;
+                }
+
+                object value = source.GetValue(this);
+                dest.SetValue(context, value);
             }
 
             return context;

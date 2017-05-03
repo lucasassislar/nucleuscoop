@@ -284,8 +284,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="games\Battlefront2.js" />
-    <None Include="games\Borderlands.js" />
-    <None Include="games\Borderlands2.js" />
+    <None Include="games\Borderlands.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="games\Borderlands2.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="games\BorderlandsPreSequel.js" />
     <None Include="games\CallOfDutyBlackOps.js" />
     <None Include="games\CallOfDutyBlackOps2Zombies.js" />

@@ -1,10 +1,5 @@
 Game.Options = [
     new Nucleus.GameOption(
-        "Keyboard Player",
-        "The player that will be playing on keyboard and mouse (if any)",
-        Nucleus.KeyboardPlayer.NoKeyboardPlayer,
-        "KeyboardPlayer"),
-    new Nucleus.GameOption(
         "Save ID - Player 1",
         "Save ID to use for Player 1 (default 0)",
         0,
@@ -41,12 +36,14 @@ Game.LauncherTitle = "splashscreen";
 Game.SaveType = Nucleus.SaveType.INI;
 Game.SupportsPositioning = true;
 Game.HideTaskbar = true;
-Game.HookNeeded = true;
-Game.HookGameWindowName = "Borderlands 2 (32-bit, DX9)";
-Game.SupportsXInput = true;
+Game.XInput.ForceFocus = true;
+Game.XInput.ForceFocusWindowName = "Borderlands 2 (32-bit, DX9)";
+Game.XInput.DInputEnabled = false;
+Game.XInput.XInputEnabled = true;
 
 Game.Play = function () {
-    Context.ModifySave = [
+    var savePath = Context.GetFolder(Nucleus.Folder.Documents) + "\\My Games\\Borderlands 2\\WillowGame\\Config\\WillowEngine.ini";
+    Context.ModifySaveFile(savePath, savePath, Nucleus.SaveType.INI, [
         new Nucleus.IniSaveInfo("SystemSettings", "WindowedFullscreen", Context.IsFullscreen),
         new Nucleus.IniSaveInfo("SystemSettings", "ResX", Context.Width),
         new Nucleus.IniSaveInfo("SystemSettings", "ResY", Context.Height),
@@ -56,13 +53,10 @@ Game.Play = function () {
         new Nucleus.IniSaveInfo("Engine.Engine", "bMuteAudioWhenNotInFocus", false),
         new Nucleus.IniSaveInfo("Engine.Engine", "bPauseOnLossOfFocus", false),
         new Nucleus.IniSaveInfo("WillowGame.WillowGameEngine", "bMuteAudioWhenNotInFocus", false),
-    ];
+    ]);
 
     var playerStr = "saveid" + Context.PlayerID;
     if (Context.IsKeyboardPlayer) {
-        Handler.StartPlayTick(1, function () {
-            Handler.CenterCursor();
-        });
         // -nostartupmovies
         Context.StartArguments = "-windowed -AlwaysFocus -NoController -SaveDataId=" + Context.Options[playerStr];
     }
@@ -70,5 +64,4 @@ Game.Play = function () {
         Context.StartArguments = "-windowed -AlwaysFocus -SaveDataId=" + Context.Options[playerStr];
     }
 
-    Context.SavePath = Context.GetFolder(Nucleus.Folder.Documents) + "\\My Games\\Borderlands 2\\WillowGame\\Config\\WillowEngine.ini";
 }
