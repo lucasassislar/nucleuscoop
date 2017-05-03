@@ -185,31 +185,30 @@ namespace Nucleus.Gaming
 
             bool first = true;
             bool keyboard = false;
+            //if (gen.SupportsKeyboard)
+            //{
+            //    // make sure the keyboard player is the last to be started,
+            //    // so it will get the focus by default
+            //    KeyboardPlayer player = (KeyboardPlayer)profile.Options["KeyboardPlayer"];
+            //    if (player.Value != -1)
+            //    {
+            //        keyboard = true;
+            //        List<PlayerInfo> newPlayers = new List<PlayerInfo>();
 
-            if (gen.SupportsKeyboard)
-            {
-                // make sure the keyboard player is the last to be started,
-                // so it will get the focus by default
-                KeyboardPlayer player = (KeyboardPlayer)profile.Options["KeyboardPlayer"];
-                if (player.Value != -1)
-                {
-                    keyboard = true;
-                    List<PlayerInfo> newPlayers = new List<PlayerInfo>();
+            //        for (int i = 0; i < players.Count; i++)
+            //        {
+            //            PlayerInfo p = players[i];
+            //            if (i == player.Value)
+            //            {
+            //                continue;
+            //            }
 
-                    for (int i = 0; i < players.Count; i++)
-                    {
-                        PlayerInfo p = players[i];
-                        if (i == player.Value)
-                        {
-                            continue;
-                        }
-
-                        newPlayers.Add(p);
-                    }
-                    newPlayers.Add(players[player.Value]);
-                    players = newPlayers;
-                }
-            }
+            //            newPlayers.Add(p);
+            //        }
+            //        newPlayers.Add(players[player.Value]);
+            //        players = newPlayers;
+            //    }
+            //}
 
             for (int i = 0; i < players.Count; i++)
             {
@@ -236,14 +235,18 @@ namespace Nucleus.Gaming
                                 // before invoking our StartGame app to kill them
                                 ProcessData pdata = before.ProcessData;
 
-                                if (!StartGameUtil.MutexExists(pdata.Process, gen.KillMutex))
+                                if (StartGameUtil.MutexExists(pdata.Process, gen.KillMutex))
                                 {
-                                    continue;
+                                    // mutexes still exist, must kill
+                                    StartGameUtil.KillMutex(pdata.Process, gen.KillMutex);
+                                    pdata.KilledMutexes = true;
+                                    break;
                                 }
-
-                                StartGameUtil.KillMutex(pdata.Process, gen.KillMutex);
-                                pdata.KilledMutexes = true;
-                                break;
+                                else
+                                {
+                                    // mutexes dont exist anymore
+                                    break;
+                                }
                             }
                         }
                         else
@@ -320,16 +323,7 @@ namespace Nucleus.Gaming
 
                 int exitCode;
                 CmdUtil.LinkDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, true);
-
-                //CmdUtil.LinkFiles(exeFolder, linkBinFolder, out exitCode, exclusions.ToArray());
-                //for (int j = 0; j < dirExclusions.Count; j++)
-                //{
-                //    string exc = dirExclusions[j];
-                //    string from = Path.Combine(rootFolder, exc);
-                //    string to = Path.Combine(linkFolder, exc);
-                //    CmdUtil.LinkFiles(from, to, out exitCode, fileExclusions.ToArray());
-                //}
-
+                
                 if (!gen.SymlinkExe)
                 {
                     File.Copy(userGame.ExePath, exePath, true);
@@ -365,10 +359,9 @@ namespace Nucleus.Gaming
                         str.Write(ini, 0, ini.Length);
                     }
 
-
                     IniFile x360 = new IniFile(ncoopIni);
-                    x360.IniWriteValue("Options", "ForceFocus", context.XInput.ForceFocus.ToString(CultureInfo.InvariantCulture));
-                    x360.IniWriteValue("Options", "ForceFocusWindowName", context.XInput.ForceFocusWindowName.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "ForceFocus", gen.XInput.ForceFocus.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "ForceFocusWindowName", gen.XInput.ForceFocusWindowName.ToString(CultureInfo.InvariantCulture));
 
                     if (context.XInput.SetWindowSize)
                     {
@@ -666,6 +659,7 @@ namespace Nucleus.Gaming
                                 lStyle = lStyle & ~User32_WS.WS_EX_STATICEDGE;
                                 User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_EXSTYLE, lStyle);
                                 User32Interop.SetWindowPos(data.HWnd.NativePtr, IntPtr.Zero, 0, 0, 0, 0, (uint)(PositioningFlags.SWP_FRAMECHANGED | PositioningFlags.SWP_NOMOVE | PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOZORDER | PositioningFlags.SWP_NOOWNERZORDER));
+                                //User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
 
                                 data.Finished = true;
                                 Debug.WriteLine("State 2");

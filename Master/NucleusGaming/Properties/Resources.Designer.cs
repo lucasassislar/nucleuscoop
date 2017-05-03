@@ -63,6 +63,16 @@ namespace Nucleus.Gaming.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _16players {
+            get {
+                object obj = ResourceManager.GetObject("_16players", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap _4players {
             get {
                 object obj = ResourceManager.GetObject("_4players", resourceCulture);
@@ -106,6 +116,16 @@ namespace Nucleus.Gaming.Properties {
         internal static System.Drawing.Bitmap horizontal {
             get {
                 object obj = ResourceManager.GetObject("horizontal", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap keyboard {
+            get {
+                object obj = ResourceManager.GetObject("keyboard", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

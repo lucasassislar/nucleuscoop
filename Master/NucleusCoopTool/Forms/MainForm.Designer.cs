@@ -64,7 +64,7 @@
             this.panelGameName.Controls.Add(this.pic_Game);
             this.panelGameName.Location = new System.Drawing.Point(254, 14);
             this.panelGameName.Name = "panelGameName";
-            this.panelGameName.Size = new System.Drawing.Size(250, 46);
+            this.panelGameName.Size = new System.Drawing.Size(343, 55);
             this.panelGameName.TabIndex = 1;
             // 
             // label_GameTitle
@@ -73,7 +73,7 @@
             this.label_GameTitle.Font = new System.Drawing.Font("Segoe UI", 18F);
             this.label_GameTitle.Location = new System.Drawing.Point(49, 7);
             this.label_GameTitle.Name = "label_GameTitle";
-            this.label_GameTitle.Size = new System.Drawing.Size(198, 32);
+            this.label_GameTitle.Size = new System.Drawing.Size(291, 48);
             this.label_GameTitle.TabIndex = 1;
             this.label_GameTitle.Text = "Nothing selected";
             // 
@@ -107,7 +107,7 @@
             this.label_StepTitle.Font = new System.Drawing.Font("Segoe UI", 18F);
             this.label_StepTitle.Location = new System.Drawing.Point(257, 66);
             this.label_StepTitle.Name = "label_StepTitle";
-            this.label_StepTitle.Size = new System.Drawing.Size(198, 32);
+            this.label_StepTitle.Size = new System.Drawing.Size(291, 48);
             this.label_StepTitle.TabIndex = 3;
             this.label_StepTitle.Text = "Nothing selected";
             // 
@@ -181,8 +181,8 @@
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1054, 701);
             this.Controls.Add(this.btn_Next);
             this.Controls.Add(this.btnAutoSearch);
@@ -193,9 +193,8 @@
             this.Controls.Add(this.list_Games);
             this.Controls.Add(this.panelGameName);
             this.Controls.Add(this.StepPanel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(275, 360);
+            this.MinimumSize = new System.Drawing.Size(640, 360);
             this.Name = "MainForm";
             this.Text = "Nucleus Coop";
             this.panelGameName.ResumeLayout(false);

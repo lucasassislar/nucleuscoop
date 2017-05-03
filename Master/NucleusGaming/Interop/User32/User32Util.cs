@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -20,9 +21,14 @@ namespace Nucleus.Interop.User32
             List<Display> displays = new List<Display>();
             MonitorEnumProc callback = (IntPtr hMonitor, IntPtr hdcMonitor, ref Rect lprcMonitor, int d) =>
             {
-                Display display = new Display(lprcMonitor.ToRectangle(), "", true);
-                displays.Add(display);
-
+                MonitorInfoEx info = new MonitorInfoEx();
+                info.Size = Marshal.SizeOf(info);
+                if (User32Interop.GetMonitorInfo(hMonitor, ref info))
+                {
+                    Rectangle r = lprcMonitor.ToRectangle();
+                    Display display = new Display(r, info.DeviceName, true);
+                    displays.Add(display);
+                }
                 return true;
             };
 

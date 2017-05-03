@@ -14,11 +14,18 @@ namespace Nucleus.Coop
     /// Form that all other forms inherit from. Has all
     /// the default design parameters to have the Nucleus Coop look and feel
     /// </summary>
-    public partial class BaseForm : Form
+    public class BaseForm : Form
     {
         public BaseForm()
         {
-            InitializeComponent();
+            AutoScaleMode = AutoScaleMode.None;
+            BackColor = Color.FromArgb(50, 50, 50);
+            ClientSize = new Size(320, 240);
+            Font = new Font("Segoe UI", 12);
+            ForeColor = Color.White;
+            Margin = new Padding(4, 4, 4, 4);
+            Name = "BaseForm";
+            Text = "BaseForm";
         }
         
         /// <summary>

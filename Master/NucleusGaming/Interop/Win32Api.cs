@@ -279,7 +279,8 @@ namespace Nucleus.Gaming.Interop
             return null;
         }
 
-        public static List<Win32API.SYSTEM_HANDLE_INFORMATION> GetHandles(Process process = null, string IN_strObjectTypeName = null, string IN_strObjectName = null)
+        public static List<Win32API.SYSTEM_HANDLE_INFORMATION> GetHandles(Process process, string IN_strObjectTypeName, string IN_strObjectName,
+            string inclusiveName)
         {
             uint nStatus;
             int nHandleInfoSize = 0x10000;
@@ -353,11 +354,15 @@ namespace Nucleus.Gaming.Interop
                     }
                 }
 
-                string strObjectTypeName2 = getObjectTypeName(shHandle, Process.GetProcessById(shHandle.ProcessID));
-                string strObjectName2 = getObjectName(shHandle, Process.GetProcessById(shHandle.ProcessID));
-                Console.WriteLine("Win32Api: {0}   {1}   {2}", shHandle.ProcessID, strObjectTypeName2, strObjectName2);
+                Process proc = Process.GetProcessById(shHandle.ProcessID);
+                string strObjectTypeName2 = getObjectTypeName(shHandle, proc);
+                string strObjectName2 = getObjectName(shHandle, proc);
+                //Console.WriteLine("Win32Api: {0}   {1}   {2}", shHandle.ProcessID, strObjectTypeName2, strObjectName2);
 
-                lstHandles.Add(shHandle);
+                if (strObjectName2.Contains(inclusiveName))
+                {
+                    lstHandles.Add(shHandle);
+                }
             }
             return lstHandles;
         }

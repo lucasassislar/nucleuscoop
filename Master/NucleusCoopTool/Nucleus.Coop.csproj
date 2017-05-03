@@ -94,15 +94,6 @@
     <Compile Include="Forms\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\BaseForm.Designer.cs">
-      <DependentUpon>BaseForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\GameControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\GameControl.Designer.cs">
-      <DependentUpon>GameControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\GameList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -132,9 +123,6 @@
     <EmbeddedResource Include="Forms\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\GameControl.resx">
-      <DependentUpon>GameControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\GameList.resx">
       <DependentUpon>GameList.cs</DependentUpon>
     </EmbeddedResource>
@@ -159,6 +147,33 @@
     </Compile>
     <None Include="app.manifest">
       <SubType>Designer</SubType>
+    </None>
+    <None Include="games\Left4Dead2\bloodharvest.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="games\Left4Dead2\crashcourse.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="games\Left4Dead2\deadair.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="games\Left4Dead2\deadcenter.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="games\Left4Dead2\deathtoll.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="games\Left4Dead2\hardrain.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="games\Left4Dead2\nomercy.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="games\Left4Dead2\swampfever.JPG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="games\Left4Dead2\theparish.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -281,43 +296,39 @@
     <None Include="games\Left4Dead2.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\Left4Dead2\bloodharvest.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="games\Left4Dead2\bkp\bloodharvest.jpg" />
+    <None Include="games\Left4Dead2\bkp\crashcourse.jpg" />
+    <None Include="games\Left4Dead2\bkp\darkcarnival.jpg" />
+    <None Include="games\Left4Dead2\bkp\deadair.jpg" />
+    <None Include="games\Left4Dead2\bkp\deadcenter.jpg" />
+    <None Include="games\Left4Dead2\bkp\deathaboard.jpg" />
+    <None Include="games\Left4Dead2\bkp\deathtoll.jpg" />
+    <None Include="games\Left4Dead2\bkp\hardrain.jpg" />
+    <None Include="games\Left4Dead2\bkp\nomercy.jpg" />
+    <None Include="games\Left4Dead2\bkp\swampfever.JPG" />
+    <None Include="games\Left4Dead2\bkp\theparish.jpg" />
+    <None Include="games\Left4Dead2\coldstream.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="games\Left4Dead2\crashcourse.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="games\Left4Dead2\darkcarnival.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="games\Left4Dead2\darkcarnival.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="games\Left4Dead2\deathabroad.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="games\Left4Dead2\deadair.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="games\Left4Dead2\thepassing.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="games\Left4Dead2\deadcenter.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\Left4Dead2\deathaboard.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\Left4Dead2\deathtoll.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\Left4Dead2\hardrain.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\Left4Dead2\nomercy.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\Left4Dead2\swampfever.JPG">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\Left4Dead2\theparish.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="games\Left4Dead2\thesacrifice.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="icon.ico" />
     <Content Include="Resources\icon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Controls\" />
+    <Folder Include="games\Left4Dead2\og\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

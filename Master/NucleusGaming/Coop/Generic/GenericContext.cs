@@ -39,6 +39,7 @@ namespace Nucleus.Gaming
         public bool IsKeyboardPlayer;
         public int PlayerID;
         public bool IsFullscreen;
+        public UserInfo User = new UserInfo();
 
         public Type HandlerType
         {

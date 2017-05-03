@@ -57,6 +57,15 @@ namespace Nucleus.Coop
             list_Games.Select();
         }
 
+        protected override void OnGotFocus(EventArgs e)
+        {
+            base.OnGotFocus(e);
+            this.TopMost = true;
+            this.BringToFront();
+
+            System.Diagnostics.Debug.WriteLine("Got Focus");
+        }
+
 
         protected override void WndProc(ref Message m)
         {
@@ -238,8 +247,6 @@ namespace Nucleus.Coop
                 return;
             }
 
-           
-
             if (step >= 2)
             {
                 // Custom steps
@@ -304,7 +311,7 @@ namespace Nucleus.Coop
             btn_Play.Text = "S T O P";
 
             handler = gameManager.MakeHandler(currentGame);
-            handler.Initialize(currentGameInfo, currentProfile);
+            handler.Initialize(currentGameInfo, GameProfile.CleanClone(currentProfile));
             handler.Ended += handler_Ended;
 
             gameManager.Play(handler);

@@ -38,6 +38,12 @@
     </application>
   </compatibility>
 
+  <!--<application>
+    <windowsSettings xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">
+      <dpiAwareness>system</dpiAwareness>
+    </windowsSettings>
+  </application>-->
+
   <!-- Enable themes for Windows common controls and dialogs (Windows XP and later) -->
   <!-- <dependency>
     <dependentAssembly>

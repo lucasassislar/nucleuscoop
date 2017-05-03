@@ -45,7 +45,6 @@ namespace Nucleus.Gaming
         }
 
         private IList collection;
-        private GameOption option;
 
         public override void Initialize(UserGameInfo game, GameProfile profile)
         {
@@ -77,8 +76,9 @@ namespace Nucleus.Gaming
                     }
 
                     CoolListControl control = new CoolListControl(true);
+                    control.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
                     control.BackColor = Color.FromArgb(30, 30, 30);
-                    control.Size = new Size(400, 120);
+                    control.Size = new Size(list.Width, 120);
                     control.Data = val;
                     control.OnSelected += Control_OnSelected;
 
@@ -110,7 +110,7 @@ namespace Nucleus.Gaming
                             PictureBox box = new PictureBox();
                             box.Anchor = AnchorStyles.Top | AnchorStyles.Right;
                             box.Size = new Size(140, 80);
-                            box.Location = new Point(240, 20);
+                            box.Location = new Point(list.Width - box.Width - 10, 20);
                             box.SizeMode = PictureBoxSizeMode.Zoom;
                             box.Image = img;
                             control.Controls.Add(box);

@@ -33,10 +33,7 @@ namespace Nucleus
             {
                 try
                 {
-                    string str = "\\Sessions\\" + i + "\\BaseNamedObjects\\" + mutexName;
-                    var handles = Win32Processes.GetHandles(process, "Mutant", str);
-
-                    //var handles = Win32Processes.GetHandles(process, "Mutant", mutexName);
+                    var handles = Win32Processes.GetHandles(process, "Mutant", "\\Sessions\\", mutexName);
                     if (handles.Count > 0)
                     {
                         return true;
@@ -74,9 +71,10 @@ namespace Nucleus
         public static bool KillMutex(Process process, string mutexName)
         {
             bool killed = false;
-            for (int i = 1; i < 3; i++)
+            for (int i = 1; i < 4; i++)
             {
-                var handles = Win32Processes.GetHandles(process, "Mutant", "\\Sessions\\" + i + "\\BaseNamedObjects\\" + mutexName);
+                var handles = Win32Processes.GetHandles(process, "Mutant", "\\Sessions\\", mutexName);
+
                 if (handles.Count == 0)
                 {
                     continue;

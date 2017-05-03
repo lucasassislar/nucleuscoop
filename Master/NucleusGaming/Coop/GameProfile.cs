@@ -62,5 +62,32 @@ namespace Nucleus.Gaming
                 }
             }
         }
+
+        public static GameProfile CleanClone(GameProfile profile)
+        {
+            GameProfile nprof = new GameProfile();
+            nprof.playerData = new List<PlayerInfo>();
+            nprof.screens = profile.screens.ToList();
+
+            List<PlayerInfo> source = profile.playerData;
+            for (int i = 0; i < source.Count; i++)
+            {
+                PlayerInfo player = source[i];
+                if (player.ScreenIndex != -1)
+                {
+                    // only add valid players to the clean version
+                    nprof.playerData.Add(player);
+                }
+            }
+
+            Dictionary<string, object> noptions = new Dictionary<string, object>();
+            foreach (var opt in profile.Options)
+            {
+                noptions.Add(opt.Key, opt.Value);
+            }
+            nprof.options = noptions;
+
+            return nprof;
+        }
     }
 }

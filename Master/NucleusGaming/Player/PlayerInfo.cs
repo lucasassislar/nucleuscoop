@@ -9,6 +9,7 @@ namespace Nucleus.Gaming
 {
     public class PlayerInfo
     {
+        private Rectangle sourceEditBounds;
         private Rectangle editBounds;
         private Rectangle monitorBounds;
         private int screenIndex = -1;
@@ -23,9 +24,11 @@ namespace Nucleus.Gaming
         public bool SteamEmu;
         public bool GotLauncher;
         public bool GotGame;
-        public bool IsKeyboardPlayer;
 
+        public bool IsKeyboardPlayer;
         public bool IsXInput;
+        public bool IsDInput;
+
         public Guid GamepadGuid;
         public int GamepadId;
         public string GamepadName;
@@ -44,6 +47,12 @@ namespace Nucleus.Gaming
 
 
         // Runtime
+
+        public Rectangle SourceEditBounds
+        {
+            get { return sourceEditBounds; }
+            set { sourceEditBounds = value; }
+        }
 
         /// <summary>
         /// A temporary rectangle to show the user

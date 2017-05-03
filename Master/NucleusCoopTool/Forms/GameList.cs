@@ -38,7 +38,7 @@ namespace Nucleus.Coop
 
                 if (game == highlight)
                 {
-                    con.Highlight();
+                    //con.Highlight();
 
                     clicked = game;
                     btnOk.Enabled = true;

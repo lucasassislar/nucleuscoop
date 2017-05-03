@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 namespace Nucleus.Gaming
 {
-    public class ControlListBox : Panel
+    public class ControlListBox : UserControl
     {
         private int totalHeight;
         private int border = 1;
@@ -36,29 +36,6 @@ namespace Nucleus.Gaming
             UpdateSizes();
         }
 
-        protected override void OnScroll(ScrollEventArgs se)
-        {
-            if (se.ScrollOrientation == ScrollOrientation.VerticalScroll)
-            {
-                int barSize = SystemInformation.VerticalScrollBarWidth;
-                for (int i = 0; i < this.Controls.Count; i++)
-                {
-                    var con = Controls[i];
-                    con.Width = this.Width - barSize;
-                }
-            }
-            else if (se.ScrollOrientation == ScrollOrientation.HorizontalScroll)
-            {
-                int barSize = SystemInformation.HorizontalScrollBarHeight;
-                for (int i = 0; i < this.Controls.Count; i++)
-                {
-                    var con = Controls[i];
-                    con.Height = this.Height - barSize;
-                }
-            }
-            base.OnScroll(se);
-        }
-
         private bool updatingSize;
         public void UpdateSizes()
         {
@@ -73,7 +50,7 @@ namespace Nucleus.Gaming
             for (int i = 0; i < this.Controls.Count; i++)
             {
                 var con = Controls[i];
-                con.Width = this.Width - SystemInformation.VerticalScrollBarWidth;
+                con.Width = this.Width;// - SystemInformation.VerticalScrollBarWidth;
 
                 con.Location = new Point(0, totalHeight);
                 totalHeight += con.Height + border;

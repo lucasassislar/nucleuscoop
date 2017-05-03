@@ -85,7 +85,7 @@
       <DependentUpon>BorderPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ControlListBox.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\CoolCheckbox.cs">
       <SubType>UserControl</SubType>
@@ -135,6 +135,7 @@
     <Compile Include="Coop\Generic\SaveInfo.cs" />
     <Compile Include="Coop\Generic\Step\CustomStep.cs" />
     <Compile Include="Coop\Generic\Step\CustomStepType.cs" />
+    <Compile Include="Coop\Generic\UserInfo.cs" />
     <Compile Include="Coop\Generic\XInputInfo.cs" />
     <Compile Include="Coop\Generic\XInputManager.cs" />
     <Compile Include="Coop\Javascript\JSUserInputControl.cs">
@@ -174,6 +175,9 @@
     <Compile Include="IO\MFT\FileNameAndParentFrn.cs" />
     <Compile Include="IO\MFT\MFTReader.cs" />
     <Compile Include="Managers\GameManager.cs" />
+    <Compile Include="New\GameControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="New\ImageButtonState.cs" />
     <Compile Include="New\ImageButton.cs">
       <SubType>UserControl</SubType>
@@ -193,9 +197,6 @@
     </Compile>
     <Compile Include="New\PositionsControl.cs">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="New\PositionsControl.Designer.cs">
-      <DependentUpon>PositionsControl.cs</DependentUpon>
     </Compile>
     <Compile Include="New\Utils\RectangleUtil.cs" />
     <Compile Include="PlayerID.cs" />
@@ -230,9 +231,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="New\PlayerCountControl.resx">
       <DependentUpon>PlayerCountControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="New\PositionsControl.resx">
-      <DependentUpon>PositionsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -275,6 +273,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\generic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\16players.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\keyboard.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

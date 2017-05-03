@@ -12,9 +12,9 @@ using System.Collections;
 using SplitTool.Controls;
 using System.Reflection;
 
-namespace Nucleus.Gaming
+namespace Nucleus.Coop
 {
-    public partial class PlayerOptionsControl : UserInputControl
+    public class PlayerOptionsControl : UserInputControl
     {
         private ControlListBox list;
         private Font nameFont;
@@ -50,6 +50,8 @@ namespace Nucleus.Gaming
             int wid = 200;
 
             list = new ControlListBox();
+            list.Size = this.Size;
+
             GameOption[] options = game.Game.Options;
             Dictionary<string, object> vals = profile.Options;
             for (int j = 0; j < options.Length; j++)
@@ -67,7 +69,7 @@ namespace Nucleus.Gaming
                 CoolListControl cool = new CoolListControl(false);
                 cool.Title = opt.Name;
                 cool.Details = opt.Description;
-                cool.Width = this.Width;
+                cool.Width = list.Width;
                 cool.TitleFont = nameFont;
                 cool.DetailsFont = detailsFont;
 
@@ -174,9 +176,7 @@ namespace Nucleus.Gaming
                 }
             }
 
-            list.Size = this.Size;
             this.Controls.Add(list);
-
             list.UpdateSizes();
             CanPlayUpdated(true, false);
         }
