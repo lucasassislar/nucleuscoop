@@ -27,6 +27,12 @@ namespace Nucleus.Gaming
         public bool XInputEnabled;
 
         /// <summary>
+        /// If xinput is enabled, if rerouting should be enabled (basically is we'll reroute directinput back to xinput,
+        /// so we can track more than 4 gamepads on xinput at once)
+        /// </summary>
+        public bool XInputReroute = true;
+
+        /// <summary>
         /// If our custom dll should set the window size and position locally, instead of the handler
         /// (inconsistent with some window sizes, look at Borderlands2.js for an example usage)
         /// </summary>
@@ -48,5 +54,9 @@ namespace Nucleus.Gaming
         /// </summary>
         [Dynamic]
         public string ForceFocusWindowName = "";
+
+
+        public bool BlockMouseEvents = false;
+        public bool BlockKeyboardEvents = false;
     }
 }

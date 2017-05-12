@@ -13,15 +13,24 @@ namespace Nucleus.Gaming
             {
                 new DInputLibrary()
                 {
+                    Hash= "478044F1051EE570393A1D3752586676",
                     Hash1 = 0x70E51E05F1448047,//8134941312786137159,
                     Hash2 = 0x76665852371D3A39,//8531603654235208249,
                     ID = 1
                 },
+                new DInputLibrary()
+                {
+                    Hash = "BCDBADF88733E25BC18B412462082A18",
+                    Hash1 = 0x5BE23387F8ADDBBC,
+                    Hash2 = 0x182A086224418BC1,
+                    ID = 2
+                }
             };
 
 
         public class DInputLibrary
         {
+            public string Hash;
             public long Hash1;
             public long Hash2;
             public int ID;
@@ -44,14 +53,18 @@ namespace Nucleus.Gaming
                 path = @"C:\Windows\System32\dinput.dll";
             }
 
+            if (!File.Exists(path))
+            {
+                throw new NotSupportedException();
+            }
+
             byte[] data = File.ReadAllBytes(path);
             MD5 md5 = MD5.Create();
             byte[] hash = md5.ComputeHash(data);
 
-            long a = BitConverter.ToInt64(hash, 0);
-            long b = BitConverter.ToInt64(hash, 8);
+            string hashStr = BitConverter.ToString(hash).Replace("-", "");
 
-            DInputLibrary def = libraries.FirstOrDefault(c => c.Hash1 == a && c.Hash2 == b);
+            DInputLibrary def = libraries.FirstOrDefault(c => c.Hash == hashStr);
             if (def != null)
             {
                 library = def;

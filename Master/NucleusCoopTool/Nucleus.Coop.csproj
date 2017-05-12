@@ -294,7 +294,9 @@
     <None Include="games\CallOfDutyBlackOps.js" />
     <None Include="games\CallOfDutyBlackOps2Zombies.js" />
     <None Include="games\HaloWars.js" />
-    <None Include="games\Left4Dead.js" />
+    <None Include="games\Left4Dead.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="games\SaintsRow3DX11.js" />
     <None Include="games\Halo.js" />
     <None Include="games\Left4Dead2.js">
@@ -324,6 +326,24 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="games\Left4Dead2\thesacrifice.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="games\Left4Dead\nomercy.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="games\Left4Dead\crashcourse.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="games\Left4Dead\deathtoll.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="games\Left4Dead\deadair.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="games\Left4Dead\bloodharvest.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="games\Left4Dead\coldstream.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="icon.ico" />

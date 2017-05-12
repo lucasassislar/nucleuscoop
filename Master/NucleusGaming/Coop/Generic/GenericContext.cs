@@ -36,7 +36,6 @@ namespace Nucleus.Gaming
         public string[] KillMutex;
         public string LauncherExe;
         public string LauncherTitle;
-        public bool IsKeyboardPlayer;
         public int PlayerID;
         public bool IsFullscreen;
         public UserInfo User = new UserInfo();

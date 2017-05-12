@@ -104,31 +104,32 @@ Game.FileSymlinkExclusions = [
     "video.txt"
 ];
 
-Game.HandlerInterval = 16;
+Game.HandlerInterval = 100; // 10 FPS handler
 Game.SymlinkExe = false;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "left4dead2.exe";
 Game.SteamID = "550";
 Game.GUID = "550";
 Game.GameName = "Left 4 Dead 2";
-Game.MaxPlayers = 4;
-Game.MaxPlayersOneMonitor = 4;
 Game.NeedsSteamEmulation = false;
 Game.LauncherTitle = "";
 Game.SaveType = Nucleus.SaveType.CFG;
 Game.SupportsPositioning = true;
-Game.HideTaskbar = false;
 Game.WorkingFolder = "bin";
 Game.StartArguments = "-novid -insecure -window";
-Game.XInput.DInputEnabled = true;
-Game.XInput.XInputEnabled = false;
+Game.MaxPlayersOneMonitor = 8;
+Game.MaxPlayers = 8;
 Game.XInput.ForceFocus = true;
 Game.XInput.ForceFocusWindowName = "Left 4 Dead 2";
+Game.XInput.DInputEnabled = false;
+Game.XInput.XInputEnabled = true;
+Game.XInput.XInputReroute = true;
 
 Game.Play = function () {
     // Only enable setting the window size on the XInput hook dll
     // when its dual vertical, as it doenst work 100% of the time on DualHorizontal
     Context.XInput.SetWindowSize = Player.Owner.IsDualVertical();
+    Context.XInput.ForceFocus = !Player.IsKeyboardPlayer;
 
     var saveSrc = System.IO.Path.Combine(Context.RootInstallFolder, "left4dead2\\cfg\\video.txt");
     var savePath = System.IO.Path.Combine(Context.RootFolder, "left4dead2\\cfg\\video.txt");
@@ -147,8 +148,9 @@ Game.Play = function () {
         "engine_no_focus_sleep 0" // unlimited FPS on all screens
     ];
 
-    if (Context.IsKeyboardPlayer) {
+    if (Player.IsKeyboardPlayer) {
         lines.push("joystick 0");
+        lines.push("exec undo360controller.cfg");
     }
     else {
         lines.push("exec 360controller.cfg");

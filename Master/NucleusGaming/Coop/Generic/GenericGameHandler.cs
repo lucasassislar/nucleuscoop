@@ -46,6 +46,23 @@ namespace Nucleus.Gaming
             get { return timerInterval; }
         }
 
+        private void ForceFinish()
+        {
+            // search for game instances left behind
+            try
+            {
+                Process[] procs = Process.GetProcessesByName(gen.ExecutableName.ToLower());
+                if (procs.Length > 0)
+                {
+                    for (int i = 0; i < procs.Length; i++)
+                    {
+                        procs[i].Kill();
+                    }
+                }
+            }
+            catch { }
+        }
+
         public void End()
         {
             User32Util.ShowTaskBar();
@@ -162,6 +179,8 @@ namespace Nucleus.Gaming
 
         public string Play()
         {
+            ForceFinish();
+
             List<PlayerInfo> players = profile.PlayerData;
             for (int i = 0; i < players.Count; i++)
             {
@@ -323,7 +342,7 @@ namespace Nucleus.Gaming
 
                 int exitCode;
                 CmdUtil.LinkDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, true);
-                
+
                 if (!gen.SymlinkExe)
                 {
                     File.Copy(userGame.ExePath, exePath, true);
@@ -332,7 +351,6 @@ namespace Nucleus.Gaming
                 GenericContext context = gen.CreateContext(profile, player, this);
                 context.PlayerID = player.PlayerID;
                 context.IsFullscreen = isFullscreen;
-                context.IsKeyboardPlayer = keyboard && i == players.Count - 1;
 
                 context.ExePath = exePath;
                 context.RootInstallFolder = exeFolder;
@@ -340,8 +358,6 @@ namespace Nucleus.Gaming
 
                 gen.PrePlay(context, this, player);
 
-                player.IsKeyboardPlayer = context.IsKeyboardPlayer;
-                
                 string startArgs = context.StartArguments;
 
                 if (context.XInput.CustomDllEnabled)
@@ -363,40 +379,34 @@ namespace Nucleus.Gaming
                     x360.IniWriteValue("Options", "ForceFocus", gen.XInput.ForceFocus.ToString(CultureInfo.InvariantCulture));
                     x360.IniWriteValue("Options", "ForceFocusWindowName", gen.XInput.ForceFocusWindowName.ToString(CultureInfo.InvariantCulture));
 
+                    x360.IniWriteValue("Options", "WindowX", playerBounds.X.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "WindowY", playerBounds.Y.ToString(CultureInfo.InvariantCulture));
+
                     if (context.XInput.SetWindowSize)
                     {
                         x360.IniWriteValue("Options", "ResWidth", context.Width.ToString(CultureInfo.InvariantCulture));
                         x360.IniWriteValue("Options", "ResHeight", context.Height.ToString(CultureInfo.InvariantCulture));
                     }
-
-                    if (context.IsKeyboardPlayer)
-                    {
-                        x360.IniWriteValue("Options", "IsKeyboard", "true");
-                    }
-
-                    if (player.IsXInput)
-                    {
-                        x360.IniWriteValue("Options", "XInputEnabled", "true");
-                        x360.IniWriteValue("Options", "XInputPlayerID", player.GamepadId.ToString(CultureInfo.InvariantCulture));
-                    }
                     else
                     {
-                        Guid g = player.GamepadGuid;
-                        byte[] bytes = g.ToByteArray();
-                        UInt32 data1 = BitConverter.ToUInt32(bytes, 0);
-                        UInt16 data2 = BitConverter.ToUInt16(bytes, 4);
-                        UInt16 data3 = BitConverter.ToUInt16(bytes, 6);
-                        UInt32 data41 = BitConverter.ToUInt32(bytes, 8);
-                        UInt32 data42 = BitConverter.ToUInt32(bytes, 12);
-
-                        x360.IniWriteValue("Options", "DInputEnabled", "true");
-                        x360.IniWriteValue("Options", "DInputLibrary", DInputManager.Library.ID.ToString(CultureInfo.InvariantCulture));
-                        x360.IniWriteValue("Options", "DInputGuid1", data1.ToString(CultureInfo.InvariantCulture));
-                        x360.IniWriteValue("Options", "DInputGuid2", data2.ToString(CultureInfo.InvariantCulture));
-                        x360.IniWriteValue("Options", "DInputGuid3", data3.ToString(CultureInfo.InvariantCulture));
-                        x360.IniWriteValue("Options", "DInputGuid41", data41.ToString(CultureInfo.InvariantCulture));
-                        x360.IniWriteValue("Options", "DInputGuid42", data42.ToString(CultureInfo.InvariantCulture));
+                        x360.IniWriteValue("Options", "ResWidth", "0");
+                        x360.IniWriteValue("Options", "ResHeight", "0");
                     }
+
+                    x360.IniWriteValue("Options", "RerouteInput", context.XInput.XInputReroute.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "EnableMKBInput", player.IsKeyboardPlayer.ToString(CultureInfo.InvariantCulture));
+
+                    // windows events
+                    x360.IniWriteValue("Options", "BlockMouseEvents", context.XInput.BlockMouseEvents.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "BlockKeyboardEvents", context.XInput.BlockKeyboardEvents.ToString(CultureInfo.InvariantCulture));
+
+                    // xinput
+                    x360.IniWriteValue("Options", "XInputEnabled", context.XInput.XInputEnabled.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "XInputPlayerID", player.GamepadId.ToString(CultureInfo.InvariantCulture));
+
+                    // dinput
+                    x360.IniWriteValue("Options", "DInputEnabled", context.XInput.DInputEnabled.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "DInputGuid", player.GamepadGuid.ToString().ToUpper());
                 }
 
                 Process proc;
@@ -565,7 +575,7 @@ namespace Nucleus.Gaming
                     }
 
                     Rectangle r = p.MonitorBounds;
-                    Cursor.Clip = r;
+                    //Cursor.Clip = r;
                     if (data.HWnd != null)
                     {
                         User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
@@ -678,11 +688,10 @@ namespace Nucleus.Gaming
                                 Debug.WriteLine("State 0");
                             }
 
-
                             if (p.IsKeyboardPlayer)
                             {
-                                Rectangle r = p.MonitorBounds;
-                                Cursor.Clip = r;
+                                //Rectangle r = p.MonitorBounds;
+                                //Cursor.Clip = r;
                                 //User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
                             }
                         }

@@ -28,6 +28,7 @@ namespace Nucleus.Gaming
         public bool IsKeyboardPlayer;
         public bool IsXInput;
         public bool IsDInput;
+        public bool IsFake;
 
         public Guid GamepadGuid;
         public int GamepadId;

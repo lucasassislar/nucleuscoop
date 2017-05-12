@@ -65,7 +65,7 @@ namespace Nucleus.Coop
 
         private Timer gamepadTimer;
 
-        private int testPlayers = -1;// 16;
+        private int testDinputPlayers = -1;// 16;
 
         public PositionsControl()
         {
@@ -111,75 +111,79 @@ namespace Nucleus.Coop
             List<PlayerInfo> data = profile.PlayerData;
             bool changed = false;
 
-            if (game.Game.XInput.DInputEnabled)
+            GenericGameInfo g = game.Game;
+
+            if (g.XInput.DInputEnabled ||
+                g.XInput.XInputReroute)
             {
-                if (testPlayers == -1)
+                IList<DeviceInstance> devices = dinput.GetDevices(SlimDX.DirectInput.DeviceType.Gamepad, DeviceEnumerationFlags.AttachedOnly);
+
+                // first search for disconnected gamepads
+                for (int j = 0; j < data.Count; j++)
                 {
-                    IList<DeviceInstance> devices = dinput.GetDevices(SlimDX.DirectInput.DeviceType.Gamepad, DeviceEnumerationFlags.AttachedOnly);
-
-                    // first search for disconnected gamepads
-                    for (int j = 0; j < data.Count; j++)
+                    PlayerInfo p = data[j];
+                    if (!p.IsDInput || p.IsFake)
                     {
-                        PlayerInfo p = data[j];
-                        if (!p.IsDInput)
-                        {
-                            continue;
-                        }
-
-                        bool foundGamepad = false;
-                        for (int i = 0; i < devices.Count; i++)
-                        {
-                            DeviceInstance device = devices[i];
-                            if (device.InstanceGuid == p.GamepadGuid)
-                            {
-                                foundGamepad = true;
-                                break;
-                            }
-                        }
-
-                        if (!foundGamepad)
-                        {
-                            changed = true;
-                            data.RemoveAt(j);
-                            j--;
-                        }
+                        continue;
                     }
 
+                    bool foundGamepad = false;
                     for (int i = 0; i < devices.Count; i++)
                     {
                         DeviceInstance device = devices[i];
-                        bool already = false;
-
-                        // see if this gamepad is already on a player
-                        for (int j = 0; j < data.Count; j++)
+                        if (device.InstanceGuid == p.GamepadGuid)
                         {
-                            PlayerInfo p = data[j];
-                            if (p.GamepadGuid == device.InstanceGuid)
-                            {
-                                already = true;
-                                break;
-                            }
+                            foundGamepad = true;
+                            break;
                         }
-
-                        if (already)
-                        {
-                            continue;
-                        }
-
-                        changed = true;
-
-                        // new gamepad
-                        PlayerInfo player = new PlayerInfo();
-                        player.GamepadGuid = device.InstanceGuid;
-                        player.GamepadName = device.InstanceName;
-                        player.IsDInput = true;
-                        data.Add(player);
                     }
+
+                    if (!foundGamepad)
+                    {
+                        changed = true;
+                        data.RemoveAt(j);
+                        j--;
+                    }
+                }
+
+                for (int i = 0; i < devices.Count; i++)
+                {
+                    DeviceInstance device = devices[i];
+                    bool already = false;
+
+                    // see if this gamepad is already on a player
+                    for (int j = 0; j < data.Count; j++)
+                    {
+                        PlayerInfo p = data[j];
+                        if (p.GamepadGuid == device.InstanceGuid)
+                        {
+                            already = true;
+                            break;
+                        }
+                    }
+
+                    if (already)
+                    {
+                        continue;
+                    }
+
+                    changed = true;
+
+                    // new gamepad
+                    PlayerInfo player = new PlayerInfo();
+                    player.GamepadGuid = device.InstanceGuid;
+                    player.GamepadName = device.InstanceName;
+                    player.IsDInput = true;
+                    //data.Add(player);
+                    data.Insert(0, player);
                 }
             }
 
-            if (game.Game.XInput.XInputEnabled)
+            if (g.XInput.XInputEnabled && !g.XInput.XInputReroute)
             {
+                // XInput is only really enabled inside Nucleus Coop when
+                // we have 4 or less players, else we need to force DirectInput to grab everything
+
                 for (int j = 0; j < data.Count; j++)
                 {
                     PlayerInfo p = data[j];
@@ -364,21 +368,22 @@ namespace Nucleus.Coop
                 if (game.Game.SupportsKeyboard)
                 {
                     // add keyboard data
-                    //PlayerInfo kbPlayer = new PlayerInfo();
-                    //kbPlayer.IsKeyboardPlayer = true;
-                    //playerData.Add(kbPlayer);
+                    PlayerInfo kbPlayer = new PlayerInfo();
+                    kbPlayer.IsKeyboardPlayer = true;
+                    playerData.Add(kbPlayer);
                 }
 
                 // make fake data if needed
-                if (testPlayers != -1)
+                if (testDinputPlayers != -1)
                 {
-                    for (int i = 0; i < testPlayers; i++)
+                    for (int i = 0; i < testDinputPlayers; i++)
                     {
                         // new gamepad
                         PlayerInfo player = new PlayerInfo();
-                        player.GamepadGuid = Guid.NewGuid();
+                        player.GamepadGuid = new Guid();
                         player.GamepadName = "Player";
                         player.IsDInput = true;
+                        player.IsFake = true;
                         playerData.Add(player);
                     }
                 }
