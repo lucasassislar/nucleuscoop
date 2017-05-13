@@ -1,4 +1,5 @@
 ﻿using Nucleus;
+using Nucleus.Interop.User32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -41,6 +42,10 @@ namespace StartGame
 
         static void Main(string[] args)
         {
+            // We need this, else Windows will fake
+            // all the data about monitors inside the application
+            User32Interop.SetProcessDpiAwareness(User32Interop.PROCESS_DPI_AWARENESS.PROCESS_PER_MONITOR_DPI_AWARE);
+
             if (args.Length == 0)
             {
                 Console.WriteLine("Invalid usage! Need arguments to proceed!");
@@ -56,55 +61,68 @@ namespace StartGame
 
                     string key = splited[0].ToLower();
 
-                    if (key == "game")
+                    switch (key)
                     {
-                        string[] arguments = (splited[1] + ":" + splited[2]).Split(';');
-                        string path = arguments[0];
-
-                        string argu = "";
-                        if (arguments.Length > 1)
-                        {
-                            argu = arguments[1];
-                        }
-                        StartGame(path, argu);
-                    }
-                    else if (key == "mutex")
-                    {
-                        string[] mutex = splited[1].Split(';');
-                        for (int j = 0; j < mutex.Length; j++)
-                        {
-                            string m = mutex[j];
-                            if (!ProcessUtil.KillMutex(proc, m))
+                        case "monitors":
                             {
-                                Console.WriteLine("Mutex " + m + " could not be killed");
-                            }
-                            Thread.Sleep(500);
-                        }
-                    }
-                    else if (key == "proc")
-                    {
-                        string procId = splited[1];
-                        int id = int.Parse(procId);
-                        proc = Process.GetProcessById(id);
-                    }
-                    else if (key == "output")
-                    {
-                        string[] mutex = splited[1].Split(';');
-                        bool all = true;
+                                // enumerates and outputs monitors in JSON
 
-                        for (int j = 0; j < mutex.Length; j++)
-                        {
-                            string m = mutex[j];
-                            bool exists = ProcessUtil.MutexExists(proc, m);
-                            if (!exists)
+                            }
+                            break;
+                        case "game":
                             {
-                                all = false;
-                            }
+                                string[] arguments = (splited[1] + ":" + splited[2]).Split(';');
+                                string path = arguments[0];
 
-                            Console.WriteLine("Mutex " + m + (exists ? " exists" : " doesn't exist"));
-                            Thread.Sleep(500);
-                        }
-                        Console.WriteLine(all.ToString());
+                                string argu = "";
+                                if (arguments.Length > 1)
+                                {
+                                    argu = arguments[1];
+                                }
+                                StartGame(path, argu);
+                            }
+                            break;
+                        case "mutex":
+                            {
+                                string[] mutex = splited[1].Split(';');
+                                for (int j = 0; j < mutex.Length; j++)
+                                {
+                                    string m = mutex[j];
+                                    if (!ProcessUtil.KillMutex(proc, m))
+                                    {
+                                        Console.WriteLine("Mutex " + m + " could not be killed");
+                                    }
+                                    Thread.Sleep(500);
+                                }
+                            }
+                            break;
+                        case "proc":
+                            {
+                                string procId = splited[1];
+                                int id = int.Parse(procId);
+                                proc = Process.GetProcessById(id);
+                            }
+                            break;
+                        case "output":
+                            {
+                                string[] mutex = splited[1].Split(';');
+                                bool all = true;
+
+                                for (int j = 0; j < mutex.Length; j++)
+                                {
+                                    string m = mutex[j];
+                                    bool exists = ProcessUtil.MutexExists(proc, m);
+                                    if (!exists)
+                                    {
+                                        all = false;
+                                    }
+
+                                    Console.WriteLine("Mutex " + m + (exists ? " exists" : " doesn't exist"));
+                                    Thread.Sleep(500);
+                                }
+                                Console.WriteLine(all.ToString());
+                            }
+                            break;
                     }
                 }
             }
@@ -112,25 +130,6 @@ namespace StartGame
             {
                 Console.WriteLine(ex.Message);
             }
-
-            
-            //if (args.Length >= 3)
-            //{
-            //    int timeToWait = int.Parse(args[2]);
-            //    Thread.Sleep(timeToWait);
-
-            //    if (proc.HasExited)
-            //    {
-            //        tri++;
-            //        if (tri < tries)
-            //        {
-            //            Console.WriteLine("Failed to start process. Retrying...");
-            //            Thread.Sleep(1000);
-            //            goto retry;
-            //        }
-            //    }
-            //}
-
         }
     }
 }
