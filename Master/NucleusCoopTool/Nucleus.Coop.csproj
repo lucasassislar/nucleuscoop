@@ -290,7 +290,9 @@
     <None Include="games\Borderlands2.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="games\BorderlandsPreSequel.js" />
+    <None Include="games\BorderlandsPreSequel.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="games\CallOfDutyBlackOps.js" />
     <None Include="games\CallOfDutyBlackOps2Zombies.js" />
     <None Include="games\HaloWars.js" />
