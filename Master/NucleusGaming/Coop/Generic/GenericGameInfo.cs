@@ -1,21 +1,23 @@
 ﻿using Jint;
-using Nucleus.Coop;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Nucleus.Gaming
 {
-    public class GenericGameInfo// : IGenericGameInfo
+    public class GenericGameInfo
     {
         private Engine engine;
         private string js;
 
-        public XInputInfo XInput = new XInputInfo();
+        public GameHookInfo Hook = new GameHookInfo();
+        public GameOption[] Options = new GameOption[0];
+
+        public SaveType SaveType;
+        public string SavePath;
+
         public string[] DirSymlinkExclusions;
         public string[] FileSymlinkExclusions;
         public double HandlerInterval;
@@ -29,13 +31,11 @@ namespace Nucleus.Gaming
         public string GUID;
         public string GameName;
         public int MaxPlayers;
-        public GameOption[] Options = new GameOption[0];
         public int MaxPlayersOneMonitor;
-        public SaveType SaveType;
-        public string SavePath;
-        public SaveInfo[] ModifySave;
+
         public string StartArguments;
         public string BinariesFolder;
+
         /// <summary>
         /// The relative path to where the games starts in
         /// </summary>

@@ -78,6 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Build\BuildProgram.cs" />
     <Compile Include="Controls\BorderPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -130,14 +131,14 @@
     <Compile Include="Coop\Generic\DynamicAttribute.cs" />
     <Compile Include="Coop\Generic\GenericContext.cs" />
     <Compile Include="Coop\Generic\GenericGameInfo.cs" />
+    <Compile Include="Coop\Generic\JoystickDatabase.cs" />
     <Compile Include="Coop\Generic\Save\CfgSaveInfo.cs" />
     <Compile Include="Coop\Generic\Save\IniSaveInfo.cs" />
     <Compile Include="Coop\Generic\SaveInfo.cs" />
     <Compile Include="Coop\Generic\Step\CustomStep.cs" />
     <Compile Include="Coop\Generic\Step\CustomStepType.cs" />
     <Compile Include="Coop\Generic\UserInfo.cs" />
-    <Compile Include="Coop\Generic\XInputInfo.cs" />
-    <Compile Include="Coop\Generic\XInputManager.cs" />
+    <Compile Include="Coop\Generic\GameHookInfo.cs" />
     <Compile Include="Coop\Javascript\JSUserInputControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -208,7 +209,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Util\AssemblyUtil.cs" />
     <Compile Include="Util\CmdUtil.cs" />
+    <Compile Include="Util\Extensions\DirectoryInfoExtensions.cs" />
     <Compile Include="Util\FileUtil.cs" />
     <Compile Include="Util\FormUtil.cs" />
     <Compile Include="Util\MathUtil.cs" />
@@ -288,6 +291,10 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -19,18 +19,18 @@ Game.SupportsPositioning = true;
 Game.StartArguments = "-windowed -NoLauncher -nostartupmovies";
 Game.ExecutableName = "borderlands.exe";
 Game.BinariesFolder = "binaries";
-Game.XInput.DInputEnabled = false;
-Game.XInput.XInputEnabled = true;
-Game.XInput.ForceFocus = true;
-Game.XInput.ForceFocusWindowName = "Borderlands";
+Game.Hook.DInputEnabled = false;
+Game.Hook.XInputEnabled = true;
+Game.Hook.ForceFocus = true;
+Game.Hook.ForceFocusWindowName = "Borderlands";
 
 Game.Play = function () {
     // block all mouse and keyboard input for the player that
     // isnt the keyboard one
     // (Borderlands 1 NEEDS this, else it will lose focus)
     var isKeyboard = Player.IsKeyboardPlayer;
-    Context.XInput.BlockMouseEvents = !isKeyboard;
-    Context.XInput.BlockKeyboardEvents = !isKeyboard;
+    Context.Hook.BlockMouseEvents = !isKeyboard;
+    Context.Hook.BlockKeyboardEvents = !isKeyboard;
 
     var savePath = Context.GetFolder(Nucleus.Folder.Documents) + "\\My Games\\Borderlands\\WillowGame\\Config\\WillowEngine.ini";
     Context.ModifySaveFile(savePath, savePath, Nucleus.SaveType.INI, [

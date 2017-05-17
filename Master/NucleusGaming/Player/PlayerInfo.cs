@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Diagnostics;
+using SlimDX.DirectInput;
 
 namespace Nucleus.Gaming
 {
@@ -30,10 +31,12 @@ namespace Nucleus.Gaming
         public bool IsDInput;
         public bool IsFake;
 
+        public Guid GamepadProductGuid;
         public Guid GamepadGuid;
         public int GamepadId;
         public string GamepadName;
         public int GamepadMask;
+        public Joystick DInputJoystick;
 
         // Serialized
 

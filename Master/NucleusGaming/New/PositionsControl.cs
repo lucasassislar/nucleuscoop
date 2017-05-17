@@ -60,8 +60,12 @@ namespace Nucleus.Coop
             get { return false; }
         }
 
+        // dinput
         private DirectInput dinput;
-        private List<Controller> controllers;
+        //private List<Joystick> dinputJoysticks;
+
+        // xinput
+        private List<Controller> xinputControllers;
 
         private Timer gamepadTimer;
 
@@ -77,10 +81,11 @@ namespace Nucleus.Coop
             this.BackColor = Color.FromArgb(40, 40, 40);
 
             dinput = new DirectInput();
-            controllers = new List<Controller>();
+            //dinputJoysticks = new List<Joystick>();
+            xinputControllers = new List<Controller>();
             for (int i = 0; i < 4; i++)
             {
-                controllers.Add(new Controller((UserIndex)i));
+                xinputControllers.Add(new Controller((UserIndex)i));
             }
 
             gamepadTimer = new Timer();
@@ -113,8 +118,8 @@ namespace Nucleus.Coop
 
             GenericGameInfo g = game.Game;
 
-            if (g.XInput.DInputEnabled ||
-                g.XInput.XInputReroute)
+            if (g.Hook.DInputEnabled ||
+                g.Hook.XInputReroute)
             {
                 IList<DeviceInstance> devices = dinput.GetDevices(SlimDX.DirectInput.DeviceType.Gamepad, DeviceEnumerationFlags.AttachedOnly);
 
@@ -126,6 +131,14 @@ namespace Nucleus.Coop
                     {
                         continue;
                     }
+
+                    //if (!p.DInputJoystick.Acquire().IsFailure)
+                    //{
+                    //    if (!p.DInputJoystick.Poll().IsFailure)
+                    //    {
+                    //        JoystickState state = p.DInputJoystick.GetCurrentState();
+                    //    }
+                    //}
 
                     bool foundGamepad = false;
                     for (int i = 0; i < devices.Count; i++)
@@ -151,6 +164,7 @@ namespace Nucleus.Coop
                     DeviceInstance device = devices[i];
                     bool already = false;
 
+
                     // see if this gamepad is already on a player
                     for (int j = 0; j < data.Count; j++)
                     {
@@ -171,15 +185,18 @@ namespace Nucleus.Coop
 
                     // new gamepad
                     PlayerInfo player = new PlayerInfo();
+                    player.GamepadProductGuid = device.ProductGuid;
                     player.GamepadGuid = device.InstanceGuid;
                     player.GamepadName = device.InstanceName;
                     player.IsDInput = true;
+                    player.DInputJoystick = new Joystick(dinput, device.InstanceGuid);
+
                     //data.Add(player);
                     data.Insert(0, player);
                 }
             }
 
-            if (g.XInput.XInputEnabled && !g.XInput.XInputReroute)
+            if (g.Hook.XInputEnabled && !g.Hook.XInputReroute)
             {
                 // XInput is only really enabled inside Nucleus Coop when
                 // we have 4 or less players, else we need to force DirectInput to grab everything
@@ -189,7 +206,7 @@ namespace Nucleus.Coop
                     PlayerInfo p = data[j];
                     if (p.IsXInput)
                     {
-                        Controller c = controllers[p.GamepadId];
+                        Controller c = xinputControllers[p.GamepadId];
                         if (!c.IsConnected)
                         {
                             changed = true;
@@ -201,7 +218,7 @@ namespace Nucleus.Coop
 
                 for (int i = 0; i < 4; i++)
                 {
-                    Controller c = controllers[i];
+                    Controller c = xinputControllers[i];
                     bool already = false;
 
                     if (c.IsConnected)

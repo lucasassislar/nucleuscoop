@@ -29,11 +29,11 @@ Game.SupportsPositioning = true;
 Game.HideTaskbar = false;
 Game.StartArguments = "";
 Game.LauncherExe = "game_launcher.exe";
-Game.XInput.ForceFocus = true;
-Game.XInput.ForceFocusWindowName = "Saints Row: The Third";
-Game.XInput.DInputEnabled = false;
-Game.XInput.XInputEnabled = true;
-Game.XInput.XInputReroute = true;
+Game.Hook.ForceFocus = true;
+Game.Hook.ForceFocusWindowName = "Saints Row: The Third";
+Game.Hook.DInputEnabled = false;
+Game.Hook.XInputEnabled = true;
+Game.Hook.XInputReroute = true;
 
 Game.Play = function () {
     var savePath = Context.SavePath = Context.GetFolder(Nucleus.Folder.InstancedGameFolder) + "\\display.ini";

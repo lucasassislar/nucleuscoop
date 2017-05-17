@@ -58,3 +58,15 @@ Games I want to add but I don't own:
 
 A ton of games will be supported thank for the godsend tool called SmartSteamEmu, developed by syahmixp,  grabbed from http://cs.rin.ru/forum/viewtopic.php?f=10&t=62935 
 Awesome application that emulates Steam and even enables LAN connections, so we can play everything easily!
+
+
+# How to help on the development?
+If you want to truly code, here follows a somewhat summup of what you need to begin developing:
+
+For the application:
+	- Visual Studio 2015 or 2017 (Community works fine)
+
+For the games's Javascript files
+	- Visual Studio Code
+	- Node.js
+	- ProcessExplorer

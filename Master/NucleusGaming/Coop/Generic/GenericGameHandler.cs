@@ -306,7 +306,7 @@ namespace Nucleus.Gaming
                 // some games have save files inside their game folder, so we need to access them inside the loop
                 jsData[Folder.InstancedGameFolder.ToString()] = linkFolder;
 
-                if (gen.XInput.CustomDllEnabled)
+                if (gen.Hook.CustomDllEnabled)
                 {
                     fileExclusions.Add("xinput");
                     fileExclusions.Add("ncoop");
@@ -360,7 +360,7 @@ namespace Nucleus.Gaming
 
                 string startArgs = context.StartArguments;
 
-                if (context.XInput.CustomDllEnabled)
+                if (context.Hook.CustomDllEnabled)
                 {
                     byte[] xdata = Properties.Resources.xinput1_3;
                     using (Stream str = File.OpenWrite(Path.Combine(linkBinFolder, "xinput1_3.dll")))
@@ -376,13 +376,13 @@ namespace Nucleus.Gaming
                     }
 
                     IniFile x360 = new IniFile(ncoopIni);
-                    x360.IniWriteValue("Options", "ForceFocus", gen.XInput.ForceFocus.ToString(CultureInfo.InvariantCulture));
-                    x360.IniWriteValue("Options", "ForceFocusWindowName", gen.XInput.ForceFocusWindowName.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "ForceFocus", gen.Hook.ForceFocus.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "ForceFocusWindowName", gen.Hook.ForceFocusWindowName.ToString(CultureInfo.InvariantCulture));
 
                     x360.IniWriteValue("Options", "WindowX", playerBounds.X.ToString(CultureInfo.InvariantCulture));
                     x360.IniWriteValue("Options", "WindowY", playerBounds.Y.ToString(CultureInfo.InvariantCulture));
 
-                    if (context.XInput.SetWindowSize)
+                    if (context.Hook.SetWindowSize)
                     {
                         x360.IniWriteValue("Options", "ResWidth", context.Width.ToString(CultureInfo.InvariantCulture));
                         x360.IniWriteValue("Options", "ResHeight", context.Height.ToString(CultureInfo.InvariantCulture));
@@ -393,20 +393,24 @@ namespace Nucleus.Gaming
                         x360.IniWriteValue("Options", "ResHeight", "0");
                     }
 
-                    x360.IniWriteValue("Options", "RerouteInput", context.XInput.XInputReroute.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "RerouteInput", context.Hook.XInputReroute.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "RerouteJoystickTemplate", JoystickDatabase.GetID(player.GamepadProductGuid.ToString()).ToString(CultureInfo.InvariantCulture));
+
                     x360.IniWriteValue("Options", "EnableMKBInput", player.IsKeyboardPlayer.ToString(CultureInfo.InvariantCulture));
 
                     // windows events
-                    x360.IniWriteValue("Options", "BlockMouseEvents", context.XInput.BlockMouseEvents.ToString(CultureInfo.InvariantCulture));
-                    x360.IniWriteValue("Options", "BlockKeyboardEvents", context.XInput.BlockKeyboardEvents.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "BlockMouseEvents", context.Hook.BlockMouseEvents.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "BlockKeyboardEvents", context.Hook.BlockKeyboardEvents.ToString(CultureInfo.InvariantCulture));
 
                     // xinput
-                    x360.IniWriteValue("Options", "XInputEnabled", context.XInput.XInputEnabled.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "XInputEnabled", context.Hook.XInputEnabled.ToString(CultureInfo.InvariantCulture));
                     x360.IniWriteValue("Options", "XInputPlayerID", player.GamepadId.ToString(CultureInfo.InvariantCulture));
 
                     // dinput
-                    x360.IniWriteValue("Options", "DInputEnabled", context.XInput.DInputEnabled.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "DInputEnabled", context.Hook.DInputEnabled.ToString(CultureInfo.InvariantCulture));
                     x360.IniWriteValue("Options", "DInputGuid", player.GamepadGuid.ToString().ToUpper());
+                    x360.IniWriteValue("Options", "DInputForceDisable", context.Hook.DInputForceDisable.ToString());
+                    
                 }
 
                 Process proc;
@@ -766,8 +770,8 @@ namespace Nucleus.Gaming
                                     {
                                         data.HWNDRetry = true;
                                     }
-                                    else if (!string.IsNullOrEmpty(gen.XInput.ForceFocusWindowName) &&
-                                        data.HWnd.Title != gen.XInput.ForceFocusWindowName)
+                                    else if (!string.IsNullOrEmpty(gen.Hook.ForceFocusWindowName) &&
+                                        data.HWnd.Title != gen.Hook.ForceFocusWindowName)
                                     {
                                         data.HWNDRetry = true;
                                     }

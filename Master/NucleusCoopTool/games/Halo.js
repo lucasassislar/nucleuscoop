@@ -28,7 +28,7 @@ Game.SaveType = Nucleus.SaveType.None;
 Game.SupportsPositioning = true;
 Game.HideTaskbar = false;
 Game.StartArguments = "-window";
-Game.XInput.DInputEnabled = true;
+Game.Hook.DInputEnabled = true;
 
 Game.Play = function () {
     //Context.ModifySave = [

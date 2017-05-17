@@ -13,6 +13,13 @@ namespace Nucleus.Gaming
             {
                 new DInputLibrary()
                 {
+                    Hash= "00000000000000000000000000000000",
+                    Hash1 = 0,
+                    Hash2 = 0,
+                    ID = 0
+                },
+                new DInputLibrary()
+                {
                     Hash= "478044F1051EE570393A1D3752586676",
                     Hash1 = 0x70E51E05F1448047,//8134941312786137159,
                     Hash2 = 0x76665852371D3A39,//8531603654235208249,
@@ -71,7 +78,7 @@ namespace Nucleus.Gaming
             }
             else
             {
-                throw new NotImplementedException("Your dinput.dll is not in the database!");
+                library = libraries.First();
             }
         }
     }

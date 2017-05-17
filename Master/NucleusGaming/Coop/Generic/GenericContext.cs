@@ -12,7 +12,7 @@ namespace Nucleus.Gaming
     // Comments can be found on the original class if no specific feature is implemented here
     public class GenericContext
     {
-        public XInputInfo XInput = new XInputInfo();
+        public GameHookInfo Hook = new GameHookInfo();
         public double HandlerInterval;
         public bool Debug;
         public string Error;
@@ -28,7 +28,6 @@ namespace Nucleus.Gaming
         public int MaxPlayersOneMonitor;
         public SaveType SaveType;
         public string SavePath;
-        public SaveInfo[] ModifySave;
         public string StartArguments;
         public string BinariesFolder;
         public string WorkingFolder;

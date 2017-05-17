@@ -31,11 +31,11 @@ Game.NeedsSteamEmulation = false;
 Game.LauncherTitle = "splashscreen";
 Game.SaveType = Nucleus.SaveType.INI;
 Game.SupportsPositioning = true;
-Game.XInput.ForceFocus = true;
-Game.XInput.ForceFocusWindowName = "Borderlands 2 (32-bit, DX9)";
-Game.XInput.DInputEnabled = false;
-Game.XInput.XInputEnabled = true;
-Game.XInput.XInputReroute = true; // this is beta
+Game.Hook.ForceFocus = true;
+Game.Hook.ForceFocusWindowName = "Borderlands 2 (32-bit, DX9)";
+Game.Hook.DInputEnabled = false;
+Game.Hook.XInputEnabled = true;
+Game.Hook.XInputReroute = true; // this is beta
 
 Game.Play = function () {
     var savePath = Context.GetFolder(Nucleus.Folder.Documents) + "\\My Games\\Borderlands 2\\WillowGame\\Config\\WillowEngine.ini";

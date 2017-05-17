@@ -85,6 +85,8 @@ Game.Options = [
         "GameMode", listGameModes)
 ];
 
+Nucleus.GenericGameInfo game;
+
 var MapStep = Game.ShowOptionAsStep("MapID", true, "Choose a Campaign");
 // This doesn't work yet
 //var CustomMapStep = Game.ShowOptionAsStep("CustomMap", false);
@@ -119,17 +121,18 @@ Game.WorkingFolder = "bin";
 Game.StartArguments = "-novid -insecure -window";
 Game.MaxPlayersOneMonitor = 8;
 Game.MaxPlayers = 8;
-Game.XInput.ForceFocus = true;
-Game.XInput.ForceFocusWindowName = "Left 4 Dead 2";
-Game.XInput.DInputEnabled = false;
-Game.XInput.XInputEnabled = true;
-Game.XInput.XInputReroute = true;
+Game.Hook.ForceFocus = true;
+Game.Hook.ForceFocusWindowName = "Left 4 Dead 2";
+Game.Hook.DInputEnabled = false;
+Game.Hook.DInputForceDisable = true;
+Game.Hook.XInputEnabled = true;
+Game.Hook.XInputReroute = false;
 
 Game.Play = function () {
     // Only enable setting the window size on the XInput hook dll
     // when its dual vertical, as it doenst work 100% of the time on DualHorizontal
-    Context.XInput.SetWindowSize = Player.Owner.IsDualVertical();
-    Context.XInput.ForceFocus = !Player.IsKeyboardPlayer;
+    Context.Hook.SetWindowSize = Player.Owner.IsDualVertical();
+    Context.Hook.ForceFocus = !Player.IsKeyboardPlayer;
 
     var saveSrc = System.IO.Path.Combine(Context.RootInstallFolder, "left4dead2\\cfg\\video.txt");
     var savePath = System.IO.Path.Combine(Context.RootFolder, "left4dead2\\cfg\\video.txt");

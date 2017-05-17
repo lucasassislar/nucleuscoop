@@ -86,19 +86,19 @@ Game.HideTaskbar = false;
 Game.WorkingFolder = "bin";
 Game.StartArguments = "-novid -insecure -window";
 Game.MaxPlayersOneMonitor = 8;
-Game.XInput.ForceFocus = true;
-Game.XInput.ForceFocusWindowName = "Left 4 Dead";
+Game.Hook.ForceFocus = true;
+Game.Hook.ForceFocusWindowName = "Left 4 Dead";
 Game.MaxPlayers = 4;
-Game.XInput.DInputEnabled = false;
-Game.XInput.XInputEnabled = true;
-Game.XInput.XInputReroute = true;
+Game.Hook.DInputEnabled = false;
+Game.Hook.XInputEnabled = true;
+Game.Hook.XInputReroute = true;
 
 
 Game.Play = function () {
     // Only enable setting the window size on the XInput hook dll
     // when its dual vertical, as it doenst work 100% of the time on DualHorizontal
-    Context.XInput.SetWindowSize = Player.Owner.IsDualVertical();
-    Context.XInput.ForceFocus = !Player.IsKeyboardPlayer;
+    Context.Hook.SetWindowSize = Player.Owner.IsDualVertical();
+    Context.Hook.ForceFocus = !Player.IsKeyboardPlayer;
 
     var saveSrc = System.IO.Path.Combine(Context.RootInstallFolder, "left4dead2\\cfg\\video.txt");
     var savePath = System.IO.Path.Combine(Context.RootFolder, "left4dead2\\cfg\\video.txt");
