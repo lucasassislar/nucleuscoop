@@ -28,9 +28,8 @@ namespace Nucleus.Coop
             var games = manager.Games;
             foreach (GenericGameInfo game in games.Values)
             {
-                GameControl con = new GameControl();
+                GameControl con = new GameControl(game, null);
                 con.Width = listGames.Width;
-                con.GameInfo = game;
                 con.Click += Con_Click;
 
                 con.Text = game.GameName;
@@ -38,7 +37,7 @@ namespace Nucleus.Coop
 
                 if (game == highlight)
                 {
-                    //con.Highlight();
+                    con.RadioSelected();
 
                     clicked = game;
                     btnOk.Enabled = true;

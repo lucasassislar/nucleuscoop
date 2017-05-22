@@ -26,8 +26,11 @@ namespace Nucleus.Coop
             }
         }
 
-        private List<SearchDriveInfo> toSearch;
         private float progress;
+        private float lastProgress;
+
+        private List<SearchDriveInfo> toSearch;
+
         private bool searching;
         private int done;
         private bool closed;
@@ -125,16 +128,23 @@ namespace Nucleus.Coop
             }
         }
 
-        private void UpdateProgress()
+        private void UpdateProgress(float toAdd)
         {
-            Invoke(new Action(delegate
+            progress += toAdd;
+
+            float dif = progress - lastProgress;
+            if (dif > 0.005f || toAdd == 0) // only update after .5% or if the user has just requested an update
             {
-                if (this.IsDisposed || progressBar1.IsDisposed)
+                lastProgress = progress;
+                Invoke(new Action(delegate
                 {
-                    return;
-                }
-                progressBar1.Value = Math.Min(100, (int)(progress * 100));
-            }));
+                    if (this.IsDisposed || progressBar1.IsDisposed)
+                    {
+                        return;
+                    }
+                    progressBar1.Value = Math.Min(100, (int)(progress * 100));
+                }));
+            }
         }
 
         private void SearchDrive(object state)
@@ -147,6 +157,12 @@ namespace Nucleus.Coop
                 return;
             }
 
+            float totalDiskPc = 1 / (float)toSearch.Count;
+            float thirdDiskPc = totalDiskPc / 3.0f;
+
+            // 1/3 done, we started the operation
+            UpdateProgress(thirdDiskPc);
+
             LogManager.Log("> Searching drive {0} for game executables", info.drive.Name);
 
             Dictionary<ulong, FileNameAndParentFrn> mDict = new Dictionary<ulong, FileNameAndParentFrn>();
@@ -155,13 +171,10 @@ namespace Nucleus.Coop
 
             mft.EnumerateVolume(out mDict, new string[] { ".exe" });
 
-            float totalDiskPc = 1 / (float)toSearch.Count;
-            float halfDiskPc = totalDiskPc / 2.0f;
+            progress += thirdDiskPc; // 2/3 done
+            UpdateProgress(thirdDiskPc);
 
-            progress += halfDiskPc; // were half done
-            UpdateProgress();
-
-            float increment = halfDiskPc / (float)mDict.Count;
+            float increment = thirdDiskPc / (float)mDict.Count;
             foreach (KeyValuePair<UInt64, FileNameAndParentFrn> entry in mDict)
             {
                 if (closed)
@@ -169,7 +182,7 @@ namespace Nucleus.Coop
                     return;
                 }
 
-                progress += increment;
+                UpdateProgress(increment);
 
                 FileNameAndParentFrn file = (FileNameAndParentFrn)entry.Value;
 
@@ -212,7 +225,6 @@ namespace Nucleus.Coop
             {
                 return;
             }
-            UpdateProgress();
 
             done++;
             if (done == toSearch.Count)
@@ -221,7 +233,7 @@ namespace Nucleus.Coop
                 Invoke(new Action(delegate
                 {
                     progress = 1;
-                    UpdateProgress();
+                    UpdateProgress(0);
                     btnSearch.Enabled = true;
                     main.RefreshGames();
                     MessageBox.Show("Finished searching!");

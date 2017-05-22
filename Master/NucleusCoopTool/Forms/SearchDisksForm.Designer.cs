@@ -43,6 +43,7 @@
             this.disksBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.disksBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
+            this.disksBox.CheckOnClick = true;
             this.disksBox.ForeColor = System.Drawing.Color.White;
             this.disksBox.FormattingEnabled = true;
             this.disksBox.IntegralHeight = false;

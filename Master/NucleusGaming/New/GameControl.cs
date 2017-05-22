@@ -10,32 +10,72 @@ using Nucleus.Gaming;
 
 namespace Nucleus.Coop
 {
-    public class GameControl : UserControl
+    public class GameControl : UserControl, IDynamicSized, IRadioControl
     {
-        public UserGameInfo Game { get; set; }
-        public GenericGameInfo GameInfo { get; set; }
+        public GenericGameInfo GameInfo { get; private set; }
+        public UserGameInfo UserGameInfo { get; private set; }
 
         private PictureBox picture;
         private Label title;
 
-        public GameControl()
+        public GameControl(GenericGameInfo game, UserGameInfo userGame)
         {
+            GameInfo = game;
+            UserGameInfo = userGame;
+
             picture = new PictureBox();
-            picture.Location = new Point(4, 4);
-            picture.Size = new Size(44, 44);
-            picture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            picture.SizeMode = PictureBoxSizeMode.StretchImage;
 
             title = new Label();
-            title.Location = new Point(48, 16);
-            title.Text = "Name";
-            title.AutoSize = true;
+            if (game == null)
+            {
+                title.Text = "No games";
+            }
+            else
+            {
+                title.Text = GameInfo.GameName;
+            }
 
             BackColor = Color.FromArgb(30, 30, 30);
-
             Size = new Size(200, 52);
 
             Controls.Add(picture);
             Controls.Add(title);
+
+            DPIManager.Register(this);
+        }
+        ~GameControl()
+        {
+            DPIManager.Unregister(this);
+        }
+
+        public void UpdateSize(float scale)
+        {
+            if (IsDisposed)
+            {
+                DPIManager.Unregister(this);
+                return;
+            }
+
+            SuspendLayout();
+
+            int border = DPIManager.Adjust(4, scale);
+            int dborder = border * 2;
+
+            picture.Location = new Point(border, border);
+            picture.Size = new Size(DPIManager.Adjust(44, scale), DPIManager.Adjust(44, scale));
+
+            Height = DPIManager.Adjust(52, scale);
+
+            Size labelSize = TextRenderer.MeasureText(title.Text, title.Font);
+            title.Size = labelSize;
+
+            float height = this.Height / 2.0f;
+            float lheight = labelSize.Height / 2.0f;
+
+            title.Location = new Point(picture.Width + picture.Left + border, (int)(height - lheight));
+
+            ResumeLayout();
         }
 
         protected override void OnControlAdded(ControlEventArgs e)
@@ -63,16 +103,6 @@ namespace Nucleus.Coop
             OnClick(e);
         }
 
-
-        public override string Text
-        {
-            get { return this.title.Text; }
-            set
-            {
-                this.title.Text = value;
-            }
-        }
-
         public Image Image
         {
             get { return this.picture.Image; }
@@ -84,29 +114,34 @@ namespace Nucleus.Coop
             return Text;
         }
 
-        protected override void OnMouseEnter(EventArgs e)
+        private bool isSelected;
+        public void RadioSelected()
         {
-            base.OnMouseEnter(e);
-            if (!ContainsFocus)
-            {
-                BackColor = Color.FromArgb(60, 60, 60);
-            }
+            BackColor = Color.FromArgb(80, 80, 80);
+            isSelected = true;
         }
 
-        protected override void OnMouseLeave(EventArgs e)
+        public void RadioUnselected()
         {
-            base.OnMouseLeave(e);
-            if (!ContainsFocus)
+            BackColor = Color.FromArgb(30, 30, 30);
+            isSelected = false;
+        }
+
+        public void UserOver()
+        {
+            BackColor = Color.FromArgb(60, 60, 60);
+        }
+
+        public void UserLeave()
+        {
+            if (isSelected)
+            {
+                BackColor = Color.FromArgb(80, 80, 80);
+            }
+            else
             {
                 BackColor = Color.FromArgb(30, 30, 30);
             }
-        }
-
-        protected override void OnClick(EventArgs e)
-        {
-            base.OnClick(e);
-
-            BackColor = Color.FromArgb(80, 80, 80);
         }
     }
 }

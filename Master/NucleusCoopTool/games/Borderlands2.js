@@ -53,7 +53,6 @@ Game.Play = function () {
 
     var playerStr = "saveid" + Context.PlayerID;
     if (Context.IsKeyboardPlayer) {
-        // -nostartupmovies
         Context.StartArguments = "-windowed -AlwaysFocus -NoController -SaveDataId=" + Context.Options[playerStr];
     }
     else {

@@ -1,5 +1,7 @@
 ﻿using Jint;
 using Nucleus.Gaming.Interop;
+using Nucleus.Gaming.Windows;
+using Nucleus.Gaming.Windows.Interop;
 using Nucleus.Interop.User32;
 using System;
 using System.Collections.Generic;

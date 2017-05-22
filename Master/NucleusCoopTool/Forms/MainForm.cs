@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.Windows;
 using Nucleus.Interop.User32;
 using System;
 using System.Collections.Generic;
@@ -57,6 +58,15 @@ namespace Nucleus.Coop
             list_Games.Select();
         }
 
+        
+        protected override Size DefaultSize
+        {
+            get
+            {
+                return new Size(1070, 740);
+            }
+        }
+
         protected override void OnGotFocus(EventArgs e)
         {
             base.OnGotFocus(e);
@@ -99,7 +109,7 @@ namespace Nucleus.Coop
                 if (games.Count == 0)
                 {
                     noGamesPresent = true;
-                    GameControl con = new GameControl();
+                    GameControl con = new GameControl(null, null);
                     con.Width = list_Games.Width;
                     con.Text = "No games";
                     this.list_Games.Controls.Add(con);
@@ -123,13 +133,10 @@ namespace Nucleus.Coop
                 return;
             }
 
-            GameControl con = new GameControl();
-            con.Game = game;
+            GameControl con = new GameControl(game.Game, game);
             con.Width = list_Games.Width;
 
             controls.Add(game, con);
-
-            con.Text = game.Game.GameName;
             this.list_Games.Controls.Add(con);
 
             ThreadPool.QueueUserWorkItem(GetIcon, game);
@@ -139,6 +146,8 @@ namespace Nucleus.Coop
         {
             base.OnShown(e);
             RefreshGames();
+
+            DPIManager.ForceUpdate();
         }
 
         private void GetIcon(object state)
@@ -163,7 +172,7 @@ namespace Nucleus.Coop
         private void list_Games_SelectedChanged(object arg1, Control arg2)
         {
             currentControl = (GameControl)arg1;
-            currentGameInfo = currentControl.Game;
+            currentGameInfo = currentControl.UserGameInfo;
             if (currentGameInfo == null)
             {
                 return;
@@ -186,8 +195,7 @@ namespace Nucleus.Coop
             currentProfile = new GameProfile();
             currentProfile.InitializeDefault(currentGame);
 
-            this.label_GameTitle.Text = currentGame.GameName;
-            this.pic_Game.Image = currentGameInfo.Icon;
+            gameNameControl.GameInfo = currentGameInfo;
 
             if (content != null)
             {

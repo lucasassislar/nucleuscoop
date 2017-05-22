@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using Nucleus.Gaming;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Nucleus.Coop
@@ -14,30 +9,62 @@ namespace Nucleus.Coop
     /// Form that all other forms inherit from. Has all
     /// the default design parameters to have the Nucleus Coop look and feel
     /// </summary>
-    public class BaseForm : Form
+    public class BaseForm : Form, IDynamicSized
     {
         public BaseForm()
         {
+            // Default DPI = 96 = 100%
+            // 1 pt = 1/72 inch
+            // 12pt = 1/6 inch
+            // 12 * 300% = 36
+            // 12 * 125% = 15
+            // 12 * 150% = 18
             AutoScaleMode = AutoScaleMode.None;
             BackColor = Color.FromArgb(50, 50, 50);
-            ClientSize = new Size(320, 240);
-            Font = new Font("Segoe UI", 12);
             ForeColor = Color.White;
             Margin = new Padding(4, 4, 4, 4);
             Name = "BaseForm";
             Text = "BaseForm";
+
+            DPIManager.Register(this);
         }
-        
+        ~BaseForm()
+        {
+            DPIManager.Unregister(this);
+        }
+
+        public void UpdateSize(float scale)
+        {
+            if (IsDisposed)
+            {
+                DPIManager.Unregister(this);
+                return;
+            }
+
+            SuspendLayout();
+
+            Font = DPIManager.Font;
+
+            Size defaultSize = DefaultSize;
+            int wid = DPIManager.Adjust(defaultSize.Width, scale);
+            int hei = DPIManager.Adjust(defaultSize.Height, scale);
+            Size = new Size(wid, hei);
+            Console.WriteLine("Changed to {0}x{1}", wid, hei);
+
+            ResumeLayout();
+        }
+
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
+        }
+
         /// <summary>
         /// Removes the flickering from constantly painting, if needed
         /// </summary>
         public void RemoveFlicker()
         {
-            this.SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.UserPaint |
-                ControlStyles.DoubleBuffer,
-                true);
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer, true);
         }
 
         /// <summary>

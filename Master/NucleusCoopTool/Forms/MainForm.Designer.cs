@@ -30,9 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.StepPanel = new System.Windows.Forms.Panel();
-            this.panelGameName = new System.Windows.Forms.Panel();
-            this.label_GameTitle = new System.Windows.Forms.Label();
-            this.pic_Game = new System.Windows.Forms.PictureBox();
             this.list_Games = new Nucleus.Gaming.ControlListBox();
             this.label_StepTitle = new System.Windows.Forms.Label();
             this.btn_Play = new System.Windows.Forms.Button();
@@ -40,8 +37,8 @@
             this.btnBack = new System.Windows.Forms.Button();
             this.btnAutoSearch = new System.Windows.Forms.Button();
             this.btn_Next = new System.Windows.Forms.Button();
-            this.panelGameName.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pic_Game)).BeginInit();
+            this.lblVersion = new System.Windows.Forms.Label();
+            this.gameNameControl = new Nucleus.Coop.Controls.GameNameControl();
             this.SuspendLayout();
             // 
             // StepPanel
@@ -49,43 +46,12 @@
             this.StepPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.StepPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.StepPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.StepPanel.Location = new System.Drawing.Point(254, 101);
+            this.StepPanel.Location = new System.Drawing.Point(280, 101);
             this.StepPanel.Name = "StepPanel";
-            this.StepPanel.Size = new System.Drawing.Size(788, 588);
+            this.StepPanel.Size = new System.Drawing.Size(762, 588);
             this.StepPanel.TabIndex = 0;
-            // 
-            // panelGameName
-            // 
-            this.panelGameName.AutoSize = true;
-            this.panelGameName.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panelGameName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.panelGameName.Controls.Add(this.label_GameTitle);
-            this.panelGameName.Controls.Add(this.pic_Game);
-            this.panelGameName.Location = new System.Drawing.Point(254, 14);
-            this.panelGameName.Name = "panelGameName";
-            this.panelGameName.Size = new System.Drawing.Size(343, 55);
-            this.panelGameName.TabIndex = 1;
-            // 
-            // label_GameTitle
-            // 
-            this.label_GameTitle.AutoSize = true;
-            this.label_GameTitle.Font = new System.Drawing.Font("Segoe UI", 18F);
-            this.label_GameTitle.Location = new System.Drawing.Point(49, 7);
-            this.label_GameTitle.Name = "label_GameTitle";
-            this.label_GameTitle.Size = new System.Drawing.Size(291, 48);
-            this.label_GameTitle.TabIndex = 1;
-            this.label_GameTitle.Text = "Nothing selected";
-            // 
-            // pic_Game
-            // 
-            this.pic_Game.Image = global::Nucleus.Coop.Properties.Resources.not_found_white;
-            this.pic_Game.Location = new System.Drawing.Point(3, 3);
-            this.pic_Game.Name = "pic_Game";
-            this.pic_Game.Size = new System.Drawing.Size(40, 40);
-            this.pic_Game.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pic_Game.TabIndex = 0;
-            this.pic_Game.TabStop = false;
             // 
             // list_Games
             // 
@@ -97,17 +63,16 @@
             this.list_Games.Location = new System.Drawing.Point(12, 12);
             this.list_Games.Name = "list_Games";
             this.list_Games.Offset = new System.Drawing.Size(0, 2);
-            this.list_Games.Size = new System.Drawing.Size(236, 636);
+            this.list_Games.Size = new System.Drawing.Size(262, 636);
             this.list_Games.TabIndex = 2;
             this.list_Games.SelectedChanged += new System.Action<object, System.Windows.Forms.Control>(this.list_Games_SelectedChanged);
             // 
             // label_StepTitle
             // 
             this.label_StepTitle.AutoSize = true;
-            this.label_StepTitle.Font = new System.Drawing.Font("Segoe UI", 18F);
-            this.label_StepTitle.Location = new System.Drawing.Point(257, 66);
+            this.label_StepTitle.Location = new System.Drawing.Point(276, 70);
             this.label_StepTitle.Name = "label_StepTitle";
-            this.label_StepTitle.Size = new System.Drawing.Size(291, 48);
+            this.label_StepTitle.Size = new System.Drawing.Size(127, 21);
             this.label_StepTitle.TabIndex = 3;
             this.label_StepTitle.Text = "Nothing selected";
             // 
@@ -131,7 +96,7 @@
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearch.Location = new System.Drawing.Point(12, 654);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(115, 35);
+            this.btnSearch.Size = new System.Drawing.Size(128, 35);
             this.btnSearch.TabIndex = 7;
             this.btnSearch.Text = "Search Game";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -143,6 +108,7 @@
             this.btnBack.Enabled = false;
             this.btnBack.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBack.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.btnBack.Location = new System.Drawing.Point(868, 63);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(33, 35);
@@ -156,9 +122,9 @@
             // 
             this.btnAutoSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnAutoSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAutoSearch.Location = new System.Drawing.Point(133, 654);
+            this.btnAutoSearch.Location = new System.Drawing.Point(146, 654);
             this.btnAutoSearch.Name = "btnAutoSearch";
-            this.btnAutoSearch.Size = new System.Drawing.Size(115, 35);
+            this.btnAutoSearch.Size = new System.Drawing.Size(128, 35);
             this.btnAutoSearch.TabIndex = 10;
             this.btnAutoSearch.Text = "Auto Search";
             this.btnAutoSearch.UseVisualStyleBackColor = true;
@@ -170,6 +136,7 @@
             this.btn_Next.Enabled = false;
             this.btn_Next.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btn_Next.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Next.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.btn_Next.Location = new System.Drawing.Point(907, 63);
             this.btn_Next.Name = "btn_Next";
             this.btn_Next.Size = new System.Drawing.Size(33, 35);
@@ -179,11 +146,31 @@
             this.btn_Next.UseVisualStyleBackColor = true;
             this.btn_Next.Click += new System.EventHandler(this.btnNext_Click);
             // 
+            // lblVersion
+            // 
+            this.lblVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Location = new System.Drawing.Point(968, 666);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(71, 21);
+            this.lblVersion.TabIndex = 12;
+            this.lblVersion.Text = "ALPHA 8";
+            // 
+            // gameNameControl
+            // 
+            this.gameNameControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.gameNameControl.GameInfo = null;
+            this.gameNameControl.Location = new System.Drawing.Point(280, 12);
+            this.gameNameControl.Name = "gameNameControl";
+            this.gameNameControl.Size = new System.Drawing.Size(98, 46);
+            this.gameNameControl.TabIndex = 13;
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1054, 701);
+            this.Controls.Add(this.lblVersion);
+            this.Controls.Add(this.gameNameControl);
             this.Controls.Add(this.btn_Next);
             this.Controls.Add(this.btnAutoSearch);
             this.Controls.Add(this.btnBack);
@@ -191,15 +178,11 @@
             this.Controls.Add(this.btn_Play);
             this.Controls.Add(this.label_StepTitle);
             this.Controls.Add(this.list_Games);
-            this.Controls.Add(this.panelGameName);
             this.Controls.Add(this.StepPanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(640, 360);
             this.Name = "MainForm";
             this.Text = "Nucleus Coop";
-            this.panelGameName.ResumeLayout(false);
-            this.panelGameName.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pic_Game)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -208,9 +191,6 @@
         #endregion
 
         private System.Windows.Forms.Panel StepPanel;
-        private System.Windows.Forms.Panel panelGameName;
-        private System.Windows.Forms.PictureBox pic_Game;
-        private System.Windows.Forms.Label label_GameTitle;
         private Gaming.ControlListBox list_Games;
         private System.Windows.Forms.Label label_StepTitle;
         private System.Windows.Forms.Button btn_Play;
@@ -218,5 +198,7 @@
         private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.Button btnAutoSearch;
         private System.Windows.Forms.Button btn_Next;
+        private System.Windows.Forms.Label lblVersion;
+        private Controls.GameNameControl gameNameControl;
     }
 }

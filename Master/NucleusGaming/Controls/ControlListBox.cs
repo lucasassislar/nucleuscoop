@@ -28,6 +28,7 @@ namespace Nucleus.Gaming
         public ControlListBox()
         {
             this.AutoScroll = true;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
         }
 
         protected override void OnSizeChanged(EventArgs e)
@@ -58,8 +59,14 @@ namespace Nucleus.Gaming
                 con.Invalidate();
             }
 
-
             updatingSize = false;
+        }
+
+        private void C_SizeChanged(object sender, EventArgs e)
+        {
+            Control con = (Control)sender;
+            // this has the potential of being incredibly slow
+            UpdateSizes();
         }
 
         protected override void OnControlAdded(ControlEventArgs e)
@@ -69,11 +76,14 @@ namespace Nucleus.Gaming
             if (!this.DesignMode && e.Control != null)
             {
                 Control c = e.Control;
-                c.Click += new EventHandler(c_Click);
-                if (c is IHighlightControl)
+
+                c.ControlAdded += C_ControlAdded;
+                c.Click += c_Click;
+                c.SizeChanged += C_SizeChanged;
+                if (c is IRadioControl)
                 {
-                    //c.MouseMove += new MouseEventHandler(c_MouseMove);
-                    //c.MouseLeave += new EventHandler(c_MouseLeave);
+                    c.MouseEnter += c_MouseEnter;
+                    c.MouseLeave += c_MouseLeave;
                 }
 
                 int index = this.Controls.IndexOf(c);
@@ -82,6 +92,16 @@ namespace Nucleus.Gaming
                 c.Location = new Point(0, totalHeight);
                 totalHeight += s.Height + border;
             }
+        }
+
+        
+
+        private void C_ControlAdded(object sender, ControlEventArgs e)
+        {
+            Control c = e.Control;
+            c.Click += c_Click;
+            c.MouseEnter += c_MouseEnter;
+            c.MouseLeave += c_MouseLeave;
         }
 
         protected override void OnControlRemoved(ControlEventArgs e)
@@ -96,14 +116,14 @@ namespace Nucleus.Gaming
             c_Click(this, EventArgs.Empty);
         }
 
-        private void c_MouseMove(object sender, MouseEventArgs e)
+        private void c_MouseEnter(object sender, EventArgs e)
         {
             Control parent = (Control)sender;
 
             if (parent != SelectedControl)
             {
-                IHighlightControl high = (IHighlightControl)parent;
-                high.SoftHighlight();
+                IRadioControl high = (IRadioControl)parent;
+                high.UserOver();
             }
         }
 
@@ -113,8 +133,8 @@ namespace Nucleus.Gaming
 
             if (parent != SelectedControl)
             {
-                IHighlightControl high = (IHighlightControl)parent;
-                high.Darken();
+                IRadioControl high = (IRadioControl)parent;
+                high.UserLeave();
             }
         }
 
@@ -125,17 +145,17 @@ namespace Nucleus.Gaming
             for (int i = 0; i < this.Controls.Count; i++)
             {
                 Control c = this.Controls[i];
-                if (c is IHighlightControl)
+                if (c is IRadioControl)
                 {
-                    IHighlightControl high = (IHighlightControl)c;
+                    IRadioControl high = (IRadioControl)c;
                     if (parent == c)
                     {
                         // highlight
-                        //high.Highlight();
+                        high.RadioSelected();
                     }
                     else
                     {
-                        //high.Darken();
+                        high.RadioUnselected();
                     }
                 }
             }

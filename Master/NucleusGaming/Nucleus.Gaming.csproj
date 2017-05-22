@@ -142,9 +142,13 @@
     <Compile Include="Coop\Javascript\JSUserInputControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="DPI\DPIManager.cs" />
+    <Compile Include="DPI\IDynamicSized.cs" />
     <Compile Include="Globals.cs" />
-    <Compile Include="Interop\User32\Structures\Display.cs" />
-    <Compile Include="Interop\User32\C\Rect.cs" />
+    <Compile Include="Platform\Windows\Interop\Gdi32\Gdi32Interop.cs" />
+    <Compile Include="Platform\Windows\Interop\Shcore\ShcoreInterop.cs" />
+    <Compile Include="Platform\Windows\Interop\User32\Structures\Display.cs" />
+    <Compile Include="Platform\Windows\Interop\User32\C\Rect.cs" />
     <Compile Include="IO\Content\ContentManager.cs" />
     <Compile Include="IO\Logging\ILogNode.cs" />
     <Compile Include="IO\SourceCfgFile.cs" />
@@ -158,20 +162,20 @@
     <Compile Include="Coop\Generic\IGenericGameInfo.cs" />
     <Compile Include="Coop\Generic\SaveType.cs" />
     <Compile Include="Coop\Generic\Folder.cs" />
-    <Compile Include="Interop\Shell32\Shell32.cs" />
-    <Compile Include="Interop\Shell32\ShFileInfo.cs" />
-    <Compile Include="Interop\Shell32\ShgFi.cs" />
+    <Compile Include="Platform\Windows\Interop\Shell32\Shell32.cs" />
+    <Compile Include="Platform\Windows\Interop\Shell32\ShFileInfo.cs" />
+    <Compile Include="Platform\Windows\Interop\Shell32\ShgFi.cs" />
     <Compile Include="IO\BackupFile.cs" />
     <Compile Include="IO\IniFile.cs" />
-    <Compile Include="Interop\Interceptor\Win32.cs" />
-    <Compile Include="Interop\Interceptor\Win32EnumWindows.cs" />
-    <Compile Include="Interop\Interceptor\Win32Messages.cs" />
-    <Compile Include="Interop\Interceptor\WindowInterceptor.cs" />
-    <Compile Include="Interop\User32\User32Util.cs" />
-    <Compile Include="Interop\User32\User32Interop.cs" />
-    <Compile Include="Interop\User32\User32_WS.cs" />
-    <Compile Include="Interop\Win32Api.cs" />
-    <Compile Include="Interop\User32\WindowShowStyle.cs" />
+    <Compile Include="Platform\Windows\Interop\Interceptor\Win32.cs" />
+    <Compile Include="Platform\Windows\Interop\Interceptor\Win32EnumWindows.cs" />
+    <Compile Include="Platform\Windows\Interop\Interceptor\Win32Messages.cs" />
+    <Compile Include="Platform\Windows\Interop\Interceptor\WindowInterceptor.cs" />
+    <Compile Include="Platform\Windows\Interop\User32\User32Util.cs" />
+    <Compile Include="Platform\Windows\Interop\User32\User32Interop.cs" />
+    <Compile Include="Platform\Windows\Interop\User32\User32_WS.cs" />
+    <Compile Include="Platform\Windows\Interop\Win32Api.cs" />
+    <Compile Include="Platform\Windows\Interop\User32\WindowShowStyle.cs" />
     <Compile Include="IO\Logging\LogManager.cs" />
     <Compile Include="IO\MFT\FileNameAndParentFrn.cs" />
     <Compile Include="IO\MFT\MFTReader.cs" />
@@ -200,6 +204,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="New\Utils\RectangleUtil.cs" />
+    <Compile Include="Platform\Windows\MonitorDpiType.cs" />
+    <Compile Include="Platform\Windows\ProcessDpiAwareness.cs" />
+    <Compile Include="Platform\Windows\WindowsVersionInfo.cs" />
     <Compile Include="PlayerID.cs" />
     <Compile Include="Player\PlayerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -103,6 +103,17 @@ namespace Nucleus.Coop
             RemoveFlicker();
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            if (dinput != null)
+            {
+                dinput.Dispose();
+                dinput = null;
+            }
+        }
+
         public override void Ended()
         {
             base.Ended();

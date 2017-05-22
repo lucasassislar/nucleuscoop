@@ -85,8 +85,6 @@ Game.Options = [
         "GameMode", listGameModes)
 ];
 
-Nucleus.GenericGameInfo game;
-
 var MapStep = Game.ShowOptionAsStep("MapID", true, "Choose a Campaign");
 // This doesn't work yet
 //var CustomMapStep = Game.ShowOptionAsStep("CustomMap", false);
