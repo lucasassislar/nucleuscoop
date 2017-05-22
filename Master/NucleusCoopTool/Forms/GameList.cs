@@ -20,28 +20,26 @@ namespace Nucleus.Coop
             get { return clicked; }
         }
 
-        public GameList(GenericGameInfo highlight)
+        protected override Size DefaultSize
+        {
+            get
+            {
+                return new Size(440, 710);
+            }
+        }
+
+        public GameList(List<GenericGameInfo> games)
         {
             InitializeComponent();
 
             GameManager manager = GameManager.Instance;
-            var games = manager.Games;
-            foreach (GenericGameInfo game in games.Values)
+            foreach (GenericGameInfo game in games)
             {
                 GameControl con = new GameControl(game, null);
                 con.Width = listGames.Width;
                 con.Click += Con_Click;
 
-                con.Text = game.GameName;
                 listGames.Controls.Add(con);
-
-                if (game == highlight)
-                {
-                    con.RadioSelected();
-
-                    clicked = game;
-                    btnOk.Enabled = true;
-                }
             }
         }
 

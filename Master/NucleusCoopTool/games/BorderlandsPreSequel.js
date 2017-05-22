@@ -17,6 +17,7 @@ Game.Options = [
         "saveid3", 3)
 ];
 
+Game.GameName = "Borderlands Pre-Sequel";
 Game.HandlerInterval = 100;
 Game.SymlinkExe = false;
 Game.SupportsKeyboard = true;

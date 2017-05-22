@@ -116,6 +116,7 @@ namespace Nucleus.Coop
                 }
             }
 
+            DPIManager.ForceUpdate();
             GameManager.Instance.SaveUserProfile();
         }
 
@@ -164,7 +165,10 @@ namespace Nucleus.Coop
                 if (controls.ContainsKey(game))
                 {
                     GameControl control = controls[game];
-                    control.Image = game.Icon;
+                    control.Invoke((Action)delegate ()
+                    {
+                        control.Image = game.Icon;
+                    });
                 }
             }
         }
@@ -397,21 +401,37 @@ namespace Nucleus.Coop
                 {
                     string path = open.FileName;
 
-                    GenericGameInfo info = gameManager.GetGame(path);
-                    GameList list = new GameList(info);
-                    if (list.ShowDialog() == DialogResult.OK)
-                    {
-                        UserGameInfo game = gameManager.TryAddGame(path, info);
+                    List<GenericGameInfo> info = gameManager.GetGames(path);
 
-                        if (game == null)
+                    if (info.Count > 1)
+                    {
+                        GameList list = new GameList(info);
+                        DPIManager.ForceUpdate();
+
+                        if (list.ShowDialog() == DialogResult.OK)
                         {
-                            MessageBox.Show("Game already in your library!");
+                            UserGameInfo game = gameManager.TryAddGame(path, list.Selected);
+
+                            if (game == null)
+                            {
+                                MessageBox.Show("Game already in your library!");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Game accepted as " + game.Game.GameName);
+                                RefreshGames();
+                            }
                         }
-                        else
-                        {
-                            MessageBox.Show("Game accepted as " + game.Game.GameName);
-                            RefreshGames();
-                        }
+                    }
+                    else if (info.Count == 1)
+                    {
+                        UserGameInfo game = gameManager.TryAddGame(path, info[0]);
+                        MessageBox.Show("Game accepted as " + game.Game.GameName);
+                        RefreshGames();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Unknown game");
                     }
                 }
             }
@@ -425,9 +445,13 @@ namespace Nucleus.Coop
             }
 
             form = new SearchDisksForm(this);
+            //DPIManager.AddForm(form);
+
             form.FormClosed += Form_FormClosed;
             form.Show();
             SetUpForm(form);
+
+            DPIManager.ForceUpdate();
         }
 
         private void Form_FormClosed(object sender, FormClosedEventArgs e)

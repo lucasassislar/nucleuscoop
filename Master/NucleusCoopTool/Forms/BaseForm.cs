@@ -26,6 +26,9 @@ namespace Nucleus.Coop
             Name = "BaseForm";
             Text = "BaseForm";
 
+            // create it here, else the desgienr will show the default windows font
+            Font = new Font("Segoe UI", 12, GraphicsUnit.Point); 
+
             DPIManager.Register(this);
         }
         ~BaseForm()
@@ -52,11 +55,6 @@ namespace Nucleus.Coop
             Console.WriteLine("Changed to {0}x{1}", wid, hei);
 
             ResumeLayout();
-        }
-
-        protected override void OnSizeChanged(EventArgs e)
-        {
-            base.OnSizeChanged(e);
         }
 
         /// <summary>

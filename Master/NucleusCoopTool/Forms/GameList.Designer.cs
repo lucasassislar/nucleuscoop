@@ -43,7 +43,7 @@
             this.listGames.Location = new System.Drawing.Point(12, 12);
             this.listGames.Name = "listGames";
             this.listGames.Offset = new System.Drawing.Size(0, 0);
-            this.listGames.Size = new System.Drawing.Size(396, 593);
+            this.listGames.Size = new System.Drawing.Size(400, 592);
             this.listGames.TabIndex = 0;
             // 
             // btnOk
@@ -52,9 +52,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.Enabled = false;
             this.btnOk.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOk.Location = new System.Drawing.Point(12, 611);
+            this.btnOk.Location = new System.Drawing.Point(12, 610);
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(396, 49);
+            this.btnOk.Size = new System.Drawing.Size(400, 49);
             this.btnOk.TabIndex = 1;
             this.btnOk.Text = "O K";
             this.btnOk.UseVisualStyleBackColor = true;
@@ -63,9 +63,9 @@
             // GameList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.ClientSize = new System.Drawing.Size(420, 672);
+            this.ClientSize = new System.Drawing.Size(424, 671);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.listGames);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

@@ -90,6 +90,14 @@ namespace Nucleus.Coop
             }
         }
 
+        protected override Size DefaultSize
+        {
+            get
+            {
+                return new Size(720, 500);
+            }
+        }
+
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             base.OnFormClosing(e);

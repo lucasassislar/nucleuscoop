@@ -117,6 +117,51 @@ namespace Nucleus.Gaming
         }
 
         /// <summary>
+        /// Returns all the possible games with the exe path
+        /// </summary>
+        /// <param name="exePath"></param>
+        /// <returns></returns>
+        public List<GenericGameInfo> GetGames(string exePath)
+        {
+            string lower = exePath.ToLower();
+            string fileName = Path.GetFileName(exePath).ToLower();
+            string dir = Path.GetDirectoryName(exePath);
+
+            var possibilities = Games.Values.Where(c => c.ExecutableName == fileName);
+            List<GenericGameInfo> games = new List<GenericGameInfo>();
+
+            foreach (GenericGameInfo game in possibilities)
+            {
+                // check if the Context matches
+                string[] context = game.ExecutableContext;
+                bool notAdd = false;
+                if (context != null)
+                {
+                    for (int j = 0; j < context.Length; j++)
+                    {
+                        string con = Path.Combine(dir, context[j]);
+                        if (!File.Exists(con) &&
+                            !Directory.Exists(con))
+                        {
+                            notAdd = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (notAdd)
+                {
+                    continue;
+                }
+
+                // search for the same exe on the user profile
+                games.Add(game);
+            }
+
+            return games;
+        }
+
+        /// <summary>
         /// Tries adding a game to the collection with the provided IGameInfo
         /// </summary>
         /// <param name="exePath"></param>

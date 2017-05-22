@@ -119,7 +119,7 @@
             // SearchDisksForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(703, 461);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.lblProgress);

@@ -109,12 +109,6 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RequestInputForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\RequestInputForm.Designer.cs">
-      <DependentUpon>RequestInputForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\SearchDisksForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,9 +125,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RequestInputForm.resx">
-      <DependentUpon>RequestInputForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SearchDisksForm.resx">
       <DependentUpon>SearchDisksForm.cs</DependentUpon>

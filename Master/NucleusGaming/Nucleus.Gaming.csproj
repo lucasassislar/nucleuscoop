@@ -143,6 +143,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="DPI\DPIManager.cs" />
+    <Compile Include="DPI\DPIMonitor.cs" />
     <Compile Include="DPI\IDynamicSized.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="Platform\Windows\Interop\Gdi32\Gdi32Interop.cs" />

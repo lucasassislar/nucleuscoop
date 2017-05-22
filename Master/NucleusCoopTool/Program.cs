@@ -21,7 +21,7 @@ namespace Nucleus.Coop
             Application.SetCompatibleTextRenderingDefault(false);
 
             MainForm form = new MainForm();
-            DPIManager.Initialize(form);
+            DPIManager.AddForm(form);
             DPIManager.ForceUpdate();
 
             Application.Run(form);

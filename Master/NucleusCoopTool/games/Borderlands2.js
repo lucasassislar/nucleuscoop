@@ -17,13 +17,13 @@ Game.Options = [
         "saveid3", 3)
 ];
 
+Game.GameName = "Borderlands 2";
 Game.HandlerInterval = 100;
 Game.SymlinkExe = false;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "borderlands2.exe";
 Game.SteamID = "49520";
 Game.GUID = "49520";
-Game.GameName = "Borderlands 2";
 Game.MaxPlayers = 4;
 Game.MaxPlayersOneMonitor = 4;
 Game.BinariesFolder = "binaries\\win32";

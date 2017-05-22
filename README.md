@@ -8,13 +8,15 @@ Subscribe to our subreddit: https://www.reddit.com/r/nucleuscoop/
 
 Currently Supported Games:
 
+- Borderlands 1
 - Borderlands 2
 - Borderlands: The Pre Sequel
+- Left 4 Dead 2
+
 
 Working but not with all features:
 - Borderlands
-	ALPHA5: Everything works if you're using gamepads, but not with a keyboard + mouse player
-
+	ALPHA 8: Everything works if you're using gamepads, but not with a keyboard + mouse player
 
 So close but not there yet:
 
@@ -41,7 +43,6 @@ When the user hits play:
 Next on the List:
 
 - Left 4 Dead 1
-- Left 4 Dead 2
 - Portal 2
 - Call of Duty: Black Ops
 - Call of Duty: Modern Warfare 2
@@ -68,5 +69,5 @@ For the application:
 
 For the games's Javascript files
 	- Visual Studio Code
-	- Node.js
+	- Node.js (not yet)
 	- ProcessExplorer

@@ -12,9 +12,6 @@ namespace Nucleus.Gaming
     public static class DPIManager
     {
         public static float Scale = 1f;
-
-        private static bool finished;
-        private static Form appForm;
         private static List<IDynamicSized> components = new List<IDynamicSized>();
 
         public static Font Font;
@@ -23,7 +20,7 @@ namespace Nucleus.Gaming
         {
             Scale = User32Util.GetDPIScalingFactor();
         }
-        
+
         private static void UpdateFont()
         {
             if (Font != null)
@@ -35,7 +32,7 @@ namespace Nucleus.Gaming
             Font = new Font("Segoe UI", fontSize, GraphicsUnit.Point);
         }
 
-        public static void Initialize(Form form)
+        public static void AddForm(Form form)
         {
             Version os = WindowsVersionInfo.Version;
 
@@ -43,15 +40,15 @@ namespace Nucleus.Gaming
             {
                 // if we are on Windows 8.1 or higher we can have
                 // custom DPI by window
-                appForm = form;
-                appForm.LocationChanged += AppForm_LocationChanged;
+                form.LocationChanged += AppForm_LocationChanged;
             }
             UpdateFont();
         }
 
         private static void AppForm_LocationChanged(object sender, EventArgs e)
         {
-            uint val = User32Util.GetDpiForWindow(appForm.Handle);
+            Form form = (Form)sender;
+            uint val = User32Util.GetDpiForWindow(form.Handle);
             float newScale = val / 96.0f;
             float dif = Math.Abs(newScale - Scale);
 
@@ -62,7 +59,7 @@ namespace Nucleus.Gaming
                 UpdateFont();
 
                 // update all components
-                appForm.Invoke((Action)delegate ()
+                form.Invoke((Action)delegate ()
                 {
                     UpdateAll();
                 });
