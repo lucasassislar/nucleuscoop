@@ -1,4 +1,5 @@
 ﻿using Nucleus;
+using Nucleus.Gaming.Windows;
 using Nucleus.Interop.User32;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ namespace StartGame
         {
             // We need this, else Windows will fake
             // all the data about monitors inside the application
-            User32Interop.SetProcessDpiAwareness(User32Interop.PROCESS_DPI_AWARENESS.PROCESS_PER_MONITOR_DPI_AWARE);
+            User32Util.SetProcessDpiAwareness(ProcessDPIAwareness.ProcessPerMonitorDPIAware);
 
             if (args.Length == 0)
             {

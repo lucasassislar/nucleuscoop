@@ -8,6 +8,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThirdParty", "ThirdParty", "{EBED4BFC-5AC2-4601-9BEA-879206976057}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nucleus.Coop", "NucleusCoopTool\Nucleus.Coop.csproj", "{7818FD81-77A6-49F3-8571-A91B1B99E63F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{91298ADA-5999-41D4-8A7B-51F28094AB5B} = {91298ADA-5999-41D4-8A7B-51F28094AB5B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowScrape", "ThirdParty\WindowScrape\WindowScrape.csproj", "{D9716550-921D-44E8-A289-C297950DB1F7}"
 EndProject

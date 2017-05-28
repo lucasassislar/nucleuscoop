@@ -271,12 +271,6 @@
     <None Include="Resources\not_found_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\StartGame\bin\Debug\StartGame.exe">
-      <Link>StartGame.exe</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="games\Battlefront2.js" />
     <None Include="games\Borderlands.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -342,6 +336,9 @@
     <None Include="games\Left4Dead\coldstream.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="..\StartGame\bin\Release\StartGame.exe">
+      <Link>StartGame.exe</Link>
+    </Content>
     <Content Include="icon.ico" />
     <Content Include="Resources\icon.ico" />
   </ItemGroup>
