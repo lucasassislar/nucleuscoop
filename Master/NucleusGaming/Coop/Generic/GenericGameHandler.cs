@@ -53,7 +53,7 @@ namespace Nucleus.Gaming
             // search for game instances left behind
             try
             {
-                Process[] procs = Process.GetProcessesByName(gen.ExecutableName.ToLower());
+                Process[] procs = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()));
                 if (procs.Length > 0)
                 {
                     for (int i = 0; i < procs.Length; i++)
@@ -76,7 +76,8 @@ namespace Nucleus.Gaming
 
             Cursor.Clip = Rectangle.Empty; // guarantee were not clipping anymore
             string backupDir = GameManager.Instance.GempTempFolder(this.userGame.Game);
-
+            ForceFinish();
+            Thread.Sleep(1000);
             // delete symlink folder
             try
             {
