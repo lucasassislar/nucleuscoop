@@ -154,15 +154,22 @@ namespace Nucleus.Gaming
 
                 patchCount++;
                 if (patchCount > 1)
-                    throw new Exception("PatchFind pattern is not unique in " + originalFile);
-                for (int w = 0; w < patchReplace.Length; w++)
                 {
-                    fileContent[p + w] = patchReplace[w];
+                    LogManager.Log("PatchFind pattern is not unique in " + originalFile);
+                }
+                else
+                {
+                    for (int w = 0; w < patchReplace.Length; w++)
+                    {
+                        fileContent[p + w] = patchReplace[w];
+                    }
                 }
             }
 
             if (patchCount == 0)
-                throw new Exception("PatchFind pattern was not found in " + originalFile);
+            {
+                LogManager.Log("PatchFind pattern was not found in " + originalFile);
+            }
 
             // Save it to another location.
             File.WriteAllBytes(patchedFile, fileContent);

@@ -344,7 +344,7 @@ namespace Nucleus.Coop
         private void handler_Ended()
         {
             handler = null;
-            SetBtnToPlay();
+            Invoke(new Action(SetBtnToPlay));
         }
 
         private void UpdateGameManager(object state)
