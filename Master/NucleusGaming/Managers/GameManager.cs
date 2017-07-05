@@ -267,7 +267,7 @@ namespace Nucleus.Gaming
 
             try
             {
-                //if (!Directory.Exists(steamEmu))
+                if (!Directory.Exists(steamEmu))
                 {
                     LogManager.Log("Extracting SmartSteamEmu");
 
@@ -553,7 +553,7 @@ namespace Nucleus.Gaming
 
         private void play(object state)
         {
-//#if RELEASE
+#if RELEASE
             try
             {
                 error = ((IGameHandler)state).Play();
@@ -572,9 +572,9 @@ namespace Nucleus.Gaming
                     return;
                 }
             }
-//#else
-            //error = ((IGameHandler)state).Play();
-//#endif
+#else
+            error = ((IGameHandler)state).Play();
+#endif
         }
     }
 }
