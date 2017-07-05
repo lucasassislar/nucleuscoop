@@ -61,6 +61,16 @@ var listMaps = [
     { Name: "Deathmatch", Details: "3. DM Syntek Residential", Console: "dm_residential", ImageUrl: "obresidentialbio.jpg" },
     { Name: "Deathmatch", Details: "4. DM Test lab", Console: "dm_testlab", ImageUrl: "dm_testlab_icon.jpg" },
 
+    { Name: "City 17", Details: "1. Trainstation", Console: "as_city17_01", ImageUrl: "obc17ts_button2.jpg" },
+    { Name: "City 17", Details: "2. City center", Console: "as_city17_02", ImageUrl: "obc17center_goo.jpg" },
+    { Name: "City 17", Details: "3. Tunnel", Console: "as_city17_03", ImageUrl: "obc17tunnel_eggs.jpg" },
+    { Name: "City 17", Details: "4. Fountain", Console: "as_city17_04", ImageUrl: "obc17f_core.jpg" },
+    { Name: "City 17", Details: "5. Citadel", Console: "as_city17_05", ImageUrl: "obc17citadel_escape.jpg" },
+
+    { Name: "Dead City", Details: "1. Omega City", Console: "dc1-omega_city", ImageUrl: "omegacity_missionpic.jpg" },
+    { Name: "Dead City", Details: "2. Breaking An Entry", Console: "dc2-breaking_an_entry", ImageUrl: "Breakinganentry_missionpic.jpg" },
+    { Name: "Dead City", Details: "3. Search And Rescue", Console: "dc3-search_and_rescue", ImageUrl: "Searchandrescue_missionpic.jpg" },
+
     { Name: "No Map (unsupported)", Details: "None", Console: "none", ImageUrl: "" }
 ];
 
