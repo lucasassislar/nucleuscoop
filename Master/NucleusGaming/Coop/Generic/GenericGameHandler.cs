@@ -32,7 +32,7 @@ namespace Nucleus.Gaming
         private double timer;
         private int exited;
         private List<Process> attached = new List<Process>();
-
+        
         protected bool hasEnded;
         protected double timerInterval = 1000;
 
@@ -81,7 +81,7 @@ namespace Nucleus.Gaming
             // delete symlink folder
             try
             {
-#if RELEASE
+//#if RELEASE
                 for (int i = 0; i < profile.PlayerData.Count; i++)
                 {
                     string linkFolder = Path.Combine(backupDir, "Instance" + i);
@@ -90,9 +90,12 @@ namespace Nucleus.Gaming
                         Directory.Delete(linkFolder, true);
                     }
                 }
-#endif
+//#endif
             }
-            catch { }
+            catch
+            {
+                
+            }
 
             if (Ended != null)
             {
@@ -449,6 +452,7 @@ namespace Nucleus.Gaming
                     //emu.IniWriteValue("SmartSteamEmu", "MasterServer", "");
                     //emu.IniWriteValue("SmartSteamEmu", "MasterServerGoldSrc", "");
 
+                    gen.SetupSse?.Invoke();
 
                     if (context.KillMutex?.Length > 0)
                     {
@@ -524,6 +528,8 @@ namespace Nucleus.Gaming
                 player.ProcessData = data;
 
                 first = false;
+
+                Thread.Sleep(TimeSpan.FromSeconds(gen.PauseBetweenStarts));
             }
 
             return string.Empty;
@@ -591,6 +597,34 @@ namespace Nucleus.Gaming
             }
         }
 
+        public void CenterCursorOther()
+        {
+            List<PlayerInfo> players = profile.PlayerData;
+            if (players == null)
+            {
+                return;
+            }
+
+            foreach (PlayerInfo p in players.Where(p => p.IsKeyboardPlayer && p.ProcessData != null &&
+            p.ProcessData.HWnd != null && !p.ProcessData.Process.HasExited))
+            {
+                if (p.ProcessData.HWnd.NativePtr == User32Interop.GetForegroundWindow())
+                {
+                    Cursor.Clip = p.MonitorBounds;
+                }
+                else
+                {
+                    Cursor.Clip = Rectangle.Empty;
+                }
+                break;
+            }
+        }
+
+        public PlayerInfo GetKeyBoardPlayer()
+        {
+            return profile.PlayerData.FirstOrDefault(u => u.IsKeyboardPlayer);
+        }
+
         public void Update(double delayMS)
         {
             if (profile == null)
@@ -609,12 +643,48 @@ namespace Nucleus.Gaming
                 timer = 0;
             }
 
+            var kbPlayer = GetKeyBoardPlayer();
+            if (kbPlayer?.ProcessData?.HWnd != null)
+            {
+                if (kbPlayer.ProcessData.HWnd.NativePtr == User32Interop.GetForegroundWindow())
+                {
+                    Cursor.Clip = kbPlayer.MonitorBounds;
+                    Cursor.Hide();
+                }
+                else
+                {
+                    Cursor.Clip = Rectangle.Empty;
+                    Cursor.Show();
+                }
+            }
+
             for (int i = 0; i < players.Count; i++)
             {
                 PlayerInfo p = players[i];
                 ProcessData data = p.ProcessData;
-                if (data == null || data.Finished)
+                if (data == null)
                 {
+                    continue;
+                }
+
+                if (data.Finished)
+                {
+                    if (data.Process.HasExited)
+                    {
+                        exited++;
+                    }
+                    else
+                    {
+                        if (!p.IsKeyboardPlayer && kbPlayer != null && p.ProcessData.HWnd.NativePtr == User32Interop.GetForegroundWindow())
+                        {
+                            User32Interop.SetForegroundWindow(kbPlayer.ProcessData.HWnd.NativePtr);
+                        }
+                        else
+                        {
+                            
+                        }
+                    }
+
                     continue;
                 }
 
@@ -697,8 +767,7 @@ namespace Nucleus.Gaming
 
                             if (p.IsKeyboardPlayer)
                             {
-                                //Rectangle r = p.MonitorBounds;
-                                //Cursor.Clip = r;
+                                //Cursor.Clip = p.MonitorBounds;
                                 //User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
                             }
                         }
