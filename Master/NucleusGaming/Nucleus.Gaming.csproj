@@ -128,6 +128,11 @@
     <Compile Include="Coop\GameOption.cs" />
     <Compile Include="Coop\GameOptionValue.cs" />
     <Compile Include="Coop\GameProfile.cs" />
+    <Compile Include="Coop\Generic\Cursor\CursorBarrier.cs" />
+    <Compile Include="Coop\Generic\Cursor\CursorBarrierLower.cs" />
+    <Compile Include="Coop\Generic\Cursor\CursorBarrierUpper.cs" />
+    <Compile Include="Coop\Generic\Cursor\CursorModule.cs" />
+    <Compile Include="Coop\Generic\Cursor\NativeMethods.cs" />
     <Compile Include="Coop\Generic\DynamicAttribute.cs" />
     <Compile Include="Coop\Generic\GenericContext.cs" />
     <Compile Include="Coop\Generic\GenericGameInfo.cs" />

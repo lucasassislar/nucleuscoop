@@ -14,6 +14,7 @@ using System.Management;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Nucleus.Gaming.Coop.Generic.Cursor;
 using WindowScrape.Constants;
 using WindowScrape.Static;
 using WindowScrape.Types;
@@ -37,6 +38,7 @@ namespace Nucleus.Gaming
         protected double timerInterval = 1000;
 
         public event Action Ended;
+        private CursorModule _cursorModule;
 
         public virtual bool HasEnded
         {
@@ -47,7 +49,7 @@ namespace Nucleus.Gaming
         {
             get { return timerInterval; }
         }
-
+        
         private void ForceFinish()
         {
             // search for game instances left behind
@@ -77,6 +79,10 @@ namespace Nucleus.Gaming
             Cursor.Clip = Rectangle.Empty; // guarantee were not clipping anymore
             string backupDir = GameManager.Instance.GempTempFolder(this.userGame.Game);
             ForceFinish();
+
+            if (_cursorModule != null)
+                _cursorModule.Stop();
+
             Thread.Sleep(1000);
             // delete symlink folder
             try
@@ -126,6 +132,9 @@ namespace Nucleus.Gaming
                 // you fucked up
                 return false;
             }
+
+            if (gen.LockMouse)
+                _cursorModule = new CursorModule();
 
             jsData = new Dictionary<string, string>();
             jsData.Add(Folder.Documents.ToString(), Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
@@ -314,12 +323,12 @@ namespace Nucleus.Gaming
 
                 if (gen.Hook.CustomDllEnabled)
                 {
-                    fileExclusions.Add("xinput");
-                    fileExclusions.Add("ncoop");
+                    fileExclusions.Add("xinput1_3.dll");
+                    fileExclusions.Add("ncoop.ini");
                 }
                 if (!gen.SymlinkExe)
                 {
-                    fileExclusions.Add(Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()));
+                    fileExclusions.Add(gen.ExecutableName.ToLower());
                 }
 
                 // additional ignored files by the generic info
@@ -619,10 +628,20 @@ namespace Nucleus.Gaming
             {
                 PlayerInfo p = players[i];
                 ProcessData data = p.ProcessData;
-                if (data == null || data.Finished)
+                if (data == null)
                 {
                     continue;
                 }
+
+                if (data.Finished)
+                {
+                    if (data.Process.HasExited)
+                    {
+                        exited++;
+                    }
+                    continue;
+                }
+
 
                 if (p.SteamEmu)
                 {
@@ -686,6 +705,18 @@ namespace Nucleus.Gaming
 
                                 data.Finished = true;
                                 Debug.WriteLine("State 2");
+
+                                if (gen.LockMouse)
+                                {
+                                    if (p.IsKeyboardPlayer)
+                                    {
+                                        _cursorModule.Setup(data.Process, p.MonitorBounds);
+                                    }
+                                    else
+                                    {
+                                        _cursorModule.AddOtherGameHandle(data.Process.MainWindowHandle);
+                                    }
+                                }
                             }
                             else if (data.Status == 1)
                             {

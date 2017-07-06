@@ -101,7 +101,8 @@ Game.DirSymlinkExclusions = [
 ];
 Game.FileSymlinkExclusions = [
     "autoexec.cfg",
-    "video.txt"
+    "video.txt",
+    "config.cfg"
 ];
 
 Game.HandlerInterval = 100; // 10 FPS handler
@@ -140,6 +141,11 @@ Game.Play = function () {
         new Nucleus.CfgSaveInfo("VideoConfig", "setting.defaultresheight", Math.max(360, Context.Height)),
         new Nucleus.CfgSaveInfo("VideoConfig", "setting.nowindowborder", "0"),
     ]);
+
+    //copy config.cfg
+    System.IO.File.Copy(System.IO.Path.Combine(Context.RootInstallFolder, "left4dead2\\cfg\\config.cfg"),
+        System.IO.Path.Combine(Context.RootFolder, "left4dead2\\cfg\\config.cfg"),
+        true);
 
     var autoExec = Context.GetFolder(Nucleus.Folder.InstancedGameFolder) + "\\left4dead2\\cfg\\autoexec.cfg";
     var lines = [

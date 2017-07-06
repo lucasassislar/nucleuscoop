@@ -37,6 +37,7 @@ Game.Hook.DInputEnabled = false;
 Game.Hook.XInputEnabled = true;
 Game.Hook.XInputReroute = false;
 Game.PauseBetweenStarts = 30;
+Game.LockMouse = true;
 
 Game.SetupSse = function() {
     var sseIni = System.IO.Path.Combine(Context.RootFolder, "SmartSteamLoader\\SmartSteamEmu.ini");
@@ -44,7 +45,7 @@ Game.SetupSse = function() {
     var isKeyboard = Player.IsKeyboardPlayer;
     var name = isKeyboard ? "AccountName" : "Player " + (Context.PlayerID + 1)
     Context.ModifySaveFile(sseIni, sseIni, Nucleus.SaveType.INI, [
-        new Nucleus.IniSaveInfo("Launcher", "ParanoidMode", 1),
+        //new Nucleus.IniSaveInfo("Launcher", "ParanoidMode", 1),
         new Nucleus.IniSaveInfo("SmartSteamEmu", "Language", language),
         new Nucleus.IniSaveInfo("SSEOverlay", "DisableOverlay", 1),
         new Nucleus.IniSaveInfo("SSEOverlay", "OnlineMode", 0),
@@ -52,7 +53,7 @@ Game.SetupSse = function() {
         new Nucleus.IniSaveInfo("SmartSteamEmu", "SteamIdGeneration", "PersonaName"),
         new Nucleus.IniSaveInfo("SmartSteamEmu", "PersonaName", name),
         new Nucleus.IniSaveInfo("SmartSteamEmu", "SeparateStorageByName", 1),
-        new Nucleus.IniSaveInfo("Debug", "EnableLog", 1)
+        //new Nucleus.IniSaveInfo("Debug", "EnableLog", 1)
     ]);
 }
 
@@ -62,7 +63,7 @@ Game.Play = function () {
     Context.Hook.BlockMouseEvents = !isKeyboard;
     Context.Hook.BlockKeyboardEvents = !isKeyboard;
     Context.StartArguments = isKeyboard ? "-windowed -AlwaysFocus -NoController" : "-windowed -AlwaysFocus -nomouse";
-
+    
     var savePath = Context.GetFolder(Nucleus.Folder.Documents) + "\\my games\\Aliens Colonial Marines\\PecanGame\\Config\\\PecanEngine.ini";
     Context.ModifySaveFile(savePath, savePath, Nucleus.SaveType.INI, [
         new Nucleus.IniSaveInfo("SystemSettings", "WindowedFullscreen", Context.IsFullscreen),

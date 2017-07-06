@@ -50,6 +50,7 @@ namespace Nucleus.Gaming
         public Action SetupSse;
         public List<CustomStep> CustomSteps = new List<CustomStep>();
         public string JsFileName;
+        public bool LockMouse;
 
         public Type HandlerType
         {

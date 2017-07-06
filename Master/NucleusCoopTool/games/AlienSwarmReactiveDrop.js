@@ -101,6 +101,7 @@ Game.FileSymlinkExclusions = [
     "autoexec.cfg",
     "video.txt",
     "steam.inf",
+    "config.cfg",
     "engine.dll",
     "client.dll",
     "server.dll"
@@ -143,6 +144,11 @@ Game.Play = function () {
         new Nucleus.CfgSaveInfo("VideoConfig", "setting.nowindowborder", "0"),
     ]);
     
+    //copy config.cfg
+    System.IO.File.Copy(System.IO.Path.Combine(Context.RootInstallFolder, "reactivedrop\\cfg\\config.cfg"),
+        System.IO.Path.Combine(Context.RootFolder, "reactivedrop\\cfg\\config.cfg"),
+        true);
+
     //copy steam.inf
     System.IO.File.Copy(System.IO.Path.Combine(Context.RootInstallFolder, "reactivedrop\\steam.inf"),
         System.IO.Path.Combine(Context.RootFolder, "reactivedrop\\steam.inf"),
@@ -205,11 +211,12 @@ Game.Play = function () {
         }
     } else {
         lines.push("connect " + Context.User.GetLocalIP());
-        if (map.indexOf("dm_") === 0) {
-            //for deathmatch map use BACK button to show/close choose marine panel
-            lines.push("bind \"JOY7\" \"cl_select_loadout\"");
-            lines.push("bind \"BACK\" \"cl_select_loadout\"");
-        }
+    }
+
+    if (map.indexOf("dm_") === 0 && !Player.IsKeyboardPlayer) {
+        //for deathmatch map use BACK button to show/close choose marine panel
+        lines.push("bind \"JOY7\" \"cl_select_loadout\"");
+        lines.push("bind \"BACK\" \"cl_select_loadout\"");
     }
 
     Context.WriteTextFile(autoExec, lines);
