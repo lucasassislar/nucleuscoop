@@ -59,10 +59,14 @@ Game.SetupSse = function() {
 
 Game.Play = function () {
     var isKeyboard = Player.IsKeyboardPlayer;
+    //to mouse work only in main window
     Context.Hook.ForceFocus = isKeyboard;
     Context.Hook.BlockMouseEvents = !isKeyboard;
     Context.Hook.BlockKeyboardEvents = !isKeyboard;
-    Context.StartArguments = isKeyboard ? "-windowed -AlwaysFocus -NoController" : "-windowed -AlwaysFocus -nomouse";
+
+    var args = isKeyboard ? "-NoController" : "-nomouse";
+    
+    Context.StartArguments = System.String.Format("-windowed -AlwaysFocus {0} -ResX={1} -ResY={2}", args, Context.Width, Context.Height);
     
     var savePath = Context.GetFolder(Nucleus.Folder.Documents) + "\\my games\\Aliens Colonial Marines\\PecanGame\\Config\\\PecanEngine.ini";
     Context.ModifySaveFile(savePath, savePath, Nucleus.SaveType.INI, [

@@ -198,20 +198,20 @@ namespace Nucleus.Gaming.Coop.Generic.Cursor
             // handle active window changed!
             if (processHandle == hWnd)
             {
-                Debug.WriteLine("Lock cursor to main game screen"); 
+                //Debug.WriteLine("Lock cursor to main game screen"); 
                 LockCursorToScreen();
             }
             else if (_otherGames.Contains(hWnd))
             {
-                Debug.WriteLine("Other game screen, focus to main");
-                User32Interop.SetForegroundWindow(processHandle);
+                //Debug.WriteLine("Other game screen, focus to main");
+                NativeMethods.ShowWindow(processHandle, NativeMethods.SW_RESTORE | NativeMethods.SW_SHOW);
+                NativeMethods.SetForegroundWindow(processHandle);
             }
             else
             {
-                Debug.WriteLine("Alt tab from main game");
+                //Debug.WriteLine("Not game window is active");
                 UnLockCursor();
             }
-            //Debug.WriteLine($"hWinEventHook {hWinEventHook}, hwnd {hWnd}, {iEvent} {idObject} {idChild} {dwEventThread} {dwmsEventTime}");
         }
     }
 }

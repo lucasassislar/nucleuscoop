@@ -33,11 +33,9 @@ var listMaps = [
 // List of all the game modes
 var listGameModes = [
     "campaign",
-    "scavenge",
     "realism",
     "survival",
     "versus",
-    "mutation",
     "none"
 ];
 
@@ -68,7 +66,8 @@ Game.DirSymlinkExclusions = [
 ];
 Game.FileSymlinkExclusions = [
     "autoexec.cfg",
-    "video.txt"
+    "video.txt",
+    "config.cfg"
 ];
 
 Game.HandlerInterval = 100; // 10 FPS handler
@@ -100,8 +99,8 @@ Game.Play = function () {
     Context.Hook.SetWindowSize = Player.Owner.IsDualVertical();
     Context.Hook.ForceFocus = !Player.IsKeyboardPlayer;
 
-    var saveSrc = System.IO.Path.Combine(Context.RootInstallFolder, "left4dead2\\cfg\\video.txt");
-    var savePath = System.IO.Path.Combine(Context.RootFolder, "left4dead2\\cfg\\video.txt");
+    var saveSrc = System.IO.Path.Combine(Context.RootInstallFolder, "left4dead\\cfg\\video.txt");
+    var savePath = System.IO.Path.Combine(Context.RootFolder, "left4dead\\cfg\\video.txt");
     Context.ModifySaveFile(saveSrc, savePath, Nucleus.SaveType.CFG, [
         new Nucleus.CfgSaveInfo("VideoConfig", "setting.fullscreen", "0"),
         new Nucleus.CfgSaveInfo("VideoConfig", "setting.defaultres", Math.max(640, Context.Width)),
@@ -109,7 +108,12 @@ Game.Play = function () {
         new Nucleus.CfgSaveInfo("VideoConfig", "setting.nowindowborder", "0"),
     ]);
 
-    var autoExec = Context.GetFolder(Nucleus.Folder.InstancedGameFolder) + "\\left4dead2\\cfg\\autoexec.cfg";
+    //copy config.cfg
+    System.IO.File.Copy(System.IO.Path.Combine(Context.RootInstallFolder, "left4dead\\cfg\\config.cfg"),
+        System.IO.Path.Combine(Context.RootFolder, "left4dead\\cfg\\config.cfg"),
+        true);
+
+    var autoExec = Context.GetFolder(Nucleus.Folder.InstancedGameFolder) + "\\left4dead\\cfg\\autoexec.cfg";
     var lines = [
         "sv_lan 1",
         "sv_allow_lobby_connect_only 0",

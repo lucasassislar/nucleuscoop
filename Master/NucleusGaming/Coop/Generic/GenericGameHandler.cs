@@ -705,6 +705,12 @@ namespace Nucleus.Gaming
 
                                 data.Finished = true;
                                 Debug.WriteLine("State 2");
+                            }
+                            else if (data.Status == 1)
+                            {
+                                data.HWnd.Location = data.Position;
+                                data.Status++;
+                                Debug.WriteLine("State 1");
 
                                 if (gen.LockMouse)
                                 {
@@ -717,12 +723,6 @@ namespace Nucleus.Gaming
                                         _cursorModule.AddOtherGameHandle(data.Process.MainWindowHandle);
                                     }
                                 }
-                            }
-                            else if (data.Status == 1)
-                            {
-                                data.HWnd.Location = data.Position;
-                                data.Status++;
-                                Debug.WriteLine("State 1");
                             }
                             else if (data.Status == 0)
                             {

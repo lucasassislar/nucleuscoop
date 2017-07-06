@@ -476,5 +476,8 @@ namespace Nucleus.Gaming.Coop.Generic.Cursor
 
         [DllImport("user32.dll")]
         public static extern int UnhookWinEvent(IntPtr hWinEventHook);
+
+        [DllImport("User32.dll")]
+        public static extern bool ShowWindow(IntPtr handle, int nCmdShow);
     }
 }
