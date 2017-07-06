@@ -204,14 +204,19 @@ namespace Nucleus.Gaming.Coop.Generic.Cursor
             else if (_otherGames.Contains(hWnd))
             {
                 //Debug.WriteLine("Other game screen, focus to main");
-                NativeMethods.ShowWindow(processHandle, NativeMethods.SW_RESTORE | NativeMethods.SW_SHOW);
-                NativeMethods.SetForegroundWindow(processHandle);
+                SetActiveWindow();
             }
             else
             {
                 //Debug.WriteLine("Not game window is active");
                 UnLockCursor();
             }
+        }
+
+        public void SetActiveWindow()
+        {
+            NativeMethods.ShowWindow(processHandle, NativeMethods.SW_RESTORE | NativeMethods.SW_SHOW);
+            NativeMethods.SetForegroundWindow(processHandle);
         }
     }
 }

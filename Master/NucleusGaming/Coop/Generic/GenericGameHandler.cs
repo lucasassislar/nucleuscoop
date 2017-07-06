@@ -705,6 +705,12 @@ namespace Nucleus.Gaming
 
                                 data.Finished = true;
                                 Debug.WriteLine("State 2");
+
+                                if (i == players.Count - 1 && gen.LockMouse)
+                                {
+                                    //last screen setuped
+                                    _cursorModule.SetActiveWindow();
+                                }
                             }
                             else if (data.Status == 1)
                             {
@@ -730,13 +736,6 @@ namespace Nucleus.Gaming
 
                                 data.Status++;
                                 Debug.WriteLine("State 0");
-                            }
-
-                            if (p.IsKeyboardPlayer)
-                            {
-                                //Rectangle r = p.MonitorBounds;
-                                //Cursor.Clip = r;
-                                //User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
                             }
                         }
                         else
