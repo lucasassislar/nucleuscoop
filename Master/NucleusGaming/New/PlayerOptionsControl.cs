@@ -82,33 +82,46 @@ namespace Nucleus.Coop
                     int border = 10;
 
                     object value;
+                    object defaultValue;
                     IList values;
                     if (opt.Value is Enum)
                     {
                         value = (Enum)val;
                         values = Enum.GetValues(value.GetType());
+                        defaultValue = opt.DefaultValue;
                     }
                     else
                     {
                         value = opt.List[0];
                         values = opt.List;
+                        defaultValue = opt.DefaultValue;
                     }
 
                     for (int i = 0; i < values.Count; i++)
                     {
                         box.Items.Add(values[i]);
                     }
-                    box.SelectedIndex = box.Items.IndexOf(value);
+
+                    if (defaultValue != null)
+                    {
+                        box.SelectedIndex = box.Items.IndexOf(defaultValue);
+                        if (box.SelectedIndex == -1)
+                            box.SelectedIndex = box.Items.IndexOf(value);
+                    }
+                    else
+                        box.SelectedIndex = box.Items.IndexOf(value);
 
                     box.Width = wid;
                     box.Height = 40;
                     box.Left = cool.Width - box.Width - border;
                     box.Top = (cool.Height / 2) - (box.Height / 2);
                     box.Anchor = AnchorStyles.Right;
+                    box.DropDownStyle = ComboBoxStyle.DropDownList;
                     cool.Controls.Add(box);
 
                     box.Tag = opt;
                     box.SelectedValueChanged += box_SelectedValueChanged;
+                    ChangeOption(box.Tag, box.SelectedItem);
                 }
                 else if (opt.Value is bool)
                 {
@@ -125,6 +138,7 @@ namespace Nucleus.Coop
 
                     box.Tag = opt;
                     box.CheckedChanged += box_CheckedChanged;
+                    ChangeOption(box.Tag, box.Checked);
                 }
                 else if (opt.Value is int || opt.Value is double)
                 {
@@ -148,6 +162,7 @@ namespace Nucleus.Coop
 
                     num.Tag = opt;
                     num.ValueChanged += num_ValueChanged;
+                    ChangeOption(num.Tag, num.Value);
                 }
                 else if (opt.Value is GameOptionValue)
                 {
@@ -169,10 +184,12 @@ namespace Nucleus.Coop
                     box.Left = cool.Width - box.Width - border;
                     box.Top = (cool.Height / 2) - (box.Height / 2);
                     box.Anchor = AnchorStyles.Right;
+                    //box.DropDownStyle = ComboBoxStyle.DropDownList;
                     cool.Controls.Add(box);
 
                     box.Tag = opt;
                     box.SelectedValueChanged += box_SelectedValueChanged;
+                    ChangeOption(box.Tag, box.SelectedItem);
                 }
             }
 

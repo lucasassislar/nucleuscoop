@@ -14,6 +14,7 @@ using System.Management;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Nucleus.Gaming.Coop.Generic.Cursor;
 using WindowScrape.Constants;
 using WindowScrape.Static;
 using WindowScrape.Types;
@@ -32,11 +33,12 @@ namespace Nucleus.Gaming
         private double timer;
         private int exited;
         private List<Process> attached = new List<Process>();
-
+        
         protected bool hasEnded;
         protected double timerInterval = 1000;
 
         public event Action Ended;
+        private CursorModule _cursorModule;
 
         public virtual bool HasEnded
         {
@@ -47,13 +49,13 @@ namespace Nucleus.Gaming
         {
             get { return timerInterval; }
         }
-
+        
         private void ForceFinish()
         {
             // search for game instances left behind
             try
             {
-                Process[] procs = Process.GetProcessesByName(gen.ExecutableName.ToLower());
+                Process[] procs = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()));
                 if (procs.Length > 0)
                 {
                     for (int i = 0; i < procs.Length; i++)
@@ -76,11 +78,16 @@ namespace Nucleus.Gaming
 
             Cursor.Clip = Rectangle.Empty; // guarantee were not clipping anymore
             string backupDir = GameManager.Instance.GempTempFolder(this.userGame.Game);
+            ForceFinish();
 
+            if (_cursorModule != null)
+                _cursorModule.Stop();
+
+            Thread.Sleep(1000);
             // delete symlink folder
             try
             {
-#if RELEASE
+//#if RELEASE
                 for (int i = 0; i < profile.PlayerData.Count; i++)
                 {
                     string linkFolder = Path.Combine(backupDir, "Instance" + i);
@@ -89,9 +96,12 @@ namespace Nucleus.Gaming
                         Directory.Delete(linkFolder, true);
                     }
                 }
-#endif
+//#endif
             }
-            catch { }
+            catch
+            {
+                
+            }
 
             if (Ended != null)
             {
@@ -122,6 +132,9 @@ namespace Nucleus.Gaming
                 // you fucked up
                 return false;
             }
+
+            if (gen.LockMouse)
+                _cursorModule = new CursorModule();
 
             jsData = new Dictionary<string, string>();
             jsData.Add(Folder.Documents.ToString(), Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
@@ -310,12 +323,12 @@ namespace Nucleus.Gaming
 
                 if (gen.Hook.CustomDllEnabled)
                 {
-                    fileExclusions.Add("xinput");
-                    fileExclusions.Add("ncoop");
+                    fileExclusions.Add("xinput1_3.dll");
+                    fileExclusions.Add("ncoop.ini");
                 }
                 if (!gen.SymlinkExe)
                 {
-                    fileExclusions.Add(Path.GetFileNameWithoutExtension(gen.ExecutableName.ToLower()));
+                    fileExclusions.Add(gen.ExecutableName.ToLower());
                 }
 
                 // additional ignored files by the generic info
@@ -448,6 +461,7 @@ namespace Nucleus.Gaming
                     //emu.IniWriteValue("SmartSteamEmu", "MasterServer", "");
                     //emu.IniWriteValue("SmartSteamEmu", "MasterServerGoldSrc", "");
 
+                    gen.SetupSse?.Invoke();
 
                     if (context.KillMutex?.Length > 0)
                     {
@@ -523,6 +537,8 @@ namespace Nucleus.Gaming
                 player.ProcessData = data;
 
                 first = false;
+
+                Thread.Sleep(TimeSpan.FromSeconds(gen.PauseBetweenStarts));
             }
 
             return string.Empty;
@@ -607,15 +623,25 @@ namespace Nucleus.Gaming
                 updatedHwnd = true;
                 timer = 0;
             }
-
+            
             for (int i = 0; i < players.Count; i++)
             {
                 PlayerInfo p = players[i];
                 ProcessData data = p.ProcessData;
-                if (data == null || data.Finished)
+                if (data == null)
                 {
                     continue;
                 }
+
+                if (data.Finished)
+                {
+                    if (data.Process.HasExited)
+                    {
+                        exited++;
+                    }
+                    continue;
+                }
+
 
                 if (p.SteamEmu)
                 {
@@ -679,12 +705,30 @@ namespace Nucleus.Gaming
 
                                 data.Finished = true;
                                 Debug.WriteLine("State 2");
+
+                                if (i == players.Count - 1 && gen.LockMouse)
+                                {
+                                    //last screen setuped
+                                    _cursorModule.SetActiveWindow();
+                                }
                             }
                             else if (data.Status == 1)
                             {
                                 data.HWnd.Location = data.Position;
                                 data.Status++;
                                 Debug.WriteLine("State 1");
+
+                                if (gen.LockMouse)
+                                {
+                                    if (p.IsKeyboardPlayer)
+                                    {
+                                        _cursorModule.Setup(data.Process, p.MonitorBounds);
+                                    }
+                                    else
+                                    {
+                                        _cursorModule.AddOtherGameHandle(data.Process.MainWindowHandle);
+                                    }
+                                }
                             }
                             else if (data.Status == 0)
                             {
@@ -692,13 +736,6 @@ namespace Nucleus.Gaming
 
                                 data.Status++;
                                 Debug.WriteLine("State 0");
-                            }
-
-                            if (p.IsKeyboardPlayer)
-                            {
-                                //Rectangle r = p.MonitorBounds;
-                                //Cursor.Clip = r;
-                                //User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
                             }
                         }
                         else
