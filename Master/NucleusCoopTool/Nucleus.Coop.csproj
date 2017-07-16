@@ -189,6 +189,10 @@
       <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
       <Name>Nucleus.Gaming</Name>
     </ProjectReference>
+    <ProjectReference Include="..\StartGame\Nucleus.Coop.StartGame.csproj">
+      <Project>{91298ada-5999-41d4-8a7b-51f28094ab5b}</Project>
+      <Name>Nucleus.Coop.StartGame</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ThirdParty\WindowScrape\WindowScrape.csproj">
       <Project>{d9716550-921d-44e8-a289-c297950db1f7}</Project>
       <Name>WindowScrape</Name>
@@ -511,6 +515,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="games\Synergy.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="games\GasGuzzlersExtreme.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="icon.ico" />

@@ -37,7 +37,7 @@ namespace Nucleus
             for (int j = 0; j < dirExclusions.Length; j++)
             {
                 string exclusion = dirExclusions[j];
-                string fullPath = Path.Combine(root, exclusion);
+                string fullPath = Path.Combine(root, exclusion).ToLower();
 
                 if (fullPath.Contains(currentDir.FullName.ToLower()))
                 {

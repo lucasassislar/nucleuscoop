@@ -282,9 +282,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\xinput1_3.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\gamepad.png" />
   </ItemGroup>
   <ItemGroup>
@@ -295,6 +292,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\keyboard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\xinput1_3.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

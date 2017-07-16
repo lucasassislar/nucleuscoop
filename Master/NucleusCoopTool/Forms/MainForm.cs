@@ -344,11 +344,6 @@ namespace Nucleus.Coop
         private void handler_Ended()
         {
             handler = null;
-            if (handlerThread != null)
-            {
-                handlerThread.Abort();
-                handlerThread = null;
-            }
             Invoke(new Action(SetBtnToPlay));
         }
 

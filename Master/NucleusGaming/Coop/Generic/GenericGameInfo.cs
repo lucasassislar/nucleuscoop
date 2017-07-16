@@ -155,13 +155,7 @@ namespace Nucleus.Gaming
 
         public string GetSteamLanguage()
         {
-            string result;
-            if (Environment.Is64BitOperatingSystem)
-                result = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Valve\Steam", "Language", null);
-            else
-                result = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Valve\Steam", "Language", null);
-
-            return result;
+            return (string)Registry.GetValue(@"HKEY_CURRENT_USER\Software\Valve\Steam", "Language", null);
         }
     }
 }
