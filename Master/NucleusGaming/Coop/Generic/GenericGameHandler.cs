@@ -87,7 +87,6 @@ namespace Nucleus.Gaming
             // delete symlink folder
             try
             {
-//#if RELEASE
                 for (int i = 0; i < profile.PlayerData.Count; i++)
                 {
                     string linkFolder = Path.Combine(backupDir, "Instance" + i);
@@ -96,7 +95,6 @@ namespace Nucleus.Gaming
                         Directory.Delete(linkFolder, true);
                     }
                 }
-//#endif
             }
             catch
             {
@@ -378,10 +376,12 @@ namespace Nucleus.Gaming
                 if (context.Hook.CustomDllEnabled)
                 {
                     byte[] xdata = Properties.Resources.xinput1_3;
-                    using (Stream str = File.OpenWrite(Path.Combine(linkBinFolder, "xinput1_3.dll")))
-                    {
-                        str.Write(xdata, 0, xdata.Length);
-                    }
+                    
+                    File.WriteAllBytes(Path.Combine(linkBinFolder, "xinput1_3.dll"), xdata);
+                    File.WriteAllBytes(Path.Combine(linkBinFolder, "xinput1_4.dll"), xdata);
+                    File.WriteAllBytes(Path.Combine(linkBinFolder, "xinput1_2.dll"), xdata);
+                    File.WriteAllBytes(Path.Combine(linkBinFolder, "xinput1_1.dll"), xdata);
+                    File.WriteAllBytes(Path.Combine(linkBinFolder, "xinput9_1_0.dll"), xdata);
 
                     string ncoopIni = Path.Combine(linkBinFolder, "ncoop.ini");
                     using (Stream str = File.OpenWrite(ncoopIni))

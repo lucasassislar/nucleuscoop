@@ -127,7 +127,7 @@ namespace Nucleus.Gaming
             string fileName = Path.GetFileName(exePath).ToLower();
             string dir = Path.GetDirectoryName(exePath);
 
-            var possibilities = Games.Values.Where(c => c.ExecutableName == fileName);
+            var possibilities = Games.Values.Where(c => string.Equals(c.ExecutableName, fileName, StringComparison.OrdinalIgnoreCase));
             List<GenericGameInfo> games = new List<GenericGameInfo>();
 
             foreach (GenericGameInfo game in possibilities)
@@ -553,7 +553,6 @@ namespace Nucleus.Gaming
 
         private void play(object state)
         {
-//#if RELEASE
             try
             {
                 error = ((IGameHandler)state).Play();
@@ -572,9 +571,6 @@ namespace Nucleus.Gaming
                     return;
                 }
             }
-//#else
-            //error = ((IGameHandler)state).Play();
-//#endif
         }
     }
 }
