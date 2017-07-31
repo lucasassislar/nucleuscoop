@@ -70,9 +70,9 @@ namespace Nucleus.Gaming
         private GenericGameHandler parent;
         public GenericContext(GameProfile prof, PlayerInfo info, GenericGameHandler handler)
         {
-            this.profile = prof;
-            this.pInfo = info;
-            this.parent = handler;
+            profile = prof;
+            pInfo = info;
+            parent = handler;
         }
 
         public string GetFolder(Folder folder)
@@ -128,6 +128,51 @@ namespace Nucleus.Gaming
                     }
                     break;
             }
+        }
+
+        public void PatchFile(string originalFile, string patchedFile, byte[] patchFind, byte[] patchReplace)
+        {
+            // Read file bytes.
+            byte[] fileContent = File.ReadAllBytes(originalFile);
+
+            int patchCount = 0;
+            // Detect and patch file.
+            for (int p = 0; p < fileContent.Length; p++)
+            {
+                if (p + patchFind.Length > fileContent.Length)
+                    continue;
+                var toContinue = false;
+                for (int i = 0; i < patchFind.Length; i++)
+                {
+                    if (patchFind[i] != fileContent[p + i])
+                    {
+                        toContinue = true;
+                        break;
+                    }
+                }
+                if (toContinue) continue;
+
+                patchCount++;
+                if (patchCount > 1)
+                {
+                    LogManager.Log("PatchFind pattern is not unique in " + originalFile);
+                }
+                else
+                {
+                    for (int w = 0; w < patchReplace.Length; w++)
+                    {
+                        fileContent[p + w] = patchReplace[w];
+                    }
+                }
+            }
+
+            if (patchCount == 0)
+            {
+                LogManager.Log("PatchFind pattern was not found in " + originalFile);
+            }
+
+            // Save it to another location.
+            File.WriteAllBytes(patchedFile, fileContent);
         }
     }
 }

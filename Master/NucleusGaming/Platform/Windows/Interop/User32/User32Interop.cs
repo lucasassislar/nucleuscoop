@@ -165,6 +165,14 @@ namespace Nucleus.Gaming.Windows.Interop
         public static extern bool SetForegroundWindow(IntPtr hWnd);
 
         /// <summary>
+        /// Retrieves a handle to the foreground window (the window with which the user is currently working).
+        /// The system assigns a slightly higher priority to the thread that creates the foreground window than it does to other threads.
+        /// </summary>
+        /// <returns></returns>
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetForegroundWindow();
+
+        /// <summary>
         /// Changes an attribute of the specified window. The function also sets the 32-bit (long) value at the specified offset into the extra window memory.
         /// </summary>
         /// <param name="hWnd">A handle to the window and, indirectly, the class to which the window belongs..</param>
