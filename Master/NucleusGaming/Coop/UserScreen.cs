@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nucleus.Gaming
+namespace Nucleus.Gaming.Coop
 {
     public class UserScreen
     {

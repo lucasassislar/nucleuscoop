@@ -5,6 +5,7 @@ using System.Text;
 using System.Drawing;
 using System.Diagnostics;
 using SlimDX.DirectInput;
+using Nucleus.Gaming.Coop;
 
 namespace Nucleus.Gaming
 {

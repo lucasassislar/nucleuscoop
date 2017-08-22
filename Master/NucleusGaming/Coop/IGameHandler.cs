@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Nucleus.Gaming
+namespace Nucleus.Gaming.Coop
 {
     /// <summary>
     /// Implements a game's splitscreen handler

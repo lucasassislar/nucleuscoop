@@ -124,7 +124,7 @@
     <Compile Include="Controls\TextMessageBox.Designer.cs">
       <DependentUpon>TextMessageBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Coop\DInput\DInputManager.cs" />
+    <Compile Include="DirectInput\DInputManager.cs" />
     <Compile Include="Coop\GameOption.cs" />
     <Compile Include="Coop\GameOptionValue.cs" />
     <Compile Include="Coop\GameProfile.cs" />
@@ -137,8 +137,8 @@
     <Compile Include="Coop\Generic\GenericContext.cs" />
     <Compile Include="Coop\Generic\GenericGameInfo.cs" />
     <Compile Include="Coop\Generic\JoystickDatabase.cs" />
-    <Compile Include="Coop\Generic\Save\CfgSaveInfo.cs" />
-    <Compile Include="Coop\Generic\Save\IniSaveInfo.cs" />
+    <Compile Include="Coop\Generic\SaveData\CfgSaveInfo.cs" />
+    <Compile Include="Coop\Generic\SaveData\IniSaveInfo.cs" />
     <Compile Include="Coop\Generic\SaveInfo.cs" />
     <Compile Include="Coop\Generic\Step\CustomStep.cs" />
     <Compile Include="Coop\Generic\Step\CustomStepType.cs" />

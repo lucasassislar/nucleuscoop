@@ -336,9 +336,6 @@
     <None Include="games\Left4Dead\coldstream.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="..\StartGame\bin\Release\StartGame.exe">
-      <Link>StartGame.exe</Link>
-    </Content>
     <None Include="games\AliensColonialMarines.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -511,6 +508,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="games\Synergy.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\StartGame\bin\Release\StartGame.exe">
+      <Link>StartGame.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="icon.ico" />

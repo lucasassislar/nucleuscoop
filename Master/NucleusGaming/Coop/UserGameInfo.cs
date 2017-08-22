@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Nucleus.Gaming
+namespace Nucleus.Gaming.Coop
 {
     public class UserGameInfo
     {

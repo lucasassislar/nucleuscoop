@@ -44,17 +44,17 @@ namespace Nucleus.Coop
                 return;
             }
 
-            SuspendLayout();
+            //SuspendLayout();
 
-            Font = DPIManager.Font;
+            //Font = DPIManager.Font;
 
-            Size defaultSize = DefaultSize;
-            int wid = DPIManager.Adjust(defaultSize.Width, scale);
-            int hei = DPIManager.Adjust(defaultSize.Height, scale);
-            Size = new Size(wid, hei);
-            Console.WriteLine("Changed to {0}x{1}", wid, hei);
+            //Size defaultSize = DefaultSize;
+            //int wid = DPIManager.Adjust(defaultSize.Width, scale);
+            //int hei = DPIManager.Adjust(defaultSize.Height, scale);
+            ////Size = new Size(wid, hei);
+            //Console.WriteLine("Changed to {0}x{1}", wid, hei);
 
-            ResumeLayout();
+            //ResumeLayout();
         }
 
         /// <summary>

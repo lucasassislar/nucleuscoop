@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Nucleus.Gaming
+namespace Nucleus.Gaming.DirectInput
 {
     public static class DInputManager
     {

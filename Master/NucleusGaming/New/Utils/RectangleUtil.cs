@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nucleus.Gaming.Coop;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;

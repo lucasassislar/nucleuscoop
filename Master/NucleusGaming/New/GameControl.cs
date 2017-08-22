@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Coop;
 
 namespace Nucleus.Coop
 {

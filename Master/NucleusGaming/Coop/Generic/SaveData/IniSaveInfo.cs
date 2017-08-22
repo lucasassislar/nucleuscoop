@@ -3,19 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Nucleus.Gaming
+namespace Nucleus.Gaming.SaveData
 {
-    public class CfgSaveInfo : SaveInfo
+    public class IniSaveInfo : SaveInfo
     {
         public string Section;
         public string Key;
         public string Value;
 
-        public CfgSaveInfo(string section, string key, string value)
+        public IniSaveInfo(string section, string key, string value)
         {
             this.Section = section;
             this.Key = key;
             this.Value = value;
+        }
+
+        public override string ToString()
+        {
+            return "[" + Section + "]" + Key + "=" + Value;
         }
     }
 }

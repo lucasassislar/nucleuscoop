@@ -1,4 +1,6 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Generic.Step;
 using Nucleus.Gaming.Windows;
 using Nucleus.Interop.User32;
 using System;

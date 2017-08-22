@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.Coop;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

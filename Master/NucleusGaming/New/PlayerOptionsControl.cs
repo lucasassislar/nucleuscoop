@@ -11,6 +11,7 @@ using Nucleus.Gaming.Controls;
 using System.Collections;
 using SplitTool.Controls;
 using System.Reflection;
+using Nucleus.Gaming.Coop;
 
 namespace Nucleus.Coop
 {

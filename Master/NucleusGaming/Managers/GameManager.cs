@@ -10,6 +10,7 @@ using System.Threading;
 using Ionic.Zip;
 using Nucleus.Gaming.Properties;
 using System.Windows.Forms;
+using Nucleus.Gaming.Coop;
 
 namespace Nucleus.Gaming
 {

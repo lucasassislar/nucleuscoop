@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using SlimDX.DirectInput;
 using SlimDX.XInput;
+using Nucleus.Gaming.Coop;
 
 namespace Nucleus.Coop
 {

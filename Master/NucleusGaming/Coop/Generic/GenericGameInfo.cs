@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Win32;
+using Nucleus.Gaming.Generic.Step;
+using Nucleus.Gaming.Coop;
 
 namespace Nucleus.Gaming
 {

@@ -18,6 +18,7 @@ using Nucleus.Gaming.Coop.Generic.Cursor;
 using WindowScrape.Constants;
 using WindowScrape.Static;
 using WindowScrape.Types;
+using Nucleus.Gaming.Coop;
 
 namespace Nucleus.Gaming
 {
