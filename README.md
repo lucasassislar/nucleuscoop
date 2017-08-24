@@ -11,6 +11,7 @@ Currently Supported Games:
 - Borderlands 1
 - Borderlands 2
 - Borderlands: The Pre Sequel
+- Don't Starve Together
 - Left 4 Dead 2
 
 
