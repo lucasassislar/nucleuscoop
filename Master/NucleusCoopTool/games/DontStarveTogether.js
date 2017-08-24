@@ -8,6 +8,7 @@ Game.FileSymlinkExclusions = [
 Game.GameName = "Don't Starve Together";
 Game.HandlerInterval = 100;
 Game.SymlinkExe = false;
+Game.SymlinkGame = true;
 Game.SupportsKeyboard = false;
 Game.ExecutableName = "dontstarve_steam.exe";
 Game.SteamID = "322330";
@@ -25,18 +26,18 @@ Game.Hook.DInputForceDisable = true;
 Game.Hook.XInputEnabled = true;
 Game.Hook.XInputReroute = false;
 
-
 Game.Play = function () {
-    var saveOriginIni = "games\\DontStarve\\steam_api.ini";
+    var savePkgOriginIni = System.IO.Path.Combine(Game.Folder, "steam_api.ini");
+    var savePkgOrigin = System.IO.Path.Combine(Game.Folder, "steam_api.dll");
+
     var savePathIni = System.IO.Path.Combine(Context.RootFolder, "bin\\steam_api.ini");
-    System.IO.File.WriteAllLines(savePathIni, System.IO.File.ReadAllLines(saveOriginIni));
-	System.IO.File.AppendAllText(savePathIni,"AccountId=54321"+(Context.PlayerID + 1) + " " + System.Environment.NewLine);
-	System.IO.File.AppendAllText(savePathIni,"UserName=RaVeN" + Context.PlayerID);
-	var saveOrigin = "games\\DontStarve\\steam_api.dll";
     var savePath = System.IO.Path.Combine(Context.RootFolder, "bin\\steam_api.dll");
-	 System.IO.File.Copy(saveOrigin,
-        savePath,
-        true);
+
+    System.IO.File.WriteAllLines(savePathIni, System.IO.File.ReadAllLines(savePkgOriginIni));
+	System.IO.File.AppendAllText(savePathIni, "AccountId=54321" + (Context.PlayerID + 1) + " " + System.Environment.NewLine);
+	System.IO.File.AppendAllText(savePathIni, "UserName=RaVeN" + Context.PlayerID);
+
+    System.IO.File.Copy(savePkgOrigin, savePath, true);
 	
-        Context.StartArguments = "-windowed -novid -insecure -window -AlwaysFocus";
+    Context.StartArguments = "-windowed -novid -insecure -window -AlwaysFocus";
 }

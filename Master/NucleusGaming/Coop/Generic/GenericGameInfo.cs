@@ -69,15 +69,17 @@ namespace Nucleus.Gaming
         public List<CustomStep> CustomSteps = new List<CustomStep>();
         public string JsFileName;
         public bool LockMouse;
+        public string Folder;
 
         public Type HandlerType
         {
             get { return typeof(GenericGameHandler); }
         }
 
-        public GenericGameInfo(string fileName, Stream str)
+        public GenericGameInfo(string fileName, string folderPath, Stream str)
         {
             JsFileName = fileName;
+            Folder = folderPath;
 
             StreamReader reader = new StreamReader(str);
             js = reader.ReadToEnd();
@@ -112,6 +114,7 @@ namespace Nucleus.Gaming
             engine.SetValue("Context", context);
             engine.SetValue("Handler", handler);
             engine.SetValue("Player", player);
+            engine.SetValue("Game", this);
 
             Play?.Invoke();
         }

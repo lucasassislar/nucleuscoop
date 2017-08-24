@@ -534,7 +534,10 @@ namespace Nucleus.Gaming
                 FileInfo f = files[i];
                 using (Stream str = f.OpenRead())
                 {
-                    GenericGameInfo info = new GenericGameInfo(f.Name, str);
+                    string ext = Path.GetFileNameWithoutExtension(f.Name);
+                    string pathBlock = Path.Combine(f.Directory.FullName, ext);
+
+                    GenericGameInfo info = new GenericGameInfo(f.Name, pathBlock, str);
                     LogManager.Log("Found game info: " + info.GameName);
 
                     games.Add(info.GUID, info);
