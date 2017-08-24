@@ -523,6 +523,7 @@
     <None Include="games\DebugCallOfDutyBlackOpsMultiplayerRocketV2.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="games\DebugDolphin.js" />
     <Content Include="icon.ico" />
     <Content Include="Resources\icon.ico" />
   </ItemGroup>
