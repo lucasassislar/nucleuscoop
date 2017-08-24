@@ -417,7 +417,7 @@ namespace Nucleus.Gaming
 
                         if (!gen.SymlinkExe)
                         {
-                            File.Copy(userGame.ExePath, exePath, true);
+                            //File.Copy(userGame.ExePath, exePath, true);
                         }
                     }
                 }

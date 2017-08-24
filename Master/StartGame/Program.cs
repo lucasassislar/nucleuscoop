@@ -172,6 +172,7 @@ namespace StartGame
                         for (int j = 0; j < mutex.Length; j++)
                         {
                             string m = mutex[j];
+                            ConsoleU.WriteLine("Requested mutex: " + m, Palette.Error);
                             bool exists = ProcessUtil.MutexExists(proc, m);
                             if (!exists)
                             {
