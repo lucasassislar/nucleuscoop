@@ -443,7 +443,13 @@ namespace Nucleus.Gaming
                 if (context.Hook.CustomDllEnabled)
                 {
                     byte[] xdata = Properties.Resources.xinput1_3;
-                    using (Stream str = File.OpenWrite(Path.Combine(linkBinFolder, "xinput1_3.dll")))
+                    string xinputName = "xinput1_3.dll";
+                    if (!string.IsNullOrEmpty(context.Hook.XInputNameOverride))
+                    {
+                        xinputName = context.Hook.XInputNameOverride;
+                    }
+
+                    using (Stream str = File.OpenWrite(Path.Combine(linkBinFolder, xinputName)))
                     {
                         str.Write(xdata, 0, xdata.Length);
                     }

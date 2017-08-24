@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
 
 namespace Nucleus.Gaming
 {
@@ -199,6 +200,36 @@ namespace Nucleus.Gaming
 
             // Save it to another location.
             File.WriteAllBytes(patchedFile, fileContent);
+        }
+
+        //XPath syntax
+        //https://www.w3schools.com/xml/xpath_syntax.asp
+        public void ChangeXmlAttributeValue(string path, string xpath, string attributeName, string attributeValue)
+        {
+            path = Environment.ExpandEnvironmentVariables(path);
+
+            var doc = new XmlDocument();
+            doc.Load(path);
+            var nodes = doc.SelectNodes(xpath);
+            foreach (XmlNode node in nodes)
+            {
+                node.Attributes[attributeName].Value = attributeValue;
+            }
+            doc.Save(path);
+        }
+
+        public void ChangeXmlNodeValue(string path, string xpath, string nodeValue)
+        {
+            path = Environment.ExpandEnvironmentVariables(path);
+
+            var doc = new XmlDocument();
+            doc.Load(path);
+            var nodes = doc.SelectNodes(xpath);
+            foreach (XmlNode node in nodes)
+            {
+                node.Value = nodeValue;
+            }
+            doc.Save(path);
         }
     }
 }

@@ -31,6 +31,8 @@ namespace Nucleus.Gaming
         /// </summary>
         public bool XInputEnabled;
 
+        public string XInputNameOverride;
+
         /// <summary>
         /// If xinput is enabled, if rerouting should be enabled (basically is we'll reroute directinput back to xinput,
         /// so we can track more than 4 gamepads on xinput at once)
