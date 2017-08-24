@@ -23,11 +23,15 @@ namespace Nucleus.Gaming
 
         public string[] DirSymlinkExclusions;
         public string[] FileSymlinkExclusions;
+        public string[] FileSymlinkCopyInstead;
+
         public double HandlerInterval;
         public bool Debug;
         public bool SupportsPositioning;
         public bool SymlinkExe;
         public bool SymlinkGame;
+        public bool HardcopyGame;
+
         public bool SupportsKeyboard;
         public string[] ExecutableContext;
         public string ExecutableName;
@@ -81,6 +85,7 @@ namespace Nucleus.Gaming
             Assembly assembly = typeof(GameOption).Assembly;
 
             engine = new Engine(cfg => cfg.AllowClr(assembly));
+            
             engine.SetValue("Game", this);
             engine.Execute("var Nucleus = importNamespace('Nucleus.Gaming');");
             engine.Execute(js);

@@ -332,10 +332,11 @@ namespace Nucleus.Gaming
                 string linkFolder;
                 string linkBinFolder;
 
-                if (gen.SymlinkGame)
+                if (gen.SymlinkGame || gen.HardcopyGame)
                 {
                     List<string> dirExclusions = new List<string>();
                     List<string> fileExclusions = new List<string>();
+                    List<string> fileCopies = new List<string>();
 
                     // symlink the game folder (and not the bin folder, if we have one)
                     linkFolder = Path.Combine(tempDir, "Instance" + i);
@@ -365,7 +366,7 @@ namespace Nucleus.Gaming
                     }
                     if (!gen.SymlinkExe)
                     {
-                        fileExclusions.Add(gen.ExecutableName.ToLower());
+                        fileCopies.Add(gen.ExecutableName.ToLower());
                     }
 
                     // additional ignored files by the generic info
@@ -377,6 +378,16 @@ namespace Nucleus.Gaming
                             string s = symlinkExclusions[k];
                             // make sure it's lower case
                             fileExclusions.Add(s.ToLower());
+                        }
+                    }
+                    if (gen.FileSymlinkCopyInstead != null)
+                    {
+                        string[] fileSymlinkCopyInstead = gen.FileSymlinkCopyInstead;
+                        for (int k = 0; k < fileSymlinkCopyInstead.Length; k++)
+                        {
+                            string s = fileSymlinkCopyInstead[k];
+                            // make sure it's lower case
+                            fileCopies.Add(s.ToLower());
                         }
                     }
                     if (gen.DirSymlinkExclusions != null)
@@ -391,13 +402,23 @@ namespace Nucleus.Gaming
                     }
 
                     string[] fileExclusionsArr = fileExclusions.ToArray();
+                    string[] fileCopiesArr = fileCopies.ToArray();
 
-                    int exitCode;
-                    CmdUtil.LinkDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, true);
-
-                    if (!gen.SymlinkExe)
+                    if (gen.HardcopyGame)
                     {
-                        File.Copy(userGame.ExePath, exePath, true);
+                        // copy the directory
+                        //int exitCode;
+                        //FileUtil.CopyDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, true);
+                    }
+                    else
+                    {
+                        int exitCode;
+                        CmdUtil.LinkDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, fileCopiesArr, true);
+
+                        if (!gen.SymlinkExe)
+                        {
+                            File.Copy(userGame.ExePath, exePath, true);
+                        }
                     }
                 }
                 else
@@ -458,6 +479,7 @@ namespace Nucleus.Gaming
                     x360.IniWriteValue("Options", "EnableMKBInput", player.IsKeyboardPlayer.ToString(CultureInfo.InvariantCulture));
 
                     // windows events
+                    x360.IniWriteValue("Options", "BlockInputEvents", context.Hook.BlockInputEvents.ToString(CultureInfo.InvariantCulture));
                     x360.IniWriteValue("Options", "BlockMouseEvents", context.Hook.BlockMouseEvents.ToString(CultureInfo.InvariantCulture));
                     x360.IniWriteValue("Options", "BlockKeyboardEvents", context.Hook.BlockKeyboardEvents.ToString(CultureInfo.InvariantCulture));
 
@@ -536,7 +558,7 @@ namespace Nucleus.Gaming
                         startInfo.WindowStyle = ProcessWindowStyle.Hidden;
                         startInfo.Arguments = startArgs;
                         startInfo.UseShellExecute = true;
-                        startInfo.WorkingDirectory = linkFolder;// Path.GetDirectoryName(exePath);
+                        startInfo.WorkingDirectory = Path.GetDirectoryName(exePath);
                         proc = Process.Start(startInfo);
                     }
 
@@ -856,7 +878,9 @@ namespace Nucleus.Gaming
                                         data.HWNDRetry = true;
                                     }
                                     else if (!string.IsNullOrEmpty(gen.Hook.ForceFocusWindowName) &&
-                                        data.HWnd.Title != gen.Hook.ForceFocusWindowName)
+                                        // TODO: this Levenshtein distance is being used to help us around Call of Duty Black Ops, as it uses a ® icon in the title bar
+                                        //       there must be a better way
+                                        StringUtil.ComputeLevenshteinDistance(data.HWnd.Title, gen.Hook.ForceFocusWindowName) > 2) 
                                     {
                                         data.HWNDRetry = true;
                                     }

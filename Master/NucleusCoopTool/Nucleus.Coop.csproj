@@ -271,7 +271,7 @@
     <None Include="Resources\not_found_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="games\Battlefront2.js" />
+    <None Include="games\DebugBattlefront2.js" />
     <None Include="games\Borderlands.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -281,14 +281,16 @@
     <None Include="games\BorderlandsPreSequel.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\CallOfDutyBlackOps.js" />
-    <None Include="games\CallOfDutyBlackOps2Zombies.js" />
-    <None Include="games\HaloWars.js" />
-    <None Include="games\Left4Dead.js" />
+    <None Include="games\DebugCallOfDutyBlackOpsZombiesRocketV2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="games\DebugCallOfDutyBlackOps2Zombies.js" />
+    <None Include="games\DebugHaloWars.js" />
+    <None Include="games\DebugLeft4Dead.js" />
     <None Include="games\SaintsRow3DX11.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\Halo.js" />
+    <None Include="games\DebugHalo.js" />
     <None Include="games\Left4Dead2.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -515,6 +517,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="games\SaintsRow3.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="games\DebugSaintsRowIV.js" />
+    <None Include="games\DebugCallOfDutyBlackOpsMultiplayerRocketV2.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="icon.ico" />

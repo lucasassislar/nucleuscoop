@@ -6,20 +6,21 @@ Game.ExecutableContext = [
     "binkw32.dll"
 ];
 Game.KillMutex = [
-    "SR3"
+    "SRE4"
 ];
 Game.FileSymlinkExclusions = [
     "display.ini"
 ];
 
+Game.Debug = true;
 Game.HandlerInterval = 100;
 Game.SymlinkExe = false;
 Game.SymlinkGame = true;
 Game.SupportsKeyboard = true;
-Game.ExecutableName = "saintsrowthethird.exe";
-Game.SteamID = "55230";
-Game.GUID = "55230";
-Game.GameName = "Saints Row 3";
+Game.ExecutableName = "saintsrowiv.exe";
+Game.SteamID = "206420";
+Game.GUID = "206420";
+Game.GameName = "Saints Row IV";
 Game.MaxPlayers = 4;
 Game.MaxPlayersOneMonitor = 4;
 Game.BinariesFolder = "";
@@ -29,9 +30,9 @@ Game.SaveType = Nucleus.SaveType.None;
 Game.SupportsPositioning = true;
 Game.HideTaskbar = false;
 Game.StartArguments = "";
-Game.LauncherExe = "game_launcher.exe";
+Game.LauncherExe = "";
 Game.Hook.ForceFocus = true;
-Game.Hook.ForceFocusWindowName = "Saints Row: The Third";
+Game.Hook.ForceFocusWindowName = "Saints Row IV";
 Game.Hook.DInputEnabled = false;
 Game.Hook.XInputEnabled = true;
 Game.Hook.XInputReroute = false;

@@ -8,6 +8,9 @@ Game.ExecutableContext = [
 Game.KillMutex = [
     "SR3"
 ];
+Game.FileSymlinkExclusions = [
+    "display.ini"
+];
 
 Game.HandlerInterval = 100;
 Game.SymlinkExe = false;

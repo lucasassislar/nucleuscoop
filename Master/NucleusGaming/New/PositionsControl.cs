@@ -71,6 +71,7 @@ namespace Nucleus.Coop
         private Timer gamepadTimer;
 
         private int testDinputPlayers = -1;// 16;
+        private int testXinputPlayers = -1;// 16;
 
         public PositionsControl()
         {
@@ -216,7 +217,7 @@ namespace Nucleus.Coop
                 for (int j = 0; j < data.Count; j++)
                 {
                     PlayerInfo p = data[j];
-                    if (p.IsXInput)
+                    if (p.IsXInput && !p.IsFake)
                     {
                         Controller c = xinputControllers[p.GamepadId];
                         if (!c.IsConnected)
@@ -413,6 +414,20 @@ namespace Nucleus.Coop
                         player.GamepadGuid = new Guid();
                         player.GamepadName = "Player";
                         player.IsDInput = true;
+                        player.IsFake = true;
+                        playerData.Add(player);
+                    }
+                }
+
+                if (testXinputPlayers != -1)
+                {
+                    for (int i = 0; i < testXinputPlayers;i++)
+                    {
+                        PlayerInfo player = new PlayerInfo();
+                        player.GamepadGuid = new Guid();
+                        player.GamepadName = "XPlayer";
+                        player.IsXInput = true;
+                        player.GamepadId = i;
                         player.IsFake = true;
                         playerData.Add(player);
                     }
