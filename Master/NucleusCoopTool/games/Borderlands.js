@@ -7,6 +7,7 @@ Game.ExecutableContext = [ // need to add these or it might conflict with Tales 
 Game.SupportsKeyboard = false;
 Game.HandlerInterval = 100;
 Game.SymlinkExe = false;
+Game.SymlinkGame = true;
 Game.SteamID = "8980";
 Game.GUID = "8980";
 Game.GameName = "Borderlands";
@@ -19,10 +20,15 @@ Game.SupportsPositioning = true;
 Game.StartArguments = "-windowed -NoLauncher -nostartupmovies";
 Game.ExecutableName = "borderlands.exe";
 Game.BinariesFolder = "binaries";
-Game.Hook.DInputEnabled = false;
-Game.Hook.XInputEnabled = true;
 Game.Hook.ForceFocus = true;
 Game.Hook.ForceFocusWindowName = "Borderlands";
+Game.Hook.DInputEnabled = false;
+Game.Hook.XInputEnabled = true;
+Game.Hook.XInputReroute = false;//true; // this is beta
+
+// this game will multiply the values on the creators Update
+// ... but is it only in the creators update?
+Game.DPIHandling = Nucleus.DPIHandling.InvScaled; 
 
 Game.Play = function () {
     // block all mouse and keyboard input for the player that

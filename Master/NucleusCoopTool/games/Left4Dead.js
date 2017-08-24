@@ -1,5 +1,4 @@
-﻿
-var listMaps = [
+﻿var listMaps = [
     // Left 4 Dead 1 campaigns
     { Name: "No Mercy", Details: "1. Apartments", Console: "c8m1_apartment", ImageUrl: "nomercy.jpg" },
     { Name: "No Mercy", Details: "2. Subway", Console: "c8m2_subway", ImageUrl: "nomercy.jpg" },
@@ -40,15 +39,10 @@ var listGameModes = [
 ];
 
 // List all our game options before trying to write code that uses them
-Game.Options = [
-    // these 2 are going to be shown as steps
-    new Nucleus.GameOption(
-        "Map", "The map the game will use",
-        "MapID", listMaps),
-    new Nucleus.GameOption(
-        "Game Mode", "The game mode",
-        "GameMode", listGameModes)
-];
+Game.AddOption("Map", "The map the game will use",
+    "MapID", listMaps);
+Game.AddOption("Game Mode", "The game mode",
+    "GameMode", listGameModes);
 
 var MapStep = Game.ShowOptionAsStep("MapID", true, "Choose a Campaign");
 // This doesn't work yet
@@ -70,8 +64,10 @@ Game.FileSymlinkExclusions = [
     "config.cfg"
 ];
 
+Game.Debug = true;
 Game.HandlerInterval = 100; // 10 FPS handler
 Game.SymlinkExe = false;
+Game.SymlinkGame = true;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "left4dead.exe";
 Game.SteamID = "500";
@@ -90,8 +86,7 @@ Game.Hook.ForceFocusWindowName = "Left 4 Dead";
 Game.MaxPlayers = 4;
 Game.Hook.DInputEnabled = false;
 Game.Hook.XInputEnabled = true;
-Game.Hook.XInputReroute = true;
-
+Game.Hook.XInputReroute = false;
 
 Game.Play = function () {
     // Only enable setting the window size on the XInput hook dll

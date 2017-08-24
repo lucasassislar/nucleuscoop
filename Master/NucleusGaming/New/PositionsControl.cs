@@ -397,9 +397,10 @@ namespace Nucleus.Coop
                 if (game.Game.SupportsKeyboard)
                 {
                     // add keyboard data
-                    PlayerInfo kbPlayer = new PlayerInfo();
-                    kbPlayer.IsKeyboardPlayer = true;
-                    playerData.Add(kbPlayer);
+                    // TODO: add keyboard back (no support for Alpha 8)
+                    //PlayerInfo kbPlayer = new PlayerInfo();
+                    //kbPlayer.IsKeyboardPlayer = true;
+                    //playerData.Add(kbPlayer);
                 }
 
                 // make fake data if needed

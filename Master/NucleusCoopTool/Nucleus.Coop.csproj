@@ -284,10 +284,10 @@
     <None Include="games\CallOfDutyBlackOps.js" />
     <None Include="games\CallOfDutyBlackOps2Zombies.js" />
     <None Include="games\HaloWars.js" />
-    <None Include="games\Left4Dead.js">
+    <None Include="games\Left4Dead.js" />
+    <None Include="games\SaintsRow3DX11.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\SaintsRow3DX11.js" />
     <None Include="games\Halo.js" />
     <None Include="games\Left4Dead2.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -512,6 +512,9 @@
     </None>
     <None Include="..\StartGame\bin\Release\StartGame.exe">
       <Link>StartGame.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="games\SaintsRow3.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="icon.ico" />

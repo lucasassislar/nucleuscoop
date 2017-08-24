@@ -35,7 +35,7 @@ namespace Nucleus.Gaming
         /// If xinput is enabled, if rerouting should be enabled (basically is we'll reroute directinput back to xinput,
         /// so we can track more than 4 gamepads on xinput at once)
         /// </summary>
-        public bool XInputReroute = true;
+        public bool XInputReroute = false;
 
         /// <summary>
         /// If our custom dll should set the window size and position locally, instead of the handler

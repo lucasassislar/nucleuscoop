@@ -322,6 +322,7 @@ namespace Nucleus.Coop
                 return;
             }
 
+            btn_Play.Visible = false;
             btn_Play.Text = "S T O P";
 
             handler = gameManager.MakeHandler(currentGame);
@@ -340,6 +341,7 @@ namespace Nucleus.Coop
 
         private void SetBtnToPlay()
         {
+            btn_Play.Visible = true;
             btn_Play.Text = "P L A Y";
         }
 

@@ -19,6 +19,7 @@ using WindowScrape.Constants;
 using WindowScrape.Static;
 using WindowScrape.Types;
 using Nucleus.Gaming.Coop;
+using System.Reflection;
 
 namespace Nucleus.Gaming
 {
@@ -34,7 +35,7 @@ namespace Nucleus.Gaming
         private double timer;
         private int exited;
         private List<Process> attached = new List<Process>();
-        
+
         protected bool hasEnded;
         protected double timerInterval = 1000;
 
@@ -50,7 +51,7 @@ namespace Nucleus.Gaming
         {
             get { return timerInterval; }
         }
-        
+
         private void ForceFinish()
         {
             // search for game instances left behind
@@ -88,7 +89,7 @@ namespace Nucleus.Gaming
             // delete symlink folder
             try
             {
-//#if RELEASE
+#if RELEASE
                 for (int i = 0; i < profile.PlayerData.Count; i++)
                 {
                     string linkFolder = Path.Combine(backupDir, "Instance" + i);
@@ -97,11 +98,11 @@ namespace Nucleus.Gaming
                         Directory.Delete(linkFolder, true);
                     }
                 }
-//#endif
+#endif
             }
             catch
             {
-                
+
             }
 
             if (Ended != null)
@@ -193,6 +194,33 @@ namespace Nucleus.Gaming
             return path;
         }
 
+        private static string internalGetRelativePath(DirectoryInfo dirInfo, DirectoryInfo rootInfo, string str)
+        {
+            if (dirInfo.FullName == rootInfo.FullName || dirInfo == null)
+            {
+                return str;
+            }
+
+            if (!string.IsNullOrWhiteSpace(Path.GetExtension(dirInfo.Name)))
+            {
+                str = dirInfo.Name;
+            }
+            else
+            {
+                str = dirInfo.Name + "\\" + str;
+            }
+
+            dirInfo = dirInfo.Parent;
+            return internalGetRelativePath(dirInfo, rootInfo, str);
+        }
+
+        public string GetRelativePath(string dirPath, string rootFolder)
+        {
+            DirectoryInfo dirInfo = new DirectoryInfo(dirPath);
+            DirectoryInfo rootInfo = new DirectoryInfo(rootFolder);
+            return internalGetRelativePath(dirInfo, rootInfo, "");
+        }
+
         public string Play()
         {
             ForceFinish();
@@ -204,6 +232,8 @@ namespace Nucleus.Gaming
             }
 
             UserScreen[] all = ScreensUtil.AllScreens();
+
+            string nucleusRootFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
             string tempDir = GameManager.Instance.GempTempFolder(gen);
             string exeFolder = Path.GetDirectoryName(userGame.ExePath).ToLower();
@@ -298,70 +328,83 @@ namespace Nucleus.Gaming
                 int height = playerBounds.Height;
                 bool isFullscreen = owner.Type == UserScreenType.FullScreen;
 
-                List<string> dirExclusions = new List<string>();
-                List<string> fileExclusions = new List<string>();
+                string exePath;
+                string linkFolder;
+                string linkBinFolder;
 
-                // symlink the game folder (and not the bin folder, if we have one)
-                string linkFolder = Path.Combine(tempDir, "Instance" + i);
-                Directory.CreateDirectory(linkFolder);
-
-                string linkBinFolder = linkFolder;
-                if (!string.IsNullOrEmpty(gen.BinariesFolder))
+                if (gen.SymlinkGame)
                 {
-                    linkBinFolder = Path.Combine(linkFolder, gen.BinariesFolder);
-                    dirExclusions.Add(gen.BinariesFolder);
-                }
-                string exePath = Path.Combine(linkBinFolder, this.userGame.Game.ExecutableName);
+                    List<string> dirExclusions = new List<string>();
+                    List<string> fileExclusions = new List<string>();
 
-                if (!string.IsNullOrEmpty(gen.WorkingFolder))
-                {
-                    linkBinFolder = Path.Combine(linkFolder, gen.WorkingFolder);
-                    dirExclusions.Add(gen.WorkingFolder);
-                }
+                    // symlink the game folder (and not the bin folder, if we have one)
+                    linkFolder = Path.Combine(tempDir, "Instance" + i);
+                    Directory.CreateDirectory(linkFolder);
 
-                // some games have save files inside their game folder, so we need to access them inside the loop
-                jsData[Folder.InstancedGameFolder.ToString()] = linkFolder;
-
-                if (gen.Hook.CustomDllEnabled)
-                {
-                    fileExclusions.Add("xinput1_3.dll");
-                    fileExclusions.Add("ncoop.ini");
-                }
-                if (!gen.SymlinkExe)
-                {
-                    fileExclusions.Add(gen.ExecutableName.ToLower());
-                }
-
-                // additional ignored files by the generic info
-                if (gen.FileSymlinkExclusions != null)
-                {
-                    string[] symlinkExclusions = gen.FileSymlinkExclusions;
-                    for (int k = 0; k < symlinkExclusions.Length; k++)
+                    linkBinFolder = linkFolder;
+                    if (!string.IsNullOrEmpty(gen.BinariesFolder))
                     {
-                        string s = symlinkExclusions[k];
-                        // make sure it's lower case
-                        fileExclusions.Add(s.ToLower());
+                        linkBinFolder = Path.Combine(linkFolder, gen.BinariesFolder);
+                        dirExclusions.Add(gen.BinariesFolder);
+                    }
+                    exePath = Path.Combine(linkBinFolder, this.userGame.Game.ExecutableName);
+
+                    if (!string.IsNullOrEmpty(gen.WorkingFolder))
+                    {
+                        linkBinFolder = Path.Combine(linkFolder, gen.WorkingFolder);
+                        dirExclusions.Add(gen.WorkingFolder);
+                    }
+
+                    // some games have save files inside their game folder, so we need to access them inside the loop
+                    jsData[Folder.InstancedGameFolder.ToString()] = linkFolder;
+
+                    if (gen.Hook.CustomDllEnabled)
+                    {
+                        fileExclusions.Add("xinput1_3.dll");
+                        fileExclusions.Add("ncoop.ini");
+                    }
+                    if (!gen.SymlinkExe)
+                    {
+                        fileExclusions.Add(gen.ExecutableName.ToLower());
+                    }
+
+                    // additional ignored files by the generic info
+                    if (gen.FileSymlinkExclusions != null)
+                    {
+                        string[] symlinkExclusions = gen.FileSymlinkExclusions;
+                        for (int k = 0; k < symlinkExclusions.Length; k++)
+                        {
+                            string s = symlinkExclusions[k];
+                            // make sure it's lower case
+                            fileExclusions.Add(s.ToLower());
+                        }
+                    }
+                    if (gen.DirSymlinkExclusions != null)
+                    {
+                        string[] symlinkExclusions = gen.DirSymlinkExclusions;
+                        for (int k = 0; k < symlinkExclusions.Length; k++)
+                        {
+                            string s = symlinkExclusions[k];
+                            // make sure it's lower case
+                            dirExclusions.Add(s.ToLower());
+                        }
+                    }
+
+                    string[] fileExclusionsArr = fileExclusions.ToArray();
+
+                    int exitCode;
+                    CmdUtil.LinkDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, true);
+
+                    if (!gen.SymlinkExe)
+                    {
+                        File.Copy(userGame.ExePath, exePath, true);
                     }
                 }
-                if (gen.DirSymlinkExclusions != null)
+                else
                 {
-                    string[] symlinkExclusions = gen.DirSymlinkExclusions;
-                    for (int k = 0; k < symlinkExclusions.Length; k++)
-                    {
-                        string s = symlinkExclusions[k];
-                        // make sure it's lower case
-                        dirExclusions.Add(s.ToLower());
-                    }
-                }
-
-                string[] fileExclusionsArr = fileExclusions.ToArray();
-
-                int exitCode;
-                CmdUtil.LinkDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, true);
-
-                if (!gen.SymlinkExe)
-                {
-                    File.Copy(userGame.ExePath, exePath, true);
+                    exePath = userGame.ExePath;
+                    linkBinFolder = rootFolder;
+                    linkFolder = workingFolder;
                 }
 
                 GenericContext context = gen.CreateContext(profile, player, this);
@@ -426,7 +469,7 @@ namespace Nucleus.Gaming
                     x360.IniWriteValue("Options", "DInputEnabled", context.Hook.DInputEnabled.ToString(CultureInfo.InvariantCulture));
                     x360.IniWriteValue("Options", "DInputGuid", player.GamepadGuid.ToString().ToUpper());
                     x360.IniWriteValue("Options", "DInputForceDisable", context.Hook.DInputForceDisable.ToString());
-                    
+
                 }
 
                 Process proc;
@@ -482,7 +525,9 @@ namespace Nucleus.Gaming
                 {
                     if (context.KillMutex?.Length > 0)
                     {
-                        proc = Process.GetProcessById(StartGameUtil.StartGame(exePath, startArgs));
+                        proc = Process.GetProcessById(StartGameUtil.StartGame(
+                            GetRelativePath(exePath, nucleusRootFolder), startArgs,
+                            GetRelativePath(linkFolder, nucleusRootFolder)));
                     }
                     else
                     {
@@ -491,7 +536,7 @@ namespace Nucleus.Gaming
                         startInfo.WindowStyle = ProcessWindowStyle.Hidden;
                         startInfo.Arguments = startArgs;
                         startInfo.UseShellExecute = true;
-                        startInfo.WorkingDirectory = Path.GetDirectoryName(exePath);
+                        startInfo.WorkingDirectory = linkFolder;// Path.GetDirectoryName(exePath);
                         proc = Process.Start(startInfo);
                     }
 
@@ -624,7 +669,7 @@ namespace Nucleus.Gaming
                 updatedHwnd = true;
                 timer = 0;
             }
-            
+
             for (int i = 0; i < players.Count; i++)
             {
                 PlayerInfo p = players[i];

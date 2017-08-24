@@ -12,6 +12,7 @@ Game.FileSymlinkExclusions = [
 
 Game.HandlerInterval = 100; // 10 FPS handler
 Game.SymlinkExe = false;
+Game.SymlinkGame = true;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "synergy.exe";
 Game.SteamID = "17520";
@@ -31,6 +32,12 @@ Game.Hook.DInputEnabled = false;
 Game.Hook.DInputForceDisable = true;
 Game.Hook.XInputEnabled = true;
 Game.Hook.XInputReroute = false;
+Game.PauseBetweenStarts = 30;
+Game.LockMouse = true;
+
+// this game will multiply the values on the creators Update
+// ... but is it only in the creators update?
+Game.DPIHandling = Nucleus.DPIHandling.InvScaled; 
 
 Game.Play = function () {
     // Only enable setting the window size on the XInput hook dll
@@ -58,18 +65,17 @@ Game.Play = function () {
         "engine_no_focus_sleep 0" // unlimited FPS on all screens
     ];
 
+    if (Context.PlayerID == 0) {
+        lines.push("map syn_takeover");
+    } else {
+        lines.push("connect " + Context.User.GetLocalIP());
+    }
+
     if (Player.IsKeyboardPlayer) {
         lines.push("exec undo360controller.cfg");
     }
     else {
         lines.push("exec 360controller.cfg");
-        //lines.push("cl_timeout 999");
-    }
-    
-    if (Context.PlayerID == 0) {
-        lines.push("map syn_takeover");
-    } else {
-        lines.push("connect " + Context.User.GetLocalIP());
     }
 
     Context.WriteTextFile(autoExec, lines);

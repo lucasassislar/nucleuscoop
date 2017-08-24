@@ -1,10 +1,7 @@
-Game.Options = [
-    new Nucleus.GameOption(
-        "Keyboard Player",
-        "The player that will be playing on keyboard and mouse (if any)",
-        Nucleus.KeyboardPlayer.NoKeyboardPlayer,
-        "KeyboardPlayer"),
-];
+Game.AddOption("Keyboard Player",
+    "The player that will be playing on keyboard and mouse (if any)",
+    Nucleus.KeyboardPlayer.NoKeyboardPlayer,
+    "KeyboardPlayer");
 //Game.ExecutableContext = [
 //    "binkw32.dll"
 //];
@@ -14,6 +11,7 @@ Game.Options = [
 
 Game.Debug = true;
 Game.SymlinkExe = false;
+Game.SymlinkGame = true;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "xgamefinal.exe";
 Game.SteamID = "459220";

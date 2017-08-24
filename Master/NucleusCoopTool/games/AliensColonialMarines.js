@@ -10,15 +10,13 @@ var listLanguages = [
 
 var defaultLanguage = Game.GetSteamLanguage();
 // List all our game options before trying to write code that uses them
-Game.Options = [
-    new Nucleus.GameOption(
-        "Language", "The language the game will use",
-        "Language", listLanguages, defaultLanguage)
-];
+Game.AddOption("Language", "The language the game will use",
+    "Language", listLanguages, defaultLanguage);
 
 Game.SupportsKeyboard = true;
 Game.HandlerInterval = 100;
 Game.SymlinkExe = false;
+Game.SymlinkGame = true;
 Game.SteamID = "49540";
 Game.GUID = "49540";
 Game.GameName = "Aliens: Colonial Marines";
@@ -29,7 +27,8 @@ Game.LauncherTitle = "splashscreen";
 Game.SaveType = Nucleus.SaveType.INI;
 Game.SupportsPositioning = true;
 Game.ExecutableName = "acm.exe";
-Game.BinariesFolder = "binaries\\win32";
+//Game.BinariesFolder = "binaries\\win32";
+Game.WorkingFolder = "binaries\\win32";
 Game.Hook.ForceFocus = true;
 Game.Hook.ForceFocusWindowName = "Aliens: Colonial Marines - PC";
 Game.Hook.DInputEnabled = false;

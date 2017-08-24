@@ -554,7 +554,7 @@ namespace Nucleus.Gaming
 
         private void play(object state)
         {
-//#if RELEASE
+#if RELEASE
             try
             {
                 error = ((IGameHandler)state).Play();
@@ -573,9 +573,9 @@ namespace Nucleus.Gaming
                     return;
                 }
             }
-//#else
-            //error = ((IGameHandler)state).Play();
-//#endif
+#else
+            error = ((IGameHandler)state).Play();
+#endif
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Nucleus.Gaming
         private string js;
         
         public GameHookInfo Hook = new GameHookInfo();
-        public GameOption[] Options = new GameOption[0];
+        public List<GameOption> Options = new List<GameOption>();
 
         public SaveType SaveType;
         public string SavePath;
@@ -27,6 +27,7 @@ namespace Nucleus.Gaming
         public bool Debug;
         public bool SupportsPositioning;
         public bool SymlinkExe;
+        public bool SymlinkGame;
         public bool SupportsKeyboard;
         public string[] ExecutableContext;
         public string ExecutableName;
@@ -36,9 +37,20 @@ namespace Nucleus.Gaming
         public int MaxPlayers;
         public int MaxPlayersOneMonitor;
         public int PauseBetweenStarts;
+        public DPIHandling DPIHandling = DPIHandling.True;
 
         public string StartArguments;
         public string BinariesFolder;
+
+        public void AddOption(string name, string desc, string key, object value, object defaultValue)
+        {
+            Options.Add(new GameOption(name, desc, key, value, defaultValue));
+        }
+
+        public void AddOption(string name, string desc, string key, object value)
+        {
+            Options.Add(new GameOption(name, desc, key, value));
+        }
 
         /// <summary>
         /// The relative path to where the games starts in

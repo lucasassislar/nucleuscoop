@@ -26,10 +26,37 @@ namespace Nucleus
 
         }
 
+        public static bool KillMutex(Process process, string mutexName)
+        {
+            // 4 tries
+            for (int i = 1; i < 4; i++)
+            {
+                Console.WriteLine("Loop " + i);
+                var handles = Win32Processes.GetHandles(process, "Mutant", "\\Sessions\\", mutexName);
+                if (handles.Count == 0)
+                {
+                    continue;
+                }
+
+                foreach (var handle in handles)
+                {
+                    IntPtr ipHandle = IntPtr.Zero;
+                    if (!Win32API.DuplicateHandle(Process.GetProcessById(handle.ProcessID).Handle, handle.Handle, Win32API.GetCurrentProcess(), out ipHandle, 0, false, Win32API.DUPLICATE_CLOSE_SOURCE))
+                    {
+                        Console.WriteLine("DuplicateHandle() failed, error = {0}", Marshal.GetLastWin32Error());
+                    }
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static bool MutexExists(Process process, string mutexName)
         {
-            // TODO: Does only 1-3 exist? I've only seen these values in the Sessions
-            for (int i = 1; i < 3; i++)
+            // 4 tries
+            for (int i = 0; i < 4; i++)
             {
                 try
                 {
@@ -68,32 +95,7 @@ namespace Nucleus
             return ids;
         }
 
-        public static bool KillMutex(Process process, string mutexName)
-        {
-            bool killed = false;
-            for (int i = 1; i < 4; i++)
-            {
-                var handles = Win32Processes.GetHandles(process, "Mutant", "\\Sessions\\", mutexName);
-
-                if (handles.Count == 0)
-                {
-                    continue;
-                }
-                foreach (var handle in handles)
-                {
-                    IntPtr ipHandle = IntPtr.Zero;
-                    if (!Win32API.DuplicateHandle(Process.GetProcessById(handle.ProcessID).Handle, handle.Handle, Win32API.GetCurrentProcess(), out ipHandle, 0, false, Win32API.DUPLICATE_CLOSE_SOURCE))
-                    {
-                        Debug.WriteLine("DuplicateHandle() failed, error = {0}", Marshal.GetLastWin32Error());
-                    }
-
-                    Debug.WriteLine("Mutex was killed");
-                    killed = true;
-                }
-            }
-
-            return killed;
-        }
+     
     }
 }
 //        [DllImport("ntdll.dll")]

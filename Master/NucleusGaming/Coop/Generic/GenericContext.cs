@@ -1,6 +1,5 @@
 ﻿using Nucleus.Coop;
 using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.SaveData;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,6 +39,7 @@ namespace Nucleus.Gaming
         public int PlayerID;
         public bool IsFullscreen;
         public UserInfo User = new UserInfo();
+        public DPIHandling DPIHandling = DPIHandling.True;
 
         public Type HandlerType
         {
@@ -53,11 +53,35 @@ namespace Nucleus.Gaming
 
         public int Width
         {
-            get { return pInfo.MonitorBounds.Width; }
+            get
+            {
+                switch (DPIHandling)
+                {
+                    case DPIHandling.Scaled:
+                        return (int)((pInfo.MonitorBounds.Width * DPIManager.Scale) + 0.5);
+                    case DPIHandling.InvScaled:
+                        return (int)((pInfo.MonitorBounds.Width * (1 / DPIManager.Scale)) + 0.5);
+                    case DPIHandling.True:
+                    default:
+                        return pInfo.MonitorBounds.Width;
+                }
+            }
         }
         public int Height
         {
-            get { return pInfo.MonitorBounds.Height; }
+            get
+            {
+                switch (DPIHandling)
+                {
+                    case DPIHandling.Scaled:
+                        return (int)((pInfo.MonitorBounds.Height * DPIManager.Scale) + 0.5);
+                    case DPIHandling.InvScaled:
+                        return (int)((pInfo.MonitorBounds.Height * (1 / DPIManager.Scale)) + 0.5);
+                    case DPIHandling.True:
+                    default:
+                        return pInfo.MonitorBounds.Height;
+                }
+            }
         }
 
         [Dynamic(AutoHandles = true)]
@@ -105,7 +129,7 @@ namespace Nucleus.Gaming
                             if (save is CfgSaveInfo)
                             {
                                 CfgSaveInfo option = (CfgSaveInfo)save;
-                                cfg.ChangeProperty(option.Key, option.Value);
+                                cfg.ChangeProperty(option.Section, option.Key, option.Value);
                             }
                         }
                         cfg.Save(saveFullPath);

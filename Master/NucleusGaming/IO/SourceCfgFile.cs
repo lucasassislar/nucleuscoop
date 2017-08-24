@@ -16,6 +16,7 @@ namespace Nucleus.Gaming
         protected string path;
         protected string rawData;
         protected string backupData;
+        private Dictionary<string, List<CfgSaveInfo>> sections;
 
         public string RawData
         {
@@ -25,16 +26,75 @@ namespace Nucleus.Gaming
         public SourceCfgFile(string filePath)
         {
             path = filePath;
+            sections = new Dictionary<string, List<CfgSaveInfo>>();
 
             if (File.Exists(path))
             {
                 rawData = File.ReadAllText(path);
                 backupData = string.Copy(rawData);
+
+                Parse(backupData);
             }
             else
             {
                 rawData = "";
                 backupData = "";
+            }
+        }
+
+        private void Parse(string data)
+        {
+            List<CfgSaveInfo> currentSection = null;
+            string currentSectionName = null;
+
+            int currentIndex = 0;
+            int nextBlockEnd;
+            for (;;)
+            {
+                int nextQuotes = data.IndexOf('"', currentIndex);
+                if (nextQuotes == -1)
+                {
+                    break;
+                }
+
+                int delta = nextQuotes - currentIndex;
+
+                if (currentSection == null)
+                {
+                    if (delta > 1)
+                    {
+                        currentSectionName = data.Substring(currentIndex, nextQuotes - currentIndex);
+                        currentSection = new List<CfgSaveInfo>();
+                        sections.Add(currentSectionName, currentSection);
+
+                        nextBlockEnd = data.IndexOf('}', nextQuotes);
+                    }
+                }
+                else
+                {
+                    if (delta > 1)
+                    {
+                        string propertyName = data.Substring(currentIndex, nextQuotes - currentIndex);
+                        if (!string.IsNullOrWhiteSpace(propertyName) && !propertyName.Contains("{"))
+                        {
+                            // read to the right
+                            int start = data.IndexOf('"', nextQuotes + 1);
+                            int end = data.IndexOf('"', start + 1);
+
+                            string propertyValue = data.Substring(start + 1, end - start - 1);
+                            CfgSaveInfo info = new CfgSaveInfo(currentSectionName, propertyName, propertyValue);
+                            currentSection.Add(info);
+
+                            nextQuotes = end;
+                        }
+                        else if (propertyName.Contains("}"))
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                currentIndex = nextQuotes + 1;
             }
         }
 
@@ -57,7 +117,21 @@ namespace Nucleus.Gaming
             {
                 using (StreamWriter writer = new StreamWriter(str))
                 {
-                    writer.Write(rawData);
+                    foreach (var pair in sections)
+                    {
+                        writer.WriteLine($"\"{pair.Key}\"");
+                        writer.WriteLine("{");
+                        var list = pair.Value;
+
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            CfgSaveInfo info = list[i];
+                            writer.WriteLine($"\r\"{info.Key}\"  \"{info.Value}\"");
+                        }
+
+                        writer.WriteLine("}");
+                    }
+
 
                     writer.Flush();
                     writer.Close();
@@ -73,18 +147,51 @@ namespace Nucleus.Gaming
             rawData = string.Copy(backupData);
         }
 
-        public bool ChangeProperty(string propertyName, string value)
+        public void ChangeProperty(string section, string propertyName, string value)
         {
-            int start;
-            int end;
-            if (GetPosition(rawData, propertyName, out start, out end))
+            List<CfgSaveInfo> infos;
+            if (!sections.TryGetValue(section, out infos))
             {
-                rawData = rawData.Remove(start, end - start);
-                rawData = rawData.Insert(start, value);
-
-                return true;
+                infos = new List<CfgSaveInfo>();
+                sections.Add(section, infos);
             }
-            return false;
+
+            CfgSaveInfo info = infos.FirstOrDefault(c => c.Key == propertyName);
+            if (info == null)
+            {
+                infos.Add(new CfgSaveInfo(section, propertyName, value));
+            }
+            else
+            {
+                info.Value = value;
+            }
+            //int start;
+            //int end;
+            //if (GetPosition(rawData, propertyName, out start, out end))
+            //{
+            //    rawData = rawData.Remove(start, end - start);
+            //    rawData = rawData.Insert(start, value);
+
+            //    return true;
+            //}
+            //else
+            //{
+            //    // search for the section name
+            //    if (GetPosition(rawData, section, out start, out end))
+            //    {
+            //        // write the property
+
+            //    }
+            //    else
+            //    {
+            //        // write section
+            //        rawData += section + "{ }";
+
+            //        // now write the property
+            //        ChangeProperty(section, propertyName, value);
+            //    }
+            //}
+            //return false;
         }
 
         private bool GetPosition(string text, string word, out int start, out int end)

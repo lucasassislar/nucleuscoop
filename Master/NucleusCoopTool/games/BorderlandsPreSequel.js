@@ -1,25 +1,20 @@
-Game.Options = [
-    new Nucleus.GameOption(
-        "Save ID - Player 1",
-        "Save ID to use for Player 1 (default 0)",
-        "saveid0", 0),
-    new Nucleus.GameOption(
-        "Save ID - Player 2",
-        "Save ID to use for Player 2 (default 1)",
-        "saveid1", 1),
-    new Nucleus.GameOption(
-        "Save ID - Player 3",
-        "Save ID to use for Player 3 (default 2)",
-        "saveid2", 2),
-    new Nucleus.GameOption(
-        "Save ID - Player 4",
-        "Save ID to use for Player 4 (default 3)",
-        "saveid3", 3)
-];
+Game.AddOption("Save ID - Player 1",
+    "Save ID to use for Player 1 (default 0)",
+    "saveid0", 0);
+Game.AddOption("Save ID - Player 2",
+    "Save ID to use for Player 2 (default 1)",
+    "saveid1", 1);
+Game.AddOption("Save ID - Player 3",
+    "Save ID to use for Player 3 (default 2)",
+    "saveid2", 2);
+Game.AddOption("Save ID - Player 4",
+    "Save ID to use for Player 4 (default 3)",
+    "saveid3", 3);
 
 Game.GameName = "Borderlands Pre-Sequel";
 Game.HandlerInterval = 100;
 Game.SymlinkExe = false;
+Game.SymlinkGame = true;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "borderlandspresequel.exe";
 Game.SteamID = "261640";
@@ -33,10 +28,10 @@ Game.SaveType = Nucleus.SaveType.INI;
 Game.SupportsPositioning = true;
 Game.HideTaskbar = true;
 Game.Hook.ForceFocus = true;
-Game.Hook.ForceFocusWindowName = "Borderlands Pre-Sequel";
+Game.Hook.ForceFocusWindowName = "Borderlands: The Pre-Sequel (32-bit, DX9)";
 Game.Hook.DInputEnabled = false;
 Game.Hook.XInputEnabled = true;
-Game.Hook.XInputReroute = true; // this is beta
+Game.Hook.XInputReroute = false;// true; // this is beta
 
 Game.Play = function () {
     var savePath = Context.GetFolder(Nucleus.Folder.Documents) + "\\My Games\\Borderlands The Pre-Sequel\\WillowGame\\Config\\WillowEngine.ini";

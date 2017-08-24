@@ -145,9 +145,14 @@ namespace Nucleus.Coop
             if (dif > 0.005f || toAdd == 0) // only update after .5% or if the user has just requested an update
             {
                 lastProgress = progress;
+                if (this.IsDisposed || closing)
+                {
+                    return;
+                }
+
                 Invoke(new Action(delegate
                 {
-                    if (this.IsDisposed || progressBar1.IsDisposed)
+                    if (this.IsDisposed || progressBar1.IsDisposed || closing)
                     {
                         return;
                     }
@@ -248,6 +253,11 @@ namespace Nucleus.Coop
                     MessageBox.Show("Finished searching!");
                 }));
             }
+        }
+        private bool closing;
+        private void SearchDisksForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            closing = true;
         }
     }
 }

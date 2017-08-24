@@ -87,7 +87,7 @@ namespace Nucleus
                     }
                 }
 
-                startInfo.Arguments = $"proc:{p.Id} output:{mu}";
+                startInfo.Arguments = $"\"proc:{p.Id}\" \"output:{mu}\"";
                 startInfo.RedirectStandardOutput = true;
                 startInfo.UseShellExecute = false;
                 startInfo.CreateNoWindow = true;
@@ -113,7 +113,7 @@ namespace Nucleus
         /// <param name="waitTime"></param>
         /// <param name="mutex"></param>
         /// <returns></returns>
-        public static int StartGame(string pathToGame, string args)
+        public static int StartGame(string pathToGame, string args, string workingDir = null)
         {
             lock (locker)
             {
@@ -121,7 +121,11 @@ namespace Nucleus
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = startGamePath;
 
-                startInfo.Arguments = "\"game:" + pathToGame + ";" + args + "\"";
+                if (!string.IsNullOrWhiteSpace(workingDir))
+                {
+                    workingDir = "|" + workingDir;
+                }
+                startInfo.Arguments = "\"game:" + pathToGame + workingDir + ";" + args + "\"";
                 startInfo.RedirectStandardOutput = true;
                 startInfo.UseShellExecute = false;
 

@@ -53,9 +53,9 @@ namespace Nucleus.Coop
             list = new ControlListBox();
             list.Size = this.Size;
 
-            GameOption[] options = game.Game.Options;
+            List<GameOption> options = game.Game.Options;
             Dictionary<string, object> vals = profile.Options;
-            for (int j = 0; j < options.Length; j++)
+            for (int j = 0; j < options.Count; j++)
             {
                 GameOption opt = options[j];
                 if (opt.Hidden)

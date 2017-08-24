@@ -75,15 +75,10 @@ var listGameModes = [
 ];
 
 // List all our game options before trying to write code that uses them
-Game.Options = [
-    // these 2 are going to be shown as steps
-    new Nucleus.GameOption(
-        "Map", "The map the game will use",
-        "MapID", listMaps),
-    new Nucleus.GameOption(
-        "Game Mode", "The game mode",
-        "GameMode", listGameModes)
-];
+Game.AddOption("Map", "The map the game will use",
+    "MapID", listMaps);
+Game.AddOption("Game Mode", "The game mode",
+    "GameMode", listGameModes);
 
 var MapStep = Game.ShowOptionAsStep("MapID", true, "Choose a Campaign");
 // This doesn't work yet
@@ -107,6 +102,7 @@ Game.FileSymlinkExclusions = [
 
 Game.HandlerInterval = 100; // 10 FPS handler
 Game.SymlinkExe = false;
+Game.SymlinkGame = true;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "left4dead2.exe";
 Game.SteamID = "550";
@@ -127,6 +123,10 @@ Game.Hook.DInputForceDisable = true;
 Game.Hook.XInputEnabled = true;
 Game.Hook.XInputReroute = false;
 
+// this game will multiply the values on the creators Update
+// ... but is it only in the creators update?
+Game.DPIHandling = Nucleus.DPIHandling.InvScaled; 
+
 Game.Play = function () {
     // Only enable setting the window size on the XInput hook dll
     // when its dual vertical, as it doenst work 100% of the time on DualHorizontal
@@ -136,10 +136,10 @@ Game.Play = function () {
     var saveSrc = System.IO.Path.Combine(Context.RootInstallFolder, "left4dead2\\cfg\\video.txt");
     var savePath = System.IO.Path.Combine(Context.RootFolder, "left4dead2\\cfg\\video.txt");
     Context.ModifySaveFile(saveSrc, savePath, Nucleus.SaveType.CFG, [
-        new Nucleus.CfgSaveInfo("VideoConfig", "setting.fullscreen", "0"),
-        new Nucleus.CfgSaveInfo("VideoConfig", "setting.defaultres", Math.max(640, Context.Width)),
-        new Nucleus.CfgSaveInfo("VideoConfig", "setting.defaultresheight", Math.max(360, Context.Height)),
-        new Nucleus.CfgSaveInfo("VideoConfig", "setting.nowindowborder", "0"),
+        new Nucleus.CfgSaveInfo("config", "setting.fullscreen", "0"),
+        new Nucleus.CfgSaveInfo("config", "setting.defaultres", Math.max(640, Context.Width)),
+        new Nucleus.CfgSaveInfo("config", "setting.defaultresheight", Math.max(360, Context.Height)),
+        new Nucleus.CfgSaveInfo("config", "setting.nowindowborder", "0"),
     ]);
 
     //copy config.cfg

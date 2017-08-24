@@ -1,13 +1,11 @@
-Game.Options = [
-    new Nucleus.GameOption(
-        "Keyboard Player",
-        "The player that will be playing on keyboard and mouse (if any)",
-        Nucleus.KeyboardPlayer.NoKeyboardPlayer,
-        "KeyboardPlayer"),
-];
+Game.AddOption("Keyboard Player",
+    "The player that will be playing on keyboard and mouse (if any)",
+    Nucleus.KeyboardPlayer.NoKeyboardPlayer,
+    "KeyboardPlayer");
 
 Game.Debug = true;
 Game.SymlinkExe = false;
+Game.SymlinkGame = true;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "blackops.exe";
 Game.SteamID = "42700";

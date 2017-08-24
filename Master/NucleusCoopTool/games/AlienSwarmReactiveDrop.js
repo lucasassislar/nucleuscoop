@@ -75,12 +75,8 @@ var listMaps = [
 ];
 
 // List all our game options before trying to write code that uses them
-Game.Options = [
-    // these 2 are going to be shown as steps
-    new Nucleus.GameOption(
-        "Map", "The map the game will use",
-        "MapID", listMaps)
-];
+Game.AddOption("Map", "The map the game will use",
+    "MapID", listMaps);
 
 var MapStep = Game.ShowOptionAsStep("MapID", true, "Choose a Campaign");
 
@@ -109,6 +105,7 @@ Game.FileSymlinkExclusions = [
 
 Game.HandlerInterval = 100; // 10 FPS handler
 Game.SymlinkExe = false;
+Game.SymlinkGame = true;
 Game.SupportsKeyboard = true;
 Game.ExecutableName = "reactivedrop.exe";
 Game.SteamID = "563560";
@@ -128,6 +125,10 @@ Game.Hook.DInputEnabled = false;
 Game.Hook.DInputForceDisable = true;
 Game.Hook.XInputEnabled = true;
 Game.Hook.XInputReroute = false;
+
+// this game will multiply the values on the creators Update
+// ... but is it only in the creators update?
+Game.DPIHandling = Nucleus.DPIHandling.InvScaled; 
 
 Game.Play = function () {
     // Only enable setting the window size on the XInput hook dll
@@ -153,7 +154,9 @@ Game.Play = function () {
     System.IO.File.Copy(System.IO.Path.Combine(Context.RootInstallFolder, "reactivedrop\\steam.inf"),
         System.IO.Path.Combine(Context.RootFolder, "reactivedrop\\steam.inf"),
         true);
-    
+
+    // TODO: how to update these if it comes the case?
+
     //patch dlls
     //patch engine no sleep
     Context.PatchFile(System.IO.Path.Combine(Context.RootInstallFolder, "bin\\engine.dll"),
