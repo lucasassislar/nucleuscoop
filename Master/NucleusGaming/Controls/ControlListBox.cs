@@ -27,8 +27,14 @@ namespace Nucleus.Gaming
 
         public ControlListBox()
         {
-            this.AutoScroll = true;
+            //this.AutoScroll = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+
+            this.AutoScroll = false;
+            this.HorizontalScroll.Visible = false;
+            this.HorizontalScroll.Enabled = false;
+            this.VerticalScroll.Visible = false;
+
         }
 
         protected override void OnSizeChanged(EventArgs e)
@@ -48,10 +54,13 @@ namespace Nucleus.Gaming
             updatingSize = true;
             
             totalHeight = 0;
+            bool isVerticalVisible = VerticalScroll.Visible;
+            int v = isVerticalVisible ? (1 + SystemInformation.VerticalScrollBarWidth) : 0;
+
             for (int i = 0; i < this.Controls.Count; i++)
             {
                 var con = Controls[i];
-                con.Width = this.Width;// - SystemInformation.VerticalScrollBarWidth;
+                con.Width = this.Width - v;
 
                 con.Location = new Point(0, totalHeight);
                 totalHeight += con.Height + border;
@@ -60,6 +69,13 @@ namespace Nucleus.Gaming
             }
 
             updatingSize = false;
+
+            HorizontalScroll.Visible = false;
+            VerticalScroll.Visible = totalHeight > this.Height;
+            if (VerticalScroll.Visible != isVerticalVisible)
+            {
+                UpdateSizes(); // need to update again
+            }
         }
 
         private void C_SizeChanged(object sender, EventArgs e)

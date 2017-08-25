@@ -58,9 +58,12 @@ namespace Nucleus.Coop
 
             // selects the list of games, so the buttons look equal
             list_Games.Select();
+            list_Games.AutoScroll = false;
+            //int vertScrollWidth = SystemInformation.VerticalScrollBarWidth;
+            //list_Games.Padding = new Padding(0, 0, vertScrollWidth, 0);
         }
 
-        
+
         protected override Size DefaultSize
         {
             get

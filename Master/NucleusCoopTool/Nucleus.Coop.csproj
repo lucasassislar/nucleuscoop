@@ -142,9 +142,7 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
-    <None Include="games\DontStarveTogether\steam_api.ini">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="games\DontStarveTogether\steam_api.ini" />
     <None Include="games\Left4Dead2\bloodharvest.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -533,9 +531,7 @@
     <None Include="games\DontStarveTogether.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="games\DontStarveTogether\steam_api.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="games\DontStarveTogether\steam_api.dll" />
     <Content Include="icon.ico" />
     <Content Include="Resources\icon.ico" />
   </ItemGroup>

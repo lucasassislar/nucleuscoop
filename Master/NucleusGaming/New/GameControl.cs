@@ -18,6 +18,7 @@ namespace Nucleus.Coop
 
         private PictureBox picture;
         private Label title;
+        public string TitleText { get; set; }
 
         public GameControl(GenericGameInfo game, UserGameInfo userGame)
         {
@@ -36,6 +37,7 @@ namespace Nucleus.Coop
             {
                 title.Text = GameInfo.GameName;
             }
+            TitleText = title.Text;
 
             BackColor = Color.FromArgb(30, 30, 30);
             Size = new Size(200, 52);
@@ -68,7 +70,21 @@ namespace Nucleus.Coop
 
             Height = DPIManager.Adjust(52, scale);
 
-            Size labelSize = TextRenderer.MeasureText(title.Text, title.Font);
+            Size labelSize = TextRenderer.MeasureText(TitleText, title.Font);
+            float reservedSpaceLabel = this.Width - picture.Width;
+
+            if (labelSize.Width > reservedSpaceLabel)
+            {
+                // make text smaller
+                int charSize = TextRenderer.MeasureText("g", title.Font).Width;
+                int toRemove = (int)((reservedSpaceLabel - labelSize.Width) / (float)charSize);
+                toRemove = Math.Max(toRemove + 3, 7);
+                title.Text = TitleText.Remove(TitleText.Length - toRemove, toRemove) + "...";
+            }
+            else
+            {
+                title.Text = TitleText;
+            }
             title.Size = labelSize;
 
             float height = this.Height / 2.0f;
@@ -87,6 +103,12 @@ namespace Nucleus.Coop
             c.Click += C_Click;
             c.MouseEnter += C_MouseEnter;
             c.MouseLeave += C_MouseLeave;
+        }
+
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
+            UpdateSize(DPIManager.Scale);
         }
 
         private void C_MouseEnter(object sender, EventArgs e)
