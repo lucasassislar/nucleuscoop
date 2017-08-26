@@ -16,7 +16,7 @@ Game.GUID = "322330";
 Game.MaxPlayers = 4;
 Game.MaxPlayersOneMonitor = 4;
 Game.BinariesFolder = "bin";
-Game.NeedsSteamEmulation = true;
+Game.NeedsSteamEmulation = false;
 Game.LauncherTitle = "";
 Game.SupportsPositioning = true;
 Game.Hook.ForceFocus = true;
@@ -27,17 +27,17 @@ Game.Hook.XInputEnabled = true;
 Game.Hook.XInputReroute = false;
 
 Game.Play = function () {
- //   var savePkgOriginIni = System.IO.Path.Combine(Game.Folder, "steam_api.ini");
- //   var savePkgOrigin = System.IO.Path.Combine(Game.Folder, "steam_api.dll");
+    var savePkgOriginIni = System.IO.Path.Combine(Game.Folder, "steam_api.ini");
+    var savePkgOrigin = System.IO.Path.Combine(Game.Folder, "steam_api.dll");
 
- //   var savePathIni = System.IO.Path.Combine(Context.RootFolder, "bin\\steam_api.ini");
- //   var savePath = System.IO.Path.Combine(Context.RootFolder, "bin\\steam_api.dll");
+    var savePathIni = System.IO.Path.Combine(Context.RootFolder, "bin\\steam_api.ini");
+    var savePath = System.IO.Path.Combine(Context.RootFolder, "bin\\steam_api.dll");
 
- //   System.IO.File.WriteAllLines(savePathIni, System.IO.File.ReadAllLines(savePkgOriginIni));
-	//System.IO.File.AppendAllText(savePathIni, "AccountId=54321" + (Context.PlayerID + 1) + " " + System.Environment.NewLine);
-	//System.IO.File.AppendAllText(savePathIni, "UserName=RaVeN" + Context.PlayerID);
+    System.IO.File.WriteAllLines(savePathIni, System.IO.File.ReadAllLines(savePkgOriginIni));
+	System.IO.File.AppendAllText(savePathIni, "AccountId=54321" + (Context.PlayerID + 1) + " " + System.Environment.NewLine);
+	System.IO.File.AppendAllText(savePathIni, "UserName=NucleusPlayer" + Context.PlayerID);
 
- //   System.IO.File.Copy(savePkgOrigin, savePath, true);
+    System.IO.File.Copy(savePkgOrigin, savePath, true);
 	
     Context.StartArguments = "-windowed -novid -insecure -window -AlwaysFocus";
 }

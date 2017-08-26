@@ -140,6 +140,10 @@ Game.Play = function () {
         new Nucleus.CfgSaveInfo("config", "setting.defaultres", Math.max(640, Context.Width)),
         new Nucleus.CfgSaveInfo("config", "setting.defaultresheight", Math.max(360, Context.Height)),
         new Nucleus.CfgSaveInfo("config", "setting.nowindowborder", "0"),
+        new Nucleus.CfgSaveInfo("VideoConfig", "setting.fullscreen", "0"),
+        new Nucleus.CfgSaveInfo("VideoConfig", "setting.defaultres", Math.max(640, Context.Width)),
+        new Nucleus.CfgSaveInfo("VideoConfig", "setting.defaultresheight", Math.max(360, Context.Height)),
+        new Nucleus.CfgSaveInfo("VideoConfig ", "setting.nowindowborder", "0"),
     ]);
 
     //copy config.cfg

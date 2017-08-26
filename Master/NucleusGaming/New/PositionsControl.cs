@@ -71,7 +71,7 @@ namespace Nucleus.Coop
         private Timer gamepadTimer;
 
         private int testDinputPlayers = -1;// 16;
-        private int testXinputPlayers = -1;// 16;
+        private int testXinputPlayers = 2;// 16;
 
         public PositionsControl()
         {
