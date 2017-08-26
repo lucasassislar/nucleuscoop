@@ -31,7 +31,14 @@ namespace Nucleus.Gaming
         /// </summary>
         public bool XInputEnabled;
 
-        public string XInputNameOverride;
+        public string[] XInputNames = new string[]
+        {
+            "xinput1_3.dll"
+        };
+        public string[] XInputCopies = new string[]
+        {
+            ""
+        };
 
         /// <summary>
         /// If xinput is enabled, if rerouting should be enabled (basically is we'll reroute directinput back to xinput,
