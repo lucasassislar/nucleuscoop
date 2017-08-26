@@ -443,15 +443,24 @@ namespace Nucleus.Gaming
                 if (context.Hook.CustomDllEnabled)
                 {
                     byte[] xdata = Properties.Resources.xinput1_3;
-                    string xinputName = "xinput1_3.dll";
-                    if (!string.IsNullOrEmpty(context.Hook.XInputNameOverride))
+                    if (context.Hook.XInputNames == null)
                     {
-                        xinputName = context.Hook.XInputNameOverride;
+                        using (Stream str = File.OpenWrite(Path.Combine(linkBinFolder, "xinput1_3.dll")))
+                        {
+                            str.Write(xdata, 0, xdata.Length);
+                        }
                     }
-
-                    using (Stream str = File.OpenWrite(Path.Combine(linkBinFolder, xinputName)))
+                    else
                     {
-                        str.Write(xdata, 0, xdata.Length);
+                        string[] xinputs = context.Hook.XInputNames;
+                        for (int z = 0; z < xinputs.Length; z++)
+                        {
+                            string xinputName = xinputs[z];
+                            using (Stream str = File.OpenWrite(Path.Combine(linkBinFolder, xinputName)))
+                            {
+                                str.Write(xdata, 0, xdata.Length);
+                            }
+                        }
                     }
 
                     string ncoopIni = Path.Combine(linkBinFolder, "ncoop.ini");
@@ -561,7 +570,7 @@ namespace Nucleus.Gaming
                     {
                         ProcessStartInfo startInfo = new ProcessStartInfo();
                         startInfo.FileName = exePath;
-                        startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                        //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
                         startInfo.Arguments = startArgs;
                         startInfo.UseShellExecute = true;
                         startInfo.WorkingDirectory = Path.GetDirectoryName(exePath);

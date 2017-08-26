@@ -1,7 +1,7 @@
 Game.AddOption("Keyboard Player",
     "The player that will be playing on keyboard and mouse (if any)",
-    Nucleus.KeyboardPlayer.NoKeyboardPlayer,
-    "KeyboardPlayer");
+    "KeyboardPlayer",
+    Nucleus.KeyboardPlayer.NoKeyboardPlayer);
 //Game.ExecutableContext = [
 //    "binkw32.dll"
 //];
@@ -26,7 +26,11 @@ Game.SaveType = Nucleus.SaveType.None;
 Game.SupportsPositioning = true;
 Game.HideTaskbar = false;
 Game.StartArguments = "-window";
+Game.Hook.ForceFocus = true;
+Game.Hook.ForceFocusWindowName = "Halo";
 Game.Hook.DInputEnabled = true;
+Game.Hook.XInputEnabled = false;
+Game.Hook.XInputReroute = false;
 
 Game.Play = function () {
     //Context.ModifySave = [
