@@ -32,6 +32,7 @@ Game.Hook.ForceFocusWindowName = "Borderlands: The Pre-Sequel (32-bit, DX9)";
 Game.Hook.DInputEnabled = false;
 Game.Hook.XInputEnabled = true;
 Game.Hook.XInputReroute = false;// true; // this is beta
+Game.Hook.XInputNames = ["xinput1_3.dll"];
 
 Game.Play = function () {
     var savePath = Context.GetFolder(Nucleus.Folder.Documents) + "\\My Games\\Borderlands The Pre-Sequel\\WillowGame\\Config\\WillowEngine.ini";

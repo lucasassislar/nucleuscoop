@@ -44,7 +44,7 @@ Game.Hook.DInputEnabled = false;
 //Game.Hook.DInputForceDisable = true;
 Game.Hook.XInputEnabled = true;
 Game.Hook.XInputReroute = false;
-Game.Hook.XInputNameOverride = "xinput9_1_0.dll";
+Game.Hook.XInputNames = [ "xinput9_1_0.dll" ];
 //Game.PauseBetweenStarts = 30;
 //Game.LockMouse = true;
 

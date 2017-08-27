@@ -9,9 +9,10 @@ Game.KillMutex = [
     "SR3"
 ];
 Game.FileSymlinkExclusions = [
-    "display.ini"
+    "display.ini",
 ];
 
+Game.NeedsSteamEmulation = true;
 Game.HandlerInterval = 100;
 Game.SymlinkExe = false;
 Game.SymlinkGame = true;
@@ -23,7 +24,6 @@ Game.GameName = "Saints Row 3 (DX11)";
 Game.MaxPlayers = 4;
 Game.MaxPlayersOneMonitor = 4;
 Game.BinariesFolder = "";
-Game.NeedsSteamEmulation = true;
 Game.LauncherTitle = "";
 Game.SaveType = Nucleus.SaveType.None;
 Game.SupportsPositioning = true;

@@ -25,6 +25,7 @@ Game.Hook.ForceFocusWindowName = "Borderlands";
 Game.Hook.DInputEnabled = false;
 Game.Hook.XInputEnabled = true;
 Game.Hook.XInputReroute = false;//true; // this is beta
+Game.Hook.XInputNames = ["xinput1_3.dll"];
 
 // this game will multiply the values on the creators Update
 // ... but is it only in the creators update?

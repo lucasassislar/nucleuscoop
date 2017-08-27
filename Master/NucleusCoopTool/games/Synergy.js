@@ -34,6 +34,8 @@ Game.Hook.XInputEnabled = true;
 Game.Hook.XInputReroute = false;
 Game.PauseBetweenStarts = 30;
 Game.LockMouse = true;
+Game.Hook.XInputNames = ["xinput1_4.dll"]; // having issues here
+
 
 // this game will multiply the values on the creators Update
 // ... but is it only in the creators update?
@@ -43,7 +45,7 @@ Game.Play = function () {
     // Only enable setting the window size on the XInput hook dll
     // when its dual vertical, as it doenst work 100% of the time on DualHorizontal
     Context.Hook.SetWindowSize = Player.Owner.IsDualVertical();
-    Context.Hook.ForceFocus = !Player.IsKeyboardPlayer;
+    //Context.Hook.ForceFocus = !Player.IsKeyboardPlayer; // force focus loses mouse
 
     var saveSrc = System.IO.Path.Combine(Context.RootInstallFolder, "synergy\\cfg\\video.txt");
     var savePath = System.IO.Path.Combine(Context.RootFolder, "synergy\\cfg\\video.txt");
