@@ -7,7 +7,7 @@ using System.Diagnostics;
 using SlimDX.DirectInput;
 using Nucleus.Gaming.Coop;
 
-namespace Nucleus.Gaming
+namespace Nucleus.Gaming.Coop
 {
     public class PlayerInfo
     {

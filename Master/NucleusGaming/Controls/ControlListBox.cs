@@ -29,12 +29,22 @@ namespace Nucleus.Gaming
         {
             //this.AutoScroll = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-
             this.AutoScroll = false;
-            this.HorizontalScroll.Visible = false;
-            this.HorizontalScroll.Enabled = false;
-            this.VerticalScroll.Visible = false;
+        }
 
+        public override bool AutoScroll
+        {
+            get => base.AutoScroll;
+            set
+            {
+                base.AutoScroll = value;
+                if (!value)
+                {
+                    this.HorizontalScroll.Visible = false;
+                    this.HorizontalScroll.Enabled = false;
+                    this.VerticalScroll.Visible = false;
+                }
+            }
         }
 
         protected override void OnSizeChanged(EventArgs e)
@@ -52,7 +62,7 @@ namespace Nucleus.Gaming
             }
 
             updatingSize = true;
-            
+
             totalHeight = 0;
             bool isVerticalVisible = VerticalScroll.Visible;
             int v = isVerticalVisible ? (1 + SystemInformation.VerticalScrollBarWidth) : 0;
@@ -110,7 +120,7 @@ namespace Nucleus.Gaming
             }
         }
 
-        
+
 
         private void C_ControlAdded(object sender, ControlEventArgs e)
         {
@@ -138,7 +148,7 @@ namespace Nucleus.Gaming
 
             if (parent != SelectedControl && parent is IRadioControl)
             {
-                IRadioControl high = (IRadioControl) parent;
+                IRadioControl high = (IRadioControl)parent;
                 high.UserOver();
             }
         }

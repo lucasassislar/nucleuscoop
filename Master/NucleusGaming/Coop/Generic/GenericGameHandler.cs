@@ -20,6 +20,7 @@ using WindowScrape.Static;
 using WindowScrape.Types;
 using Nucleus.Gaming.Coop;
 using System.Reflection;
+using Nucleus.Gaming.Tools.GameStarter;
 
 namespace Nucleus.Gaming
 {

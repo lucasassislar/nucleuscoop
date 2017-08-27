@@ -65,6 +65,8 @@ namespace Nucleus.Gaming
             {
                 ControlListBox list = new ControlListBox();
                 list.Size = this.Size;
+                list.AutoScroll = true;
+
                 this.Controls.Add(list);
 
                 collection = option.List;

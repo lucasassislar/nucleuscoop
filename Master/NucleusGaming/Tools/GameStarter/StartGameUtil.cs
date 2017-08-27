@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Nucleus
+namespace Nucleus.Gaming.Tools.GameStarter
 {
     /// <summary>
     /// Util class for executing and reading output from the Nucleus.Coop.StartGame application

@@ -3,27 +3,10 @@ Nucles Co-Op is a tool for Windows that allows split-screen play on many games t
 Its purspose is to make it as easy as possible for the average user to play games locally.
 
 Support its development by helping on my Patreon! https://www.patreon.com/distro
+
 Subscribe to our subreddit: https://www.reddit.com/r/nucleuscoop/
 
-
-Currently Supported Games:
-
-- Borderlands 1
-- Borderlands 2
-- Borderlands: The Pre Sequel
-- Don't Starve Together
-- Left 4 Dead 2
-
-
-Working but not with all features:
-- Borderlands
-	ALPHA 8: Everything works if you're using gamepads, but not with a keyboard + mouse player
-
-So close but not there yet:
-
-- Saints Row 3
-	Working: All instances open correctly using SmartSteamEmu, can control all instances freely
-	Issue: Can't find the game on LAN. If from the Shift + Tab menu, the game says the session is no longer available.
+Join our Discord: https://discord.gg/jrbPvKW
 
 
 # How does it work?
@@ -40,35 +23,13 @@ When the user hits play:
 - Now we keep track of the processes, looking for the launcher and the actual game window, so we can position it correctly on the screen.
 
 
-
-Next on the List:
-
-- Left 4 Dead 1
-- Portal 2
-- Call of Duty: Black Ops
-- Call of Duty: Modern Warfare 2
-- Saints Row 3
-- Saints Row 4
-- Team Fortress 2 (support for 64 players on 1 machine FTW)
-- Unlimited Power mode (multiple keyboards + mouses + gamepads)
-
-Games I want to add but I don't own:
-
-- Call of Duty: World At War
-- Call of Duty: Modern Warfare 3
-
-
-A ton of games will be supported thank for the godsend tool called SmartSteamEmu, developed by syahmixp,  grabbed from http://cs.rin.ru/forum/viewtopic.php?f=10&t=62935 
-Awesome application that emulates Steam and even enables LAN connections, so we can play everything easily!
-
-
 # How to help on the development?
 If you want to truly code, here follows a somewhat summup of what you need to begin developing:
+TODO: finish up this section :/
 
 For the application:
 	- Visual Studio 2015 or 2017 (Community works fine)
 
 For the games's Javascript files
 	- Visual Studio Code
-	- Node.js (not yet)
 	- ProcessExplorer

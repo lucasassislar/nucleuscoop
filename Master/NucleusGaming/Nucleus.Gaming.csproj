@@ -76,7 +76,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuildEngine\BuildProgram.cs" />
     <Compile Include="Controls\BorderPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -142,7 +141,7 @@
     <Compile Include="Coop\Generic\Step\CustomStepType.cs" />
     <Compile Include="Coop\Generic\UserInfo.cs" />
     <Compile Include="Coop\Generic\GameHookInfo.cs" />
-    <Compile Include="Coop\Javascript\JSUserInputControl.cs">
+    <Compile Include="Coop\Generic\JSUserInputControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Coop\Generic\DPIHandling.cs" />
@@ -184,7 +183,7 @@
     <Compile Include="IO\Logging\LogManager.cs" />
     <Compile Include="IO\MFT\FileNameAndParentFrn.cs" />
     <Compile Include="IO\MFT\MFTReader.cs" />
-    <Compile Include="Managers\GameManager.cs" />
+    <Compile Include="Coop\GameManager.cs" />
     <Compile Include="New\GameControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -208,12 +207,12 @@
     <Compile Include="New\PositionsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\Utils\RectangleUtil.cs" />
+    <Compile Include="Util\RectangleUtil.cs" />
     <Compile Include="Platform\Windows\MonitorDpiType.cs" />
     <Compile Include="Platform\Windows\ProcessDpiAwareness.cs" />
     <Compile Include="Platform\Windows\WindowsVersionInfo.cs" />
     <Compile Include="PlayerID.cs" />
-    <Compile Include="Player\PlayerInfo.cs" />
+    <Compile Include="Coop\PlayerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Coop\Generic\ProcessData.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -231,10 +230,9 @@
     <Compile Include="Util\MathUtil.cs" />
     <Compile Include="Util\ProcessUtil.cs" />
     <Compile Include="Util\ScreensUtil.cs" />
-    <Compile Include="Util\StartGameUtil.cs" />
+    <Compile Include="Tools\GameStarter\StartGameUtil.cs" />
     <Compile Include="Util\SteamUtil.cs" />
     <Compile Include="Util\StringUtil.cs" />
-    <Compile Include="Util\ViewportUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\CoolCheckbox.resx">
@@ -260,7 +258,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="User\" />
+    <Folder Include="New\Utils\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\4players.png" />

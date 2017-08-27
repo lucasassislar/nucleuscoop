@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Nucleus
+namespace Nucleus.Gaming
 {
     public static class CmdUtil
     {
