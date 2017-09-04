@@ -1,4 +1,6 @@
-﻿// List for all the maps we have a picture for/know the name and command
+﻿// Made by d1maxa, modified by distrolucas
+
+// List for all the maps we have a picture for/know the name and command
 var listMaps = [
     // Alien Swarm Reactive Drop campaigns
     { Name: "Jacob's Rest", Details: "1. Landing Bay", Console: "ASI-Jac1-LandingBay_01", ImageUrl: "oblandinghack.jpg" },

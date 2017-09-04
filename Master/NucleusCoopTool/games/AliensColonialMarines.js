@@ -1,3 +1,5 @@
+// Made by d1maxa, modified by distrolucas
+
 var listLanguages = [
     "english",
     "french",

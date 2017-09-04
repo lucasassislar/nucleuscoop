@@ -1,4 +1,6 @@
-﻿Game.KillMutex = [ // 2nd instance won't launch without these removed
+﻿// Made by d1maxa, modified by distrolucas
+
+Game.KillMutex = [ // 2nd instance won't launch without these removed
     "hl2_singleton_mutex"
 ];
 Game.DirSymlinkExclusions = [

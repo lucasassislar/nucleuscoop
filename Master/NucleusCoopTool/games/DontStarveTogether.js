@@ -1,3 +1,5 @@
+// Made by r-mach, modified by distrolucas
+
 Game.DirSymlinkExclusions = [
     "bin"
 ];
