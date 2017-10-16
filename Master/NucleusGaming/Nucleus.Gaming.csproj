@@ -94,7 +94,6 @@
     <Compile Include="Controls\CoolListControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Font2.cs" />
     <Compile Include="Controls\HotkeyListener.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,20 +140,18 @@
     <Compile Include="Coop\Generic\Step\CustomStepType.cs" />
     <Compile Include="Coop\Generic\UserInfo.cs" />
     <Compile Include="Coop\Generic\GameHookInfo.cs" />
-    <Compile Include="Coop\Generic\JSUserInputControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Coop\Generic\DPIHandling.cs" />
     <Compile Include="DPI\DPIManager.cs" />
     <Compile Include="DPI\DPIMonitor.cs" />
     <Compile Include="DPI\IDynamicSized.cs" />
     <Compile Include="Globals.cs" />
+    <Compile Include="IO\JsPropertiesFile.cs" />
     <Compile Include="Platform\Windows\Interop\Gdi32\Gdi32Interop.cs" />
     <Compile Include="Platform\Windows\Interop\Shcore\ShcoreInterop.cs" />
     <Compile Include="Platform\Windows\Interop\User32\Structures\Display.cs" />
     <Compile Include="Platform\Windows\Interop\User32\C\Rect.cs" />
     <Compile Include="IO\Content\ContentManager.cs" />
-    <Compile Include="IO\Logging\ILogNode.cs" />
+    <Compile Include="Diagnostics\ILogNode.cs" />
     <Compile Include="IO\SourceCfgFile.cs" />
     <Compile Include="Coop\IGameHandler.cs" />
     <Compile Include="Coop\IGameInfo.cs" />
@@ -171,47 +168,31 @@
     <Compile Include="Platform\Windows\Interop\Shell32\ShgFi.cs" />
     <Compile Include="IO\BackupFile.cs" />
     <Compile Include="IO\IniFile.cs" />
-    <Compile Include="Platform\Windows\Interop\Interceptor\Win32.cs" />
-    <Compile Include="Platform\Windows\Interop\Interceptor\Win32EnumWindows.cs" />
-    <Compile Include="Platform\Windows\Interop\Interceptor\Win32Messages.cs" />
-    <Compile Include="Platform\Windows\Interop\Interceptor\WindowInterceptor.cs" />
+    <None Include="Platform\Windows\Interop\Interceptor\Win32.cs" />
+    <None Include="Platform\Windows\Interop\Interceptor\Win32EnumWindows.cs" />
+    <None Include="Platform\Windows\Interop\Interceptor\Win32Messages.cs" />
+    <None Include="Platform\Windows\Interop\Interceptor\WindowInterceptor.cs" />
     <Compile Include="Platform\Windows\Interop\User32\User32Util.cs" />
     <Compile Include="Platform\Windows\Interop\User32\User32Interop.cs" />
     <Compile Include="Platform\Windows\Interop\User32\User32_WS.cs" />
     <Compile Include="Platform\Windows\Interop\Win32Api.cs" />
     <Compile Include="Platform\Windows\Interop\User32\WindowShowStyle.cs" />
-    <Compile Include="IO\Logging\LogManager.cs" />
+    <Compile Include="Diagnostics\LogManager.cs" />
     <Compile Include="IO\MFT\FileNameAndParentFrn.cs" />
     <Compile Include="IO\MFT\MFTReader.cs" />
     <Compile Include="Coop\GameManager.cs" />
-    <Compile Include="New\GameControl.cs">
+    <Compile Include="Forms\ImageButtonState.cs" />
+    <Compile Include="Forms\ImageButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="New\ImageButtonState.cs" />
-    <Compile Include="New\ImageButton.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="New\UserInputControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="New\KeyboardPlayer.cs" />
-    <Compile Include="New\PlayerCountControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="New\PlayerCountControl.Designer.cs">
-      <DependentUpon>PlayerCountControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="New\PlayerOptionsControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="New\PositionsControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Coop\KeyboardPlayer.cs" />
+    <Compile Include="Store\StoreGameFullInfo.cs" />
+    <Compile Include="Store\StoreGameInfo.cs" />
+    <Compile Include="Store\StoreHeader.cs" />
     <Compile Include="Util\RectangleUtil.cs" />
     <Compile Include="Platform\Windows\MonitorDpiType.cs" />
     <Compile Include="Platform\Windows\ProcessDpiAwareness.cs" />
     <Compile Include="Platform\Windows\WindowsVersionInfo.cs" />
-    <Compile Include="PlayerID.cs" />
     <Compile Include="Coop\PlayerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Coop\Generic\ProcessData.cs" />
@@ -226,7 +207,6 @@
     <Compile Include="Util\ConsoleU.cs" />
     <Compile Include="Util\Extensions\DirectoryInfoExtensions.cs" />
     <Compile Include="Util\FileUtil.cs" />
-    <Compile Include="Util\FormUtil.cs" />
     <Compile Include="Util\MathUtil.cs" />
     <Compile Include="Util\ProcessUtil.cs" />
     <Compile Include="Util\ScreensUtil.cs" />
@@ -244,9 +224,6 @@
     <EmbeddedResource Include="Controls\TextMessageBox.resx">
       <DependentUpon>TextMessageBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="New\PlayerCountControl.resx">
-      <DependentUpon>PlayerCountControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -258,7 +235,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="New\Utils\" />
+    <Folder Include="Coop\JavaScript\" />
+    <Folder Include="Coop\User\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\4players.png" />
@@ -294,6 +272,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\keyboard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Coop\Generic\GameHookInfo.cs.d.ts">
+      <DependentUpon>GameHookInfo.cs</DependentUpon>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Coop\Generic\GenericGameInfo.cs.d.ts">
+      <DependentUpon>GenericGameInfo.cs</DependentUpon>
+    </TypeScriptCompile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

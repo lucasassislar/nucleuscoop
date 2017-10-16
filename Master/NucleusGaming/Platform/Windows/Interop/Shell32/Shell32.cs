@@ -5,9 +5,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Nucleus.Gaming
+namespace Nucleus.Gaming.Windows.Interop
 {
-    public class Shell32
+    public static class Shell32
     {
         private static object getIconState = new object();
 

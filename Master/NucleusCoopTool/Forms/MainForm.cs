@@ -2,7 +2,7 @@
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Generic.Step;
 using Nucleus.Gaming.Windows;
-using Nucleus.Interop.User32;
+using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -122,7 +122,7 @@ namespace Nucleus.Coop
             }
 
             DPIManager.ForceUpdate();
-            GameManager.Instance.SaveUserProfile();
+            gameManager.SaveUserProfile();
         }
 
         public void NewUserGame(UserGameInfo game)

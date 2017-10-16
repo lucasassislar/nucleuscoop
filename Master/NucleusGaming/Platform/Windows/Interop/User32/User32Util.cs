@@ -1,5 +1,4 @@
 ﻿using Nucleus.Gaming.Windows.Interop;
-using Nucleus.Interop.User32;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

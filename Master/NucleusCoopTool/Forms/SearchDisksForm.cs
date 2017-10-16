@@ -1,5 +1,7 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Diagnostics;
+using Nucleus.Gaming.IO.MFT;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

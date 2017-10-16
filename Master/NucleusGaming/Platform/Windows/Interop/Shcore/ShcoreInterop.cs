@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Nucleus.Gaming.Windows.Interop
 {
+    /// <summary>
+    /// Interop functionality for Windows 8.1+
+    /// </summary>
     internal static class ShcoreInterop
     {
         [DllImport("shcore.dll")]

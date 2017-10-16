@@ -11,15 +11,24 @@ namespace Nucleus.Gaming.Coop
     /// </summary>
     public class GameOption
     {
-        public object DefaultValue { get; set; }
         private string name;
         private string description;
         private object value;
         private string key;
-        private IList list;
+        private IList dataSet; // should we create a new GameOption for Collection options?
+        private object defaultValue;
 
         /// <summary>
-        /// The name of the variable
+        /// The value to default to when no value was set by the user
+        /// </summary>
+        public object DefaultValue
+        {
+            get { return defaultValue; }
+            set { defaultValue = value; }
+        }
+
+        /// <summary>
+        /// The name of the option
         /// </summary>
         public string Name
         {
@@ -27,7 +36,7 @@ namespace Nucleus.Gaming.Coop
         }
 
         /// <summary>
-        /// The description of the variable
+        /// The description of the option
         /// </summary>
         public string Description
         {
@@ -35,7 +44,7 @@ namespace Nucleus.Gaming.Coop
         }
 
         /// <summary>
-        /// The value of the variable
+        /// The current value of option
         /// </summary>
         public object Value
         {
@@ -51,41 +60,46 @@ namespace Nucleus.Gaming.Coop
             get { return key; }
         }
 
-        public IList List { get { return list; } }
+        /// <summary>
+        /// If this option should be shown to the user
+        /// </summary>
         public bool Hidden { get; set; }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of GameOption, with no default value
         /// </summary>
         /// <param name="name"></param>
         /// <param name="desc"></param>
-        /// <param name="value"></param>
         /// <param name="key"></param>
-        /// <param name="defaultValue"></param>
+        /// <param name="value"></param>
         public GameOption(string name, string desc, string key, object value)
+            : this(name, desc, key, value, null)
         {
-            this.name = name;
-            this.description = desc;
-            this.value = value;
-            this.key = key;
-            if (value is IList)
-            {
-                this.list = (IList)value;
-                this.value = 0;
-            }
         }
 
+        /// <summary>
+        /// Initializes a new instance of GameOption
+        /// </summary>
+        /// <param name="name">The name of the option (what will be shown to the user)</param>
+        /// <param name="desc">The description of the option (what will be shown to the user)</param>
+        /// <param name="key">The key for accesing this game option</param>
+        /// <param name="value">The value </param>
+        /// <param name="defaultValue"></param>
         public GameOption(string name, string desc, string key, object value, object defaultValue)
         {
-            DefaultValue = defaultValue;
             this.name = name;
             this.description = desc;
             this.value = value;
             this.key = key;
+
             if (value is IList)
             {
-                this.list = (IList)value;
+                this.dataSet = (IList)value;
                 this.value = 0;
+            }
+            else
+            {
+                this.defaultValue = defaultValue;
             }
         }
 
@@ -97,6 +111,21 @@ namespace Nucleus.Gaming.Coop
         public override string ToString()
         {
             return string.Format("{0} : {1}", Key, Value);
+        }
+
+        public bool IsCollection()
+        {
+            return dataSet != null;
+        }
+
+        public IList GetCollection()
+        {
+            return dataSet;
+        }
+
+        public T GetValue<T>()
+        {
+            return (T)value;
         }
     }
 }

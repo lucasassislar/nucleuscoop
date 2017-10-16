@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Win32;
 
 namespace XLogParser
 {
@@ -54,15 +53,15 @@ namespace XLogParser
                 string last = splitted.Last();
 
                 int code = int.Parse(last);
-                Messages win = (Messages)code;
+                //Messages win = (Messages)code;
 
-                if (!unique.Contains(code))
-                {
-                    unique.Add(code);
-                    txtUnique.Text += win.ToString() + Environment.NewLine;
-                }
+                //if (!unique.Contains(code))
+                //{
+                //    unique.Add(code);
+                //    txtUnique.Text += win.ToString() + Environment.NewLine;
+                //}
 
-                txtParsed.Text += win.ToString() + Environment.NewLine;
+                //txtParsed.Text += win.ToString() + Environment.NewLine;
             }
         }
     }

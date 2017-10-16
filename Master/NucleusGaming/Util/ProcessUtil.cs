@@ -8,7 +8,7 @@ using Nucleus.Gaming.Interop;
 using System.Threading;
 using System.Management;
 
-namespace Nucleus
+namespace Nucleus.Gaming
 {
     public static class ProcessUtil
     {

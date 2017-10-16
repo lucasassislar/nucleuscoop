@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Nucleus.Gaming
+namespace Nucleus.Gaming.IO
 {
     public struct BackupFile
     {

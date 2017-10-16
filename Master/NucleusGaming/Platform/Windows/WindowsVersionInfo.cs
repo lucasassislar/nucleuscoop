@@ -4,12 +4,12 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 // http://www.codeproject.com/Articles/73000/Getting-Operating-System-Version-Info-Even-for-Win
-//https://en.wikipedia.org/wiki/List_of_Microsoft_Windows_versions
+// https://en.wikipedia.org/wiki/List_of_Microsoft_Windows_versions
 
-//Thanks to Member 7861383, Scott Vickery for the Windows 8.1 update and workaround.
-//I have moved it to the beginning of the Name property, though...
+// Thanks to Member 7861383, Scott Vickery for the Windows 8.1 update and workaround.
+// I have moved it to the beginning of the Name property, though...
 
-//Thakts to Brisingr Aerowing for help with the Windows 10 adapatation
+// Thakts to Brisingr Aerowing for help with the Windows 10 adapatation
 
 namespace Nucleus.Gaming.Windows
 {

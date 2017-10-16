@@ -1,5 +1,6 @@
-﻿using Nucleus.Coop;
-using Nucleus.Gaming.Coop;
+﻿using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Diagnostics;
+using Nucleus.Gaming.IO;
 using System;
 using System.Collections.Generic;
 using System.IO;

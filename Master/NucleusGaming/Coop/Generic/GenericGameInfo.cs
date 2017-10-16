@@ -13,63 +13,55 @@ namespace Nucleus.Gaming
     public class GenericGameInfo
     {
         private Engine engine;
-        private string js;
+        private string jsCode;
         
-        public GameHookInfo Hook = new GameHookInfo();
-        public List<GameOption> Options = new List<GameOption>();
+        public GameHookInfo Hook { get; set; } = new GameHookInfo();
+        public List<GameOption> Options { get; set; } = new List<GameOption>();
 
-        public SaveType SaveType;
-        public string SavePath;
+        public SaveType SaveType { get; set; }
+        public string SavePath { get; set; }
 
-        public string[] DirSymlinkExclusions;
-        public string[] FileSymlinkExclusions;
-        public string[] FileSymlinkCopyInstead;
+        public string[] DirSymlinkExclusions { get; set; }
+        public string[] FileSymlinkExclusions { get; set; }
+        public string[] FileSymlinkCopyInstead { get; set; }
 
-        public double HandlerInterval;
-        public bool Debug;
-        public bool SupportsPositioning;
-        public bool SymlinkExe;
-        public bool SymlinkGame;
-        public bool HardcopyGame;
+        public double HandlerInterval { get; set; }
+        public bool Debug { get; set; }
+        public bool SupportsPositionin { get; set; }
+        public bool SymlinkExe { get; set; }
+        public bool SymlinkGame { get; set; }
+        public bool HardcopyGame { get; set; }
 
-        public bool SupportsKeyboard;
-        public string[] ExecutableContext;
-        public string ExecutableName;
-        public string SteamID;
-        public string GUID;
-        public string GameName;
-        public int MaxPlayers;
-        public int MaxPlayersOneMonitor;
-        public int PauseBetweenStarts;
-        public DPIHandling DPIHandling = DPIHandling.True;
+        public bool SupportsKeyboard { get; set; }
+        public string[] ExecutableContext { get; set; }
+        public string ExecutableName { get; set; }
+        public string SteamID { get; set; }
+        public string GUID { get; set; }
+        public string GameName { get; set; }
+        public int MaxPlayers { get; set; }
+        public int MaxPlayersOneMonitor { get; set; }
+        public int PauseBetweenStarts { get; set; }
+        public DPIHandling DPIHandling { get; set; } = DPIHandling.True;
 
-        public string StartArguments;
-        public string BinariesFolder;
+        public string StartArguments { get; set; }
+        public string BinariesFolder { get; set; }
 
-        public void AddOption(string name, string desc, string key, object value, object defaultValue)
-        {
-            Options.Add(new GameOption(name, desc, key, value, defaultValue));
-        }
 
-        public void AddOption(string name, string desc, string key, object value)
-        {
-            Options.Add(new GameOption(name, desc, key, value));
-        }
 
         /// <summary>
         /// The relative path to where the games starts in
         /// </summary>
-        public string WorkingFolder;
-        public bool NeedsSteamEmulation;
-        public string[] KillMutex;
-        public string LauncherExe;
-        public string LauncherTitle;
-        public Action Play;
-        public Action SetupSse;
-        public List<CustomStep> CustomSteps = new List<CustomStep>();
-        public string JsFileName;
-        public bool LockMouse;
-        public string Folder;
+        public string WorkingFolder { get; set; }
+        public bool NeedsSteamEmulation { get; set; }
+        public string[] KillMutex { get; set; }
+        public string LauncherExe { get; set; }
+        public string LauncherTitle { get; set; }
+        public Action Play { get; set; }
+        public Action SetupSse { get; set; }
+        public List<CustomStep> CustomSteps { get; set; } = new List<CustomStep>();
+        public string JsFileName { get; set; }
+        public bool LockMouse { get; set; }
+        public string Folder { get; set; }
 
         public Type HandlerType
         {
@@ -82,16 +74,16 @@ namespace Nucleus.Gaming
             Folder = folderPath;
 
             StreamReader reader = new StreamReader(str);
-            js = reader.ReadToEnd();
+            jsCode = reader.ReadToEnd();
 
+            // get the Nucleus.Gaming assembly
             Assembly assembly = typeof(GameOption).Assembly;
 
             engine = new Engine(cfg => cfg.AllowClr(assembly));
             
             engine.SetValue("Game", this);
             engine.Execute("var Nucleus = importNamespace('Nucleus.Gaming');");
-            engine.Execute(js);
-            engine.SetValue("Game", (object)null);
+            engine.Execute(jsCode);
         }
 
 
@@ -184,6 +176,17 @@ namespace Nucleus.Gaming
                 result = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Valve\Steam", "Language", null);
 
             return result;
+        }
+
+
+        public void AddOption(string name, string desc, string key, object value, object defaultValue)
+        {
+            Options.Add(new GameOption(name, desc, key, value, defaultValue));
+        }
+
+        public void AddOption(string name, string desc, string key, object value)
+        {
+            Options.Add(new GameOption(name, desc, key, value));
         }
     }
 }

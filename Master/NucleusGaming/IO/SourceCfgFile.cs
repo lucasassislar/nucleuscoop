@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Nucleus.Gaming
+namespace Nucleus.Gaming.IO
 {
     /// <summary>
     /// Reads and modifies parameters in a Source Engine configuration

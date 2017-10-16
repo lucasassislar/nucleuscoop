@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Nucleus.Gaming.Coop
 {
+    /// <summary>
+    /// Represents a user of the Nucleus Coop application
+    /// </summary>
     public class UserProfile
     {
         private List<UserGameInfo> games;
@@ -19,6 +22,9 @@ namespace Nucleus.Gaming.Coop
         {
         }
 
+        /// <summary>
+        /// Initializes the user profile with all default options
+        /// </summary>
         public void InitializeDefault()
         {
             games = new List<UserGameInfo>();

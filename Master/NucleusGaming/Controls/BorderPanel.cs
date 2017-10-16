@@ -10,13 +10,15 @@ using System.Drawing.Drawing2D;
 
 namespace Nucleus.Gaming.Controls
 {
+    /// <summary>
+    /// Panel that uses custom images on the edge (untested in the latest version)
+    /// </summary>
     public partial class BorderPanel : Panel
     {
         protected Bitmap edge;
         protected Bitmap eRight;
         protected Bitmap eBRight;
         protected Bitmap eLeft;
-
 
         protected Bitmap len;
         public Bitmap EdgeImage

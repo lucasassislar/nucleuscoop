@@ -31,7 +31,8 @@ namespace Nucleus.Gaming.Coop
         string[] ExecutableContext { get; }
 
         /// <summary>
-        /// The game's name
+        /// The name of the game (what will show up to the 
+        /// end-user in the main application)
         /// </summary>
         string GameName { get; }
 

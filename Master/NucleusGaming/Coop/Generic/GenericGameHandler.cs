@@ -1,29 +1,27 @@
-﻿using Jint;
-using Nucleus.Gaming.Interop;
+﻿using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Coop.Generic.Cursor;
+using Nucleus.Gaming.Diagnostics;
+using Nucleus.Gaming.IO;
+using Nucleus.Gaming.Tools.GameStarter;
 using Nucleus.Gaming.Windows;
 using Nucleus.Gaming.Windows.Interop;
-using Nucleus.Interop.User32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Management;
-using System.Text;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using Nucleus.Gaming.Coop.Generic.Cursor;
 using WindowScrape.Constants;
-using WindowScrape.Static;
 using WindowScrape.Types;
-using Nucleus.Gaming.Coop;
-using System.Reflection;
-using Nucleus.Gaming.Tools.GameStarter;
 
 namespace Nucleus.Gaming
 {
+    /// <summary>
+    /// Handles 
+    /// </summary>
     public class GenericGameHandler : IGameHandler, ILogNode
     {
         private const float HWndInterval = 10000;

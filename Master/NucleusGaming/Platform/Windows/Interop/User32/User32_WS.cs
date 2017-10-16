@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Nucleus.Interop.User32
+namespace Nucleus.Gaming.Windows.Interop
 {
     public static class User32_WS
     {

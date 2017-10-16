@@ -14,28 +14,28 @@ namespace Nucleus.Gaming
         /// If the game should be run using our custom version of x360ce for gamepad control.
         /// Enabled by default as the majority of our games need it
         /// </summary>
-        public bool CustomDllEnabled = true;
+        public bool CustomDllEnabled { get; set; } = true;
 
         /// <summary>
         /// If the game supports direct input joysticks
         /// </summary>
-        public bool DInputEnabled;
+        public bool DInputEnabled { get; set; }
 
         /// <summary>
         /// If we should completely remove support for DirectInput input from the game
         /// </summary>
-        public bool DInputForceDisable;
+        public bool DInputForceDisable { get; set; }
 
         /// <summary>
         /// If the game supports xinput joysticks
         /// </summary>
-        public bool XInputEnabled;
+        public bool XInputEnabled { get; set; }
 
-        public string[] XInputNames = new string[]
+        public string[] XInputNames { get; set; } = new string[]
         {
             "xinput1_3.dll"
         };
-        public string[] XInputCopies = new string[]
+        public string[] XInputCopies { get; set; } = new string[]
         {
             ""
         };
@@ -44,14 +44,14 @@ namespace Nucleus.Gaming
         /// If xinput is enabled, if rerouting should be enabled (basically is we'll reroute directinput back to xinput,
         /// so we can track more than 4 gamepads on xinput at once)
         /// </summary>
-        public bool XInputReroute = false;
+        public bool XInputReroute { get; set; } = false;
 
         /// <summary>
         /// If our custom dll should set the window size and position locally, instead of the handler
         /// (inconsistent with some window sizes, look at Borderlands2.js for an example usage)
         /// </summary>
         [Dynamic]
-        public bool SetWindowSize;
+        public bool SetWindowSize { get; set; }
 
         /// <summary>
         /// If our custom DLL should hook into the game's window and fake Window's events
@@ -59,7 +59,7 @@ namespace Nucleus.Gaming
         /// (used for games that don't work when out of focus. See Borderlands.js)
         /// </summary>
         [Dynamic]
-        public bool ForceFocus;
+        public bool ForceFocus { get; set; }
 
         /// <summary>
         /// If force focus is enabled, this is the window we are attaching ourselves to
@@ -67,11 +67,11 @@ namespace Nucleus.Gaming
         /// This is used in a very specific case even out
         /// </summary>
         [Dynamic]
-        public string ForceFocusWindowName = "";
+        public string ForceFocusWindowName { get; set; } = "";
 
 
-        public bool BlockMouseEvents = true;
-        public bool BlockKeyboardEvents = true;
-        public bool BlockInputEvents = true;
+        public bool BlockMouseEvents { get; set; } = true;
+        public bool BlockKeyboardEvents { get; set; } = true;
+        public bool BlockInputEvents { get; set; } = true;
     }
 }

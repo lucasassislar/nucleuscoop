@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Nucleus.Gaming;
 
-namespace SplitTool.Controls
+namespace Nucleus.Gaming
 {
     public class CoolListControl : UserControl
     {

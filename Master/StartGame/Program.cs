@@ -1,7 +1,6 @@
 ﻿using Nucleus;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Windows;
-using Nucleus.Interop.User32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

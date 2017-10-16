@@ -91,7 +91,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\GameControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\GameNameControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\JSUserInputControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PlayerCountControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PlayerCountControl.Designer.cs">
+      <DependentUpon>PlayerCountControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PlayerOptionsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PositionsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserInputControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\BaseForm.cs">
@@ -117,6 +138,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\PlayerCountControl.resx">
+      <DependentUpon>PlayerCountControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -143,33 +167,34 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="games\DontStarveTogether\steam_api.ini" />
-    <None Include="games\Left4Dead2\bloodharvest.jpg">
+    <None Include="games\Left4Dead2\assets\bloodharvest.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\Left4Dead2\crashcourse.jpg">
+    <None Include="games\Left4Dead2\assets\crashcourse.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\Left4Dead2\deadair.jpg">
+    <None Include="games\Left4Dead2\assets\deadair.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\Left4Dead2\deadcenter.jpg">
+    <None Include="games\Left4Dead2\assets\deadcenter.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\Left4Dead2\deathtoll.jpg">
+    <None Include="games\Left4Dead2\assets\deathtoll.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\Left4Dead2\hardrain.jpg">
+    <None Include="games\Left4Dead2\assets\hardrain.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\Left4Dead2\nomercy.jpg">
+    <None Include="games\Left4Dead2\assets\nomercy.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\Left4Dead2\swampfever.JPG">
+    <None Include="games\Left4Dead2\assets\swampfever.JPG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\Left4Dead2\theparish.jpg">
+    <None Include="games\Left4Dead2\assets\theparish.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="games\Left4Dead2\gameinfo.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -180,6 +205,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\ncoop.ini" />
+    <None Include="Resources\SmartSteamEmu.zip" />
     <None Include="SplitKey.snk" />
   </ItemGroup>
   <ItemGroup>
@@ -203,9 +230,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\border.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\gamepad.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\not_found.png" />
@@ -257,9 +281,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\keyboard.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\no_keyboard.png" />
   </ItemGroup>
   <ItemGroup>
@@ -272,51 +293,43 @@
     <None Include="Resources\not_found_white.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\xinput1_3.dll" />
+    <None Include="Resources\vertical.png" />
+    <None Include="Resources\keyboard.png" />
     <None Include="games\DebugBattlefront2.js" />
-    <None Include="games\Borderlands.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\Borderlands2.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\BorderlandsPreSequel.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="games\Borderlands.js" />
+    <None Include="games\Borderlands2.js" />
+    <None Include="games\BorderlandsPreSequel.js" />
     <None Include="games\DebugCallOfDutyBlackOpsZombiesRocketV2.js" />
     <None Include="games\DebugCallOfDutyBlackOps2Zombies.js" />
     <None Include="games\DebugHaloWars.js" />
     <None Include="games\DebugLeft4Dead.js" />
-    <None Include="games\SaintsRow3DX11.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="games\SaintsRow3DX11.js" />
     <None Include="games\DebugHalo.js" />
-    <None Include="games\Left4Dead2.js">
+    <None Include="games\Left4Dead2\assets\bkp\bloodharvest.jpg" />
+    <None Include="games\Left4Dead2\assets\bkp\crashcourse.jpg" />
+    <None Include="games\Left4Dead2\assets\bkp\darkcarnival.jpg" />
+    <None Include="games\Left4Dead2\assets\bkp\deadair.jpg" />
+    <None Include="games\Left4Dead2\assets\bkp\deadcenter.jpg" />
+    <None Include="games\Left4Dead2\assets\bkp\deathaboard.jpg" />
+    <None Include="games\Left4Dead2\assets\bkp\deathtoll.jpg" />
+    <None Include="games\Left4Dead2\assets\bkp\hardrain.jpg" />
+    <None Include="games\Left4Dead2\assets\bkp\nomercy.jpg" />
+    <None Include="games\Left4Dead2\assets\bkp\swampfever.JPG" />
+    <None Include="games\Left4Dead2\assets\bkp\theparish.jpg" />
+    <None Include="games\Left4Dead2\assets\coldstream.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\Left4Dead2\bkp\bloodharvest.jpg" />
-    <None Include="games\Left4Dead2\bkp\crashcourse.jpg" />
-    <None Include="games\Left4Dead2\bkp\darkcarnival.jpg" />
-    <None Include="games\Left4Dead2\bkp\deadair.jpg" />
-    <None Include="games\Left4Dead2\bkp\deadcenter.jpg" />
-    <None Include="games\Left4Dead2\bkp\deathaboard.jpg" />
-    <None Include="games\Left4Dead2\bkp\deathtoll.jpg" />
-    <None Include="games\Left4Dead2\bkp\hardrain.jpg" />
-    <None Include="games\Left4Dead2\bkp\nomercy.jpg" />
-    <None Include="games\Left4Dead2\bkp\swampfever.JPG" />
-    <None Include="games\Left4Dead2\bkp\theparish.jpg" />
-    <None Include="games\Left4Dead2\coldstream.png">
+    <None Include="games\Left4Dead2\assets\darkcarnival.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\Left4Dead2\darkcarnival.png">
+    <None Include="games\Left4Dead2\assets\deathabroad.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\Left4Dead2\deathabroad.jpg">
+    <None Include="games\Left4Dead2\assets\thepassing.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\Left4Dead2\thepassing.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\Left4Dead2\thesacrifice.jpg">
+    <None Include="games\Left4Dead2\assets\thesacrifice.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="games\Left4Dead\nomercy.jpg">
@@ -337,12 +350,8 @@
     <None Include="games\Left4Dead\coldstream.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\AliensColonialMarines.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="games\AliensColonialMarines.js" />
+    <None Include="games\AlienSwarmReactiveDrop.js" />
     <None Include="games\AlienSwarmReactiveDrop\ad4_obj_escape_image.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -508,31 +517,33 @@
     <None Include="games\AlienSwarmReactiveDrop\tilarus09obpowerroom.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\Synergy.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="games\Synergy.js" />
     <None Include="..\StartGame\bin\Release\StartGame.exe">
       <Link>StartGame.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="games\SaintsRow3.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="games\SaintsRow3.js" />
     <None Include="games\DebugSaintsRowIV.js" />
     <None Include="games\DebugCallOfDutyBlackOpsMultiplayerRocketV2.js" />
     <None Include="games\DebugDolphin.js" />
-    <None Include="games\GasGuzzlersExtreme.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\DontStarveTogether.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="games\GasGuzzlersExtreme.js" />
+    <None Include="games\DontStarveTogether.js" />
     <None Include="games\DontStarveTogether\steam_api.dll" />
+    <Content Include="config.js" />
+    <None Include="games\Left4Dead2\game.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="icon.ico" />
+    <None Include="Resources\4players.png" />
+    <None Include="Resources\16players.png" />
+    <None Include="Resources\fullscreen.png" />
+    <None Include="Resources\gamepad.png" />
+    <None Include="Resources\generic.png" />
+    <None Include="Resources\horizontal.png" />
     <Content Include="Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="games\Left4Dead2\og\" />
+    <Folder Include="games\Left4Dead2\assets\og\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

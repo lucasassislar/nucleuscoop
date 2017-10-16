@@ -10,6 +10,9 @@ using System.Runtime.InteropServices;
 
 namespace Nucleus.Gaming
 {
+    /// <summary>
+    /// Lists controls dynamically in a list
+    /// </summary>
     public class ControlListBox : UserControl
     {
         private int totalHeight;
@@ -34,7 +37,7 @@ namespace Nucleus.Gaming
 
         public override bool AutoScroll
         {
-            get => base.AutoScroll;
+            get { return base.AutoScroll; }
             set
             {
                 base.AutoScroll = value;

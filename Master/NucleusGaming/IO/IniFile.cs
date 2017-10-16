@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Nucleus.Gaming
+namespace Nucleus.Gaming.IO
 {
     /// <summary>
     /// Create a New INI file to store or load data

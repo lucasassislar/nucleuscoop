@@ -1,4 +1,5 @@
 ﻿#if UNSAFE
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.ComponentModel;
 
-namespace Nucleus.Gaming
+namespace Nucleus.Gaming.IO.MFT
 {
     public class MFTReader
     {

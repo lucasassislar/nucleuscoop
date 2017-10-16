@@ -1,6 +1,6 @@
 ﻿using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Windows;
-using Nucleus.Interop.User32;
+using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Reflection;
-using Nucleus.Gaming.Interop;
+﻿using Ionic.Zip;
 using Newtonsoft.Json;
-using System.Threading;
-using Ionic.Zip;
+using Nucleus.Gaming.Diagnostics;
+using Nucleus.Gaming.IO;
 using Nucleus.Gaming.Properties;
-using System.Windows.Forms;
-using Nucleus.Gaming.Coop;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
 
-namespace Nucleus.Gaming
+namespace Nucleus.Gaming.Coop
 {
     /// <summary>
     /// Manages games information, so we can know what games are supported 
@@ -47,7 +45,6 @@ namespace Nucleus.Gaming
         public UserProfile User
         {
             get { return user; }
-            set { user = value; }
         }
 
         public GameManager()

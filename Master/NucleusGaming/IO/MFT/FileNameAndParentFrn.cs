@@ -8,12 +8,10 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.ComponentModel;
 
-namespace Nucleus.Gaming
+namespace Nucleus.Gaming.IO.MFT
 {
-
     public class FileNameAndParentFrn
     {
-        #region Properties
         private string _name;
         public string Name
         {
@@ -27,9 +25,7 @@ namespace Nucleus.Gaming
             get { return _parentFrn; }
             set { _parentFrn = value; }
         }
-        #endregion
 
-        #region Constructor
         public FileNameAndParentFrn(string name, UInt64 parentFrn)
         {
             if (name != null && name.Length > 0)
@@ -40,6 +36,7 @@ namespace Nucleus.Gaming
             {
                 throw new ArgumentException("Invalid argument: null or Length = zero", "name");
             }
+
             if (!(parentFrn < 0))
             {
                 _parentFrn = parentFrn;
@@ -49,8 +46,6 @@ namespace Nucleus.Gaming
                 throw new ArgumentException("Invalid argument: less than zero", "parentFrn");
             }
         }
-        #endregion
-
     }
 }
 #endif

@@ -4,8 +4,11 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 
-namespace Nucleus
+namespace Nucleus.Gaming.Windows.Interop
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Display
     {
         public Rectangle Bounds
@@ -37,6 +40,5 @@ namespace Nucleus
             deviceName = device;
             primary = isPrimary;
         }
-
     }
 }

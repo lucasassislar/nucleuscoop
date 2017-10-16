@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 
-namespace Nucleus.Interop.User32
+namespace Nucleus.Gaming.Windows.Interop
 {
     public struct Rect
     {

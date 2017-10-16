@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Nucleus.Gaming.DirectInput
+namespace Nucleus.Gaming
 {
     public static class DInputManager
     {
@@ -56,7 +56,7 @@ namespace Nucleus.Gaming.DirectInput
             }
             else
             {
-                // no freaking idea where it really is
+                // no freaking idea where it really is on x86 OSes
                 path = @"C:\Windows\System32\dinput.dll";
             }
 
