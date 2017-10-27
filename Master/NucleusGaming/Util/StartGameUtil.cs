@@ -34,17 +34,17 @@ namespace Nucleus
             return "\"" + pathToGame + "\" \"" + args + "\" \"" + waitTime + "\" \"" + mu + "\"";
         }
 
-        public static void KillMutexes(Process p, params string[] mutexes)
+        public static bool KillMutex(Process p, string mutexName)
         {
             lock (locker)
             {
-                foreach (string mutex in mutexes)
+                bool mutexKilled = false;
+                while (MutexExists(p, mutexName))
                 {
-                    while (MutexExists(p, mutex))
-                    {
-                        ProcessUtil.KillMutex(p, mutex);
-                    }
+                    ProcessUtil.KillMutex(p, mutexName);
+                    mutexKilled = true;
                 }
+                return mutexKilled;
 
             }
         }

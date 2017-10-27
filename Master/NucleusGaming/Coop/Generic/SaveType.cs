@@ -8,6 +8,6 @@ namespace Nucleus.Gaming
     public enum SaveType
     {
         None, Unknown,
-        INI, CFG
+        INI, CFG, INI_NO_SECTIONS
     }
 }

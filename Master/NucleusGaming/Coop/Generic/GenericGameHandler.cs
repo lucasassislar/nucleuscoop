@@ -250,37 +250,6 @@ namespace Nucleus.Gaming
 			// some games have save files inside their game folder, so we need to access them inside the loop
 			jsData[Folder.InstancedGameFolder.ToString()] = linkDir;
 
-            string configFile = context.SavePath;
-
-            switch (context.SaveType)
-            {
-                case SaveType.INI:
-                    IniFile file = new IniFile(configFile);
-                    foreach (SaveInfo save in context.ModifySave)
-                    {
-                        if (save is IniSaveInfo)
-                        {
-                            IniSaveInfo ini = (IniSaveInfo)save;
-                            file.IniWriteValue(ini.Section, ini.Key, ini.Value);
-                        }
-                    }
-                    break;
-                case SaveType.CFG:
-                    SourceCfgFile cfg = new SourceCfgFile(configFile);
-
-                    foreach (var save in context.ModifySave)
-                    {
-                        CfgSaveInfo info = save as CfgSaveInfo;
-                        if (info == null) continue;
-                        CfgSaveInfo option = info;
-                        cfg.ChangeProperty(option.Key, option.Value);
-                    }
-					
-					cfg.Save();
-					
-                    break;
-            }
-
 
             if (context.CustomXinput)
             {
@@ -373,6 +342,66 @@ namespace Nucleus.Gaming
             //We shouldn't need exclusions at this point, since the hard directories should already be created
             CmdUtil.LinkDirectories(rootDir, linkDir, out exitCode);
             CmdUtil.LinkFiles(rootDir, linkDir, out exitCode);
+        }
+
+
+        private void UpdateConfigFile(GenericContext context)
+        {
+            string configFile = context.SavePath;
+
+            switch (context.SaveType)
+            {
+                case SaveType.INI:
+                    IniFile iniFile = new IniFile(context.SavePath);
+                    foreach (SaveInfo save in context.ModifySave)
+                    {
+                        if (save is IniSaveInfo)
+                        {
+                            IniSaveInfo ini = (IniSaveInfo)save;
+                            iniFile.IniWriteValue(ini.Section, ini.Key, ini.Value);
+                        }
+                    }
+
+                    break;
+                case SaveType.INI_NO_SECTIONS:
+                    IniFile iniNoSections = new IniFile(configFile);
+
+                    List<string> tempContents;
+                    tempContents = File.ReadLines(iniNoSections.Path).ToList();
+                    tempContents.Insert(0, "[TEMP_SECTION]");
+                    File.WriteAllLines(iniNoSections.Path, tempContents);
+
+                    iniNoSections = new IniFile(context.SavePath);
+                    foreach (SaveInfo save in context.ModifySave)
+                    {
+                        if (save is IniSaveInfo)
+                        {
+                            IniSaveInfo ini = (IniSaveInfo)save;
+                            iniNoSections.IniWriteValue("TEMP_SECTION", ini.Key, ini.Value);
+                        }
+                    }
+
+                    tempContents = File.ReadLines(iniNoSections.Path).ToList();
+                    File.WriteAllLines(
+                        iniNoSections.Path,
+                        tempContents.Where(l => l != "[TEMP_SECTION]"));
+
+                    break;
+                case SaveType.CFG:
+                    SourceCfgFile cfg = new SourceCfgFile(configFile);
+
+                    foreach (var save in context.ModifySave)
+                    {
+                        CfgSaveInfo info = save as CfgSaveInfo;
+                        if (info == null) continue;
+                        CfgSaveInfo option = info;
+                        cfg.ChangeProperty(option.Key, option.Value);
+                    }
+
+                    cfg.Save();
+
+                    break;
+            }
         }
 
 
@@ -476,19 +505,21 @@ namespace Nucleus.Gaming
                 if (i > 0 && (gen.KillMutex?.Length > 0 || !hasSetted))
                 {
                     PlayerInfo before = players[i - 1];
-                    while (gen.KillMutex?.Length > 0)
+                    ProcessData pdata = before.ProcessData;
+                    if (gen.KillMutex?.Length > 0 && !before.ProcessData.KilledMutexes)
                     {
-                        Thread.Sleep(1000);
-                        if (!before.ProcessData.KilledMutexes)
+                        List<string> unkilledMutexes = gen.KillMutex.ToList();
+
+                        while (unkilledMutexes.Count > 0)
                         {
-                            ProcessData pdata = before.ProcessData;
-                            StartGameUtil.KillMutexes(pdata.Process, gen.KillMutex);
-                            break;
+                            unkilledMutexes.ForEach(mutexName => {
+                                if (StartGameUtil.KillMutex(pdata.Process, mutexName))
+                                {
+                                    unkilledMutexes.Remove(mutexName);
+                                }
+                            });
                         }
-                        else
-                        {
-                            break;
-                        }
+                        before.ProcessData.KilledMutexes = true;
                     }
                 }
 
@@ -529,6 +560,8 @@ namespace Nucleus.Gaming
                 if(!Directory.Exists(linkDirectory)){
                     CreateLinkDirectory(linkDirectory, rootFolder, context);
                 }
+
+                UpdateConfigFile(context);
 
                 Process proc = null;
                 string startArgs = context.StartArguments;
