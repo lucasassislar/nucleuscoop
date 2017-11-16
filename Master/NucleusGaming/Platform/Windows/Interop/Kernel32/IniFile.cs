@@ -1,19 +1,15 @@
-﻿using System;
+﻿using Nucleus.Gaming.Platform.Windows.Interop;
+using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Nucleus.Gaming.IO
+namespace Nucleus.Gaming.Platform.Windows.Interop
 {
     /// <summary>
     /// Create a New INI file to store or load data
     /// </summary>
     public class IniFile
     {
-        [DllImport("kernel32")]
-        private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
-        [DllImport("kernel32")]
-        private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
-
         private string path;
 
         public string Path
@@ -40,7 +36,7 @@ namespace Nucleus.Gaming.IO
         /// Value Name
         public void IniWriteValue(string Section, string Key, string Value)
         {
-            WritePrivateProfileString(Section, Key, Value, this.path);
+            Kernel32Interop.WritePrivateProfileString(Section, Key, Value, this.path);
         }
 
         /// <summary>
@@ -53,7 +49,7 @@ namespace Nucleus.Gaming.IO
         public string IniReadValue(string Section, string Key)
         {
             StringBuilder temp = new StringBuilder(255);
-            int i = GetPrivateProfileString(Section, Key, "", temp,
+            int i = Kernel32Interop.GetPrivateProfileString(Section, Key, "", temp,
                                             255, this.path);
             return temp.ToString();
 

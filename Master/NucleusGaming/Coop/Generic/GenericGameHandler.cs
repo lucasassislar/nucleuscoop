@@ -2,6 +2,7 @@
 using Nucleus.Gaming.Coop.Generic.Cursor;
 using Nucleus.Gaming.Diagnostics;
 using Nucleus.Gaming.IO;
+using Nucleus.Gaming.Platform.Windows.Interop;
 using Nucleus.Gaming.Tools.GameStarter;
 using Nucleus.Gaming.Windows;
 using Nucleus.Gaming.Windows.Interop;
@@ -75,7 +76,7 @@ namespace Nucleus.Gaming
             hasEnded = true;
             GameManager.Instance.ExecuteBackup(this.userGame.Game);
 
-            LogManager.UnregisterForLogCallback(this);
+            Log.UnregisterForLogCallback(this);
 
             Cursor.Clip = Rectangle.Empty; // guarantee were not clipping anymore
             string backupDir = GameManager.Instance.GempTempFolder(this.userGame.Game);
@@ -144,7 +145,7 @@ namespace Nucleus.Gaming
 
             timerInterval = gen.HandlerInterval;
 
-            LogManager.RegisterForLogCallback(this);
+            Log.RegisterForLogCallback(this);
 
             return true;
         }
@@ -919,7 +920,7 @@ namespace Nucleus.Gaming
             }
         }
 
-        public void Log(StreamWriter writer)
+        public void OnFailureLog(StreamWriter writer)
         {
         }
     }

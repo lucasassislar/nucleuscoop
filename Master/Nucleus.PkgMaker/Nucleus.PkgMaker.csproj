@@ -90,6 +90,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nucleus.Gaming.PKGManager\Nucleus.Gaming.PackageManager.csproj">
+      <Project>{47671463-3409-4526-aa80-bdd8bbbdeac4}</Project>
+      <Name>Nucleus.Gaming.PackageManager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NucleusGaming\Nucleus.Gaming.csproj">
       <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
       <Name>Nucleus.Gaming</Name>

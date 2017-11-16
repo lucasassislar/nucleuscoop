@@ -8,5 +8,6 @@ namespace Nucleus.Gaming
     public static class Globals
     {
         public const decimal Version = 9.0M;
+        public const bool Alpha = true;
     }
 }

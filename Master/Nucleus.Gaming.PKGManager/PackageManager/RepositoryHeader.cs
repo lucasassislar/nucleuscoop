@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Nucleus.Gaming.Store
+namespace Nucleus.Gaming.PackageManager
 {
-    public class StoreHeader
+    public class RepositoryHeader
     {
         /// <summary>
         /// An array with all available games on this store
         /// </summary>
-        public StoreGameInfo[] Games { get; set; }
+        public RepositoryGameInfo[] Games { get; set; }
 
         /// <summary>
         /// Root folder for all packages infos

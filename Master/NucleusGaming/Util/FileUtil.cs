@@ -7,16 +7,8 @@ using System.Text;
 
 namespace Nucleus.Gaming
 {
-    public enum SymbolicLink
-    {
-        File = 0,
-        Directory = 1
-    }
     public static class FileUtil
     {
-        [DllImport("kernel32.dll")]
-        public static extern bool CreateSymbolicLink(string lpSymlinkFileName, string lpTargetFileName, SymbolicLink dwFlags);
-
         public static void Write(byte[] data, string place)
         {
             using (MemoryStream str = new MemoryStream(data))
@@ -29,7 +21,14 @@ namespace Nucleus.Gaming
             }
         }
 
-        public static void CopyDirectoryFiles(string rootFolder, string destination, out int exitCode, params string[] exclusions)
+        /// <summary>
+        /// Copies the files from a directory to another
+        /// </summary>
+        /// <param name="rootFolder"></param>
+        /// <param name="destination"></param>
+        /// <param name="exitCode"></param>
+        /// <param name="exclusions"></param>
+        public static void CopyDirContents(string rootFolder, string destination, out int exitCode, params string[] exclusions)
         {
             exitCode = 1;
 
@@ -72,7 +71,7 @@ namespace Nucleus.Gaming
 
             Directory.CreateDirectory(destination);
             // copy all files
-            CopyDirectoryFiles(currentDir.FullName, destination, out exitCode, fileExclusions);
+            CopyDirContents(currentDir.FullName, destination, out exitCode, fileExclusions);
 
             DirectoryInfo[] children = currentDir.GetDirectories();
             for (int i = 0; i < children.Length; i++)

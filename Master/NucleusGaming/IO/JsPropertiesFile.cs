@@ -16,6 +16,7 @@ namespace Nucleus.Gaming.IO
         public JsPropertiesFile()
         {
         }
+
         public JsPropertiesFile(string pathToFile)
         {
             InitializeEngine(pathToFile);

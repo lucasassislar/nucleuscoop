@@ -1,6 +1,7 @@
 ﻿using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Diagnostics;
 using Nucleus.Gaming.IO;
+using Nucleus.Gaming.Platform.Windows.Interop;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -183,7 +184,7 @@ namespace Nucleus.Gaming
                 patchCount++;
                 if (patchCount > 1)
                 {
-                    LogManager.Log("PatchFind pattern is not unique in " + originalFile);
+                    Log.WriteLine($"PatchFind pattern is not unique in {originalFile}");
                 }
                 else
                 {
@@ -196,7 +197,7 @@ namespace Nucleus.Gaming
 
             if (patchCount == 0)
             {
-                LogManager.Log("PatchFind pattern was not found in " + originalFile);
+                Log.WriteLine("PatchFind pattern was not found in " + originalFile);
             }
 
             // Save it to another location.

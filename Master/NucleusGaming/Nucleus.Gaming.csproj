@@ -25,19 +25,19 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;UNSAFE;ALPHA</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;ALPHA</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;UNSAFE;ALPHA;RELEASE</DefineConstants>
+    <DefineConstants>TRACE;ALPHA;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -47,7 +47,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TestDebug|AnyCPU'">
     <OutputPath>bin\TestDebug\</OutputPath>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <DefineConstants>UNSAFE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
@@ -120,6 +120,8 @@
     <Compile Include="Controls\TextMessageBox.Designer.cs">
       <DependentUpon>TextMessageBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Coop\CoopConfig.cs" />
+    <Compile Include="Diagnostics\OutputLevel.cs" />
     <Compile Include="DirectInput\DInputManager.cs" />
     <Compile Include="Coop\GameOption.cs" />
     <Compile Include="Coop\GameOptionValue.cs" />
@@ -147,6 +149,8 @@
     <Compile Include="Globals.cs" />
     <Compile Include="IO\JsPropertiesFile.cs" />
     <Compile Include="Platform\Windows\Interop\Gdi32\Gdi32Interop.cs" />
+    <Compile Include="Platform\Windows\Interop\Kernel32\Kernel32Interop.cs" />
+    <Compile Include="Platform\Windows\Interop\Kernel32\SymbolicLink.cs" />
     <Compile Include="Platform\Windows\Interop\Shcore\ShcoreInterop.cs" />
     <Compile Include="Platform\Windows\Interop\User32\Structures\Display.cs" />
     <Compile Include="Platform\Windows\Interop\User32\C\Rect.cs" />
@@ -167,7 +171,7 @@
     <Compile Include="Platform\Windows\Interop\Shell32\ShFileInfo.cs" />
     <Compile Include="Platform\Windows\Interop\Shell32\ShgFi.cs" />
     <Compile Include="IO\BackupFile.cs" />
-    <Compile Include="IO\IniFile.cs" />
+    <Compile Include="Platform\Windows\Interop\Kernel32\IniFile.cs" />
     <None Include="Platform\Windows\Interop\Interceptor\Win32.cs" />
     <None Include="Platform\Windows\Interop\Interceptor\Win32EnumWindows.cs" />
     <None Include="Platform\Windows\Interop\Interceptor\Win32Messages.cs" />
@@ -177,18 +181,14 @@
     <Compile Include="Platform\Windows\Interop\User32\User32_WS.cs" />
     <Compile Include="Platform\Windows\Interop\Win32Api.cs" />
     <Compile Include="Platform\Windows\Interop\User32\WindowShowStyle.cs" />
-    <Compile Include="Diagnostics\LogManager.cs" />
-    <Compile Include="IO\MFT\FileNameAndParentFrn.cs" />
-    <Compile Include="IO\MFT\MFTReader.cs" />
+    <Compile Include="Diagnostics\Log.cs" />
     <Compile Include="Coop\GameManager.cs" />
     <Compile Include="Forms\ImageButtonState.cs" />
     <Compile Include="Forms\ImageButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Coop\KeyboardPlayer.cs" />
-    <Compile Include="Store\StoreGameFullInfo.cs" />
-    <Compile Include="Store\StoreGameInfo.cs" />
-    <Compile Include="Store\StoreHeader.cs" />
+    <Compile Include="Tools\GameStarter\StartGameApp.cs" />
     <Compile Include="Util\RectangleUtil.cs" />
     <Compile Include="Platform\Windows\MonitorDpiType.cs" />
     <Compile Include="Platform\Windows\ProcessDpiAwareness.cs" />
@@ -234,10 +234,7 @@
     <None Include="GamingKey.snk" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Coop\JavaScript\" />
-    <Folder Include="Coop\User\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Resources\4players.png" />
   </ItemGroup>

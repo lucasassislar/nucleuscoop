@@ -179,7 +179,7 @@ namespace Nucleus.Coop
             // 1/3 done, we started the operation
             UpdateProgress(thirdDiskPc);
 
-            LogManager.Log("> Searching drive {0} for game executables", info.drive.Name);
+            Log.WriteLine($"> Searching drive {info.drive.Name} for game executables");
 
             Dictionary<ulong, FileNameAndParentFrn> mDict = new Dictionary<ulong, FileNameAndParentFrn>();
             MFTReader mft = new MFTReader();
@@ -226,7 +226,7 @@ namespace Nucleus.Coop
                         }
 #endif
 
-                        LogManager.Log("> Found new game {0} on drive {1}", uinfo.Game.GameName, info.drive.Name);
+                        Log.WriteLine($"> Found new game {uinfo.Game.GameName} on drive {info.drive.Name}");
                         Invoke(new Action(delegate
                         {
                             listGames.Items.Add(uinfo.Game.GameName + " - " + path);

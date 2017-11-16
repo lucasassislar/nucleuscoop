@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Nucleus.Gaming.Store
+namespace Nucleus.Gaming.PackageManager
 {
     /// <summary>
-    /// Information about a game that is shown in the store.
+    /// Information about a game that is shown in the repository.
     /// This class should contain ONLY essential information, as it is cached
     /// in the first run of the app
     /// </summary>
-    public class StoreGameInfo
+    public class RepositoryGameInfo
     {
         /// <summary>
         /// ID must be unique to the server

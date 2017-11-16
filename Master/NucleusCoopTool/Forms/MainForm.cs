@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming;
+﻿using Nucleus.Coop.Forms;
+using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Generic.Step;
 using Nucleus.Gaming.Windows;
@@ -40,13 +41,16 @@ namespace Nucleus.Coop
         private JSUserInputControl jsControl;
 
         private Thread handlerThread;
+        private CoopConfig configFile;
 
         public MainForm()
         {
             InitializeComponent();
 
             controls = new Dictionary<UserGameInfo, GameControl>();
-            gameManager = new GameManager();
+
+            configFile = new CoopConfig("config.js");
+            gameManager = new GameManager(configFile);
 
             positionsControl = new PositionsControl();
             optionsControl = new PlayerOptionsControl();
@@ -476,6 +480,12 @@ namespace Nucleus.Coop
         private void btnShowTaskbar_Click(object sender, EventArgs e)
         {
             User32Util.ShowTaskBar();
+        }
+
+        private void btn_Store_Click(object sender, EventArgs e)
+        {
+            PKGManagerForm form = new PKGManagerForm();
+            form.Show();
         }
     }
 }

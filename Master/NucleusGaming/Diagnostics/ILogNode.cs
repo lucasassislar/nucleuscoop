@@ -8,6 +8,6 @@ namespace Nucleus.Gaming.Diagnostics
 {
     public interface ILogNode
     {
-        void Log(StreamWriter writer);
+        void OnFailureLog(StreamWriter writer);
     }
 }

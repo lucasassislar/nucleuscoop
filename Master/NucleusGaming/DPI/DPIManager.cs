@@ -9,6 +9,7 @@ using System.Drawing;
 
 namespace Nucleus.Gaming
 {
+    // this is not the right solution bruh
     public static class DPIManager
     {
         public static float Scale = 1f;

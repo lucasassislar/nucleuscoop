@@ -119,8 +119,6 @@ namespace Nucleus.Gaming
             }
         }
 
-
-
         public static void ExecuteCommand(string workingDirectory, out int exitCode, string command)
         {
             ProcessStartInfo processInfo;
@@ -143,6 +141,5 @@ namespace Nucleus.Gaming
 
             exitCode = process.ExitCode;
         }
-
     }
 }

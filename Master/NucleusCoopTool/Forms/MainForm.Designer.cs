@@ -39,6 +39,7 @@
             this.btn_Next = new System.Windows.Forms.Button();
             this.lblVersion = new System.Windows.Forms.Label();
             this.gameNameControl = new Nucleus.Coop.Controls.GameNameControl();
+            this.btn_Store = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // StepPanel
@@ -165,10 +166,24 @@
             this.gameNameControl.Size = new System.Drawing.Size(98, 46);
             this.gameNameControl.TabIndex = 13;
             // 
+            // btn_Store
+            // 
+            this.btn_Store.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Store.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btn_Store.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Store.Location = new System.Drawing.Point(868, 12);
+            this.btn_Store.Name = "btn_Store";
+            this.btn_Store.Size = new System.Drawing.Size(174, 35);
+            this.btn_Store.TabIndex = 14;
+            this.btn_Store.Text = "PKG Manager";
+            this.btn_Store.UseVisualStyleBackColor = true;
+            this.btn_Store.Click += new System.EventHandler(this.btn_Store_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1054, 701);
+            this.Controls.Add(this.btn_Store);
             this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.gameNameControl);
             this.Controls.Add(this.btn_Next);
@@ -200,5 +215,6 @@
         private System.Windows.Forms.Button btn_Next;
         private System.Windows.Forms.Label lblVersion;
         private Controls.GameNameControl gameNameControl;
+        private System.Windows.Forms.Button btn_Store;
     }
 }

@@ -136,6 +136,12 @@
     <Compile Include="Forms\SearchDisksForm.Designer.cs">
       <DependentUpon>SearchDisksForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\PKGManagerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PKGManagerForm.Designer.cs">
+      <DependentUpon>PKGManagerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\PlayerCountControl.resx">
@@ -152,6 +158,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SearchDisksForm.resx">
       <DependentUpon>SearchDisksForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PKGManagerForm.resx">
+      <DependentUpon>PKGManagerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -213,6 +222,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Nucleus.Gaming.PKGManager\Nucleus.Gaming.PackageManager.csproj">
+      <Project>{47671463-3409-4526-aa80-bdd8bbbdeac4}</Project>
+      <Name>Nucleus.Gaming.PackageManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nucleus.Gaming.Unsafe\Nucleus.Gaming.Unsafe.csproj">
+      <Project>{afc00426-c357-4488-a19e-fe9ae5a20f04}</Project>
+      <Name>Nucleus.Gaming.Unsafe</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NucleusGaming\Nucleus.Gaming.csproj">
       <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
       <Name>Nucleus.Gaming</Name>
@@ -529,7 +546,9 @@
     <None Include="games\GasGuzzlersExtreme.js" />
     <None Include="games\DontStarveTogether.js" />
     <None Include="games\DontStarveTogether\steam_api.dll" />
-    <Content Include="config.js" />
+    <None Include="config.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="games\Left4Dead2\game.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

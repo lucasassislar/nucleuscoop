@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Nucleus.Gaming.Store
+namespace Nucleus.Gaming.PackageManager
 {
     /// <summary>
     /// Full description info of a game
     /// </summary>
-    public class StoreGameFullInfo
+    public class RepositoryGameFullInfo
     {
         /// <summary>
         /// ID must be unique to the server

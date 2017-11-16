@@ -46,10 +46,14 @@ namespace Nucleus.Gaming.Coop
         {
             get { return user; }
         }
+        private CoopConfig config;
 
-        public GameManager()
+        public GameManager(CoopConfig config)
         {
+            this.config = config;
+
             instance = this;
+
             games = new Dictionary<string, GenericGameInfo>();
             gameInfos = new Dictionary<string, GenericGameInfo>();
 
@@ -174,7 +178,7 @@ namespace Nucleus.Gaming.Coop
                 return null;
             }
 
-            LogManager.Log("Found game: {0}, full path: {1}", game.GameName, exePath);
+            Log.WriteLine($"Found game: {game.GameName}, full path: {exePath}");
             UserGameInfo uinfo = new UserGameInfo();
             uinfo.InitializeDefault(game, exePath);
             GameManager.Instance.User.Games.Add(uinfo);
@@ -233,7 +237,7 @@ namespace Nucleus.Gaming.Coop
                 }
 #endif
 
-                LogManager.Log("Found game: {0}, full path: {1}", game.GameName, exePath);
+                Log.WriteLine($"Found game: {game.GameName}, full path: {exePath}");
                 UserGameInfo uinfo = new UserGameInfo();
                 uinfo.InitializeDefault(game, exePath);
                 GameManager.Instance.User.Games.Add(uinfo);
@@ -267,7 +271,7 @@ namespace Nucleus.Gaming.Coop
             {
                 //if (!Directory.Exists(steamEmu))
                 {
-                    LogManager.Log("Extracting SmartSteamEmu");
+                    Log.WriteLine("Extracting SmartSteamEmu");
 
                     Directory.CreateDirectory(steamEmu);
                     using (MemoryStream stream = new MemoryStream(Resources.SmartSteamEmu))
@@ -284,7 +288,7 @@ namespace Nucleus.Gaming.Coop
             }
             catch
             {
-                LogManager.Log("Extraction of SmartSteamEmu failed");
+                Log.WriteLine("Extraction of SmartSteamEmu failed");
                 return string.Empty;
             }
 
@@ -491,7 +495,7 @@ namespace Nucleus.Gaming.Coop
             if (!IsSaving)
             {
                 isSaving = true;
-                LogManager.Log("> Saving user profile....");
+                Log.WriteLine("> Saving user profile....");
                 ThreadPool.QueueUserWorkItem(saveUser, path);
             }
         }
@@ -513,7 +517,7 @@ namespace Nucleus.Gaming.Coop
                             stream.Flush();
                         }
                     }
-                    LogManager.Log("Saved user profile");
+                    Log.WriteLine("Saved user profile");
                 }
                 catch { }
                 isSaving = false;
@@ -523,24 +527,24 @@ namespace Nucleus.Gaming.Coop
         private void Initialize()
         {
             // Search for Javascript games-infos
-            string jsfolder = GetJsGamesPath();
-            DirectoryInfo jsFolder = new DirectoryInfo(jsfolder);
-            FileInfo[] files = jsFolder.GetFiles("*.js");
-            for (int i = 0; i < files.Length; i++)
-            {
-                FileInfo f = files[i];
-                using (Stream str = f.OpenRead())
-                {
-                    string ext = Path.GetFileNameWithoutExtension(f.Name);
-                    string pathBlock = Path.Combine(f.Directory.FullName, ext);
+            //string jsfolder = GetJsGamesPath();
+            //DirectoryInfo jsFolder = new DirectoryInfo(jsfolder);
+            //FileInfo[] files = jsFolder.GetFiles("*.js");
+            //for (int i = 0; i < files.Length; i++)
+            //{
+            //    FileInfo f = files[i];
+            //    using (Stream str = f.OpenRead())
+            //    {
+            //        string ext = Path.GetFileNameWithoutExtension(f.Name);
+            //        string pathBlock = Path.Combine(f.Directory.FullName, ext);
 
-                    GenericGameInfo info = new GenericGameInfo(f.Name, pathBlock, str);
-                    LogManager.Log("Found game info: " + info.GameName);
+            //        GenericGameInfo info = new GenericGameInfo(f.Name, pathBlock, str);
+            //        Log.WriteLine("Found game info: " + info.GameName);
 
-                    games.Add(info.GUID, info);
-                    gameInfos.Add(info.ExecutableName, info);
-                }
-            }
+            //        games.Add(info.GUID, info);
+            //        gameInfos.Add(info.ExecutableName, info);
+            //    }
+            //}
         }
         #endregion
 

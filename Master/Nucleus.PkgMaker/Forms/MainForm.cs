@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Nucleus.Gaming.PackageManager;
 using Nucleus.Gaming.Store;
 using System;
 using System.Collections.Generic;
@@ -20,13 +21,13 @@ namespace Nucleus.PkgMaker
         {
             InitializeComponent();
 
-            StoreHeader header = new StoreHeader();
+            RepositoryHeader header = new RepositoryHeader();
             header.PackagesInfoRoot = "infos";
             header.PackagesRoot = "packages";
 
-            List<StoreGameInfo> games = new List<StoreGameInfo>();
+            List<RepositoryGameInfo> games = new List<RepositoryGameInfo>();
 
-            StoreGameInfo l4d2 = new StoreGameInfo();
+            RepositoryGameInfo l4d2 = new RepositoryGameInfo();
             l4d2.ExeName = "left4dead2";
             l4d2.ID = "550";
             l4d2.Title = "Left 4 Dead 2";
