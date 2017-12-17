@@ -70,35 +70,36 @@ namespace Nucleus.Gaming.Coop
                 return;
             }
 
-            int maxPlayers = this.game.Game.MaxPlayers;
-            int half = (int)Math.Round(maxPlayers / 2.0);
-            int left = Math.Max(half - 1, 1);
-            int width = Size.Width / left;
-            int height = Size.Height / 2;
+            throw new NotImplementedException();
+            //int maxPlayers = this.game.Game.MaxPlayers;
+            //int half = (int)Math.Round(maxPlayers / 2.0);
+            //int left = Math.Max(half - 1, 1);
+            //int width = Size.Width / left;
+            //int height = Size.Height / 2;
 
-            for (int i = 0; i < left; i++)
-            {
-                Button btn = top[i];
-                btn.SetBounds(i * width, 0, width, height);
-            }
+            //for (int i = 0; i < left; i++)
+            //{
+            //    Button btn = top[i];
+            //    btn.SetBounds(i * width, 0, width, height);
+            //}
 
-            half = maxPlayers - half;
-            width = Size.Width / half;
-            for (int i = 0; i < half; i++)
-            {
-                Button btn = bot[i];
-                btn.SetBounds(i * width, height, width, height);
-            }
+            //half = maxPlayers - half;
+            //width = Size.Width / half;
+            //for (int i = 0; i < half; i++)
+            //{
+            //    Button btn = bot[i];
+            //    btn.SetBounds(i * width, height, width, height);
+            //}
         }
 
-        public override void Initialize(UserGameInfo game, GameProfile profile)
+        public override void Initialize(GenericHandlerData handlerData, UserGameInfo game, GameProfile profile)
         {
-            base.Initialize(game, profile);
+            base.Initialize(handlerData, game, profile);
 
             this.Controls.Clear();
             canProceed = false;
 
-            int maxPlayers = game.Game.MaxPlayers;
+            int maxPlayers = handlerData.MaxPlayers;
             int half = (int)Math.Round(maxPlayers / 2.0);
             int width = Size.Width / half;
             int height = Size.Height / 2;

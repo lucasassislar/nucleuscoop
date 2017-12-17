@@ -41,9 +41,9 @@ namespace Nucleus.Gaming.Coop
             detailsFont = new Font("Segoe UI", 12);
         }
 
-        public override void Initialize(UserGameInfo game, GameProfile profile)
+        public override void Initialize(GenericHandlerData handlerData, UserGameInfo game, GameProfile profile)
         {
-            base.Initialize(game, profile);
+            base.Initialize(handlerData, game, profile);
 
             this.Controls.Clear();
 
@@ -52,7 +52,7 @@ namespace Nucleus.Gaming.Coop
             list = new ControlListBox();
             list.Size = this.Size;
 
-            List<GameOption> options = game.Game.Options;
+            List<GameOption> options = handlerData.Options;
             Dictionary<string, object> vals = profile.Options;
             for (int j = 0; j < options.Count; j++)
             {

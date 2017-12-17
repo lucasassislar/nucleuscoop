@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Nucleus.Gaming.Repo;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,35 +14,17 @@ namespace Nucleus.Gaming.Coop
     /// </summary>
     public class UserGameInfo
     {
-        private GenericGameInfo game;
+        private RepoGameHandlerFullInfo game;
         private List<GameProfile> profiles;
         private string exePath;
-        private string gameGUID;
 
-        [JsonIgnore]
-        public GenericGameInfo Game
-        {
-            get
-            {
-                if (game == null)
-                {
-                    GameManager.Instance.Games.TryGetValue(gameGUID, out game);
-                }
-                return game;
-            }
-        }
+        public string GameID { get; set; }
 
         [JsonIgnore]
         public Bitmap Icon
         {
             get;
             set;
-        }
-
-        public string GameGUID
-        {
-            get { return gameGUID; }
-            set { gameGUID = value; }
         }
 
         public List<GameProfile> Profiles
@@ -76,10 +59,9 @@ namespace Nucleus.Gaming.Coop
         /// </summary>
         /// <param name="game">A reference to the </param>
         /// <param name="exePath"></param>
-        public void InitializeDefault(GenericGameInfo game, string exePath)
+        public void InitializeDefault(RepoGameHandlerFullInfo game, string exePath)
         {
             this.game = game;
-            gameGUID = game.GUID;
 
             this.exePath = exePath;
             this.profiles = new List<GameProfile>();

@@ -226,13 +226,14 @@ namespace Nucleus.Coop
                         }
 #endif
 
-                        Log.WriteLine($"> Found new game {uinfo.Game.GameName} on drive {info.drive.Name}");
-                        Invoke(new Action(delegate
-                        {
-                            listGames.Items.Add(uinfo.Game.GameName + " - " + path);
-                            listGames.Invalidate();
-                            main.NewUserGame(uinfo);
-                        }));
+                        throw new NotImplementedException();
+                        //Log.WriteLine($"> Found new game {uinfo.Game.GameName} on drive {info.drive.Name}");
+                        //Invoke(new Action(delegate
+                        //{
+                        //    listGames.Items.Add(uinfo.Game.GameName + " - " + path);
+                        //    listGames.Invalidate();
+                        //    main.NewUserGame(uinfo);
+                        //}));
                     }
                 }
             }
@@ -251,7 +252,10 @@ namespace Nucleus.Coop
                     progress = 1;
                     UpdateProgress(0);
                     btnSearch.Enabled = true;
-                    main.RefreshGames();
+
+                    throw new NotImplementedException();
+
+                    //main.RefreshGames();
                     MessageBox.Show("Finished searching!");
                 }));
             }

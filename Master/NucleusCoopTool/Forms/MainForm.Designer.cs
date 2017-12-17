@@ -66,7 +66,6 @@
             this.list_Games.Offset = new System.Drawing.Size(0, 2);
             this.list_Games.Size = new System.Drawing.Size(262, 636);
             this.list_Games.TabIndex = 2;
-            this.list_Games.SelectedChanged += new System.Action<object, System.Windows.Forms.Control>(this.list_Games_SelectedChanged);
             // 
             // label_StepTitle
             // 

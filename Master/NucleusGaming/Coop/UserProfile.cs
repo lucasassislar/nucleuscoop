@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nucleus.Gaming.Repo;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,12 +12,21 @@ namespace Nucleus.Gaming.Coop
     public class UserProfile
     {
         private List<UserGameInfo> games;
+        private List<UserInstalledHandler> installedHandlers;
 
         public List<UserGameInfo> Games
         {
             get { return games; }
             set { games = value; }
         }
+
+        public List<UserInstalledHandler> InstalledHandlers
+        {
+            get { return installedHandlers; }
+            set { installedHandlers = value; }
+        }
+
+        public DateTime LatestMod { get; set; }
 
         public UserProfile()
         {
@@ -27,7 +37,15 @@ namespace Nucleus.Gaming.Coop
         /// </summary>
         public void InitializeDefault()
         {
-            games = new List<UserGameInfo>();
+            if (games == null)
+            {
+                games = new List<UserGameInfo>();
+            }
+
+            if (installedHandlers == null)
+            {
+                installedHandlers = new List<UserInstalledHandler>();
+            }
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Nucleus.Gaming.Coop
 
         }
 
-        public void InitializeDefault(GenericGameInfo game)
+        public void InitializeDefault(GenericHandlerData game)
         {
             if (playerData == null)
             {

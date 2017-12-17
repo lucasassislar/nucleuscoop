@@ -29,7 +29,7 @@ namespace Nucleus.Gaming
 
         private UserGameInfo userGame;
         private GameProfile profile;
-        private GenericGameInfo gen;
+        private GenericHandlerData gen;
         private Dictionary<string, string> jsData;
 
         private double timer;
@@ -71,44 +71,45 @@ namespace Nucleus.Gaming
 
         public void End()
         {
-            User32Util.ShowTaskBar();
+            throw new NotImplementedException();
+//            User32Util.ShowTaskBar();
 
-            hasEnded = true;
-            GameManager.Instance.ExecuteBackup(this.userGame.Game);
+//            hasEnded = true;
+//            GameManager.Instance.ExecuteBackup(this.userGame.Game);
 
-            Log.UnregisterForLogCallback(this);
+//            Log.UnregisterForLogCallback(this);
 
-            Cursor.Clip = Rectangle.Empty; // guarantee were not clipping anymore
-            string backupDir = GameManager.Instance.GempTempFolder(this.userGame.Game);
-            ForceFinish();
+//            Cursor.Clip = Rectangle.Empty; // guarantee were not clipping anymore
+//            string backupDir = GameManager.Instance.GempTempFolder(this.userGame.Game);
+//            ForceFinish();
 
-            if (_cursorModule != null)
-                _cursorModule.Stop();
+//            if (_cursorModule != null)
+//                _cursorModule.Stop();
 
-            Thread.Sleep(1000);
-            // delete symlink folder
-            try
-            {
-#if RELEASE
-                for (int i = 0; i < profile.PlayerData.Count; i++)
-                {
-                    string linkFolder = Path.Combine(backupDir, "Instance" + i);
-                    if (Directory.Exists(linkFolder))
-                    {
-                        Directory.Delete(linkFolder, true);
-                    }
-                }
-#endif
-            }
-            catch
-            {
+//            Thread.Sleep(1000);
+//            // delete symlink folder
+//            try
+//            {
+//#if RELEASE
+//                for (int i = 0; i < profile.PlayerData.Count; i++)
+//                {
+//                    string linkFolder = Path.Combine(backupDir, "Instance" + i);
+//                    if (Directory.Exists(linkFolder))
+//                    {
+//                        Directory.Delete(linkFolder, true);
+//                    }
+//                }
+//#endif
+//            }
+//            catch
+//            {
 
-            }
+//            }
 
-            if (Ended != null)
-            {
-                Ended();
-            }
+//            if (Ended != null)
+//            {
+//                Ended();
+//            }
         }
 
         public string GetFolder(Folder folder)
@@ -128,24 +129,25 @@ namespace Nucleus.Gaming
             this.profile = profile;
 
             // see if we have any save game to backup
-            gen = game.Game as GenericGameInfo;
-            if (gen == null)
-            {
-                // you fucked up
-                return false;
-            }
+            throw new NotImplementedException();
+            //gen = game.Game as GenericGameInfo;
+            //if (gen == null)
+            //{
+            //    // you fucked up
+            //    return false;
+            //}
 
-            if (gen.LockMouse)
-                _cursorModule = new CursorModule();
+            //if (gen.LockMouse)
+            //    _cursorModule = new CursorModule();
 
-            jsData = new Dictionary<string, string>();
-            jsData.Add(Folder.Documents.ToString(), Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-            jsData.Add(Folder.MainGameFolder.ToString(), Path.GetDirectoryName(game.ExePath));
-            jsData.Add(Folder.InstancedGameFolder.ToString(), Path.GetDirectoryName(game.ExePath));
+            //jsData = new Dictionary<string, string>();
+            //jsData.Add(Folder.Documents.ToString(), Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            //jsData.Add(Folder.MainGameFolder.ToString(), Path.GetDirectoryName(game.ExePath));
+            //jsData.Add(Folder.InstancedGameFolder.ToString(), Path.GetDirectoryName(game.ExePath));
 
-            timerInterval = gen.HandlerInterval;
+            //timerInterval = gen.HandlerInterval;
 
-            Log.RegisterForLogCallback(this);
+            //Log.RegisterForLogCallback(this);
 
             return true;
         }
@@ -223,408 +225,409 @@ namespace Nucleus.Gaming
 
         public string Play()
         {
-            ForceFinish();
+            return null;
+            //ForceFinish();
 
-            List<PlayerInfo> players = profile.PlayerData;
-            for (int i = 0; i < players.Count; i++)
-            {
-                players[i].PlayerID = i;
-            }
-
-            UserScreen[] all = ScreensUtil.AllScreens();
-
-            string nucleusRootFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-
-            string tempDir = GameManager.Instance.GempTempFolder(gen);
-            string exeFolder = Path.GetDirectoryName(userGame.ExePath).ToLower();
-            string rootFolder = exeFolder;
-            string workingFolder = exeFolder;
-            if (!string.IsNullOrEmpty(gen.BinariesFolder))
-            {
-                rootFolder = ReplaceCaseInsensitive(exeFolder, gen.BinariesFolder.ToLower(), "");
-            }
-            if (!string.IsNullOrEmpty(gen.WorkingFolder))
-            {
-                workingFolder = Path.Combine(exeFolder, gen.WorkingFolder.ToLower());
-            }
-
-            bool first = true;
-            bool keyboard = false;
-            //if (gen.SupportsKeyboard)
+            //List<PlayerInfo> players = profile.PlayerData;
+            //for (int i = 0; i < players.Count; i++)
             //{
-            //    // make sure the keyboard player is the last to be started,
-            //    // so it will get the focus by default
-            //    KeyboardPlayer player = (KeyboardPlayer)profile.Options["KeyboardPlayer"];
-            //    if (player.Value != -1)
-            //    {
-            //        keyboard = true;
-            //        List<PlayerInfo> newPlayers = new List<PlayerInfo>();
-
-            //        for (int i = 0; i < players.Count; i++)
-            //        {
-            //            PlayerInfo p = players[i];
-            //            if (i == player.Value)
-            //            {
-            //                continue;
-            //            }
-
-            //            newPlayers.Add(p);
-            //        }
-            //        newPlayers.Add(players[player.Value]);
-            //        players = newPlayers;
-            //    }
+            //    players[i].PlayerID = i;
             //}
 
-            for (int i = 0; i < players.Count; i++)
-            {
-                PlayerInfo player = players[i];
-                ProcessData procData = player.ProcessData;
-                bool hasSetted = procData != null && procData.Setted;
+            //UserScreen[] all = ScreensUtil.AllScreens();
 
-                if (i > 0 && (gen.KillMutex?.Length > 0 || !hasSetted))
-                {
-                    PlayerInfo before = players[i - 1];
-                    for (;;)
-                    {
-                        if (exited > 0)
-                        {
-                            return "";
-                        }
-                        Thread.Sleep(1000);
+            //string nucleusRootFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
-                        if (gen.KillMutex != null)
-                        {
-                            if (gen.KillMutex.Length > 0 && !before.ProcessData.KilledMutexes)
-                            {
-                                // check for the existence of the mutexes
-                                // before invoking our StartGame app to kill them
-                                ProcessData pdata = before.ProcessData;
+            //string tempDir = GameManager.Instance.GempTempFolder(gen);
+            //string exeFolder = Path.GetDirectoryName(userGame.ExePath).ToLower();
+            //string rootFolder = exeFolder;
+            //string workingFolder = exeFolder;
+            //if (!string.IsNullOrEmpty(gen.BinariesFolder))
+            //{
+            //    rootFolder = ReplaceCaseInsensitive(exeFolder, gen.BinariesFolder.ToLower(), "");
+            //}
+            //if (!string.IsNullOrEmpty(gen.WorkingFolder))
+            //{
+            //    workingFolder = Path.Combine(exeFolder, gen.WorkingFolder.ToLower());
+            //}
 
-                                if (StartGameUtil.MutexExists(pdata.Process, gen.KillMutex))
-                                {
-                                    // mutexes still exist, must kill
-                                    StartGameUtil.KillMutex(pdata.Process, gen.KillMutex);
-                                    pdata.KilledMutexes = true;
-                                    break;
-                                }
-                                else
-                                {
-                                    // mutexes dont exist anymore
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
+            //bool first = true;
+            //bool keyboard = false;
+            ////if (gen.SupportsKeyboard)
+            ////{
+            ////    // make sure the keyboard player is the last to be started,
+            ////    // so it will get the focus by default
+            ////    KeyboardPlayer player = (KeyboardPlayer)profile.Options["KeyboardPlayer"];
+            ////    if (player.Value != -1)
+            ////    {
+            ////        keyboard = true;
+            ////        List<PlayerInfo> newPlayers = new List<PlayerInfo>();
 
-                Rectangle playerBounds = player.MonitorBounds;
-                UserScreen owner = player.Owner;
+            ////        for (int i = 0; i < players.Count; i++)
+            ////        {
+            ////            PlayerInfo p = players[i];
+            ////            if (i == player.Value)
+            ////            {
+            ////                continue;
+            ////            }
 
-                int width = playerBounds.Width;
-                int height = playerBounds.Height;
-                bool isFullscreen = owner.Type == UserScreenType.FullScreen;
+            ////            newPlayers.Add(p);
+            ////        }
+            ////        newPlayers.Add(players[player.Value]);
+            ////        players = newPlayers;
+            ////    }
+            ////}
 
-                string exePath;
-                string linkFolder;
-                string linkBinFolder;
+            //for (int i = 0; i < players.Count; i++)
+            //{
+            //    PlayerInfo player = players[i];
+            //    ProcessData procData = player.ProcessData;
+            //    bool hasSetted = procData != null && procData.Setted;
 
-                if (gen.SymlinkGame || gen.HardcopyGame)
-                {
-                    List<string> dirExclusions = new List<string>();
-                    List<string> fileExclusions = new List<string>();
-                    List<string> fileCopies = new List<string>();
+            //    if (i > 0 && (gen.KillMutex?.Length > 0 || !hasSetted))
+            //    {
+            //        PlayerInfo before = players[i - 1];
+            //        for (;;)
+            //        {
+            //            if (exited > 0)
+            //            {
+            //                return "";
+            //            }
+            //            Thread.Sleep(1000);
 
-                    // symlink the game folder (and not the bin folder, if we have one)
-                    linkFolder = Path.Combine(tempDir, "Instance" + i);
-                    Directory.CreateDirectory(linkFolder);
+            //            if (gen.KillMutex != null)
+            //            {
+            //                if (gen.KillMutex.Length > 0 && !before.ProcessData.KilledMutexes)
+            //                {
+            //                    // check for the existence of the mutexes
+            //                    // before invoking our StartGame app to kill them
+            //                    ProcessData pdata = before.ProcessData;
 
-                    linkBinFolder = linkFolder;
-                    if (!string.IsNullOrEmpty(gen.BinariesFolder))
-                    {
-                        linkBinFolder = Path.Combine(linkFolder, gen.BinariesFolder);
-                        dirExclusions.Add(gen.BinariesFolder);
-                    }
-                    exePath = Path.Combine(linkBinFolder, this.userGame.Game.ExecutableName);
+            //                    if (StartGameUtil.MutexExists(pdata.Process, gen.KillMutex))
+            //                    {
+            //                        // mutexes still exist, must kill
+            //                        StartGameUtil.KillMutex(pdata.Process, gen.KillMutex);
+            //                        pdata.KilledMutexes = true;
+            //                        break;
+            //                    }
+            //                    else
+            //                    {
+            //                        // mutexes dont exist anymore
+            //                        break;
+            //                    }
+            //                }
+            //            }
+            //            else
+            //            {
+            //                break;
+            //            }
+            //        }
+            //    }
 
-                    if (!string.IsNullOrEmpty(gen.WorkingFolder))
-                    {
-                        linkBinFolder = Path.Combine(linkFolder, gen.WorkingFolder);
-                        dirExclusions.Add(gen.WorkingFolder);
-                    }
+            //    Rectangle playerBounds = player.MonitorBounds;
+            //    UserScreen owner = player.Owner;
 
-                    // some games have save files inside their game folder, so we need to access them inside the loop
-                    jsData[Folder.InstancedGameFolder.ToString()] = linkFolder;
+            //    int width = playerBounds.Width;
+            //    int height = playerBounds.Height;
+            //    bool isFullscreen = owner.Type == UserScreenType.FullScreen;
 
-                    if (gen.Hook.CustomDllEnabled)
-                    {
-                        fileExclusions.Add("xinput1_3.dll");
-                        fileExclusions.Add("ncoop.ini");
-                    }
-                    if (!gen.SymlinkExe)
-                    {
-                        fileCopies.Add(gen.ExecutableName.ToLower());
-                    }
+            //    string exePath;
+            //    string linkFolder;
+            //    string linkBinFolder;
 
-                    // additional ignored files by the generic info
-                    if (gen.FileSymlinkExclusions != null)
-                    {
-                        string[] symlinkExclusions = gen.FileSymlinkExclusions;
-                        for (int k = 0; k < symlinkExclusions.Length; k++)
-                        {
-                            string s = symlinkExclusions[k];
-                            // make sure it's lower case
-                            fileExclusions.Add(s.ToLower());
-                        }
-                    }
-                    if (gen.FileSymlinkCopyInstead != null)
-                    {
-                        string[] fileSymlinkCopyInstead = gen.FileSymlinkCopyInstead;
-                        for (int k = 0; k < fileSymlinkCopyInstead.Length; k++)
-                        {
-                            string s = fileSymlinkCopyInstead[k];
-                            // make sure it's lower case
-                            fileCopies.Add(s.ToLower());
-                        }
-                    }
-                    if (gen.DirSymlinkExclusions != null)
-                    {
-                        string[] symlinkExclusions = gen.DirSymlinkExclusions;
-                        for (int k = 0; k < symlinkExclusions.Length; k++)
-                        {
-                            string s = symlinkExclusions[k];
-                            // make sure it's lower case
-                            dirExclusions.Add(s.ToLower());
-                        }
-                    }
+            //    if (gen.SymlinkGame || gen.HardcopyGame)
+            //    {
+            //        List<string> dirExclusions = new List<string>();
+            //        List<string> fileExclusions = new List<string>();
+            //        List<string> fileCopies = new List<string>();
 
-                    string[] fileExclusionsArr = fileExclusions.ToArray();
-                    string[] fileCopiesArr = fileCopies.ToArray();
+            //        // symlink the game folder (and not the bin folder, if we have one)
+            //        linkFolder = Path.Combine(tempDir, "Instance" + i);
+            //        Directory.CreateDirectory(linkFolder);
 
-                    if (gen.HardcopyGame)
-                    {
-                        // copy the directory
-                        //int exitCode;
-                        //FileUtil.CopyDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, true);
-                    }
-                    else
-                    {
-                        int exitCode;
-                        CmdUtil.LinkDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, fileCopiesArr, true);
+            //        linkBinFolder = linkFolder;
+            //        if (!string.IsNullOrEmpty(gen.BinariesFolder))
+            //        {
+            //            linkBinFolder = Path.Combine(linkFolder, gen.BinariesFolder);
+            //            dirExclusions.Add(gen.BinariesFolder);
+            //        }
+            //        exePath = Path.Combine(linkBinFolder, this.userGame.Game.ExecutableName);
 
-                        if (!gen.SymlinkExe)
-                        {
-                            //File.Copy(userGame.ExePath, exePath, true);
-                        }
-                    }
-                }
-                else
-                {
-                    exePath = userGame.ExePath;
-                    linkBinFolder = rootFolder;
-                    linkFolder = workingFolder;
-                }
+            //        if (!string.IsNullOrEmpty(gen.WorkingFolder))
+            //        {
+            //            linkBinFolder = Path.Combine(linkFolder, gen.WorkingFolder);
+            //            dirExclusions.Add(gen.WorkingFolder);
+            //        }
 
-                GenericContext context = gen.CreateContext(profile, player, this);
-                context.PlayerID = player.PlayerID;
-                context.IsFullscreen = isFullscreen;
+            //        // some games have save files inside their game folder, so we need to access them inside the loop
+            //        jsData[Folder.InstancedGameFolder.ToString()] = linkFolder;
 
-                context.ExePath = exePath;
-                context.RootInstallFolder = exeFolder;
-                context.RootFolder = linkFolder;
+            //        if (gen.Hook.CustomDllEnabled)
+            //        {
+            //            fileExclusions.Add("xinput1_3.dll");
+            //            fileExclusions.Add("ncoop.ini");
+            //        }
+            //        if (!gen.SymlinkExe)
+            //        {
+            //            fileCopies.Add(gen.ExecutableName.ToLower());
+            //        }
 
-                gen.PrePlay(context, this, player);
+            //        // additional ignored files by the generic info
+            //        if (gen.FileSymlinkExclusions != null)
+            //        {
+            //            string[] symlinkExclusions = gen.FileSymlinkExclusions;
+            //            for (int k = 0; k < symlinkExclusions.Length; k++)
+            //            {
+            //                string s = symlinkExclusions[k];
+            //                // make sure it's lower case
+            //                fileExclusions.Add(s.ToLower());
+            //            }
+            //        }
+            //        if (gen.FileSymlinkCopyInstead != null)
+            //        {
+            //            string[] fileSymlinkCopyInstead = gen.FileSymlinkCopyInstead;
+            //            for (int k = 0; k < fileSymlinkCopyInstead.Length; k++)
+            //            {
+            //                string s = fileSymlinkCopyInstead[k];
+            //                // make sure it's lower case
+            //                fileCopies.Add(s.ToLower());
+            //            }
+            //        }
+            //        if (gen.DirSymlinkExclusions != null)
+            //        {
+            //            string[] symlinkExclusions = gen.DirSymlinkExclusions;
+            //            for (int k = 0; k < symlinkExclusions.Length; k++)
+            //            {
+            //                string s = symlinkExclusions[k];
+            //                // make sure it's lower case
+            //                dirExclusions.Add(s.ToLower());
+            //            }
+            //        }
 
-                string startArgs = context.StartArguments;
+            //        string[] fileExclusionsArr = fileExclusions.ToArray();
+            //        string[] fileCopiesArr = fileCopies.ToArray();
 
-                if (context.Hook.CustomDllEnabled)
-                {
-                    byte[] xdata = Properties.Resources.xinput1_3;
-                    if (context.Hook.XInputNames == null)
-                    {
-                        using (Stream str = File.OpenWrite(Path.Combine(linkBinFolder, "xinput1_3.dll")))
-                        {
-                            str.Write(xdata, 0, xdata.Length);
-                        }
-                    }
-                    else
-                    {
-                        string[] xinputs = context.Hook.XInputNames;
-                        for (int z = 0; z < xinputs.Length; z++)
-                        {
-                            string xinputName = xinputs[z];
-                            using (Stream str = File.OpenWrite(Path.Combine(linkBinFolder, xinputName)))
-                            {
-                                str.Write(xdata, 0, xdata.Length);
-                            }
-                        }
-                    }
+            //        if (gen.HardcopyGame)
+            //        {
+            //            // copy the directory
+            //            //int exitCode;
+            //            //FileUtil.CopyDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, true);
+            //        }
+            //        else
+            //        {
+            //            int exitCode;
+            //            CmdUtil.LinkDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, fileCopiesArr, true);
 
-                    string ncoopIni = Path.Combine(linkBinFolder, "ncoop.ini");
-                    using (Stream str = File.OpenWrite(ncoopIni))
-                    {
-                        byte[] ini = Properties.Resources.ncoop;
-                        str.Write(ini, 0, ini.Length);
-                    }
+            //            if (!gen.SymlinkExe)
+            //            {
+            //                //File.Copy(userGame.ExePath, exePath, true);
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        exePath = userGame.ExePath;
+            //        linkBinFolder = rootFolder;
+            //        linkFolder = workingFolder;
+            //    }
 
-                    IniFile x360 = new IniFile(ncoopIni);
-                    x360.IniWriteValue("Options", "ForceFocus", gen.Hook.ForceFocus.ToString(CultureInfo.InvariantCulture));
-                    x360.IniWriteValue("Options", "ForceFocusWindowName", gen.Hook.ForceFocusWindowName.ToString(CultureInfo.InvariantCulture));
+            //    GenericContext context = gen.CreateContext(profile, player, this);
+            //    context.PlayerID = player.PlayerID;
+            //    context.IsFullscreen = isFullscreen;
 
-                    x360.IniWriteValue("Options", "WindowX", playerBounds.X.ToString(CultureInfo.InvariantCulture));
-                    x360.IniWriteValue("Options", "WindowY", playerBounds.Y.ToString(CultureInfo.InvariantCulture));
+            //    context.ExePath = exePath;
+            //    context.RootInstallFolder = exeFolder;
+            //    context.RootFolder = linkFolder;
 
-                    if (context.Hook.SetWindowSize)
-                    {
-                        x360.IniWriteValue("Options", "ResWidth", context.Width.ToString(CultureInfo.InvariantCulture));
-                        x360.IniWriteValue("Options", "ResHeight", context.Height.ToString(CultureInfo.InvariantCulture));
-                    }
-                    else
-                    {
-                        x360.IniWriteValue("Options", "ResWidth", "0");
-                        x360.IniWriteValue("Options", "ResHeight", "0");
-                    }
+            //    gen.PrePlay(context, this, player);
 
-                    x360.IniWriteValue("Options", "RerouteInput", context.Hook.XInputReroute.ToString(CultureInfo.InvariantCulture));
-                    x360.IniWriteValue("Options", "RerouteJoystickTemplate", JoystickDatabase.GetID(player.GamepadProductGuid.ToString()).ToString(CultureInfo.InvariantCulture));
+            //    string startArgs = context.StartArguments;
 
-                    x360.IniWriteValue("Options", "EnableMKBInput", player.IsKeyboardPlayer.ToString(CultureInfo.InvariantCulture));
+            //    if (context.Hook.CustomDllEnabled)
+            //    {
+            //        byte[] xdata = Properties.Resources.xinput1_3;
+            //        if (context.Hook.XInputNames == null)
+            //        {
+            //            using (Stream str = File.OpenWrite(Path.Combine(linkBinFolder, "xinput1_3.dll")))
+            //            {
+            //                str.Write(xdata, 0, xdata.Length);
+            //            }
+            //        }
+            //        else
+            //        {
+            //            string[] xinputs = context.Hook.XInputNames;
+            //            for (int z = 0; z < xinputs.Length; z++)
+            //            {
+            //                string xinputName = xinputs[z];
+            //                using (Stream str = File.OpenWrite(Path.Combine(linkBinFolder, xinputName)))
+            //                {
+            //                    str.Write(xdata, 0, xdata.Length);
+            //                }
+            //            }
+            //        }
 
-                    // windows events
-                    x360.IniWriteValue("Options", "BlockInputEvents", context.Hook.BlockInputEvents.ToString(CultureInfo.InvariantCulture));
-                    x360.IniWriteValue("Options", "BlockMouseEvents", context.Hook.BlockMouseEvents.ToString(CultureInfo.InvariantCulture));
-                    x360.IniWriteValue("Options", "BlockKeyboardEvents", context.Hook.BlockKeyboardEvents.ToString(CultureInfo.InvariantCulture));
+            //        string ncoopIni = Path.Combine(linkBinFolder, "ncoop.ini");
+            //        using (Stream str = File.OpenWrite(ncoopIni))
+            //        {
+            //            byte[] ini = Properties.Resources.ncoop;
+            //            str.Write(ini, 0, ini.Length);
+            //        }
 
-                    // xinput
-                    x360.IniWriteValue("Options", "XInputEnabled", context.Hook.XInputEnabled.ToString(CultureInfo.InvariantCulture));
-                    x360.IniWriteValue("Options", "XInputPlayerID", player.GamepadId.ToString(CultureInfo.InvariantCulture));
+            //        IniFile x360 = new IniFile(ncoopIni);
+            //        x360.IniWriteValue("Options", "ForceFocus", gen.Hook.ForceFocus.ToString(CultureInfo.InvariantCulture));
+            //        x360.IniWriteValue("Options", "ForceFocusWindowName", gen.Hook.ForceFocusWindowName.ToString(CultureInfo.InvariantCulture));
 
-                    // dinput
-                    x360.IniWriteValue("Options", "DInputEnabled", context.Hook.DInputEnabled.ToString(CultureInfo.InvariantCulture));
-                    x360.IniWriteValue("Options", "DInputGuid", player.GamepadGuid.ToString().ToUpper());
-                    x360.IniWriteValue("Options", "DInputForceDisable", context.Hook.DInputForceDisable.ToString());
+            //        x360.IniWriteValue("Options", "WindowX", playerBounds.X.ToString(CultureInfo.InvariantCulture));
+            //        x360.IniWriteValue("Options", "WindowY", playerBounds.Y.ToString(CultureInfo.InvariantCulture));
 
-                }
+            //        if (context.Hook.SetWindowSize)
+            //        {
+            //            x360.IniWriteValue("Options", "ResWidth", context.Width.ToString(CultureInfo.InvariantCulture));
+            //            x360.IniWriteValue("Options", "ResHeight", context.Height.ToString(CultureInfo.InvariantCulture));
+            //        }
+            //        else
+            //        {
+            //            x360.IniWriteValue("Options", "ResWidth", "0");
+            //            x360.IniWriteValue("Options", "ResHeight", "0");
+            //        }
 
-                Process proc;
-                if (context.NeedsSteamEmulation)
-                {
-                    string steamEmu = GameManager.Instance.ExtractSteamEmu(Path.Combine(linkFolder, "SmartSteamLoader"));
-                    //string steamEmu = GameManager.Instance.ExtractSteamEmu();
-                    if (string.IsNullOrEmpty(steamEmu))
-                    {
-                        return "Extraction of SmartSteamEmu failed!";
-                    }
+            //        x360.IniWriteValue("Options", "RerouteInput", context.Hook.XInputReroute.ToString(CultureInfo.InvariantCulture));
+            //        x360.IniWriteValue("Options", "RerouteJoystickTemplate", JoystickDatabase.GetID(player.GamepadProductGuid.ToString()).ToString(CultureInfo.InvariantCulture));
 
-                    string emuExe = Path.Combine(steamEmu, "SmartSteamLoader.exe");
-                    string emuIni = Path.Combine(steamEmu, "SmartSteamEmu.ini");
-                    IniFile emu = new IniFile(emuIni);
+            //        x360.IniWriteValue("Options", "EnableMKBInput", player.IsKeyboardPlayer.ToString(CultureInfo.InvariantCulture));
 
-                    emu.IniWriteValue("Launcher", "Target", exePath);
-                    emu.IniWriteValue("Launcher", "StartIn", Path.GetDirectoryName(exePath));
-                    emu.IniWriteValue("Launcher", "CommandLine", startArgs);
-                    emu.IniWriteValue("Launcher", "SteamClientPath", Path.Combine(steamEmu, "SmartSteamEmu.dll"));
-                    emu.IniWriteValue("Launcher", "SteamClientPath64", Path.Combine(steamEmu, "SmartSteamEmu64.dll"));
-                    emu.IniWriteValue("Launcher", "InjectDll", "1");
+            //        // windows events
+            //        x360.IniWriteValue("Options", "BlockInputEvents", context.Hook.BlockInputEvents.ToString(CultureInfo.InvariantCulture));
+            //        x360.IniWriteValue("Options", "BlockMouseEvents", context.Hook.BlockMouseEvents.ToString(CultureInfo.InvariantCulture));
+            //        x360.IniWriteValue("Options", "BlockKeyboardEvents", context.Hook.BlockKeyboardEvents.ToString(CultureInfo.InvariantCulture));
 
-                    emu.IniWriteValue("SmartSteamEmu", "AppId", context.SteamID);
-                    //emu.IniWriteValue("SmartSteamEmu", "SteamIdGeneration", "Static");
+            //        // xinput
+            //        x360.IniWriteValue("Options", "XInputEnabled", context.Hook.XInputEnabled.ToString(CultureInfo.InvariantCulture));
+            //        x360.IniWriteValue("Options", "XInputPlayerID", player.GamepadId.ToString(CultureInfo.InvariantCulture));
 
-                    //string userName = $"Player { context.PlayerID }";
+            //        // dinput
+            //        x360.IniWriteValue("Options", "DInputEnabled", context.Hook.DInputEnabled.ToString(CultureInfo.InvariantCulture));
+            //        x360.IniWriteValue("Options", "DInputGuid", player.GamepadGuid.ToString().ToUpper());
+            //        x360.IniWriteValue("Options", "DInputForceDisable", context.Hook.DInputForceDisable.ToString());
 
-                    //emu.IniWriteValue("SmartSteamEmu", "PersonaName", userName);
-                    //emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", userName);
+            //    }
 
-                    //emu.IniWriteValue("SmartSteamEmu", "Offline", "False");
-                    //emu.IniWriteValue("SmartSteamEmu", "MasterServer", "");
-                    //emu.IniWriteValue("SmartSteamEmu", "MasterServerGoldSrc", "");
+            //    Process proc;
+            //    if (context.NeedsSteamEmulation)
+            //    {
+            //        string steamEmu = GameManager.Instance.ExtractSteamEmu(Path.Combine(linkFolder, "SmartSteamLoader"));
+            //        //string steamEmu = GameManager.Instance.ExtractSteamEmu();
+            //        if (string.IsNullOrEmpty(steamEmu))
+            //        {
+            //            return "Extraction of SmartSteamEmu failed!";
+            //        }
 
-                    gen.SetupSse?.Invoke();
+            //        string emuExe = Path.Combine(steamEmu, "SmartSteamLoader.exe");
+            //        string emuIni = Path.Combine(steamEmu, "SmartSteamEmu.ini");
+            //        IniFile emu = new IniFile(emuIni);
 
-                    if (context.KillMutex?.Length > 0)
-                    {
-                        // to kill the mutexes we need to orphanize the process
-                        proc = ProcessUtil.RunOrphanProcess(emuExe);
-                    }
-                    else
-                    {
-                        ProcessStartInfo startInfo = new ProcessStartInfo();
-                        startInfo.FileName = emuExe;
-                        proc = Process.Start(startInfo);
-                    }
+            //        emu.IniWriteValue("Launcher", "Target", exePath);
+            //        emu.IniWriteValue("Launcher", "StartIn", Path.GetDirectoryName(exePath));
+            //        emu.IniWriteValue("Launcher", "CommandLine", startArgs);
+            //        emu.IniWriteValue("Launcher", "SteamClientPath", Path.Combine(steamEmu, "SmartSteamEmu.dll"));
+            //        emu.IniWriteValue("Launcher", "SteamClientPath64", Path.Combine(steamEmu, "SmartSteamEmu64.dll"));
+            //        emu.IniWriteValue("Launcher", "InjectDll", "1");
 
-                    player.SteamEmu = true;
-                }
-                else
-                {
-                    if (context.KillMutex?.Length > 0)
-                    {
-                        proc = Process.GetProcessById(StartGameUtil.StartGame(
-                            GetRelativePath(exePath, nucleusRootFolder), startArgs,
-                            GetRelativePath(linkFolder, nucleusRootFolder)));
-                    }
-                    else
-                    {
-                        ProcessStartInfo startInfo = new ProcessStartInfo();
-                        startInfo.FileName = exePath;
-                        //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                        startInfo.Arguments = startArgs;
-                        startInfo.UseShellExecute = true;
-                        startInfo.WorkingDirectory = Path.GetDirectoryName(exePath);
-                        proc = Process.Start(startInfo);
-                    }
+            //        emu.IniWriteValue("SmartSteamEmu", "AppId", context.SteamID);
+            //        //emu.IniWriteValue("SmartSteamEmu", "SteamIdGeneration", "Static");
 
-                    if (proc == null)
-                    {
-                        for (int times = 0; times < 200; times++)
-                        {
-                            Thread.Sleep(50);
+            //        //string userName = $"Player { context.PlayerID }";
 
-                            Process[] procs = Process.GetProcesses();
-                            string proceName = Path.GetFileNameWithoutExtension(context.ExecutableName).ToLower();
-                            string launcherName = Path.GetFileNameWithoutExtension(context.LauncherExe).ToLower();
+            //        //emu.IniWriteValue("SmartSteamEmu", "PersonaName", userName);
+            //        //emu.IniWriteValue("SmartSteamEmu", "ManualSteamId", userName);
 
-                            for (int j = 0; j < procs.Length; j++)
-                            {
-                                Process p = procs[j];
-                                string lowerP = p.ProcessName.ToLower();
-                                if (((lowerP == proceName) || lowerP == launcherName) &&
-                                    !attached.Contains(p))
-                                {
-                                    attached.Add(p);
-                                    proc = p;
-                                    break;
-                                }
-                            }
+            //        //emu.IniWriteValue("SmartSteamEmu", "Offline", "False");
+            //        //emu.IniWriteValue("SmartSteamEmu", "MasterServer", "");
+            //        //emu.IniWriteValue("SmartSteamEmu", "MasterServerGoldSrc", "");
 
-                            if (proc != null)
-                            {
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        attached.Add(proc);
-                    }
-                }
+            //        gen.SetupSse?.Invoke();
 
-                ProcessData data = new ProcessData(proc);
+            //        if (context.KillMutex?.Length > 0)
+            //        {
+            //            // to kill the mutexes we need to orphanize the process
+            //            proc = ProcessUtil.RunOrphanProcess(emuExe);
+            //        }
+            //        else
+            //        {
+            //            ProcessStartInfo startInfo = new ProcessStartInfo();
+            //            startInfo.FileName = emuExe;
+            //            proc = Process.Start(startInfo);
+            //        }
 
-                data.Position = new Point(playerBounds.X, playerBounds.Y);
-                data.Size = new Size(playerBounds.Width, playerBounds.Height);
-                data.KilledMutexes = context.KillMutex?.Length == 0;
-                player.ProcessData = data;
+            //        player.SteamEmu = true;
+            //    }
+            //    else
+            //    {
+            //        if (context.KillMutex?.Length > 0)
+            //        {
+            //            proc = Process.GetProcessById(StartGameUtil.StartGame(
+            //                GetRelativePath(exePath, nucleusRootFolder), startArgs,
+            //                GetRelativePath(linkFolder, nucleusRootFolder)));
+            //        }
+            //        else
+            //        {
+            //            ProcessStartInfo startInfo = new ProcessStartInfo();
+            //            startInfo.FileName = exePath;
+            //            //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            //            startInfo.Arguments = startArgs;
+            //            startInfo.UseShellExecute = true;
+            //            startInfo.WorkingDirectory = Path.GetDirectoryName(exePath);
+            //            proc = Process.Start(startInfo);
+            //        }
 
-                first = false;
+            //        if (proc == null)
+            //        {
+            //            for (int times = 0; times < 200; times++)
+            //            {
+            //                Thread.Sleep(50);
 
-                Thread.Sleep(TimeSpan.FromSeconds(gen.PauseBetweenStarts));
-            }
+            //                Process[] procs = Process.GetProcesses();
+            //                string proceName = Path.GetFileNameWithoutExtension(context.ExecutableName).ToLower();
+            //                string launcherName = Path.GetFileNameWithoutExtension(context.LauncherExe).ToLower();
 
-            return string.Empty;
+            //                for (int j = 0; j < procs.Length; j++)
+            //                {
+            //                    Process p = procs[j];
+            //                    string lowerP = p.ProcessName.ToLower();
+            //                    if (((lowerP == proceName) || lowerP == launcherName) &&
+            //                        !attached.Contains(p))
+            //                    {
+            //                        attached.Add(p);
+            //                        proc = p;
+            //                        break;
+            //                    }
+            //                }
+
+            //                if (proc != null)
+            //                {
+            //                    break;
+            //                }
+            //            }
+            //        }
+            //        else
+            //        {
+            //            attached.Add(proc);
+            //        }
+            //    }
+
+            //    ProcessData data = new ProcessData(proc);
+
+            //    data.Position = new Point(playerBounds.X, playerBounds.Y);
+            //    data.Size = new Size(playerBounds.Width, playerBounds.Height);
+            //    data.KilledMutexes = context.KillMutex?.Length == 0;
+            //    player.ProcessData = data;
+
+            //    first = false;
+
+            //    Thread.Sleep(TimeSpan.FromSeconds(gen.PauseBetweenStarts));
+            //}
+
+            //return string.Empty;
         }
 
         struct TickThread

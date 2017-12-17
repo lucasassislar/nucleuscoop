@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Nucleus.Gaming
 {
-    public interface IGenericGameInfo : IGameInfo
+    public interface IHandlerData : IGameInfo
     {
         SaveType SaveType { get; }
         string SavePath { get; }

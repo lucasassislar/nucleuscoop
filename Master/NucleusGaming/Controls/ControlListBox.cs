@@ -18,7 +18,7 @@ namespace Nucleus.Gaming
         private int totalHeight;
         private int border = 1;
 
-        public event Action<object, Control> SelectedChanged;
+        public event Action<Control, Control> SelectedChanged;
         public Size Offset { get; set; }
         public Control SelectedControl { get; protected set; }
 

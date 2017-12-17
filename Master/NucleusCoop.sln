@@ -56,8 +56,6 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Nucleus.MainRepo", "Nucleus
 		SlnRelativePath = "Nucleus.MainRepo\"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nucleus.Gaming.PackageManager", "Nucleus.Gaming.PKGManager\Nucleus.Gaming.PackageManager.csproj", "{47671463-3409-4526-AA80-BDD8BBBDEAC4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -410,46 +408,6 @@ Global
 		{7425F3D1-D024-4FC3-A4D9-2C6577AF79C1}.TestDebug|x64.Build.0 = Debug|Any CPU
 		{7425F3D1-D024-4FC3-A4D9-2C6577AF79C1}.TestDebug|x86.ActiveCfg = Debug|Any CPU
 		{7425F3D1-D024-4FC3-A4D9-2C6577AF79C1}.TestDebug|x86.Build.0 = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Debug|Win32.Build.0 = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Debug|x64.Build.0 = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Debug|x86.Build.0 = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Release|Win32.ActiveCfg = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Release|Win32.Build.0 = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Release|x64.ActiveCfg = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Release|x64.Build.0 = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Release|x86.ActiveCfg = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.Release|x86.Build.0 = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.SaveEdit Packaging|Any CPU.ActiveCfg = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.SaveEdit Packaging|Any CPU.Build.0 = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.SaveEdit Packaging|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.SaveEdit Packaging|Mixed Platforms.Build.0 = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.SaveEdit Packaging|Win32.ActiveCfg = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.SaveEdit Packaging|Win32.Build.0 = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.SaveEdit Packaging|x64.ActiveCfg = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.SaveEdit Packaging|x64.Build.0 = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.SaveEdit Packaging|x86.ActiveCfg = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.SaveEdit Packaging|x86.Build.0 = Release|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.TestDebug|Any CPU.ActiveCfg = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.TestDebug|Any CPU.Build.0 = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.TestDebug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.TestDebug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.TestDebug|Win32.ActiveCfg = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.TestDebug|Win32.Build.0 = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.TestDebug|x64.ActiveCfg = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.TestDebug|x64.Build.0 = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.TestDebug|x86.ActiveCfg = Debug|Any CPU
-		{47671463-3409-4526-AA80-BDD8BBBDEAC4}.TestDebug|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

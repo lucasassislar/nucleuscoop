@@ -12,6 +12,7 @@ namespace Nucleus.Gaming.Coop
     {
         protected GameProfile profile;
         protected UserGameInfo game;
+        protected GenericHandlerData handlerData;
 
         public virtual bool CanProceed { get { throw new NotImplementedException(); } }
         public virtual bool CanPlay { get { throw new NotImplementedException(); } }
@@ -31,8 +32,9 @@ namespace Nucleus.Gaming.Coop
                 true);
         }
 
-        public virtual void Initialize(UserGameInfo game, GameProfile profile)
+        public virtual void Initialize(GenericHandlerData handlerData, UserGameInfo game, GameProfile profile)
         {
+            this.handlerData = handlerData;
             this.profile = profile;
             this.game = game;
         }

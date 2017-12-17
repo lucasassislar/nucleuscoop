@@ -47,9 +47,9 @@ namespace Nucleus.Gaming
 
         private IList collection;
 
-        public override void Initialize(UserGameInfo game, GameProfile profile)
+        public override void Initialize(GenericHandlerData handlerData, UserGameInfo game, GameProfile profile)
         {
-            base.Initialize(game, profile);
+            base.Initialize(handlerData, game, profile);
 
             Controls.Clear();
 

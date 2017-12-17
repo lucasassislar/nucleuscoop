@@ -130,10 +130,8 @@ namespace Nucleus.Gaming.Coop
             List<PlayerInfo> data = profile.PlayerData;
             bool changed = false;
 
-            GenericGameInfo g = game.Game;
-
-            if (g.Hook.DInputEnabled ||
-                g.Hook.XInputReroute)
+            if (handlerData.Hook.DInputEnabled ||
+                handlerData.Hook.XInputReroute)
             {
                 IList<DeviceInstance> devices = dinput.GetDevices(SlimDX.DirectInput.DeviceType.Gamepad, DeviceEnumerationFlags.AttachedOnly);
 
@@ -210,7 +208,7 @@ namespace Nucleus.Gaming.Coop
                 }
             }
 
-            if (g.Hook.XInputEnabled && !g.Hook.XInputReroute)
+            if (handlerData.Hook.XInputEnabled && !handlerData.Hook.XInputReroute)
             {
                 // XInput is only really enabled inside Nucleus Coop when
                 // we have 4 or less players, else we need to force DirectInput to grab everything
@@ -368,9 +366,9 @@ namespace Nucleus.Gaming.Coop
                 screen.SwapTypeBounds = RectangleUtil.Float(uiBounds.X, uiBounds.Y, uiBounds.Width * 0.1f, uiBounds.Width * 0.1f);
             }
         }
-        public override void Initialize(UserGameInfo game, GameProfile profile)
+        public override void Initialize(GenericHandlerData handlerData, UserGameInfo game, GameProfile profile)
         {
-            base.Initialize(game, profile);
+            base.Initialize(handlerData,game, profile);
 
             gamepadTimer.Enabled = true;
             UpdatePlayers();
@@ -396,7 +394,7 @@ namespace Nucleus.Gaming.Coop
             canProceed = playerData.Count(c => c.ScreenIndex != -1) >= 2;
             if (playerData.Count == 0)
             {
-                if (game.Game.SupportsKeyboard)
+                if (handlerData.SupportsKeyboard)
                 {
                     // add keyboard data
                     // TODO: add keyboard back (no support for Alpha 8)

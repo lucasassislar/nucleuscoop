@@ -120,7 +120,9 @@
     <Compile Include="Controls\TextMessageBox.Designer.cs">
       <DependentUpon>TextMessageBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Coop\CoopConfig.cs" />
+    <Compile Include="Coop\CoopConfigInfo.cs" />
+    <Compile Include="Coop\GameNameManager.cs" />
+    <Compile Include="Coop\UserInstalledHandler.cs" />
     <Compile Include="Diagnostics\OutputLevel.cs" />
     <Compile Include="DirectInput\DInputManager.cs" />
     <Compile Include="Coop\GameOption.cs" />
@@ -133,7 +135,7 @@
     <Compile Include="Coop\Generic\Cursor\NativeMethods.cs" />
     <Compile Include="Coop\Generic\DynamicAttribute.cs" />
     <Compile Include="Coop\Generic\GenericContext.cs" />
-    <Compile Include="Coop\Generic\GenericGameInfo.cs" />
+    <Compile Include="Coop\Generic\GenericHandlerData.cs" />
     <Compile Include="Coop\Generic\JoystickDatabase.cs" />
     <Compile Include="Coop\Generic\SaveData\CfgSaveInfo.cs" />
     <Compile Include="Coop\Generic\SaveData\IniSaveInfo.cs" />
@@ -147,6 +149,7 @@
     <Compile Include="DPI\DPIMonitor.cs" />
     <Compile Include="DPI\IDynamicSized.cs" />
     <Compile Include="Globals.cs" />
+    <Compile Include="IO\JsonPropertiesFile.cs" />
     <Compile Include="IO\JsPropertiesFile.cs" />
     <Compile Include="Platform\Windows\Interop\Gdi32\Gdi32Interop.cs" />
     <Compile Include="Platform\Windows\Interop\Kernel32\Kernel32Interop.cs" />
@@ -164,7 +167,7 @@
     <Compile Include="Coop\UserScreen.cs" />
     <Compile Include="Coop\UserScreenType.cs" />
     <Compile Include="Coop\Generic\GenericGameHandler.cs" />
-    <Compile Include="Coop\Generic\IGenericGameInfo.cs" />
+    <Compile Include="Coop\Generic\IHandlerData.cs" />
     <Compile Include="Coop\Generic\SaveType.cs" />
     <Compile Include="Coop\Generic\Folder.cs" />
     <Compile Include="Platform\Windows\Interop\Shell32\Shell32.cs" />
@@ -188,6 +191,12 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Coop\KeyboardPlayer.cs" />
+    <Compile Include="RAction.cs" />
+    <Compile Include="Repo\RepoGameHandlerFullInfo.cs" />
+    <Compile Include="Repo\RepoGameHandlerInfo.cs" />
+    <Compile Include="Repo\RepoHeader.cs" />
+    <Compile Include="Repo\RepoManager.cs" />
+    <Compile Include="RequestResult.cs" />
     <Compile Include="Tools\GameStarter\StartGameApp.cs" />
     <Compile Include="Util\RectangleUtil.cs" />
     <Compile Include="Platform\Windows\MonitorDpiType.cs" />
@@ -278,7 +287,7 @@
       <DependentUpon>GameHookInfo.cs</DependentUpon>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Coop\Generic\GenericGameInfo.cs.d.ts">
-      <DependentUpon>GenericGameInfo.cs</DependentUpon>
+      <DependentUpon>GenericHandlerData.cs</DependentUpon>
     </TypeScriptCompile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Repo;
 
 namespace Nucleus.Gaming.Coop
 {
@@ -16,29 +17,27 @@ namespace Nucleus.Gaming.Coop
     /// </summary>
     public class GameControl : UserControl, IDynamicSized, IRadioControl
     {
-        public GenericGameInfo GameInfo { get; private set; }
         public UserGameInfo UserGameInfo { get; private set; }
 
         private PictureBox picture;
         private Label title;
         public string TitleText { get; set; }
 
-        public GameControl(GenericGameInfo game, UserGameInfo userGame)
+        public GameControl(UserGameInfo userGame)
         {
-            GameInfo = game;
             UserGameInfo = userGame;
 
             picture = new PictureBox();
             picture.SizeMode = PictureBoxSizeMode.StretchImage;
 
             title = new Label();
-            if (game == null)
+            if (userGame == null)
             {
                 title.Text = "No games";
             }
             else
             {
-                title.Text = GameInfo.GameName;
+                title.Text = GameManager.Instance.NameManager.GetGameName(userGame.GameID);
             }
             TitleText = title.Text;
 

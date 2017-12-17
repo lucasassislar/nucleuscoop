@@ -10,7 +10,7 @@ using Nucleus.Gaming.Coop;
 
 namespace Nucleus.Gaming
 {
-    public class GenericGameInfo
+    public class GenericHandlerData
     {
         private Engine engine;
         private string jsCode;
@@ -59,28 +59,33 @@ namespace Nucleus.Gaming
         public Action Play { get; set; }
         public Action SetupSse { get; set; }
         public List<CustomStep> CustomSteps { get; set; } = new List<CustomStep>();
-        public string JsFileName { get; set; }
         public bool LockMouse { get; set; }
-        public string Folder { get; set; }
 
         public Type HandlerType
         {
             get { return typeof(GenericGameHandler); }
         }
 
-        public GenericGameInfo(string fileName, string folderPath, Stream str)
+        public GenericHandlerData(Stream str)
         {
-            JsFileName = fileName;
-            Folder = folderPath;
-
             StreamReader reader = new StreamReader(str);
             jsCode = reader.ReadToEnd();
 
+            ParseJs(jsCode);
+        }
+
+        public GenericHandlerData(string jsCode)
+        {
+            ParseJs(jsCode);
+        }
+
+        private void ParseJs(string jsCode)
+        {
             // get the Nucleus.Gaming assembly
             Assembly assembly = typeof(GameOption).Assembly;
 
             engine = new Engine(cfg => cfg.AllowClr(assembly));
-            
+
             engine.SetValue("Game", this);
             engine.Execute("var Nucleus = importNamespace('Nucleus.Gaming');");
             engine.Execute(jsCode);

@@ -12,17 +12,18 @@ namespace Nucleus.Gaming
     {
         private Dictionary<string, Image> loadedImages;
         private bool isDisposed;
-        private GenericGameInfo game;
+        private GenericHandlerData game;
         private string gamesFolder;
         private string pkgFolder;
 
-        public ContentManager(GenericGameInfo game)
+        public ContentManager(GenericHandlerData game)
         {
             this.game = game;
             loadedImages = new Dictionary<string, Image>();
 
             gamesFolder = GameManager.Instance.GetJsGamesPath();
-            pkgFolder = Path.Combine(gamesFolder, Path.GetFileNameWithoutExtension(game.JsFileName));
+            throw new NotImplementedException();
+            //pkgFolder = Path.Combine(gamesFolder, Path.GetFileNameWithoutExtension(game.JsFileName));
         }
 
         public void Dispose()
