@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Repo;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,17 +14,16 @@ namespace Nucleus.Gaming
         private Dictionary<string, Image> loadedImages;
         private bool isDisposed;
         private GenericHandlerData game;
-        private string gamesFolder;
+        private string handlersFolder;
         private string pkgFolder;
 
-        public ContentManager(GenericHandlerData game)
+        public ContentManager(GameHandlerPackageInfo info, GenericHandlerData game)
         {
             this.game = game;
             loadedImages = new Dictionary<string, Image>();
 
-            gamesFolder = GameManager.Instance.GetJsGamesPath();
-            throw new NotImplementedException();
-            //pkgFolder = Path.Combine(gamesFolder, Path.GetFileNameWithoutExtension(game.JsFileName));
+            handlersFolder = GameManager.Instance.GetInstalledPackagePath();
+            pkgFolder = RepoManager.GetInstallPath(info);
         }
 
         public void Dispose()

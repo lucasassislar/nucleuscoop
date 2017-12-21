@@ -29,30 +29,31 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.StepPanel = new System.Windows.Forms.Panel();
+            this.panel_Steps = new System.Windows.Forms.Panel();
             this.list_Games = new Nucleus.Gaming.ControlListBox();
-            this.label_StepTitle = new System.Windows.Forms.Label();
+            this.lbl_StepTitle = new System.Windows.Forms.Label();
             this.btn_Play = new System.Windows.Forms.Button();
-            this.btnSearch = new System.Windows.Forms.Button();
-            this.btnBack = new System.Windows.Forms.Button();
-            this.btnAutoSearch = new System.Windows.Forms.Button();
+            this.btn_Search = new System.Windows.Forms.Button();
+            this.btn_Previous = new System.Windows.Forms.Button();
+            this.btn_AutoSearch = new System.Windows.Forms.Button();
             this.btn_Next = new System.Windows.Forms.Button();
-            this.lblVersion = new System.Windows.Forms.Label();
+            this.lbl_Version = new System.Windows.Forms.Label();
             this.gameNameControl = new Nucleus.Coop.Controls.GameNameControl();
-            this.btn_Store = new System.Windows.Forms.Button();
+            this.btn_Packages = new System.Windows.Forms.Button();
+            this.btn_Install = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // StepPanel
+            // panel_Steps
             // 
-            this.StepPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panel_Steps.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.StepPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.StepPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.StepPanel.Location = new System.Drawing.Point(280, 101);
-            this.StepPanel.Name = "StepPanel";
-            this.StepPanel.Size = new System.Drawing.Size(762, 588);
-            this.StepPanel.TabIndex = 0;
+            this.panel_Steps.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel_Steps.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.panel_Steps.Location = new System.Drawing.Point(280, 101);
+            this.panel_Steps.Name = "panel_Steps";
+            this.panel_Steps.Size = new System.Drawing.Size(762, 588);
+            this.panel_Steps.TabIndex = 0;
             // 
             // list_Games
             // 
@@ -67,14 +68,14 @@
             this.list_Games.Size = new System.Drawing.Size(262, 636);
             this.list_Games.TabIndex = 2;
             // 
-            // label_StepTitle
+            // lbl_StepTitle
             // 
-            this.label_StepTitle.AutoSize = true;
-            this.label_StepTitle.Location = new System.Drawing.Point(276, 70);
-            this.label_StepTitle.Name = "label_StepTitle";
-            this.label_StepTitle.Size = new System.Drawing.Size(127, 21);
-            this.label_StepTitle.TabIndex = 3;
-            this.label_StepTitle.Text = "Nothing selected";
+            this.lbl_StepTitle.AutoSize = true;
+            this.lbl_StepTitle.Location = new System.Drawing.Point(276, 70);
+            this.lbl_StepTitle.Name = "lbl_StepTitle";
+            this.lbl_StepTitle.Size = new System.Drawing.Size(127, 21);
+            this.lbl_StepTitle.TabIndex = 3;
+            this.lbl_StepTitle.Text = "Nothing selected";
             // 
             // btn_Play
             // 
@@ -90,45 +91,45 @@
             this.btn_Play.UseVisualStyleBackColor = true;
             this.btn_Play.Click += new System.EventHandler(this.btn_Play_Click);
             // 
-            // btnSearch
+            // btn_Search
             // 
-            this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSearch.Location = new System.Drawing.Point(12, 654);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(128, 35);
-            this.btnSearch.TabIndex = 7;
-            this.btnSearch.Text = "Search Game";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            this.btn_Search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btn_Search.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Search.Location = new System.Drawing.Point(12, 654);
+            this.btn_Search.Name = "btn_Search";
+            this.btn_Search.Size = new System.Drawing.Size(128, 35);
+            this.btn_Search.TabIndex = 7;
+            this.btn_Search.Text = "Search Game";
+            this.btn_Search.UseVisualStyleBackColor = true;
+            this.btn_Search.Click += new System.EventHandler(this.btnSearch_Click);
             // 
-            // btnBack
+            // btn_Previous
             // 
-            this.btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBack.Enabled = false;
-            this.btnBack.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBack.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.btnBack.Location = new System.Drawing.Point(868, 63);
-            this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(33, 35);
-            this.btnBack.TabIndex = 9;
-            this.btnBack.Text = "<";
-            this.btnBack.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.btnBack.UseVisualStyleBackColor = true;
-            this.btnBack.Click += new System.EventHandler(this.arrow_Back_Click);
+            this.btn_Previous.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Previous.Enabled = false;
+            this.btn_Previous.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btn_Previous.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Previous.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.btn_Previous.Location = new System.Drawing.Point(868, 63);
+            this.btn_Previous.Name = "btn_Previous";
+            this.btn_Previous.Size = new System.Drawing.Size(33, 35);
+            this.btn_Previous.TabIndex = 9;
+            this.btn_Previous.Text = "<";
+            this.btn_Previous.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.btn_Previous.UseVisualStyleBackColor = true;
+            this.btn_Previous.Click += new System.EventHandler(this.arrow_Back_Click);
             // 
-            // btnAutoSearch
+            // btn_AutoSearch
             // 
-            this.btnAutoSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAutoSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAutoSearch.Location = new System.Drawing.Point(146, 654);
-            this.btnAutoSearch.Name = "btnAutoSearch";
-            this.btnAutoSearch.Size = new System.Drawing.Size(128, 35);
-            this.btnAutoSearch.TabIndex = 10;
-            this.btnAutoSearch.Text = "Auto Search";
-            this.btnAutoSearch.UseVisualStyleBackColor = true;
-            this.btnAutoSearch.Click += new System.EventHandler(this.btnAutoSearch_Click);
+            this.btn_AutoSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btn_AutoSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_AutoSearch.Location = new System.Drawing.Point(146, 654);
+            this.btn_AutoSearch.Name = "btn_AutoSearch";
+            this.btn_AutoSearch.Size = new System.Drawing.Size(128, 35);
+            this.btn_AutoSearch.TabIndex = 10;
+            this.btn_AutoSearch.Text = "Auto Search";
+            this.btn_AutoSearch.UseVisualStyleBackColor = true;
+            this.btn_AutoSearch.Click += new System.EventHandler(this.btnAutoSearch_Click);
             // 
             // btn_Next
             // 
@@ -146,15 +147,15 @@
             this.btn_Next.UseVisualStyleBackColor = true;
             this.btn_Next.Click += new System.EventHandler(this.btnNext_Click);
             // 
-            // lblVersion
+            // lbl_Version
             // 
-            this.lblVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblVersion.AutoSize = true;
-            this.lblVersion.Location = new System.Drawing.Point(968, 666);
-            this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(71, 21);
-            this.lblVersion.TabIndex = 12;
-            this.lblVersion.Text = "ALPHA 8";
+            this.lbl_Version.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbl_Version.AutoSize = true;
+            this.lbl_Version.Location = new System.Drawing.Point(968, 666);
+            this.lbl_Version.Name = "lbl_Version";
+            this.lbl_Version.Size = new System.Drawing.Size(71, 21);
+            this.lbl_Version.TabIndex = 12;
+            this.lbl_Version.Text = "ALPHA 8";
             // 
             // gameNameControl
             // 
@@ -165,34 +166,49 @@
             this.gameNameControl.Size = new System.Drawing.Size(98, 46);
             this.gameNameControl.TabIndex = 13;
             // 
-            // btn_Store
+            // btn_Packages
             // 
-            this.btn_Store.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Store.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btn_Store.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Store.Location = new System.Drawing.Point(868, 12);
-            this.btn_Store.Name = "btn_Store";
-            this.btn_Store.Size = new System.Drawing.Size(174, 35);
-            this.btn_Store.TabIndex = 14;
-            this.btn_Store.Text = "PKG Manager";
-            this.btn_Store.UseVisualStyleBackColor = true;
-            this.btn_Store.Click += new System.EventHandler(this.btn_Store_Click);
+            this.btn_Packages.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Packages.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btn_Packages.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Packages.Location = new System.Drawing.Point(868, 23);
+            this.btn_Packages.Name = "btn_Packages";
+            this.btn_Packages.Size = new System.Drawing.Size(174, 35);
+            this.btn_Packages.TabIndex = 14;
+            this.btn_Packages.Text = "Packages";
+            this.btn_Packages.UseVisualStyleBackColor = true;
+            this.btn_Packages.Visible = false;
+            this.btn_Packages.Click += new System.EventHandler(this.btn_Packages_Click);
+            // 
+            // btn_Install
+            // 
+            this.btn_Install.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Install.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btn_Install.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Install.Location = new System.Drawing.Point(868, 23);
+            this.btn_Install.Name = "btn_Install";
+            this.btn_Install.Size = new System.Drawing.Size(174, 35);
+            this.btn_Install.TabIndex = 15;
+            this.btn_Install.Text = "Install Package";
+            this.btn_Install.UseVisualStyleBackColor = true;
+            this.btn_Install.Click += new System.EventHandler(this.btn_Install_Click);
             // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1054, 701);
-            this.Controls.Add(this.btn_Store);
-            this.Controls.Add(this.lblVersion);
+            this.Controls.Add(this.btn_Install);
+            this.Controls.Add(this.lbl_Version);
+            this.Controls.Add(this.btn_Packages);
             this.Controls.Add(this.gameNameControl);
             this.Controls.Add(this.btn_Next);
-            this.Controls.Add(this.btnAutoSearch);
-            this.Controls.Add(this.btnBack);
-            this.Controls.Add(this.btnSearch);
+            this.Controls.Add(this.btn_AutoSearch);
+            this.Controls.Add(this.btn_Previous);
+            this.Controls.Add(this.btn_Search);
             this.Controls.Add(this.btn_Play);
-            this.Controls.Add(this.label_StepTitle);
+            this.Controls.Add(this.lbl_StepTitle);
             this.Controls.Add(this.list_Games);
-            this.Controls.Add(this.StepPanel);
+            this.Controls.Add(this.panel_Steps);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(640, 360);
             this.Name = "MainForm";
@@ -204,16 +220,17 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel StepPanel;
+        private System.Windows.Forms.Panel panel_Steps;
         private Gaming.ControlListBox list_Games;
-        private System.Windows.Forms.Label label_StepTitle;
+        private System.Windows.Forms.Label lbl_StepTitle;
         private System.Windows.Forms.Button btn_Play;
-        private System.Windows.Forms.Button btnSearch;
-        private System.Windows.Forms.Button btnBack;
-        private System.Windows.Forms.Button btnAutoSearch;
+        private System.Windows.Forms.Button btn_Search;
+        private System.Windows.Forms.Button btn_Previous;
+        private System.Windows.Forms.Button btn_AutoSearch;
         private System.Windows.Forms.Button btn_Next;
-        private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.Label lbl_Version;
         private Controls.GameNameControl gameNameControl;
-        private System.Windows.Forms.Button btn_Store;
+        private System.Windows.Forms.Button btn_Packages;
+        private System.Windows.Forms.Button btn_Install;
     }
 }

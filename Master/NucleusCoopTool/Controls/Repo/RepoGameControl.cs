@@ -14,22 +14,22 @@ namespace Nucleus.Coop.Controls.Repo
     public partial class RepoGameControl : UserControl, IRadioControl
     {
         public RepoHeader Header { get; private set; }
-        public RepoGameHandlerInfo Info { get; private set; }
-        public RepoGameHandlerFullInfo FullInfo { get; private set; }
+        public GameHandlerPackageInfo Info { get; private set; }
+        public GameHandlerMetadata FullInfo { get; private set; }
 
         public RepoGameControl()
         {
             InitializeComponent();
         }
 
-        public void PreInitialize(RepoHeader header, RepoGameHandlerInfo game)
+        public void PreInitialize(RepoHeader header, GameHandlerPackageInfo game)
         {
             Header = header;
             Info = game;
 
             this.label_GameName.Text = game.Title;
         }
-        public void Initialize(RepoGameHandlerFullInfo game)
+        public void Initialize(GameHandlerMetadata game)
         {
             FullInfo = game;
 

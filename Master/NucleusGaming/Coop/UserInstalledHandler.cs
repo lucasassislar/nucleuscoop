@@ -8,7 +8,7 @@ namespace Nucleus.Gaming.Coop
 {
     public class UserInstalledHandler
     {
-        public RepoGameHandlerFullInfo HandlerInfo { get; set; }
+        public GameHandlerMetadata HandlerInfo { get; set; }
         public string PackagePath { get; set; }
     }
 }

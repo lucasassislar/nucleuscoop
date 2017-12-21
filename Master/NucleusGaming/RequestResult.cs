@@ -13,5 +13,15 @@ namespace Nucleus.Gaming
 
         public string LogData;
         public object AdditionalData;
+
+        public void LogLine(string line)
+        {
+            LogData += Environment.NewLine + line;
+        }
+
+        public void LogLine(string line, params object[] args)
+        {
+            LogData += Environment.NewLine + string.Format(line, args);
+        }
     }
 }

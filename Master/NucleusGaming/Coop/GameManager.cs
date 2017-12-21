@@ -59,7 +59,6 @@ namespace Nucleus.Gaming.Coop
             instance = this;
 
             Initialize();
-            LoadUser();
         }
 
         /// <summary>
@@ -69,7 +68,8 @@ namespace Nucleus.Gaming.Coop
         /// <returns></returns>
         public bool AnyGame(string gameExe)
         {
-            return user.InstalledHandlers.Any(c => string.Equals(c.HandlerInfo.ExeName, gameExe, StringComparison.OrdinalIgnoreCase));
+            return user.InstalledHandlers.Any(c => string.Equals(c.ExeName.ToLower(), gameExe, StringComparison.OrdinalIgnoreCase) ||
+                                                    string.Equals(c.ExeName.ToLower() + ".exe", gameExe, StringComparison.OrdinalIgnoreCase));
             //return Games.Values.Any(c => c.ExecutableName == gameExe);
         }
 
@@ -78,20 +78,20 @@ namespace Nucleus.Gaming.Coop
         /// </summary>
         /// <param name="exePath"></param>
         /// <returns></returns>
-        public UserInstalledHandler GetGame(string exePath)
+        public GameHandlerMetadata GetGame(string exePath)
         {
             string lower = exePath.ToLower();
             string fileName = Path.GetFileName(exePath).ToLower();
             string dir = Path.GetDirectoryName(exePath);
 
             //var possibilities = Games.Values.Where(c => string.Equals(c.ExecutableName, fileName, StringComparison.OrdinalIgnoreCase));
-            var possibilities = user.InstalledHandlers.Where(c => string.Equals(c.HandlerInfo.ExeName, fileName, StringComparison.OrdinalIgnoreCase));
+            var possibilities = user.InstalledHandlers.Where(c => string.Equals(c.ExeName, fileName, StringComparison.OrdinalIgnoreCase));
 
             //foreach (GenericGameInfo game in possibilities)
-            foreach (UserInstalledHandler game in possibilities)
+            foreach (GameHandlerMetadata game in possibilities)
             {
                 // check if the Context matches
-                string[] context = game.HandlerInfo.ExeContext;
+                string[] context = game.ExeContext;
                 bool notAdd = false;
                 if (context != null)
                 {
@@ -124,20 +124,20 @@ namespace Nucleus.Gaming.Coop
         /// </summary>
         /// <param name="exePath"></param>
         /// <returns></returns>
-        public List<UserInstalledHandler> GetAllHandlers(string exePath)
+        public List<GameHandlerMetadata> GetAllHandlers(string exePath)
         {
             string lower = exePath.ToLower();
             string fileName = Path.GetFileName(exePath).ToLower();
             string dir = Path.GetDirectoryName(exePath);
 
-            //var possibilities = Games.Values.Where(c => c.ExecutableName == fileName);
-            var possibilities = user.InstalledHandlers.Where(c => string.Equals(c.HandlerInfo.ExeName, fileName, StringComparison.OrdinalIgnoreCase));
-            List<UserInstalledHandler> games = new List<UserInstalledHandler>();
+            var possibilities = user.InstalledHandlers.Where(c => string.Equals(c.ExeName.ToLower(), fileName, StringComparison.OrdinalIgnoreCase) ||
+                                                                    string.Equals(c.ExeName.ToLower() + ".exe", fileName, StringComparison.OrdinalIgnoreCase));
+            List<GameHandlerMetadata> games = new List<GameHandlerMetadata>();
 
-            foreach (UserInstalledHandler game in possibilities)
+            foreach (GameHandlerMetadata game in possibilities)
             {
                 // check if the Context matches
-                string[] context = game.HandlerInfo.ExeContext;
+                string[] context = game.ExeContext;
                 bool notAdd = false;
                 if (context != null)
                 {
@@ -170,7 +170,7 @@ namespace Nucleus.Gaming.Coop
         /// </summary>
         /// <param name="exePath"></param>
         /// <returns></returns>
-        public UserGameInfo TryAddGame(string exePath, RepoGameHandlerFullInfo game)
+        public UserGameInfo TryAddGame(string exePath, GameHandlerMetadata game)
         {
             //string lower = exePath.ToLower();
 
@@ -197,57 +197,44 @@ namespace Nucleus.Gaming.Coop
         /// <returns></returns>
         public UserGameInfo TryAddGame(string exePath)
         {
-//            string lower = exePath.ToLower();
-//            string fileName = Path.GetFileName(exePath).ToLower();
-//            string dir = Path.GetDirectoryName(exePath);
+            string lower = exePath.ToLower();
+            string dir = Path.GetDirectoryName(exePath);
 
-//            var possibilities = Games.Values.Where(c => c.ExecutableName == fileName);
+            var possibilities = GetAllHandlers(exePath);
 
-//            foreach (GenericGameInfo game in possibilities)
-//            {
-//                // check if the Context matches
-//                string[] context = game.ExecutableContext;
-//                bool notAdd = false;
-//                if (context != null)
-//                {
-//                    for (int j = 0; j < context.Length; j++)
-//                    {
-//                        string con = Path.Combine(dir, context[j]);
-//                        if (!File.Exists(con) &&
-//                            !Directory.Exists(con))
-//                        {
-//                            notAdd = true;
-//                            break;
-//                        }
-//                    }
-//                }
+            foreach (GameHandlerMetadata metadata in possibilities)
+            {
+                // check if the Context matches
+                string[] context = metadata.ExeContext;
+                bool notAdd = false;
+                if (context != null)
+                {
+                    for (int j = 0; j < context.Length; j++)
+                    {
+                        string con = Path.Combine(dir, context[j]);
+                        if (!File.Exists(con) &&
+                            !Directory.Exists(con))
+                        {
+                            notAdd = true;
+                            break;
+                        }
+                    }
+                }
 
-//                if (notAdd)
-//                {
-//                    continue;
-//                }
+                if (notAdd ||
+                    GameManager.Instance.User.Games.Any(c => c.ExePath.ToLower() == lower))
+                {
+                    continue;
+                }
 
-//                // search for the same exe on the user profile
-//                if (GameManager.Instance.User.Games.Any(c => c.ExePath.ToLower() == lower))
-//                {
-//                    continue;
-//                }
+                Log.WriteLine($"Found game: {metadata.Title}, on path: {exePath}");
+                UserGameInfo uinfo = new UserGameInfo();
+                uinfo.InitializeDefault(metadata, exePath);
+                GameManager.Instance.User.Games.Add(uinfo);
+                GameManager.Instance.SaveUserProfile();
 
-//#if RELEASE
-//                if (game.Debug)
-//                {
-//                    continue;
-//                }
-//#endif
-
-//                Log.WriteLine($"Found game: {game.GameName}, full path: {exePath}");
-//                UserGameInfo uinfo = new UserGameInfo();
-//                uinfo.InitializeDefault(game, exePath);
-//                GameManager.Instance.User.Games.Add(uinfo);
-//                GameManager.Instance.SaveUserProfile();
-
-//                return uinfo;
-//            }
+                return uinfo;
+            }
 
             return null;
         }
@@ -311,7 +298,7 @@ namespace Nucleus.Gaming.Coop
         {
 #if ALPHA
             string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            return Path.Combine(local, "Data");
+            return Path.Combine(local, "data");
 #else
             string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             return Path.Combine(appData, "Nucleus Coop");
@@ -467,35 +454,9 @@ namespace Nucleus.Gaming.Coop
                             else
                             {
                                 // delete invalid games
-                                //for (int i = 0; i < user.Games.Count; i++)
-                                //{
-                                //    UserGameInfo gameInfo = user.Games[i];
-                                //    if (gameInfo.Game == null)
-                                //    {
-                                //        user.Games.RemoveAt(i);
-                                //        i--;
-                                //    }
-                                //}
-                                throw new NotImplementedException();
 
-                                DateTime latest = user.LatestMod;
-                                string installedDir = GetInstalledPackagePath();
-
-                                // get all the installed games and see if we need to rebuild the game database
-                                DirectoryInfo dir = new DirectoryInfo(installedDir);
-                                if (dir.Exists)
-                                {
-                                    FileInfo[] files = dir.GetFiles();
-                                    if (files.Length > 0)
-                                    {
-                                        FileInfo first = files.OrderBy(c => c.CreationTime).First();
-                                        if (first.CreationTime > latest)
-                                        {
-                                            // rebuild game db
-                                            RebuildGameDb();
-                                        }
-                                    }
-                                }
+                                // we will rebuild the gamedb later, so commented for now
+                                //RebuildGameDb();
                             }
                         }
                     }
@@ -511,27 +472,30 @@ namespace Nucleus.Gaming.Coop
             }
         }
 
-        private void RebuildGameDb()
+        public void RebuildGameDb()
         {
             string installedDir = GetInstalledPackagePath();
             DirectoryInfo dir = new DirectoryInfo(installedDir);
-            FileInfo[] files = dir.GetFiles();
-
-            user.InstalledHandlers.Clear();
-            for (int i = 0; i < files.Length; i++)
+            if (!dir.Exists)
             {
-                string pkgPath = files[i].FullName;
-                RepoGameHandlerFullInfo info = repoManager.ReadInfoFromPackageFile(pkgPath);
-                UserInstalledHandler handler = new UserInstalledHandler();
-                handler.HandlerInfo = info;
-                handler.PackagePath = pkgPath;
+                // nothing installed
+                return;
+            }
 
-                user.InstalledHandlers.Add(handler);
+            DirectoryInfo[] installedHandlers = dir.GetDirectories();
+
+            user.InstalledHandlers = new List<GameHandlerMetadata>();
+            for (int i = 0; i < installedHandlers.Length; i++)
+            {
+                DirectoryInfo handlerDir = installedHandlers[i];
+
+                // read the game's json
+                string metadataPath = Path.Combine(handlerDir.FullName, repoManager.InfoFileName + repoManager.JsonFormat);
+                GameHandlerMetadata metadata = repoManager.ReadMetadataFromFile(metadataPath);
+                user.InstalledHandlers.Add(metadata);
             }
             SaveUserProfile();
         }
-
-        
 
         private void makeDefaultUserFile()
         {
@@ -594,25 +558,10 @@ namespace Nucleus.Gaming.Coop
 
             repoManager = new RepoManager(config);
 
-            // Search for Javascript games-infos
-            //string jsfolder = GetJsGamesPath();
-            //DirectoryInfo jsFolder = new DirectoryInfo(jsfolder);
-            //FileInfo[] files = jsFolder.GetFiles("*.js");
-            //for (int i = 0; i < files.Length; i++)
-            //{
-            //    FileInfo f = files[i];
-            //    using (Stream str = f.OpenRead())
-            //    {
-            //        string ext = Path.GetFileNameWithoutExtension(f.Name);
-            //        string pathBlock = Path.Combine(f.Directory.FullName, ext);
+            LoadUser();
 
-            //        GenericGameInfo info = new GenericGameInfo(f.Name, pathBlock, str);
-            //        Log.WriteLine("Found game info: " + info.GameName);
-
-            //        games.Add(info.GUID, info);
-            //        gameInfos.Add(info.ExecutableName, info);
-            //    }
-            //}
+            // Right now, build the DB each time we start up
+            RebuildGameDb();
         }
         #endregion
 

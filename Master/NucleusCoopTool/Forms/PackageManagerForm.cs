@@ -85,7 +85,7 @@ namespace Nucleus.Coop.Forms
             }
         }
 
-        private RepoGameHandlerInfo selectedGame;
+        private GameHandlerPackageInfo selectedGame;
         private RepoHeader selectedHeader;
         private void GameListBrowser_SelectedChanged(object arg1, Control arg2)
         {
@@ -113,7 +113,11 @@ namespace Nucleus.Coop.Forms
                 {
                     comboVersions.Items.Add("v" + i);
                 }
-                comboVersions.SelectedIndex = 0;
+
+                if (selectedGame.V > 0)
+                {
+                    comboVersions.SelectedIndex = 0;
+                }
             }
         }
 
@@ -130,15 +134,15 @@ namespace Nucleus.Coop.Forms
             repoManager.RequestPackageFullInfo(selectedHeader, selectedGame, comboVersions.SelectedIndex + 1, ReceiveFullGameInfo);
         }
 
-        private void ReceiveFullGameInfo(RequestResult<RepoGameHandlerFullInfo> result)
+        private void ReceiveFullGameInfo(RequestResult<GameHandlerMetadata> result)
         {
             if (result.Success)
             {
-                this.Invoke(new Action<RepoGameHandlerFullInfo>(privShowPackage), result.Data);
+                this.Invoke(new Action<GameHandlerMetadata>(privShowPackage), result.Data);
             }
         }
 
-        private void privShowPackage(RepoGameHandlerFullInfo gameInfo)
+        private void privShowPackage(GameHandlerMetadata gameInfo)
         {
             lbl_GameTitle.Text = gameInfo.Title;
             lbl_NukeVersion.Text = gameInfo.PlatformVersion.ToString(CultureInfo.InvariantCulture);

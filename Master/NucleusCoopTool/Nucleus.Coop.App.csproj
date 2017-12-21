@@ -46,6 +46,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -130,6 +131,12 @@
     <Compile Include="Forms\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <None Include="Forms\CentralForm.cs">
+      <SubType>Form</SubType>
+    </None>
+    <None Include="Forms\CentralForm.Designer.cs">
+      <DependentUpon>CentralForm.cs</DependentUpon>
+    </None>
     <Compile Include="Forms\GameList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,12 +155,12 @@
     <Compile Include="Forms\SearchDisksForm.Designer.cs">
       <DependentUpon>SearchDisksForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\PackageManagerForm.cs">
+    <None Include="Forms\PackageManagerForm.cs">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\PackageManagerForm.Designer.cs">
+    </None>
+    <None Include="Forms\PackageManagerForm.Designer.cs">
       <DependentUpon>PackageManagerForm.cs</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\PlayerCountControl.resx">
@@ -219,10 +226,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Nucleus.Gaming.Unsafe\Nucleus.Gaming.Unsafe.csproj">
-      <Project>{afc00426-c357-4488-a19e-fe9ae5a20f04}</Project>
-      <Name>Nucleus.Gaming.Unsafe</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NucleusGaming\Nucleus.Gaming.csproj">
       <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
       <Name>Nucleus.Gaming</Name>
@@ -332,191 +335,69 @@
     <None Include="games\550-Left4Dead2\assets\deathabroad.jpg" />
     <None Include="games\550-Left4Dead2\assets\thepassing.jpg" />
     <None Include="games\550-Left4Dead2\assets\thesacrifice.jpg" />
-    <None Include="games\Left4Dead\nomercy.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\Left4Dead\crashcourse.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\Left4Dead\deathtoll.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\Left4Dead\deadair.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\Left4Dead\bloodharvest.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\Left4Dead\coldstream.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="games\Left4Dead\nomercy.jpg" />
+    <None Include="games\Left4Dead\crashcourse.jpg" />
+    <None Include="games\Left4Dead\deathtoll.jpg" />
+    <None Include="games\Left4Dead\deadair.jpg" />
+    <None Include="games\Left4Dead\bloodharvest.jpg" />
+    <None Include="games\Left4Dead\coldstream.png" />
     <None Include="games\AliensColonialMarines.js" />
     <None Include="games\AlienSwarmReactiveDrop.js" />
-    <None Include="games\AlienSwarmReactiveDrop\ad4_obj_escape_image.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\adanaxis1_access_obj_image.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\breakinganentry_missionpic.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\dm_desert_icon.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\dm_testlab_icon.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\obc17center_goo.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\obc17citadel_escape.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\obc17f_core.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\obc17ts_button2.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\obc17tunnel_eggs.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\obdeimaesc.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\oblandingelev.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\oblandinghack.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\obresidentialbio.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\obrydbergreactor.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\obsewertunnel.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\obtimorstationnuke.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\omegacity_missionpic.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd-area9800lzpic.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd-area9800pp1pic.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd-area9800pp2pic.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd-area9800wlpic.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd-lan1_bridgempic.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd-lan2_sewermpic.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd-lan3_maintenance_obj_3.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd-lan4_ventmpic.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd-lan5_complexmpic.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd-obbriefing_map3.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd-obdesertexit.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd-tarnormission2.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd_bon2_survivors.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd_bon3_blueprint.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd_ocs1mapicon.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd_ocs2mapicon.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd_ocs3mapicon.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd_ori2.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd_par_mission2.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd_par_objectif1.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd_par_objectif23.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd_par_objectif32.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd_par_objectif33.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd_res_m1missionpic.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd_res_m2missionpic.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd_res_m3missionpic.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd_res_m4missionpic.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\rd_til3arcticinfiltration_pic.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\searchandrescue_missionpic.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\tilarus01obj1.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\tilarus02obj1.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\tilarus04obj1.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\tilarus05obj1.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\tilarus06obj1access.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\tilarus07objeggs.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\tilarus08obj2.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="games\AlienSwarmReactiveDrop\tilarus09obpowerroom.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="games\AlienSwarmReactiveDrop\ad4_obj_escape_image.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\adanaxis1_access_obj_image.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\breakinganentry_missionpic.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\dm_desert_icon.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\dm_testlab_icon.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\obc17center_goo.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\obc17citadel_escape.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\obc17f_core.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\obc17ts_button2.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\obc17tunnel_eggs.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\obdeimaesc.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\oblandingelev.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\oblandinghack.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\obresidentialbio.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\obrydbergreactor.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\obsewertunnel.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\obtimorstationnuke.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\omegacity_missionpic.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd-area9800lzpic.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd-area9800pp1pic.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd-area9800pp2pic.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd-area9800wlpic.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd-lan1_bridgempic.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd-lan2_sewermpic.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd-lan3_maintenance_obj_3.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd-lan4_ventmpic.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd-lan5_complexmpic.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd-obbriefing_map3.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd-obdesertexit.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd-tarnormission2.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd_bon2_survivors.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd_bon3_blueprint.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd_ocs1mapicon.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd_ocs2mapicon.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd_ocs3mapicon.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd_ori2.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd_par_mission2.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd_par_objectif1.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd_par_objectif23.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd_par_objectif32.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd_par_objectif33.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd_res_m1missionpic.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd_res_m2missionpic.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd_res_m3missionpic.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd_res_m4missionpic.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\rd_til3arcticinfiltration_pic.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\searchandrescue_missionpic.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\tilarus01obj1.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\tilarus02obj1.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\tilarus04obj1.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\tilarus05obj1.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\tilarus06obj1access.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\tilarus07objeggs.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\tilarus08obj2.jpg" />
+    <None Include="games\AlienSwarmReactiveDrop\tilarus09obpowerroom.jpg" />
     <None Include="games\Synergy.js" />
     <None Include="..\StartGame\bin\Release\StartGame.exe">
       <Link>StartGame.exe</Link>

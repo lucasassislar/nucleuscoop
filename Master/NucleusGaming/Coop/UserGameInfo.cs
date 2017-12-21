@@ -14,12 +14,6 @@ namespace Nucleus.Gaming.Coop
     /// </summary>
     public class UserGameInfo
     {
-        private RepoGameHandlerFullInfo game;
-        private List<GameProfile> profiles;
-        private string exePath;
-
-        public string GameID { get; set; }
-
         [JsonIgnore]
         public Bitmap Icon
         {
@@ -27,17 +21,10 @@ namespace Nucleus.Gaming.Coop
             set;
         }
 
-        public List<GameProfile> Profiles
-        {
-            get { return profiles; }
-            set { profiles = value; }
-        }
+        public string GameID { get; set; }
+        //public List<GameProfile> Profiles { get; set; }
 
-        public string ExePath
-        {
-            get { return exePath; }
-            set { exePath = value; }
-        }
+        public string ExePath { get; set; }
 
         public UserGameInfo()
         {
@@ -50,7 +37,7 @@ namespace Nucleus.Gaming.Coop
         /// <returns></returns>
         public bool IsGamePresent()
         {
-            return File.Exists(exePath);
+            return File.Exists(ExePath);
         }
 
         /// <summary>
@@ -59,12 +46,12 @@ namespace Nucleus.Gaming.Coop
         /// </summary>
         /// <param name="game">A reference to the </param>
         /// <param name="exePath"></param>
-        public void InitializeDefault(RepoGameHandlerFullInfo game, string exePath)
+        public void InitializeDefault(GameHandlerMetadata game, string exePath)
         {
-            this.game = game;
+            ExePath = exePath;
+            //Profiles = new List<GameProfile>();
 
-            this.exePath = exePath;
-            this.profiles = new List<GameProfile>();
+            GameID = game.GameID;
         }
     }
 }

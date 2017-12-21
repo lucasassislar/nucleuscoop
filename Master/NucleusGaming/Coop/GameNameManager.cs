@@ -16,7 +16,7 @@ namespace Nucleus.Gaming.Coop
             gameNames = new Dictionary<string, string>();
         }
 
-        public bool UpdateNaming(RepoGameHandlerInfo info)
+        public bool UpdateNaming(GameHandlerPackageInfo info)
         {
             // TODO: better logic so repositories can agree on game name
             if (gameNames.ContainsKey(info.GameID))
@@ -27,7 +27,7 @@ namespace Nucleus.Gaming.Coop
             return true;
         }
 
-        public bool UpdateNaming(RepoGameHandlerFullInfo info)
+        public bool UpdateNaming(GameHandlerMetadata info)
         {
             // TODO: better logic so repositories can agree on game name
             if (gameNames.ContainsKey(info.GameID))

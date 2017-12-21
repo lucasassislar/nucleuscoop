@@ -7,15 +7,12 @@ using System.Text;
 namespace Nucleus.Gaming.Repo
 {
     /// <summary>
-    /// Information about a game that is shown in the repository.
-    /// This class should contain ONLY essential information, as it is cached
-    /// in the first run of the app - its essentially 
-    /// a stripped-down version of the RepoGameHandlerFullInfo
+    /// Info about a package
     /// </summary>
-    public class RepoGameHandlerInfo
+    public class GameHandlerPackageInfo
     {
         /// <summary>
-        /// ID must be unique to the server
+        /// ID must be unique to the handler
         /// </summary>
         public string HandlerID { get; set; }
 
@@ -39,8 +36,19 @@ namespace Nucleus.Gaming.Repo
         /// </summary>
         public string Dev { get; set; }
 
+        /// <summary>
+        /// MD5 checksum of the game's package
+        /// </summary>
         public string MD5 { get; set; }
 
+        /// <summary>
+        /// Version of the handler included in the package
+        /// </summary>
         public int V { get; set; }
+
+        /// <summary>
+        /// Version of the handler included in the package
+        /// </summary>
+        public int PlatV { get; set; }
     }
 }

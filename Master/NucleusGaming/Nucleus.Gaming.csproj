@@ -25,16 +25,16 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;ALPHA</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;UNSAFE;ALPHA</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;ALPHA;RELEASE</DefineConstants>
+    <DefineConstants>TRACE;UNSAFE;ALPHA</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
@@ -48,7 +48,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TestDebug|AnyCPU'">
     <OutputPath>bin\TestDebug\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <DefineConstants>UNSAFE</DefineConstants>
+    <DefineConstants>UNSAFE;ALPHA</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
@@ -151,6 +151,8 @@
     <Compile Include="Globals.cs" />
     <Compile Include="IO\JsonPropertiesFile.cs" />
     <Compile Include="IO\JsPropertiesFile.cs" />
+    <Compile Include="IO\MFT\FileNameAndParentFrn.cs" />
+    <Compile Include="IO\MFT\MFTReader.cs" />
     <Compile Include="Platform\Windows\Interop\Gdi32\Gdi32Interop.cs" />
     <Compile Include="Platform\Windows\Interop\Kernel32\Kernel32Interop.cs" />
     <Compile Include="Platform\Windows\Interop\Kernel32\SymbolicLink.cs" />
@@ -192,8 +194,8 @@
     </Compile>
     <Compile Include="Coop\KeyboardPlayer.cs" />
     <Compile Include="RAction.cs" />
-    <Compile Include="Repo\RepoGameHandlerFullInfo.cs" />
-    <Compile Include="Repo\RepoGameHandlerInfo.cs" />
+    <Compile Include="Repo\GameHandlerMetadata.cs" />
+    <Compile Include="Repo\GameHandlerPackageInfo.cs" />
     <Compile Include="Repo\RepoHeader.cs" />
     <Compile Include="Repo\RepoManager.cs" />
     <Compile Include="RequestResult.cs" />

@@ -12,7 +12,7 @@ namespace Nucleus.Gaming.Coop
     public class UserProfile
     {
         private List<UserGameInfo> games;
-        private List<UserInstalledHandler> installedHandlers;
+        private List<GameHandlerMetadata> installedHandlers;
 
         public List<UserGameInfo> Games
         {
@@ -20,7 +20,7 @@ namespace Nucleus.Gaming.Coop
             set { games = value; }
         }
 
-        public List<UserInstalledHandler> InstalledHandlers
+        public List<GameHandlerMetadata> InstalledHandlers
         {
             get { return installedHandlers; }
             set { installedHandlers = value; }
@@ -44,7 +44,7 @@ namespace Nucleus.Gaming.Coop
 
             if (installedHandlers == null)
             {
-                installedHandlers = new List<UserInstalledHandler>();
+                installedHandlers = new List<GameHandlerMetadata>();
             }
         }
     }

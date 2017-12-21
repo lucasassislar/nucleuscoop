@@ -1,5 +1,4 @@
-﻿using Nucleus.Coop.Forms;
-using Nucleus.Gaming;
+﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Generic.Step;
 using Nucleus.Gaming.Repo;
@@ -30,7 +29,7 @@ namespace Nucleus.Coop
 
         private GameControl selectedControl;
 
-        private UserInstalledHandler selectedHandler;
+        private GameHandlerMetadata selectedHandler;
         private GenericHandlerData handlerData;
         private IGameHandler handler;
 
@@ -133,32 +132,26 @@ namespace Nucleus.Coop
 
         public void NewUserGame(UserGameInfo game)
         {
-            //if (!game.IsGamePresent())
-            //{
-            //    return;
-            //}
+            if (!game.IsGamePresent())
+            {
+                return;
+            }
 
-            //if (noGamesPresent)
-            //{
-            //    noGamesPresent = false;
-            //    RefreshGames();
-            //    return;
-            //}
+            if (noGamesPresent)
+            {
+                noGamesPresent = false;
+                RefreshGames();
+                return;
+            }
 
-            //// get all Repository Game Infos
-            //RepoGameHandlerInfo info = gameManager.RepoManager.GetFirstInfo(game.RepositoryId, game.HandlerID);
-            //if (info == null)
-            //{
-            //    return;
-            //}
+            // get all Repository Game Infos
+            GameControl con = new GameControl(game);
+            con.Width = list_Games.Width;
 
-            //GameControl con = new GameControl(info, game);
-            //con.Width = list_Games.Width;
+            controls.Add(game, con);
+            this.list_Games.Controls.Add(con);
 
-            //controls.Add(game, con);
-            //this.list_Games.Controls.Add(con);
-
-            //ThreadPool.QueueUserWorkItem(GetIcon, game);
+            ThreadPool.QueueUserWorkItem(GetIcon, game);
         }
 
         protected override void OnShown(EventArgs e)
@@ -200,12 +193,12 @@ namespace Nucleus.Coop
                 return;
             }
 
-            StepPanel.Visible = true;
+            panel_Steps.Visible = true;
 
             UserGameInfo userGameInfo = selectedControl.UserGameInfo;
             string gameId = selectedControl.UserGameInfo.GameID;
 
-            UserInstalledHandler[] handlers = gameManager.RepoManager.GetInstalledHandlers(gameId);
+            GameHandlerMetadata[] handlers = gameManager.RepoManager.GetInstalledHandlers(gameId);
             if (handlers.Length == 0)
             {
                 // uninstalled package perhaps?
@@ -213,16 +206,19 @@ namespace Nucleus.Coop
             }
 
             selectedHandler = handlers[0];
-            handlerData = gameManager.RepoManager.ReadHandlerDataFromPackageFile(selectedHandler);
+            handlerData = gameManager.RepoManager.ReadHandlerDataFromInstalledPackage(selectedHandler);
 
             btn_Play.Enabled = false;
 
             stepsList = new List<UserInputControl>();
             stepsList.Add(positionsControl);
             stepsList.Add(optionsControl);
-            for (int i = 0; i < handlerData.CustomSteps.Count; i++)
+            if (handlerData.CustomSteps != null)
             {
-                stepsList.Add(jsControl);
+                for (int i = 0; i < handlerData.CustomSteps.Count; i++)
+                {
+                    stepsList.Add(jsControl);
+                }
             }
 
             currentProfile = new GameProfile();
@@ -236,7 +232,7 @@ namespace Nucleus.Coop
             }
 
             // content manager is shared withing the same game
-            content = new ContentManager(handlerData);
+            content = new ContentManager(selectedHandler, handlerData);
             GoToStep(0);
         }
 
@@ -277,56 +273,56 @@ namespace Nucleus.Coop
         private void KillCurrentStep()
         {
             currentStep?.Ended();
-            this.StepPanel.Controls.Clear();
+            this.panel_Steps.Controls.Clear();
         }
 
         private void GoToStep(int step)
         {
-            //btnBack.Enabled = step > 0;
-            //if (step >= stepsList.Count)
-            //{
-            //    return;
-            //}
+            btn_Previous.Enabled = step > 0;
+            if (step >= stepsList.Count)
+            {
+                return;
+            }
 
-            //if (step >= 2)
-            //{
-            //    // Custom steps
-            //    List<CustomStep> customSteps = handlerData.CustomSteps;
-            //    int customStepIndex = step - 2;
-            //    CustomStep customStep = customSteps[0];
+            if (step >= 2)
+            {
+                // Custom steps
+                List<CustomStep> customSteps = handlerData.CustomSteps;
+                int customStepIndex = step - 2;
+                CustomStep customStep = customSteps[0];
 
-            //    if (customStep.UpdateRequired != null)
-            //    {
-            //        customStep.UpdateRequired();
-            //    }
+                if (customStep.UpdateRequired != null)
+                {
+                    customStep.UpdateRequired();
+                }
 
-            //    if (customStep.Required)
-            //    {
-            //        jsControl.CustomStep = customStep;
-            //        jsControl.Content = content;
-            //    }
-            //    else
-            //    {
-            //        EnablePlay();
-            //        return;
-            //    }
-            //}
+                if (customStep.Required)
+                {
+                    jsControl.CustomStep = customStep;
+                    jsControl.Content = content;
+                }
+                else
+                {
+                    EnablePlay();
+                    return;
+                }
+            }
 
-            //KillCurrentStep();
+            KillCurrentStep();
 
-            //currentStepIndex = step;
-            //currentStep = stepsList[step];
-            //currentStep.Size = StepPanel.Size;
-            //currentStep.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+            currentStepIndex = step;
+            currentStep = stepsList[step];
+            currentStep.Size = panel_Steps.Size;
+            currentStep.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
 
-            //currentStep.Initialize(selectedControl.UserGameInfo, currentProfile);
+            currentStep.Initialize(handlerData, selectedControl.UserGameInfo, currentProfile);
 
-            //btn_Next.Enabled = currentStep.CanProceed && step != stepsList.Count - 1;
+            btn_Next.Enabled = currentStep.CanProceed && step != stepsList.Count - 1;
 
-            //StepPanel.Controls.Add(currentStep);
-            //currentStep.Size = StepPanel.Size; // for some reason this line must exist or the PositionsControl get messed up
+            panel_Steps.Controls.Add(currentStep);
+            currentStep.Size = panel_Steps.Size; // for some reason this line must exist or the PositionsControl get messed up
 
-            //label_StepTitle.Text = currentStep.Title;
+            lbl_StepTitle.Text = currentStep.Title;
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
@@ -502,10 +498,23 @@ namespace Nucleus.Coop
             User32Util.ShowTaskBar();
         }
 
-        private void btn_Store_Click(object sender, EventArgs e)
+        private void btn_Packages_Click(object sender, EventArgs e)
         {
-            PackageManagerForm form = new PackageManagerForm();
-            form.Show();
+            //PackageManagerForm form = new PackageManagerForm();
+            //form.Show();
+        }
+
+        private void btn_Install_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog open = new OpenFileDialog())
+            {
+                open.Filter = "Nucleus Coop Package Files|*.nc";
+                if (open.ShowDialog() == DialogResult.OK)
+                {
+                    string path = open.FileName;
+                    gameManager.RepoManager.InstallPackage(path);
+                }
+            }
         }
     }
 }
