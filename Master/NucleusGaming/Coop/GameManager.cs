@@ -170,24 +170,24 @@ namespace Nucleus.Gaming.Coop
         /// </summary>
         /// <param name="exePath"></param>
         /// <returns></returns>
-        public UserGameInfo TryAddGame(string exePath, GameHandlerMetadata game)
+        public UserGameInfo TryAddGame(string exePath, GameHandlerMetadata metadata)
         {
-            //string lower = exePath.ToLower();
+            string lower = exePath.ToLower();
+            string dir = Path.GetDirectoryName(exePath);
 
-            //// search for the same exe on the user profile
-            //if (GameManager.Instance.User.Games.Any(c => c.ExePath.ToLower() == lower))
-            //{
-            //    return null;
-            //}
+            if (GameManager.Instance.User.Games.Any(c => c.ExePath.ToLower() == lower))
+            {
+                return null;
+            }
 
-            //Log.WriteLine($"Found game: {game.GameName}, full path: {exePath}");
-            //UserGameInfo uinfo = new UserGameInfo();
-            //uinfo.InitializeDefault(game, exePath);
-            //GameManager.Instance.User.Games.Add(uinfo);
-            //GameManager.Instance.SaveUserProfile();
+            Log.WriteLine($"Added game: {metadata.Title}, on path: {exePath}");
+            UserGameInfo uinfo = new UserGameInfo();
+            uinfo.InitializeDefault(metadata, exePath);
+            GameManager.Instance.User.Games.Add(uinfo);
+            GameManager.Instance.SaveUserProfile();
 
-            //return uinfo;
-            return null;
+            return uinfo;
+
         }
 
         /// <summary>

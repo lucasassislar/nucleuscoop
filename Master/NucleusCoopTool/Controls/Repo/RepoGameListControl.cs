@@ -36,7 +36,7 @@ namespace Nucleus.Coop.Controls.Repo
         {
             for (int i = 0; i < header.Games.Length; i++)
             {
-                GameHandlerPackageInfo game = header.Games[i];
+                GameHandlerBaseMetadata game = header.Games[i];
 
                 RepoGameControl gameCon = new RepoGameControl();
                 this.Controls.Add(gameCon);

@@ -195,7 +195,7 @@
     <Compile Include="Coop\KeyboardPlayer.cs" />
     <Compile Include="RAction.cs" />
     <Compile Include="Repo\GameHandlerMetadata.cs" />
-    <Compile Include="Repo\GameHandlerPackageInfo.cs" />
+    <Compile Include="Repo\GameHandlerBaseMetadata.cs" />
     <Compile Include="Repo\RepoHeader.cs" />
     <Compile Include="Repo\RepoManager.cs" />
     <Compile Include="RequestResult.cs" />

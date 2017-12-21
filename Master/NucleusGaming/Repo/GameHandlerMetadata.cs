@@ -8,12 +8,14 @@ namespace Nucleus.Gaming.Repo
     /// <summary>
     /// Metadata included in the package file
     /// </summary>
-    public class GameHandlerMetadata : GameHandlerPackageInfo
+    public class GameHandlerMetadata : GameHandlerBaseMetadata
     {
         /// <summary>
         /// The context needed to find the executable of the game
         /// </summary>
         public string[] ExeContext { get; set; }
+
+        public string GameTitle { get; set; }
 
         /// <summary>
         /// A description for the game handler

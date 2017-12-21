@@ -35,6 +35,7 @@ namespace Nucleus.Coop
 
         private GameProfile currentProfile;
         private bool noGamesPresent;
+        private bool noHandlersPresent;
         private List<UserInputControl> stepsList;
         private UserInputControl currentStep;
 
@@ -48,6 +49,8 @@ namespace Nucleus.Coop
         public MainForm()
         {
             InitializeComponent();
+
+            this.Text = string.Format("Nucleus Coop v{0}", Globals.Version);
 
             controls = new Dictionary<UserGameInfo, GameControl>();
 
@@ -107,7 +110,15 @@ namespace Nucleus.Coop
                     }
                 }
                 this.list_Games.Controls.Clear();
+                this.list_Handlers.Controls.Clear();
                 controls.Clear();
+
+                List<GameHandlerMetadata> handlers = gameManager.User.InstalledHandlers;
+                for (int i = 0; i < handlers.Count; i++)
+                {
+                    GameHandlerMetadata handler = handlers[i];
+                    NewGameHandler(handler);
+                }
 
                 List<UserGameInfo> games = gameManager.User.Games;
                 for (int i = 0; i < games.Count; i++)
@@ -124,10 +135,34 @@ namespace Nucleus.Coop
                     con.Text = "No games";
                     this.list_Games.Controls.Add(con);
                 }
+
+                if (handlers.Count == 0)
+                {
+                    noGamesPresent = true;
+                    HandlerControl con = new HandlerControl(null);
+                    con.Width = list_Games.Width;
+                    con.Text = "No handlers";
+                    this.list_Handlers.Controls.Add(con);
+                }
             }
 
             DPIManager.ForceUpdate();
             gameManager.SaveUserProfile();
+        }
+
+        public void NewGameHandler(GameHandlerMetadata metadata)
+        {
+            if (noGamesPresent)
+            {
+                noGamesPresent = false;
+                RefreshGames();
+                return;
+            }
+
+            // get all Repository Game Infos
+            HandlerControl con = new HandlerControl(metadata);
+            con.Width = list_Games.Width;
+            this.list_Handlers.Controls.Add(con);
         }
 
         public void NewUserGame(UserGameInfo game)
@@ -184,6 +219,8 @@ namespace Nucleus.Coop
             }
         }
 
+        private GameHandlerMetadata[] currentHandlers;
+
         private void list_Games_SelectedChanged(Control arg1, Control arg2)
         {
             selectedControl = (GameControl)arg1;
@@ -205,7 +242,20 @@ namespace Nucleus.Coop
                 return;
             }
 
-            selectedHandler = handlers[0];
+            currentHandlers = handlers;
+
+            combo_Handlers.DataSource = handlers;
+            combo_Handlers.SelectedIndex = 0;
+        }
+
+        private void combo_Handlers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (combo_Handlers.SelectedIndex == -1)
+            {
+                return;
+            }
+
+            selectedHandler = currentHandlers[combo_Handlers.SelectedIndex];
             handlerData = gameManager.RepoManager.ReadHandlerDataFromInstalledPackage(selectedHandler);
 
             btn_Play.Enabled = false;
@@ -235,6 +285,7 @@ namespace Nucleus.Coop
             content = new ContentManager(selectedHandler, handlerData);
             GoToStep(0);
         }
+
 
         private void EnablePlay()
         {
@@ -426,49 +477,37 @@ namespace Nucleus.Coop
             GoToStep(currentStepIndex);
         }
 
-        private void btnSearch_Click(object sender, EventArgs e)
+        private void btn_Browse_Click(object sender, EventArgs e)
         {
-            //using (OpenFileDialog open = new OpenFileDialog())
-            //{
-            //    open.Filter = "Game Executable Files|*.exe";
-            //    if (open.ShowDialog() == DialogResult.OK)
-            //    {
-            //        string path = open.FileName;
+            using (OpenFileDialog open = new OpenFileDialog())
+            {
+                open.Filter = "Game Executable Files|*.exe";
+                if (open.ShowDialog() == DialogResult.OK)
+                {
+                    string path = open.FileName;
 
-            //        List<UserInstalledHandler> handlers = gameManager.GetAllHandlers(path);
+                    List<GameHandlerMetadata> allGames = gameManager.User.InstalledHandlers;
 
-            //        if (handlers.Count > 1)
-            //        {
-            //            GameList list = new GameList(handlers);
-            //            DPIManager.ForceUpdate();
+                    GameList list = new GameList(allGames);
+                    DPIManager.ForceUpdate();
 
-            //            if (list.ShowDialog() == DialogResult.OK)
-            //            {
-            //                UserGameInfo game = gameManager.TryAddGame(path, list.Selected);
+                    if (list.ShowDialog() == DialogResult.OK)
+                    {
+                        GameHandlerMetadata selected = list.Selected;
+                        UserGameInfo game = gameManager.TryAddGame(path, list.Selected);
 
-            //                if (game == null)
-            //                {
-            //                    MessageBox.Show("Game already in your library!");
-            //                }
-            //                else
-            //                {
-            //                    MessageBox.Show("Game accepted as " + game.Game.GameName);
-            //                    RefreshGames();
-            //                }
-            //            }
-            //        }
-            //        else if (handlers.Count == 1)
-            //        {
-            //            UserGameInfo game = gameManager.TryAddGame(path, handlers[0]);
-            //            MessageBox.Show("Game accepted as " + game.Game.GameName);
-            //            RefreshGames();
-            //        }
-            //        else
-            //        {
-            //            MessageBox.Show("Unknown game");
-            //        }
-            //    }
-            //}
+                        if (game == null)
+                        {
+                            MessageBox.Show("Game already in your library!");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Game accepted as ID " + game.GameID);
+                            RefreshGames();
+                        }
+                    }
+                }
+            }
         }
 
         private void btnAutoSearch_Click(object sender, EventArgs e)
@@ -496,12 +535,6 @@ namespace Nucleus.Coop
         private void btnShowTaskbar_Click(object sender, EventArgs e)
         {
             User32Util.ShowTaskBar();
-        }
-
-        private void btn_Packages_Click(object sender, EventArgs e)
-        {
-            //PackageManagerForm form = new PackageManagerForm();
-            //form.Show();
         }
 
         private void btn_Install_Click(object sender, EventArgs e)

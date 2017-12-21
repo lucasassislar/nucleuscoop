@@ -10,7 +10,7 @@ namespace Nucleus.Gaming.Repo
         /// <summary>
         /// An array with all available games on this store
         /// </summary>
-        public GameHandlerPackageInfo[] Games { get; set; }
+        public GameHandlerBaseMetadata[] Games { get; set; }
 
         /// <summary>
         /// Root folder for all packages infos

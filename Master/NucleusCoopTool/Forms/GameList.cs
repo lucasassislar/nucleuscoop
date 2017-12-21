@@ -1,5 +1,6 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Repo;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,9 +15,9 @@ namespace Nucleus.Coop
 {
     public partial class GameList : BaseForm
     {
-        private GenericHandlerData clicked;
+        private GameHandlerMetadata clicked;
 
-        public GenericHandlerData Selected
+        public GameHandlerMetadata Selected
         {
             get { return clicked; }
         }
@@ -29,25 +30,25 @@ namespace Nucleus.Coop
             }
         }
 
-        public GameList(List<UserInstalledHandler> games)
+        public GameList(List<GameHandlerMetadata> games)
         {
             InitializeComponent();
 
-            //GameManager manager = GameManager.Instance;
-            //foreach (UserInstalledHandler game in games)
-            //{
-            //    GameControl con = new GameControl(game, null);
-            //    con.Width = listGames.Width;
-            //    con.Click += Con_Click;
+            GameManager manager = GameManager.Instance;
+            foreach (GameHandlerMetadata game in games)
+            {
+                HandlerControl con = new HandlerControl(game);
+                con.Width = listGames.Width;
+                con.Click += Con_Click;
 
-            //    listGames.Controls.Add(con);
-            //}
+                listGames.Controls.Add(con);
+            }
         }
 
         private void Con_Click(object sender, EventArgs e)
         {
-            //clicked = ((GameControl)sender).GameInfo;
-            //btnOk.Enabled = true;
+            clicked = ((HandlerControl)sender).Metadata;
+            btnOk.Enabled = true;
         }
 
         private void btnOk_Click(object sender, EventArgs e)

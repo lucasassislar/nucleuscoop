@@ -1118,7 +1118,7 @@ namespace Nucleus.Gaming.Coop
             g.DrawString(dragEachGamepad, playerTextFont, Brushes.White, new PointF(Width - dragEachGamepadSize.Width, playersArea.Y));
 
             SizeF bottomTextSize;
-            string bottomText = "Click on screen's top-left corner to change players on that screen. (4-player only) Right click player to change size";
+            string bottomText = "Click on screen's top-left corner to change players on that screen. Right click the player to change size";
             bottomText = StringUtil.WrapString(Width - 20, bottomText, g, playerTextFont, out bottomTextSize);
             g.DrawString(bottomText, playerTextFont, Brushes.White, new PointF(10, Height - bottomTextSize.Height - 10));
         }

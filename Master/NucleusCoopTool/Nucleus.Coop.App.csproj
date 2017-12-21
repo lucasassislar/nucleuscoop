@@ -92,10 +92,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\CTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\GameControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\GameNameControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HandlerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\JSUserInputControl.cs">

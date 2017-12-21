@@ -9,7 +9,7 @@ namespace Nucleus.Gaming.Repo
     /// <summary>
     /// Info about a package
     /// </summary>
-    public class GameHandlerPackageInfo
+    public class GameHandlerBaseMetadata
     {
         /// <summary>
         /// ID must be unique to the handler
@@ -50,5 +50,10 @@ namespace Nucleus.Gaming.Repo
         /// Version of the handler included in the package
         /// </summary>
         public int PlatV { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{0}, v{1} by {2} for Nuke v{3}", Title, V, Dev, PlatV);
+        }
     }
 }

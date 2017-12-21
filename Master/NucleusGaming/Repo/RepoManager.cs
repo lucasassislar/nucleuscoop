@@ -252,6 +252,14 @@ namespace Nucleus.Gaming.Repo
             }
         }
 
+        public GameHandlerMetadata GetFirstInstalledHandler(string gameId)
+        {
+            int totalHeaders = config.RepoHeaders.Count;
+            UserProfile user = GameManager.Instance.User;
+
+            return user.InstalledHandlers.FirstOrDefault(c => c.GameID == gameId);
+        }
+
         public GameHandlerMetadata[] GetInstalledHandlers(string gameId)
         {
             int totalHeaders = config.RepoHeaders.Count;
@@ -260,7 +268,7 @@ namespace Nucleus.Gaming.Repo
             return user.InstalledHandlers.Where(c => c.GameID == gameId).ToArray();
         }
 
-        public GameHandlerMetadata GetInstalledHandlerMetadata(string repoId, GameHandlerPackageInfo info)
+        public GameHandlerMetadata GetInstalledHandlerMetadata(string repoId, GameHandlerBaseMetadata info)
         {
             return GetInstalledHandlerMetadata(repoId, info.HandlerID, info.GameID);
         }
@@ -274,7 +282,7 @@ namespace Nucleus.Gaming.Repo
                                                                 c.GameID == gameId);
         }
 
-        public static string GetInstallPath(GameHandlerPackageInfo metadata)
+        public static string GetInstallPath(GameHandlerBaseMetadata metadata)
         {
             string installed = GameManager.Instance.GetInstalledPackagePath();
             string installedName = metadata.GameID + "-H" + metadata.HandlerID + "-V" + metadata.V + "-N" + metadata.PlatV + "-" + metadata.Dev;
