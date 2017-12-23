@@ -16,17 +16,6 @@ namespace Nucleus.Gaming.Coop
             gameNames = new Dictionary<string, string>();
         }
 
-        public bool UpdateNaming(GameHandlerBaseMetadata info)
-        {
-            // TODO: better logic so repositories can agree on game name
-            if (gameNames.ContainsKey(info.GameID))
-            {
-                return false;
-            }
-            gameNames.Add(info.GameID, info.Title);
-            return true;
-        }
-
         public bool UpdateNaming(GameHandlerMetadata info)
         {
             // TODO: better logic so repositories can agree on game name
@@ -34,7 +23,7 @@ namespace Nucleus.Gaming.Coop
             {
                 return false;
             }
-            gameNames.Add(info.GameID, info.Title);
+            gameNames.Add(info.GameID, info.GameTitle);
             return true;
         }
 

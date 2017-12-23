@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,5 +27,14 @@ namespace Nucleus.Gaming.Repo
         /// A list of paths to screenshots inside the game package
         /// </summary>
         public string[] Screenshots { get; set; }
+
+        public string DevDescription { get; set; }
+
+        /// <summary>
+        /// Used so we dont have to compute the path to the *.js handler,
+        /// as this could just be a debug file and we shouldnt enforce installation
+        /// </summary>
+        [JsonIgnore]
+        public string RootDirectory { get; set; }
     }
 }

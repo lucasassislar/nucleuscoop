@@ -31,7 +31,14 @@ namespace Nucleus.Gaming.Coop
             picture.SizeMode = PictureBoxSizeMode.StretchImage;
 
             title = new Label();
-            title.Text = metadata.ToString();
+            if (metadata == null)
+            {
+                title.Text = "No handlers";
+            }
+            else
+            { 
+                title.Text = metadata.ToString();
+            }
             TitleText = title.Text;
 
             BackColor = Color.FromArgb(30, 30, 30);

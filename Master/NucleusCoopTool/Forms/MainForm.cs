@@ -31,11 +31,10 @@ namespace Nucleus.Coop
 
         private GameHandlerMetadata selectedHandler;
         private GenericHandlerData handlerData;
-        private IGameHandler handler;
+        private GenericGameHandler handler;
 
         private GameProfile currentProfile;
         private bool noGamesPresent;
-        private bool noHandlersPresent;
         private List<UserInputControl> stepsList;
         private UserInputControl currentStep;
 
@@ -400,7 +399,7 @@ namespace Nucleus.Coop
             btn_Play.Text = "S T O P";
 
             handler = gameManager.MakeHandler(handlerData);
-            handler.Initialize(selectedControl.UserGameInfo, GameProfile.CleanClone(currentProfile));
+            handler.Initialize(handlerData, selectedControl.UserGameInfo, GameProfile.CleanClone(currentProfile));
             handler.Ended += handler_Ended;
 
             gameManager.Play(handler);
@@ -541,11 +540,17 @@ namespace Nucleus.Coop
         {
             using (OpenFileDialog open = new OpenFileDialog())
             {
+                open.Multiselect = true;
                 open.Filter = "Nucleus Coop Package Files|*.nc";
                 if (open.ShowDialog() == DialogResult.OK)
                 {
-                    string path = open.FileName;
-                    gameManager.RepoManager.InstallPackage(path);
+                    string[] paths = open.FileNames;
+                    for (int i = 0; i < paths.Length; i++)
+                    {
+                        gameManager.RepoManager.InstallPackage(paths[i]);
+                    }
+
+                    RefreshGames();
                 }
             }
         }

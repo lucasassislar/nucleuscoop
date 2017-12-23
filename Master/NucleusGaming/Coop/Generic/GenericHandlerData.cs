@@ -7,6 +7,7 @@ using System.Reflection;
 using Microsoft.Win32;
 using Nucleus.Gaming.Generic.Step;
 using Nucleus.Gaming.Coop;
+using Jint.Runtime.Interop;
 
 namespace Nucleus.Gaming
 {
@@ -25,6 +26,7 @@ namespace Nucleus.Gaming
         public string[] FileSymlinkExclusions { get; set; }
         public string[] FileSymlinkCopyInstead { get; set; }
 
+        public bool ForceFinishOnPlay { get; set; } = true;
         public double HandlerInterval { get; set; }
         public bool Debug { get; set; }
         public bool SupportsPositionin { get; set; }
@@ -82,12 +84,14 @@ namespace Nucleus.Gaming
         private void ParseJs(string jsCode)
         {
             // get the Nucleus.Gaming assembly
-            Assembly assembly = typeof(GameOption).Assembly;
+            engine = new Engine();
 
-            engine = new Engine(cfg => cfg.AllowClr(assembly));
+            engine.SetValue("SaveType", TypeReference.CreateTypeReference(engine, typeof(SaveType)));
+            engine.SetValue("DPIHandling", TypeReference.CreateTypeReference(engine, typeof(DPIHandling)));
+            engine.SetValue("Folder", TypeReference.CreateTypeReference(engine, typeof(Folder)));
+            engine.SetValue("SaveType", TypeReference.CreateTypeReference(engine, typeof(SaveType)));
 
             engine.SetValue("Game", this);
-            engine.Execute("var Nucleus = importNamespace('Nucleus.Gaming');");
             engine.Execute(jsCode);
         }
 

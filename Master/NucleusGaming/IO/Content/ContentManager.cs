@@ -17,7 +17,7 @@ namespace Nucleus.Gaming
         private string handlersFolder;
         private string pkgFolder;
 
-        public ContentManager(GameHandlerBaseMetadata info, GenericHandlerData game)
+        public ContentManager(GameHandlerMetadata info, GenericHandlerData game)
         {
             this.game = game;
             loadedImages = new Dictionary<string, Image>();

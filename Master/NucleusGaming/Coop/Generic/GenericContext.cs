@@ -104,6 +104,16 @@ namespace Nucleus.Gaming
             parent = handler;
         }
 
+        public string CombinePath(string path1, string path2)
+        {
+            return Path.Combine(path1, path2);
+        }
+
+        public void CopyFile(string fileSource, string fileDestination, bool overwrite)
+        {
+            File.Copy(fileSource, fileDestination, overwrite);
+        }
+
         public string GetFolder(Folder folder)
         {
             return parent.GetFolder(folder);
@@ -117,6 +127,17 @@ namespace Nucleus.Gaming
             }
             File.WriteAllLines(path, lines);
         }
+
+        public CfgSaveInfo NewCfgSaveInfo(string section, string key, string value)
+        {
+            return new CfgSaveInfo(section, key, value);
+        }
+
+        public IniSaveInfo NewIniSaveInfo(string section, string key, string value)
+        {
+            return new IniSaveInfo(section, key, value);
+        }
+
 
         public void ModifySaveFile(string installSavePath, string saveFullPath, SaveType type, params SaveInfo[] info)
         {

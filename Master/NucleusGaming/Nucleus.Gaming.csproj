@@ -122,6 +122,8 @@
     </Compile>
     <Compile Include="Coop\CoopConfigInfo.cs" />
     <Compile Include="Coop\GameNameManager.cs" />
+    <Compile Include="Coop\Generic\GameHandler.cs" />
+    <Compile Include="Coop\Js\JsHandlerEngine.cs" />
     <Compile Include="Coop\UserInstalledHandler.cs" />
     <Compile Include="Diagnostics\OutputLevel.cs" />
     <Compile Include="DirectInput\DInputManager.cs" />

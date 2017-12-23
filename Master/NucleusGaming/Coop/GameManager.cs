@@ -46,7 +46,6 @@ namespace Nucleus.Gaming.Coop
         public Dictionary<string, GenericHandlerData> GameInfos { get { return gameInfos; } }
         public GameNameManager NameManager { get { return nameManager; } }
 
-
         public UserProfile User { get { return user; } }
         public RepoManager RepoManager { get { return repoManager; } }
         public CoopConfigInfo Config { get { return config; } }
@@ -358,9 +357,9 @@ namespace Nucleus.Gaming.Coop
             backupFiles = new List<BackupFile>();
         }
 
-        public IGameHandler MakeHandler(GenericHandlerData game)
+        public GenericGameHandler MakeHandler(GenericHandlerData game)
         {
-            return (IGameHandler)Activator.CreateInstance(game.HandlerType);
+            return (GenericGameHandler)Activator.CreateInstance(game.HandlerType);
         }
 
         public string GempTempFolder(GenericHandlerData game)
@@ -565,7 +564,7 @@ namespace Nucleus.Gaming.Coop
         }
         #endregion
 
-        public void Play(IGameHandler handler)
+        public void Play(GenericGameHandler handler)
         {
             // Start the Play method in another thread, so the
             // handler can update while it's still loading
@@ -578,7 +577,7 @@ namespace Nucleus.Gaming.Coop
 #if RELEASE
             try
             {
-                error = ((IGameHandler)state).Play();
+                error = ((GenericGameHandler)state).Play();
             }
             catch (Exception ex)
             {
@@ -595,7 +594,7 @@ namespace Nucleus.Gaming.Coop
                 }
             }
 #else
-            error = ((IGameHandler)state).Play();
+            error = ((GenericGameHandler)state).Play();
 #endif
         }
     }

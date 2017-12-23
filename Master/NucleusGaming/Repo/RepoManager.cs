@@ -214,6 +214,7 @@ namespace Nucleus.Gaming.Repo
                 {
                     string fullGameInfo = reader.ReadToEnd();
                     GameHandlerMetadata metadata = JsonConvert.DeserializeObject<GameHandlerMetadata>(fullGameInfo);
+                    metadata.RootDirectory = Path.GetDirectoryName(metadataPath);
                     gameManager.NameManager.UpdateNaming(metadata);
                     return metadata;
                 }
@@ -282,8 +283,13 @@ namespace Nucleus.Gaming.Repo
                                                                 c.GameID == gameId);
         }
 
-        public static string GetInstallPath(GameHandlerBaseMetadata metadata)
+        public static string GetInstallPath(GameHandlerMetadata metadata)
         {
+            if (!string.IsNullOrEmpty(metadata.RootDirectory))
+            {
+                return metadata.RootDirectory;
+            }
+
             string installed = GameManager.Instance.GetInstalledPackagePath();
             string installedName = metadata.GameID + "-H" + metadata.HandlerID + "-V" + metadata.V + "-N" + metadata.PlatV + "-" + metadata.Dev;
             return Path.Combine(installed, installedName);
