@@ -92,7 +92,7 @@ namespace Nucleus.Gaming.Coop
             //}
         }
 
-        public override void Initialize(GenericHandlerData handlerData, UserGameInfo game, GameProfile profile)
+        public override void Initialize(HandlerData handlerData, UserGameInfo game, GameProfile profile)
         {
             base.Initialize(handlerData, game, profile);
 

@@ -1,7 +1,7 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Generic.Step;
-using Nucleus.Gaming.Repo;
+using Nucleus.Gaming.Coop.Handler;
+using Nucleus.Gaming.Package;
 using Nucleus.Gaming.Windows;
 using Nucleus.Gaming.Windows.Interop;
 using System;
@@ -30,7 +30,7 @@ namespace Nucleus.Coop
         private GameControl selectedControl;
 
         private GameHandlerMetadata selectedHandler;
-        private GenericHandlerData handlerData;
+        private HandlerData handlerData;
         private GenericGameHandler handler;
 
         private GameProfile currentProfile;
@@ -45,7 +45,7 @@ namespace Nucleus.Coop
         private Thread handlerThread;
         private CoopConfigInfo configFile;
 
-        public MainForm()
+        public MainForm(string[] args)
         {
             InitializeComponent();
 
@@ -70,6 +70,25 @@ namespace Nucleus.Coop
             list_Games.SelectedChanged += list_Games_SelectedChanged;
             //int vertScrollWidth = SystemInformation.VerticalScrollBarWidth;
             //list_Games.Padding = new Padding(0, 0, vertScrollWidth, 0);
+
+            if (args != null)
+            {
+                for (int i = 0; i < args.Length; i++)
+                {
+                    string argument = args[i];
+                    if (string.IsNullOrEmpty(argument))
+                    {
+                        continue;
+                    }
+
+                    string extension = Path.GetExtension(argument);
+                    if (extension.ToLower().EndsWith("nc"))
+                    {
+                        // try installing
+                        gameManager.RepoManager.InstallPackage(argument);
+                    }
+                }
+            }
         }
 
         protected override Size DefaultSize
@@ -146,7 +165,7 @@ namespace Nucleus.Coop
             }
 
             DPIManager.ForceUpdate();
-            gameManager.SaveUserProfile();
+            gameManager.User.Save();
         }
 
         public void NewGameHandler(GameHandlerMetadata metadata)

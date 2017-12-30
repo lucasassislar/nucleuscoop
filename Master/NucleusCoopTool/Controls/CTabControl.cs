@@ -166,6 +166,9 @@ namespace Nucleus.Gaming.Forms
             {
                 tp = TabPages[index];
                 r = GetTabRect(index);
+                r.X += 2;
+                r.Y += 3;
+
                 ButtonBorderStyle bs = ButtonBorderStyle.Outset;
                 if (index == SelectedIndex)
                 {
@@ -209,8 +212,6 @@ namespace Nucleus.Gaming.Forms
 
                 e.Graphics.ResetTransform();
             }
-
-
         }
 
 

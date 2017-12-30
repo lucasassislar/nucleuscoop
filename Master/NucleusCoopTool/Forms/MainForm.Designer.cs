@@ -41,11 +41,11 @@
             this.panel_Steps = new System.Windows.Forms.Panel();
             this.cTabControl1 = new Nucleus.Gaming.Forms.CTabControl();
             this.tabGames = new System.Windows.Forms.TabPage();
-            this.list_Games = new Nucleus.Gaming.ControlListBox();
+            this.list_Games = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
             this.tabHandlers = new System.Windows.Forms.TabPage();
             this.btn_Uninstall = new System.Windows.Forms.Button();
             this.btn_InstallHandler = new System.Windows.Forms.Button();
-            this.list_Handlers = new Nucleus.Gaming.ControlListBox();
+            this.list_Handlers = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
             this.cTabControl1.SuspendLayout();
             this.tabGames.SuspendLayout();
             this.tabHandlers.SuspendLayout();
@@ -76,7 +76,7 @@
             this.btn_Browse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btn_Browse.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btn_Browse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Browse.Location = new System.Drawing.Point(3, 619);
+            this.btn_Browse.Location = new System.Drawing.Point(3, 618);
             this.btn_Browse.Name = "btn_Browse";
             this.btn_Browse.Size = new System.Drawing.Size(125, 35);
             this.btn_Browse.TabIndex = 15;
@@ -112,7 +112,7 @@
             // 
             this.btn_AutoSearchGame.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_AutoSearchGame.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_AutoSearchGame.Location = new System.Drawing.Point(134, 619);
+            this.btn_AutoSearchGame.Location = new System.Drawing.Point(134, 618);
             this.btn_AutoSearchGame.Name = "btn_AutoSearchGame";
             this.btn_AutoSearchGame.Size = new System.Drawing.Size(126, 35);
             this.btn_AutoSearchGame.TabIndex = 10;
@@ -177,12 +177,12 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.cTabControl1.Controls.Add(this.tabGames);
             this.cTabControl1.Controls.Add(this.tabHandlers);
-            this.cTabControl1.Location = new System.Drawing.Point(5, 8);
+            this.cTabControl1.Location = new System.Drawing.Point(5, 9);
             this.cTabControl1.Margin = new System.Windows.Forms.Padding(0);
             this.cTabControl1.Name = "cTabControl1";
             this.cTabControl1.Padding = new System.Drawing.Point(0, 0);
             this.cTabControl1.SelectedIndex = 0;
-            this.cTabControl1.Size = new System.Drawing.Size(271, 686);
+            this.cTabControl1.Size = new System.Drawing.Size(271, 685);
             this.cTabControl1.TabIndex = 19;
             this.cTabControl1.TabInsetBackground = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.cTabControl1.TabOutsetBackground = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
@@ -196,7 +196,7 @@
             this.tabGames.Location = new System.Drawing.Point(4, 25);
             this.tabGames.Margin = new System.Windows.Forms.Padding(0);
             this.tabGames.Name = "tabGames";
-            this.tabGames.Size = new System.Drawing.Size(263, 657);
+            this.tabGames.Size = new System.Drawing.Size(263, 656);
             this.tabGames.TabIndex = 0;
             this.tabGames.Text = "Games";
             // 
@@ -303,9 +303,9 @@
         private System.Windows.Forms.Label label1;
         private Gaming.Forms.CTabControl cTabControl1;
         private System.Windows.Forms.TabPage tabGames;
-        private Gaming.ControlListBox list_Games;
+        private Gaming.Platform.Windows.Controls.ControlListBox list_Games;
         private System.Windows.Forms.TabPage tabHandlers;
-        private Gaming.ControlListBox list_Handlers;
+        private Gaming.Platform.Windows.Controls.ControlListBox list_Handlers;
         private System.Windows.Forms.Button btn_InstallHandler;
         private System.Windows.Forms.Button btn_Uninstall;
     }

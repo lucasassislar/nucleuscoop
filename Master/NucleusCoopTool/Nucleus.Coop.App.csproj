@@ -57,6 +57,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -119,18 +120,6 @@
     <Compile Include="Controls\PositionsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Repo\RepoGameControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Repo\RepoGameControl.Designer.cs">
-      <DependentUpon>RepoGameControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Repo\RepoGameListControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Repo\RepoGameListControl.Designer.cs">
-      <DependentUpon>RepoGameListControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\UserInputControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -171,9 +160,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\PlayerCountControl.resx">
       <DependentUpon>PlayerCountControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Repo\RepoGameControl.resx">
-      <DependentUpon>RepoGameControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
@@ -416,9 +402,7 @@
     <None Include="games\GasGuzzlersExtreme.js" />
     <None Include="games\DontStarveTogether.js" />
     <None Include="games\DontStarveTogether\steam_api.dll" />
-    <None Include="config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="config.json" />
     <None Include="games\550-Left4Dead2\game.js" />
     <Content Include="icon.ico" />
     <None Include="Resources\4players.png" />

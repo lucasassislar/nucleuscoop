@@ -1,5 +1,7 @@
 ﻿using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Generic.Step;
+using Nucleus.Gaming.Coop.Handler;
+using Nucleus.Gaming.Platform.Windows.Controls;
+using Nucleus.Gaming.Windows.Controls;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -47,7 +49,7 @@ namespace Nucleus.Gaming
 
         private IList collection;
 
-        public override void Initialize(GenericHandlerData handlerData, UserGameInfo game, GameProfile profile)
+        public override void Initialize(HandlerData handlerData, UserGameInfo game, GameProfile profile)
         {
             base.Initialize(handlerData, game, profile);
 

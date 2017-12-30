@@ -366,7 +366,7 @@ namespace Nucleus.Gaming.Coop
                 screen.SwapTypeBounds = RectangleUtil.Float(uiBounds.X, uiBounds.Y, uiBounds.Width * 0.1f, uiBounds.Width * 0.1f);
             }
         }
-        public override void Initialize(GenericHandlerData handlerData, UserGameInfo game, GameProfile profile)
+        public override void Initialize(HandlerData handlerData, UserGameInfo game, GameProfile profile)
         {
             base.Initialize(handlerData,game, profile);
 

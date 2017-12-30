@@ -1,5 +1,5 @@
 ﻿using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Repo;
+using Nucleus.Gaming.Package;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,17 +13,17 @@ namespace Nucleus.Gaming
     {
         private Dictionary<string, Image> loadedImages;
         private bool isDisposed;
-        private GenericHandlerData game;
+        private HandlerData game;
         private string handlersFolder;
         private string pkgFolder;
 
-        public ContentManager(GameHandlerMetadata info, GenericHandlerData game)
+        public ContentManager(GameHandlerMetadata info, HandlerData game)
         {
             this.game = game;
             loadedImages = new Dictionary<string, Image>();
 
             handlersFolder = GameManager.Instance.GetInstalledPackagePath();
-            pkgFolder = RepoManager.GetInstallPath(info);
+            pkgFolder = PackageManager.GetInstallPath(info);
         }
 
         public void Dispose()

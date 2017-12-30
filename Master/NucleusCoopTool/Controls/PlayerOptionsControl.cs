@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Nucleus.Gaming;
-using Nucleus.Gaming.Controls;
 using System.Collections;
 using System.Reflection;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Platform.Windows.Controls;
+using Nucleus.Gaming.Windows.Controls;
 
 namespace Nucleus.Gaming.Coop
 {
@@ -41,7 +42,7 @@ namespace Nucleus.Gaming.Coop
             detailsFont = new Font("Segoe UI", 12);
         }
 
-        public override void Initialize(GenericHandlerData handlerData, UserGameInfo game, GameProfile profile)
+        public override void Initialize(HandlerData handlerData, UserGameInfo game, GameProfile profile)
         {
             base.Initialize(handlerData, game, profile);
 

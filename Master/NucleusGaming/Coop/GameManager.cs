@@ -3,13 +3,14 @@ using Newtonsoft.Json;
 using Nucleus.Gaming.Diagnostics;
 using Nucleus.Gaming.IO;
 using Nucleus.Gaming.Properties;
-using Nucleus.Gaming.Repo;
+using Nucleus.Gaming.Package;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using Nucleus.Gaming.Coop.IO;
 
 namespace Nucleus.Gaming.Coop
 {
@@ -22,32 +23,19 @@ namespace Nucleus.Gaming.Coop
         private static GameManager instance;
         private CoopConfigInfo config;
 
-        // object instance so we can thread-safe save the user profile
-        private object savingLock = new object();
-
         private UserProfile user;
         private List<BackupFile> backupFiles;
         private string error;
-        private bool isSaving;
-        private RepoManager repoManager;
+        private PackageManager repoManager;
 
-        private Dictionary<string, GenericHandlerData> games;
-        private Dictionary<string, GenericHandlerData> gameInfos;
         private GameNameManager nameManager;
 
         public string Error { get { return error; } }
 
-        public bool IsSaving { get { return isSaving; } }
-
-        /// <summary>
-        /// A dictionary containing GameInfos. The key is the game's guid
-        /// </summary>
-        public Dictionary<string, GenericHandlerData> Games { get { return games; } }
-        public Dictionary<string, GenericHandlerData> GameInfos { get { return gameInfos; } }
         public GameNameManager NameManager { get { return nameManager; } }
 
         public UserProfile User { get { return user; } }
-        public RepoManager RepoManager { get { return repoManager; } }
+        public PackageManager RepoManager { get { return repoManager; } }
         public CoopConfigInfo Config { get { return config; } }
 
         public static GameManager Instance { get { return instance; } }
@@ -69,7 +57,6 @@ namespace Nucleus.Gaming.Coop
         {
             return user.InstalledHandlers.Any(c => string.Equals(c.ExeName.ToLower(), gameExe, StringComparison.OrdinalIgnoreCase) ||
                                                     string.Equals(c.ExeName.ToLower() + ".exe", gameExe, StringComparison.OrdinalIgnoreCase));
-            //return Games.Values.Any(c => c.ExecutableName == gameExe);
         }
 
         /// <summary>
@@ -83,10 +70,8 @@ namespace Nucleus.Gaming.Coop
             string fileName = Path.GetFileName(exePath).ToLower();
             string dir = Path.GetDirectoryName(exePath);
 
-            //var possibilities = Games.Values.Where(c => string.Equals(c.ExecutableName, fileName, StringComparison.OrdinalIgnoreCase));
             var possibilities = user.InstalledHandlers.Where(c => string.Equals(c.ExeName, fileName, StringComparison.OrdinalIgnoreCase));
 
-            //foreach (GenericGameInfo game in possibilities)
             foreach (GameHandlerMetadata game in possibilities)
             {
                 // check if the Context matches
@@ -174,7 +159,7 @@ namespace Nucleus.Gaming.Coop
             string lower = exePath.ToLower();
             string dir = Path.GetDirectoryName(exePath);
 
-            if (GameManager.Instance.User.Games.Any(c => c.ExePath.ToLower() == lower))
+            if (user.Games.Any(c => c.ExePath.ToLower() == lower))
             {
                 return null;
             }
@@ -182,8 +167,8 @@ namespace Nucleus.Gaming.Coop
             Log.WriteLine($"Added game: {metadata.Title}, on path: {exePath}");
             UserGameInfo uinfo = new UserGameInfo();
             uinfo.InitializeDefault(metadata, exePath);
-            GameManager.Instance.User.Games.Add(uinfo);
-            GameManager.Instance.SaveUserProfile();
+            user.Games.Add(uinfo);
+            user.Save();
 
             return uinfo;
 
@@ -221,7 +206,7 @@ namespace Nucleus.Gaming.Coop
                 }
 
                 if (notAdd ||
-                    GameManager.Instance.User.Games.Any(c => c.ExePath.ToLower() == lower))
+                    user.Games.Any(c => c.ExePath.ToLower() == lower))
                 {
                     continue;
                 }
@@ -229,8 +214,8 @@ namespace Nucleus.Gaming.Coop
                 Log.WriteLine($"Found game: {metadata.Title}, on path: {exePath}");
                 UserGameInfo uinfo = new UserGameInfo();
                 uinfo.InitializeDefault(metadata, exePath);
-                GameManager.Instance.User.Games.Add(uinfo);
-                GameManager.Instance.SaveUserProfile();
+                user.Games.Add(uinfo);
+                user.Save();
 
                 return uinfo;
             }
@@ -284,13 +269,6 @@ namespace Nucleus.Gaming.Coop
             return steamEmu;
         }
 
-        public void WaitSave()
-        {
-            while (IsSaving)
-            {
-            }
-        }
-
         #region Initialize
 
         private string GetAppDataPath()
@@ -336,19 +314,7 @@ namespace Nucleus.Gaming.Coop
         //    return x.Game.GameName.CompareTo(y.Game.GameName);
         //}
 
-        public UserGameInfo AddGame(GenericHandlerData game, string exePath)
-        {
-            UserGameInfo gInfo = new UserGameInfo();
-            throw new NotImplementedException();
-            //gInfo.InitializeDefault(game, exePath);
-            user.Games.Add(gInfo);
-
-            SaveUserProfile();
-
-            return gInfo;
-        }
-
-        public void BeginBackup(GenericHandlerData game)
+        public void BeginBackup(HandlerData game)
         {
             string appData = GetAppDataPath();
             string gamePath = Path.Combine(appData, game.GUID);
@@ -357,18 +323,18 @@ namespace Nucleus.Gaming.Coop
             backupFiles = new List<BackupFile>();
         }
 
-        public GenericGameHandler MakeHandler(GenericHandlerData game)
+        public GenericGameHandler MakeHandler(HandlerData game)
         {
             return (GenericGameHandler)Activator.CreateInstance(game.HandlerType);
         }
 
-        public string GempTempFolder(GenericHandlerData game)
+        public string GempTempFolder(HandlerData game)
         {
             string appData = GetAppDataPath();
             return Path.Combine(appData, game.GUID);
         }
 
-        public BackupFile BackupFile(GenericHandlerData game, string path)
+        public BackupFile BackupFile(HandlerData game, string path)
         {
             string appData = GetAppDataPath();
             string gamePath = Path.Combine(appData, game.GUID);
@@ -397,7 +363,7 @@ namespace Nucleus.Gaming.Coop
             return bkp;
         }
 
-        public void ExecuteBackup(GenericHandlerData game)
+        public void ExecuteBackup(HandlerData game)
         {
             // we didnt backup anything
             if (backupFiles == null)
@@ -419,17 +385,6 @@ namespace Nucleus.Gaming.Coop
             }
         }
 
-        public void SaveUserProfile()
-        {
-            lock (user.Games)
-            {
-                //user.Games.Sort(Compare);
-            }
-
-            string userProfile = GetUserProfilePath();
-            asyncSaveUser(userProfile);
-        }
-
         private void LoadUser()
         {
             string userProfile = GetUserProfilePath();
@@ -438,26 +393,18 @@ namespace Nucleus.Gaming.Coop
             {
                 try
                 {
-                    using (FileStream stream = new FileStream(userProfile, FileMode.Open))
+                    user = new UserProfile(userProfile);
+
+                    if (user.Games == null || user.InstalledHandlers == null)
                     {
-                        using (StreamReader reader = new StreamReader(stream))
-                        {
-                            string json = reader.ReadToEnd();
-                            user = JsonConvert.DeserializeObject<UserProfile>(json);
-
-                            if (user.Games == null || user.InstalledHandlers == null)
-                            {
-                                // json doesn't save empty lists, and user didn't add any game
-                                user.InitializeDefault();
-                            }
-                            else
-                            {
-                                // delete invalid games
-
-                                // we will rebuild the gamedb later, so commented for now
-                                //RebuildGameDb();
-                            }
-                        }
+                        // json doesn't save empty lists, and user didn't add any game
+                        user.InitializeDefault();
+                    }
+                    else
+                    {
+                        // delete invalid games
+                        // we will rebuild the gamedb later, so commented for now
+                        //RebuildGameDb();
                     }
                 }
                 catch
@@ -493,7 +440,8 @@ namespace Nucleus.Gaming.Coop
                 GameHandlerMetadata metadata = repoManager.ReadMetadataFromFile(metadataPath);
                 user.InstalledHandlers.Add(metadata);
             }
-            SaveUserProfile();
+
+            user.Save();
         }
 
         private void makeDefaultUserFile()
@@ -508,54 +456,17 @@ namespace Nucleus.Gaming.Coop
                 Directory.CreateDirectory(split);
             }
 
-            saveUser(userProfile);
-        }
-
-        private void asyncSaveUser(string path)
-        {
-            if (!IsSaving)
-            {
-                isSaving = true;
-                Log.WriteLine("> Saving user profile....");
-                ThreadPool.QueueUserWorkItem(saveUser, path);
-            }
-        }
-
-        private void saveUser(object p)
-        {
-            lock (savingLock)
-            {
-                try
-                {
-                    isSaving = true;
-                    string path = (string)p;
-                    using (FileStream stream = new FileStream(path, FileMode.Create))
-                    {
-                        using (StreamWriter writer = new StreamWriter(stream))
-                        {
-                            string json = JsonConvert.SerializeObject(user);
-                            writer.Write(json);
-                            stream.Flush();
-                        }
-                    }
-                    Log.WriteLine("Saved user profile");
-                }
-                catch { }
-                isSaving = false;
-            }
+            user.Save();
         }
 
         private void Initialize()
         {
-            games = new Dictionary<string, GenericHandlerData>();
-            gameInfos = new Dictionary<string, GenericHandlerData>();
-
             nameManager = new GameNameManager();
 
             string appData = GetAppDataPath();
             Directory.CreateDirectory(appData);
 
-            repoManager = new RepoManager(config);
+            repoManager = new PackageManager(config);
 
             LoadUser();
 

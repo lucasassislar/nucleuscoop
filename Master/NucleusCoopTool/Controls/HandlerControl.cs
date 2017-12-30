@@ -8,7 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Repo;
+using Nucleus.Gaming.Package;
+using Nucleus.Gaming.Platform.Windows.Controls;
 
 namespace Nucleus.Gaming.Coop
 {
