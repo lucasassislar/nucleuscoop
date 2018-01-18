@@ -1,7 +1,7 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Diagnostics;
-using Nucleus.Gaming.IO.MFT;
+using Nucleus.Gaming.Platform.Windows.IO.MFT;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -219,17 +219,10 @@ namespace Nucleus.Coop
 
                     if (uinfo != null)
                     {
-#if RELEASE
-                        if (uinfo.Game.Debug)
-                        {
-                            continue;
-                        }
-#endif
-
-                        Log.WriteLine($"> Found new game {uinfo.Game.GameName} on drive {info.drive.Name}");
+                        Log.WriteLine($"> Found new game ID {uinfo.GameID} on drive {info.drive.Name}");
                         Invoke(new Action(delegate
                         {
-                            listGames.Items.Add(uinfo.Game.GameName + " - " + path);
+                            listGames.Items.Add(GameManager.Instance.NameManager.GetGameName(uinfo.GameID) + " - " + path);
                             listGames.Invalidate();
                             main.NewUserGame(uinfo);
                         }));
@@ -251,6 +244,7 @@ namespace Nucleus.Coop
                     progress = 1;
                     UpdateProgress(0);
                     btnSearch.Enabled = true;
+
                     main.RefreshGames();
                     MessageBox.Show("Finished searching!");
                 }));

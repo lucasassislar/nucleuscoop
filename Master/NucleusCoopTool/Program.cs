@@ -11,7 +11,7 @@ namespace Nucleus.Coop
     static class Program
     {
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             // initialize DPIManager BEFORE setting 
             // the application to be DPI aware
@@ -21,7 +21,7 @@ namespace Nucleus.Coop
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            MainForm form = new MainForm();
+            MainForm form = new MainForm(args);
             DPIManager.AddForm(form);
             DPIManager.ForceUpdate();
 

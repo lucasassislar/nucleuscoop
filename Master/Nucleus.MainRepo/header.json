@@ -1,1 +1,1 @@
-{"Games":[{"ID":"550","Title":"Left 4 Dead 2","ExeName":"left4dead2","Developer":"distrolucas"}],"PackagesInfoRoot":"infos","PackagesRoot":"packages"}
+{"Games":[{"GameID":"550","HandlerID":"1","Title":"Left 4 Dead 2","ExeName":"left4dead2","Dev":"distrolucas","V":1,"PlatV":9},{"GameID":"261640","HandlerID":"2","Title":"Borderlands: The Pre Sequel","ExeName":"borderlandspresequel","Dev":"distrolucas","V":1,"PlatV":9}],"PackagesInfoRoot":"infos","PackagesRoot":"packages","RepositoryId":"1"}

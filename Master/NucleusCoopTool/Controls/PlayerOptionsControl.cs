@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Nucleus.Gaming;
-using Nucleus.Gaming.Controls;
 using System.Collections;
 using System.Reflection;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Platform.Windows.Controls;
+using Nucleus.Gaming.Windows.Controls;
 
 namespace Nucleus.Gaming.Coop
 {
@@ -41,9 +42,9 @@ namespace Nucleus.Gaming.Coop
             detailsFont = new Font("Segoe UI", 12);
         }
 
-        public override void Initialize(UserGameInfo game, GameProfile profile)
+        public override void Initialize(HandlerData handlerData, UserGameInfo game, GameProfile profile)
         {
-            base.Initialize(game, profile);
+            base.Initialize(handlerData, game, profile);
 
             this.Controls.Clear();
 
@@ -52,7 +53,7 @@ namespace Nucleus.Gaming.Coop
             list = new ControlListBox();
             list.Size = this.Size;
 
-            List<GameOption> options = game.Game.Options;
+            List<GameOption> options = handlerData.Options;
             Dictionary<string, object> vals = profile.Options;
             for (int j = 0; j < options.Count; j++)
             {

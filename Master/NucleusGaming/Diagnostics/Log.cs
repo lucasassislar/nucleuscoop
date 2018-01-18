@@ -39,6 +39,7 @@ namespace Nucleus.Gaming.Diagnostics
             locker = new object();
 
             instance = this;
+            logCallbacks = new List<ILogNode>();
 
             if (enableLogging)
             {

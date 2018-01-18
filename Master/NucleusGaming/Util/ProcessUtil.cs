@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using Nucleus.Gaming.Interop;
 using System.Threading;
 using System.Management;
+using System.IO;
 
 namespace Nucleus.Gaming
 {
@@ -24,6 +25,22 @@ namespace Nucleus.Gaming
         {
             Process p = (Process)state;
 
+        }
+
+        public static void ForceKill(string name)
+        {
+            try
+            {
+                Process[] procs = Process.GetProcessesByName(name.ToLower());
+                if (procs.Length > 0)
+                {
+                    for (int i = 0; i < procs.Length; i++)
+                    {
+                        procs[i].Kill();
+                    }
+                }
+            }
+            catch { }
         }
 
         public static bool KillMutex(Process process, string mutexName)

@@ -33,3 +33,9 @@ For the application:
 For the games's Javascript files
 	- Visual Studio Code
 	- ProcessExplorer
+
+
+## Built With
+
+* [x360ce](https://github.com/x360ce/x360ce)
+* [x360ce (branch used)](https://github.com/lucasassislar/x360ce)

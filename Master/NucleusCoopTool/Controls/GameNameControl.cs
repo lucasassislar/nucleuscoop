@@ -19,10 +19,10 @@ namespace Nucleus.Coop.Controls
             get { return gameInfo; }
             set
             {
-                if (gameInfo != value)
+                if (gameInfo != value && value != null)
                 {
                     picture.Image = value.Icon;
-                    title.Text = value.Game.GameName;
+                    title.Text = GameManager.Instance.NameManager.GetGameName(value.GameID);
                     DPIManager.Update(this);
                 }
                 gameInfo = value;

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameList));
-            this.listGames = new Nucleus.Gaming.ControlListBox();
+            this.listGames = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
             this.btnOk = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -78,7 +78,7 @@
 
         #endregion
 
-        private Gaming.ControlListBox listGames;
+        private Gaming.Platform.Windows.Controls.ControlListBox listGames;
         private System.Windows.Forms.Button btnOk;
     }
 }
