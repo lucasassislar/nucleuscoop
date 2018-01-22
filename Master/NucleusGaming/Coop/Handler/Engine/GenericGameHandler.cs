@@ -341,7 +341,7 @@ namespace Nucleus.Gaming
                     linkFolder = workingFolder;
                 }
 
-                HandlerContext context = handlerData.CreateContext(profile, player, this);
+                HandlerContext context = handlerData.CreateContext(profile, player);
                 context.PlayerID = player.PlayerID;
                 context.IsFullscreen = isFullscreen;
 
@@ -349,7 +349,7 @@ namespace Nucleus.Gaming
                 context.RootInstallFolder = exeFolder;
                 context.RootFolder = linkFolder;
 
-                handlerData.PrePlay(context, this, player);
+                handlerData.PrePlay(context, player);
 
                 string startArgs = context.StartArguments;
 

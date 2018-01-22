@@ -15,7 +15,6 @@ namespace Nucleus.Gaming.Coop
     {
         private GameProfile profile;
         private PlayerInfo pInfo;
-        private GenericGameHandler parent;
 
         [Dynamic(AutoHandles = true)]
         public string ExePath;
@@ -51,6 +50,7 @@ namespace Nucleus.Gaming.Coop
         public bool IsFullscreen;
         public UserInfo User = new UserInfo();
         public DPIHandling DPIHandling = DPIHandling.True;
+        public Dictionary<string, string> AdditionalData;
 
         public Type HandlerType
         {
@@ -97,11 +97,10 @@ namespace Nucleus.Gaming.Coop
         }
 
         
-        public HandlerContext(GameProfile prof, PlayerInfo info, GenericGameHandler handler)
+        public HandlerContext(GameProfile prof, PlayerInfo info)
         {
             profile = prof;
             pInfo = info;
-            parent = handler;
         }
 
         public string CombinePath(string path1, string path2)
@@ -116,7 +115,7 @@ namespace Nucleus.Gaming.Coop
 
         public string GetFolder(Folder folder)
         {
-            return parent.GetFolder(folder);
+            return AdditionalData[folder.ToString()];
         }
 
         public void WriteTextFile(string path, string[] lines)

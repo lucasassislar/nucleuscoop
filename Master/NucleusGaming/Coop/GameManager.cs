@@ -29,9 +29,10 @@ namespace Nucleus.Gaming.Coop
         private PackageManager repoManager;
 
         private GameNameManager nameManager;
+        private ModuleManager moduleManager;
 
         public string Error { get { return error; } }
-
+        public ModuleManager ModuleManager { get { return moduleManager; } }
         public GameNameManager NameManager { get { return nameManager; } }
 
         public UserProfile User { get { return user; } }
@@ -467,6 +468,7 @@ namespace Nucleus.Gaming.Coop
             Directory.CreateDirectory(appData);
 
             repoManager = new PackageManager(config);
+            moduleManager = new ModuleManager();
 
             LoadUser();
 

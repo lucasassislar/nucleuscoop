@@ -29,26 +29,31 @@ namespace Nucleus.Gaming.Coop.Handler.Cursor
     /// <summary>
     /// Module for handling mouse/cursor related features
     /// </summary>
-    class CursorModule
-	{
-        NativeMethods.HookProc llMouseProc;
-        NativeMethods.WinEventProc winEventProc;
-        IntPtr llMouseHook = IntPtr.Zero;
-        IntPtr winEventHook = IntPtr.Zero;
-        IntPtr processHandle = IntPtr.Zero;
+    public class CursorModule : HandlerModule
+    {
+        private UserGameInfo userGame;
+        private GameProfile profile;
+        private HandlerData handlerData;
 
-        HashSet<IntPtr> _otherGames = new HashSet<IntPtr>();
+        private NativeMethods.HookProc llMouseProc;
+        private NativeMethods.WinEventProc winEventProc;
+        private IntPtr llMouseHook = IntPtr.Zero;
+        private IntPtr winEventHook = IntPtr.Zero;
+        private IntPtr processHandle = IntPtr.Zero;
 
-        int _minForce = int.MaxValue;
-        Process _process;
+        private HashSet<IntPtr> _otherGames = new HashSet<IntPtr>();
+
+        private int _minForce = int.MaxValue;
+        private Process _process;
         private Rectangle _rectangle;
 
         // Barriers which constrain the cursor movement
-        CursorBarrierLower _leftBarrier = new CursorBarrierLower(false, 0, 0);
-        CursorBarrierUpper _rightBarrier = new CursorBarrierUpper(false, 0, 0);
-        CursorBarrierLower _topBarrier = new CursorBarrierLower(false, 0, 0);
-        CursorBarrierUpper _bottomBarrier = new CursorBarrierUpper(false, 0, 0);
-        
+        private CursorBarrierLower _leftBarrier = new CursorBarrierLower(false, 0, 0);
+        private CursorBarrierUpper _rightBarrier = new CursorBarrierUpper(false, 0, 0);
+        private CursorBarrierLower _topBarrier = new CursorBarrierLower(false, 0, 0);
+        private CursorBarrierUpper _bottomBarrier = new CursorBarrierUpper(false, 0, 0);
+
+        public override int Order { get { return 100; } }
 
         public CursorModule()
         {
@@ -69,6 +74,24 @@ namespace Nucleus.Gaming.Coop.Handler.Cursor
             {
                 Stop();
             };
+        }
+
+        public override bool Initialize(GameHandler handler, HandlerData handlerData, UserGameInfo game, GameProfile profile)
+        {
+            this.userGame = game;
+            this.profile = profile;
+            this.handlerData = handlerData;
+
+            return true;
+        }
+
+        public override void PrePlay()
+        {
+        }
+
+        public override void PrePlayPlayer(PlayerInfo playerInfo, int index)
+        {
+
         }
 
         public void AddOtherGameHandle(IntPtr gameHandle)
@@ -181,7 +204,9 @@ namespace Nucleus.Gaming.Coop.Handler.Cursor
         {
             //setting the window hook
             if (winEventHook == IntPtr.Zero)
+            {
                 winEventHook = NativeMethods.SetWinEventHook(NativeMethods.EVENT_SYSTEM_FOREGROUND, NativeMethods.EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, winEventProc, 0, 0, NativeMethods.WINEVENT_OUTOFCONTEXT);
+            }
         }
 
         public void StopListeningForWindowChanges()
@@ -217,6 +242,23 @@ namespace Nucleus.Gaming.Coop.Handler.Cursor
         {
             NativeMethods.ShowWindow(processHandle, NativeMethods.SW_RESTORE | NativeMethods.SW_SHOW);
             NativeMethods.SetForegroundWindow(processHandle);
+        }
+
+        public override void PlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context)
+        {
+        }
+
+        public static bool IsNeeded(HandlerData data)
+        {
+#if WINDOWS
+            return data.LockMouse;
+#else
+            return false;
+#endif
+        }
+
+        public override void Tick(double delayMs)
+        {
         }
     }
 }

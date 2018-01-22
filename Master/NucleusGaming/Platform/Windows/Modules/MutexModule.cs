@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Coop.Handler;
 using Nucleus.Gaming.Tools.GameStarter;
 using System;
 using System.Collections.Generic;
@@ -8,13 +9,15 @@ using System.Threading;
 
 namespace Nucleus.Gaming.Platform.Windows
 {
-    public class MutexManager : HandlerManager
+    public class MutexModule : HandlerModule
     {
         private UserGameInfo userGame;
         private GameProfile profile;
         private HandlerData handlerData;
 
-        public override bool Initialize(HandlerData handlerData, UserGameInfo game, GameProfile profile)
+        public override int Order { get { return 100; } }
+
+        public override bool Initialize(GameHandler handler, HandlerData handlerData, UserGameInfo game, GameProfile profile)
         {
             this.userGame = game;
             this.profile = profile;
@@ -23,7 +26,7 @@ namespace Nucleus.Gaming.Platform.Windows
             return true;
         }
 
-        public override bool CanPlay(PlayerInfo player, int index)
+        public override void PrePlayPlayer(PlayerInfo player, int index)
         {
             ProcessInfo procData = player.ProcessData;
             bool hasSetted = procData != null && procData.Setted;
@@ -69,9 +72,23 @@ namespace Nucleus.Gaming.Platform.Windows
             {
 
             }
-            return false;
         }
 
+        public static bool IsNeeded(HandlerData data)
+        {
+            return data.KillMutex?.Length > 0;
+        }
 
+        public override void PrePlay()
+        {
+        }
+
+        public override void PlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context)
+        {
+        }
+
+        public override void Tick(double delayMs)
+        {
+        }
     }
 }

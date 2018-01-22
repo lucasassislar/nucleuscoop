@@ -1,9 +1,9 @@
 ﻿using Nucleus.Gaming.Coop.Handler.Cursor;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace Nucleus.Gaming.Coop.Handler
 {
@@ -13,9 +13,20 @@ namespace Nucleus.Gaming.Coop.Handler
         private GameProfile _profile;
         private HandlerData _handlerData;
 
-        private CursorModule _cursorModule;
+        private List<HandlerModule> modules;
 
-        private Dictionary<string, string> jsData;
+        public T GetModule<T>()
+        {
+            for (int i = 0; i < modules.Count; i++)
+            {
+                object module = modules[i];
+                if (module is T)
+                {
+                    return (T)module;
+                }
+            }
+            return default(T);
+        }
 
         public bool Initialize(HandlerData handlerData, UserGameInfo userGameInfo, GameProfile profile)
         {
@@ -23,26 +34,83 @@ namespace Nucleus.Gaming.Coop.Handler
             this._userGame = userGameInfo;
             this._profile = profile;
 
-            if (this._handlerData.LockMouse)
+            modules = new List<HandlerModule>();
+            foreach (ModuleInfo info in GameManager.Instance.ModuleManager.Modules)
             {
-                _cursorModule = new CursorModule();
+                if (info.IsNeeded(handlerData))
+                {
+                    modules.Add((HandlerModule)Activator.CreateInstance(info.ModuleType));
+                }
             }
 
-            jsData = new Dictionary<string, string>();
-            jsData.Add(Folder.Documents.ToString(), Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-            jsData.Add(Folder.MainGameFolder.ToString(), Path.GetDirectoryName(userGameInfo.ExePath));
-            jsData.Add(Folder.InstancedGameFolder.ToString(), Path.GetDirectoryName(userGameInfo.ExePath));
+            // order modules
+            modules = modules.OrderBy(c => c.Order).ToList();
+
+            for (int i = 0; i < modules.Count; i++)
+            {
+                modules[i].Initialize(this, handlerData, userGameInfo, profile);
+            }
 
             return true;
         }
 
         public RequestResult<string> Play()
         {
+            List<PlayerInfo> players = _profile.PlayerData;
+            for (int i = 0; i < players.Count; i++)
+            {
+                players[i].PlayerID = i;
+            }
+
             var result = new RequestResult<string>();
 
+            for (int i = 0; i < modules.Count; i++)
+            {
+                modules[i].PrePlay();
+            }
 
+            for (int i = 0; i < players.Count; i++)
+            {
+                PlayerInfo player = players[i];
+
+                for (int j = 0; j < modules.Count; j++)
+                {
+                    modules[j].PrePlayPlayer(player, i);
+                }
+
+                HandlerContext context = _handlerData.CreateContext(_profile, player);
+                context.PlayerID = player.PlayerID;
+
+                _handlerData.PrePlay(context, player);
+
+                for (int j = 0; j < modules.Count; j++)
+                {
+                    modules[j].PlayPlayer(player, i, context);
+                }
+
+                Thread.Sleep(TimeSpan.FromSeconds(_handlerData.PauseBetweenStarts));
+            }
 
             return result;
+        }
+
+        public void Tick(double delayMs)
+        {
+            List<PlayerInfo> players = _profile.PlayerData;
+            for (int i = 0; i < players.Count; i++)
+            {
+                PlayerInfo player = players[i];
+
+            }
+            for (int j = 0; j < modules.Count; j++)
+            {
+                modules[j].Tick(delayMs);
+            }
+        }
+
+        public void End()
+        {
+
         }
     }
 }

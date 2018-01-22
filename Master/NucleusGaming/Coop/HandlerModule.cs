@@ -1,19 +1,21 @@
-﻿using System;
+﻿using Nucleus.Gaming.Coop.Handler;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace Nucleus.Gaming.Coop
 {
-    public abstract class HandlerManager
+    public abstract class HandlerModule
     {
+        public abstract int Order { get;  }
         //protected IList<PlayerInfo> players;
 
         //private UserGameInfo userGame;
         //private GameProfile profile;
         //private GenericHandlerData handlerData;
 
-        public abstract bool Initialize(HandlerData handlerData, UserGameInfo game, GameProfile profile);
+        public abstract bool Initialize(GameHandler handler, HandlerData handlerData, UserGameInfo game, GameProfile profile);
         //{
         //    this.userGame = game;
         //    this.profile = profile;
@@ -27,6 +29,11 @@ namespace Nucleus.Gaming.Coop
         //    this.players = players;
         //}
 
-        public abstract bool CanPlay(PlayerInfo playerInfo, int index);
+        public abstract void PrePlay();
+
+        public abstract void PrePlayPlayer(PlayerInfo playerInfo, int index);
+        public abstract void PlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context);
+
+        public abstract void Tick(double delayMs);
     }
 }

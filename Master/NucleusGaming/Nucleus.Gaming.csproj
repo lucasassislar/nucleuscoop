@@ -25,7 +25,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;UNSAFE;ALPHA</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -34,7 +34,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;UNSAFE;ALPHA</DefineConstants>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -48,7 +48,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TestDebug|AnyCPU'">
     <OutputPath>bin\TestDebug\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <DefineConstants>UNSAFE;ALPHA</DefineConstants>
+    <DefineConstants>WINDOWS</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
@@ -77,6 +77,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Coop\Data\Save\SaveInfo.cs" />
+    <Compile Include="Coop\Handler\Modules\IO\IOModule.cs" />
+    <Compile Include="Coop\ModuleManager.cs" />
     <Compile Include="Platform\Windows\Controls\BorderPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -124,18 +126,18 @@
     <Compile Include="Coop\CoopConfigInfo.cs" />
     <Compile Include="Coop\GameNameManager.cs" />
     <Compile Include="Coop\Handler\Engine\GameHandler.cs" />
-    <Compile Include="Coop\HandlerManager.cs" />
+    <Compile Include="Coop\HandlerModule.cs" />
     <Compile Include="Coop\UserInstalledHandler.cs" />
     <Compile Include="Diagnostics\OutputLevel.cs" />
     <Compile Include="Platform\Windows\DirectInput\DInputManager.cs" />
     <Compile Include="Coop\Data\GameOption.cs" />
     <Compile Include="Coop\Data\GameOptionValue.cs" />
     <Compile Include="Coop\Data\GameProfile.cs" />
-    <Compile Include="Coop\Handler\Cursor\CursorBarrier.cs" />
-    <Compile Include="Coop\Handler\Cursor\CursorBarrierLower.cs" />
-    <Compile Include="Coop\Handler\Cursor\CursorBarrierUpper.cs" />
-    <Compile Include="Coop\Handler\Cursor\CursorModule.cs" />
-    <Compile Include="Coop\Handler\Cursor\NativeMethods.cs" />
+    <Compile Include="Coop\Handler\Modules\Cursor\CursorBarrier.cs" />
+    <Compile Include="Coop\Handler\Modules\Cursor\CursorBarrierLower.cs" />
+    <Compile Include="Coop\Handler\Modules\Cursor\CursorBarrierUpper.cs" />
+    <Compile Include="Coop\Handler\Modules\Cursor\CursorModule.cs" />
+    <Compile Include="Coop\Handler\Modules\Cursor\NativeMethods.cs" />
     <Compile Include="Coop\Data\DynamicAttribute.cs" />
     <Compile Include="Coop\Data\HandlerContext.cs" />
     <Compile Include="Coop\Data\HandlerData.cs" />
@@ -153,6 +155,7 @@
     <Compile Include="Globals.cs" />
     <Compile Include="IO\JsonPropertiesFile.cs" />
     <Compile Include="IO\JsPropertiesFile.cs" />
+    <Compile Include="Platform\Windows\Modules\GameProcessModule.cs" />
     <Compile Include="Platform\Windows\IO\MFT\FileNameAndParentFrn.cs" />
     <Compile Include="Platform\Windows\IO\MFT\MFTReader.cs" />
     <Compile Include="Platform\Windows\Interop\Gdi32\Gdi32Interop.cs" />
@@ -193,7 +196,8 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Coop\Data\KeyboardPlayer.cs" />
-    <Compile Include="Platform\Windows\MutexManager.cs" />
+    <Compile Include="Platform\Windows\Modules\MutexModule.cs" />
+    <Compile Include="Platform\Windows\Modules\XInputHandlerModule.cs" />
     <Compile Include="RAction.cs" />
     <Compile Include="Coop\Package\GameHandlerMetadata.cs" />
     <Compile Include="Coop\Package\GameHandlerBaseMetadata.cs" />

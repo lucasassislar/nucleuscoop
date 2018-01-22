@@ -61,6 +61,8 @@ namespace Nucleus.Gaming.Coop
         public List<CustomStep> CustomSteps { get; set; } = new List<CustomStep>();
         public bool LockMouse { get; set; }
 
+        public Dictionary<string, string> AdditionalData { get; set; } = new Dictionary<string, string>();
+
         public Type HandlerType
         {
             get { return typeof(GenericGameHandler); }
@@ -74,6 +76,8 @@ namespace Nucleus.Gaming.Coop
             ParseJs(jsCode);
         }
 
+        private bool executing;
+
         public HandlerData(string jsCode)
         {
             ParseJs(jsCode);
@@ -82,6 +86,8 @@ namespace Nucleus.Gaming.Coop
         private void ParseJs(string jsCode)
         {
             // get the Nucleus.Gaming assembly
+            AdditionalData = new Dictionary<string, string>();
+
             engine = new Engine();
 
             engine.SetValue("SaveType", TypeReference.CreateTypeReference(engine, typeof(SaveType)));
@@ -90,7 +96,30 @@ namespace Nucleus.Gaming.Coop
             engine.SetValue("SaveType", TypeReference.CreateTypeReference(engine, typeof(SaveType)));
 
             engine.SetValue("Game", this);
+        }
+
+        public void Execute()
+        {
+            executing = true;
             engine.Execute(jsCode);
+            executing = false;
+        }
+
+        public void RegisterAdditional(string key, string value)
+        {
+            //if (executing)
+            //{
+            //    return;
+            //}
+
+            if (!AdditionalData.ContainsKey(key))
+            {
+                AdditionalData.Add(key, value);
+            }
+            else
+            {
+                AdditionalData[key] = value;
+            }
         }
 
         public CustomStep ShowOptionAsStep(string optionKey, bool required, string title)
@@ -107,10 +136,9 @@ namespace Nucleus.Gaming.Coop
             return step;
         }
 
-        public void PrePlay(HandlerContext context, GenericGameHandler handler, PlayerInfo player)
+        public void PrePlay(HandlerContext context, PlayerInfo player)
         {
             engine.SetValue("Context", context);
-            engine.SetValue("Handler", handler);
             engine.SetValue("Player", player);
             engine.SetValue("Game", this);
 
@@ -121,9 +149,9 @@ namespace Nucleus.Gaming.Coop
         /// Clones this Game Info into a new Generic Context
         /// </summary>
         /// <returns></returns>
-        public HandlerContext CreateContext(GameProfile profile, PlayerInfo info, GenericGameHandler handler)
+        public HandlerContext CreateContext(GameProfile profile, PlayerInfo info)
         {
-            HandlerContext context = new HandlerContext(profile, info, handler);
+            HandlerContext context = new HandlerContext(profile, info);
 
             Type t = GetType();
             PropertyInfo[] props = t.GetProperties();
@@ -137,17 +165,14 @@ namespace Nucleus.Gaming.Coop
             {
                 PropertyInfo p = props[i];
                 PropertyInfo d = cprops.FirstOrDefault(k => k.Name == p.Name);
-                if (d == null)
-                {
-                    continue;
-                }
-
-                if (p.PropertyType != d.PropertyType ||
+                if (d == null ||
+                    p.PropertyType != d.PropertyType ||
                     !d.CanWrite)
                 {
                     continue;
                 }
 
+                // TODO: this is dangerous for lists/dictionaries if the handler changes the size of anything
                 object value = p.GetValue(this, null);
                 d.SetValue(context, value, null);
             }
@@ -156,12 +181,8 @@ namespace Nucleus.Gaming.Coop
             {
                 FieldInfo source = fields[i];
                 FieldInfo dest = cfields.FirstOrDefault(k => k.Name == source.Name);
-                if (dest == null)
-                {
-                    continue;
-                }
-
-                if (source.FieldType != dest.FieldType)
+                if (dest == null ||
+                    source.FieldType != dest.FieldType)
                 {
                     continue;
                 }
@@ -177,9 +198,13 @@ namespace Nucleus.Gaming.Coop
         {
             string result;
             if (Environment.Is64BitOperatingSystem)
+            {
                 result = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Valve\Steam", "Language", null);
+            }
             else
+            {
                 result = (string)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Valve\Steam", "Language", null);
+            }
 
             return result;
         }
