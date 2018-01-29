@@ -60,7 +60,6 @@ namespace StartGame
 
         static void Main(string[] args)
         {
-
             // We need this, else Windows will fake
             // all the data about monitors inside the application
             User32Util.SetProcessDpiAwareness(ProcessDPIAwareness.ProcessPerMonitorDPIAware);
@@ -92,7 +91,36 @@ namespace StartGame
                         break;
                     case GameStarterTask.KillMutex:
                         {
-                            ConsoleU.WriteLine($"Trying to kill mutexes {data.Parameters.Length} mutexes", Palette.Wait);
+                            string procId = data.Parameters[0];
+                            ConsoleU.WriteLine($"Process ID {procId} request to kill mutexes", Palette.Wait);
+                            proc = Process.GetProcessById(int.Parse(procId));
+
+                            ConsoleU.WriteLine($"Trying to kill mutexes {data.Parameters.Length - 1} mutexes", Palette.Wait);
+                            for (int j = 1; j < data.Parameters.Length; j++)
+                            {
+                                string m = data.Parameters[j];
+                                string prefix = $"({j}/{data.Parameters.Length - 1}) ";
+                                ConsoleU.WriteLine(prefix + "Trying to kill mutex: " + m, Palette.Feedback);
+
+                                if (!ProcessUtil.KillMutex(proc, m))
+                                {
+                                    ConsoleU.WriteLine(prefix + "Mutex " + m + " could not be killed", Palette.Error);
+                                }
+                                else
+                                {
+                                    ConsoleU.WriteLine(prefix + "Mutex killed " + m, Palette.Success);
+                                }
+                                Thread.Sleep(150);
+                            }
+                        }
+                        break;
+                    case GameStarterTask.QueryMutex:
+                        {
+                            string procId = data.Parameters[0];
+                            ConsoleU.WriteLine($"Process ID {procId} request to be queried for mutexes", Palette.Wait);
+                            proc = Process.GetProcessById(int.Parse(procId));
+
+                            ConsoleU.WriteLine($"Trying to query for any mutex's existance", Palette.Wait);
                             for (int j = 0; j < data.Parameters.Length; j++)
                             {
                                 string m = data.Parameters[j];

@@ -23,7 +23,10 @@ namespace Nucleus.Gaming.Tools.GameStarter
         {
             data = new StartGameData();
             data.Task = GameStarterTask.KillMutex;
-            data.Parameters = mutex;
+
+            var list = mutex.ToList();
+            list.Insert(0, processId.ToString());
+            data.Parameters = list.ToArray();
 
             string startGamePath = GetStartGamePath();
             ProcessStartInfo startInfo = new ProcessStartInfo();
@@ -42,7 +45,10 @@ namespace Nucleus.Gaming.Tools.GameStarter
         {
             data = new StartGameData();
             data.Task = GameStarterTask.QueryMutex;
-            data.Parameters = mutex;
+
+            var list = mutex.ToList();
+            list.Insert(0, processId.ToString());
+            data.Parameters = list.ToArray();
 
             string startGamePath = GetStartGamePath();
             ProcessStartInfo startInfo = new ProcessStartInfo();
