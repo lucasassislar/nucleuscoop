@@ -1,5 +1,7 @@
-﻿using Nucleus;
+﻿using Newtonsoft.Json;
+using Nucleus;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Tools.GameStarter;
 using Nucleus.Gaming.Windows;
 using System;
 using System.Collections.Generic;
@@ -58,6 +60,7 @@ namespace StartGame
 
         static void Main(string[] args)
         {
+
             // We need this, else Windows will fake
             // all the data about monitors inside the application
             User32Util.SetProcessDpiAwareness(ProcessDPIAwareness.ProcessPerMonitorDPIAware);
@@ -72,117 +75,59 @@ namespace StartGame
             try
 #endif
             {
-                for (int i = 0; i < args.Length; i++)
+                string base64 = Encoding.UTF8.GetString(Convert.FromBase64String(args[0]));
+                StartGameData data = JsonConvert.DeserializeObject<StartGameData>(base64);
+
+                switch (data.Task)
                 {
-                    string arg = args[i];
-                    ConsoleU.WriteLine("Parsing line " + i + ": " + arg, Palette.Feedback);
-
-                    string argument = "";
-                    for (int j = i; j < args.Length; j++)
-                    {
-                        string skey = args[j];
-                        if (!skey.Contains("monitors")
-                             && !skey.Contains("game")
-                             && !skey.Contains("mutex")
-                             && !skey.Contains("proc")
-                             && !skey.Contains("output"))
+                    case GameStarterTask.StartGame:
                         {
-                            i++;
-                            if (string.IsNullOrEmpty(argument))
+                            string gamePath = data.Parameters[0];
+                            string gameArgs = data.Parameters[1];
+                            string gameWorkingDir = data.Parameters[2];
+
+                            ConsoleU.WriteLine($"Start game: EXE: {gamePath} ARGS: {gameArgs} WORKDIR: {gameWorkingDir}", Palette.Feedback);
+                            StartGame(gamePath, gameArgs, gameWorkingDir);
+                        }
+                        break;
+                    case GameStarterTask.KillMutex:
+                        {
+                            ConsoleU.WriteLine($"Trying to kill mutexes {data.Parameters.Length} mutexes", Palette.Wait);
+                            for (int j = 0; j < data.Parameters.Length; j++)
                             {
-                                argument = skey;
+                                string m = data.Parameters[j];
+                                string prefix = $"({j + 1}/{data.Parameters.Length}) ";
+                                ConsoleU.WriteLine(prefix + "Trying to kill mutex: " + m, Palette.Feedback);
+
+                                if (!ProcessUtil.KillMutex(proc, m))
+                                {
+                                    ConsoleU.WriteLine(prefix + "Mutex " + m + " could not be killed", Palette.Error);
+                                }
+                                else
+                                {
+                                    ConsoleU.WriteLine(prefix + "Mutex killed " + m, Palette.Success);
+                                }
+                                Thread.Sleep(150);
                             }
-                            else
+                        }
+                        break;
+                    case GameStarterTask.FindProcessId:
+                        {
+                            string procId = data.Parameters[0];
+                            int id = int.Parse(procId);
+                            try
                             {
-                                argument = argument + " " + skey;
+                                proc = Process.GetProcessById(id);
+                                ConsoleU.WriteLine($"Process ID {id} found!", Palette.Success);
                             }
-                        }
-                    }
-                    ConsoleU.WriteLine("Extra arguments:" + argument, Palette.Feedback);
-
-                    string[] splited = (arg + argument).Split(':');
-                    string key = splited[0].ToLower();
-
-                    if (key.Contains("monitors"))
-                    {
-
-                    }
-                    else if (key.Contains("game"))
-                    {
-                        string data = splited[1];
-                        string[] subArgs = data.Split(';');
-                        string path = subArgs[0];
-
-                        string argu = null;
-                        if (subArgs.Length > 1)
-                        {
-                            argu = subArgs[1];
-                        }
-
-                        string workingDir = null;
-                        if (path.Contains("|"))
-                        {
-                            string[] div = path.Split('|');
-                            path = div[0];
-                            workingDir = div[1];
-                        }
-
-                        ConsoleU.WriteLine($"Start game: EXE: {path} ARGS: {argu} WORKDIR: {workingDir}", Palette.Feedback);
-                        StartGame(path, argu, workingDir);
-                    }
-                    else if (key.Contains("mutex"))
-                    {
-                        string[] mutex = splited[1].Split(';');
-                        ConsoleU.WriteLine("Trying to kill mutexes", Palette.Wait);
-                        for (int j = 0; j < mutex.Length; j++)
-                        {
-                            string m = mutex[j];
-                            ConsoleU.WriteLine("Trying to kill mutex: " + m, Palette.Feedback);
-
-                            if (!ProcessUtil.KillMutex(proc, m))
+                            catch
                             {
-                                ConsoleU.WriteLine("Mutex " + m + " could not be killed", Palette.Error);
+                                ConsoleU.WriteLine($"Process ID {id} not found", Palette.Error);
                             }
-                            else
-                            {
-                                ConsoleU.WriteLine("Mutex killed " + m, Palette.Success);
-                            }
-                            Thread.Sleep(150);
                         }
-                    }
-                    else if (key.Contains("proc"))
-                    {
-                        string procId = splited[1];
-                        int id = int.Parse(procId);
-                        try
-                        {
-                            proc = Process.GetProcessById(id);
-                            ConsoleU.WriteLine($"Process ID {id} found!", Palette.Success);
-                        }
-                        catch
-                        {
-                            ConsoleU.WriteLine($"Process ID {id} not found", Palette.Error);
-                        }
-                    }
-                    else if (key.Contains("output"))
-                    {
-                        string[] mutex = splited[1].Split(';');
-                        bool all = true;
-
-                        for (int j = 0; j < mutex.Length; j++)
-                        {
-                            string m = mutex[j];
-                            ConsoleU.WriteLine("Requested mutex: " + m, Palette.Error);
-                            bool exists = ProcessUtil.MutexExists(proc, m);
-                            if (!exists)
-                            {
-                                all = false;
-                            }
-                            
-                            Thread.Sleep(500);
-                        }
-                        Console.WriteLine(all.ToString());
-                    }
+                        break;
+                    case GameStarterTask.ListMonitors:
+                        break;
                 }
             }
 #if RELEASE

@@ -60,10 +60,6 @@ namespace Nucleus.Gaming
 
             if (option.IsCollection())
             {
-
-            }
-            else
-            {
                 ControlListBox list = new ControlListBox();
                 list.Size = this.Size;
                 list.AutoScroll = true;
@@ -125,6 +121,10 @@ namespace Nucleus.Gaming
 
                     list.Controls.Add(control);
                 }
+            }
+            else
+            {
+                
             }
         }
 

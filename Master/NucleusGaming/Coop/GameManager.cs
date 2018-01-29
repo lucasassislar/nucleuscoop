@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Nucleus.Gaming.Coop.IO;
+using Nucleus.Gaming.Coop.Handler;
 
 namespace Nucleus.Gaming.Coop
 {
@@ -395,6 +396,7 @@ namespace Nucleus.Gaming.Coop
                 try
                 {
                     user = new UserProfile(userProfile);
+                    user.Load();
 
                     if (user.Games == null || user.InstalledHandlers == null)
                     {
@@ -447,9 +449,6 @@ namespace Nucleus.Gaming.Coop
 
         private void makeDefaultUserFile()
         {
-            user = new UserProfile();
-            user.InitializeDefault();
-
             string userProfile = GetUserProfilePath();
             string split = Path.GetDirectoryName(userProfile);
             if (!Directory.Exists(split))
@@ -457,7 +456,10 @@ namespace Nucleus.Gaming.Coop
                 Directory.CreateDirectory(split);
             }
 
-            user.Save();
+            user = new UserProfile(userProfile);
+            user.InitializeDefault();
+
+            user.Save(userProfile);
         }
 
         private void Initialize()
@@ -466,6 +468,10 @@ namespace Nucleus.Gaming.Coop
 
             string appData = GetAppDataPath();
             Directory.CreateDirectory(appData);
+
+            // create all default directories
+            Directory.CreateDirectory(GetInstalledPackagePath());
+            Directory.CreateDirectory(GetPackageTmpPath());
 
             repoManager = new PackageManager(config);
             moduleManager = new ModuleManager();
@@ -477,7 +483,7 @@ namespace Nucleus.Gaming.Coop
         }
         #endregion
 
-        public void Play(GenericGameHandler handler)
+        public void Play(GameHandler handler)
         {
             // Start the Play method in another thread, so the
             // handler can update while it's still loading
@@ -490,7 +496,7 @@ namespace Nucleus.Gaming.Coop
 #if RELEASE
             try
             {
-                error = ((GenericGameHandler)state).Play();
+                ((GameHandler)state).Play();
             }
             catch (Exception ex)
             {
@@ -507,7 +513,7 @@ namespace Nucleus.Gaming.Coop
                 }
             }
 #else
-            error = ((GenericGameHandler)state).Play();
+            ((GameHandler)state).Play();
 #endif
         }
     }

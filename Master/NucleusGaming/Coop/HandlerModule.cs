@@ -31,7 +31,7 @@ namespace Nucleus.Gaming.Coop
 
         public abstract void PrePlay();
 
-        public abstract void PrePlayPlayer(PlayerInfo playerInfo, int index);
+        public abstract void PrePlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context);
         public abstract void PlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context);
 
         public abstract void Tick(double delayMs);

@@ -222,6 +222,10 @@
       <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
       <Name>Nucleus.Gaming</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TempBuilder\TempBuilder.csproj">
+      <Project>{6bacfb45-eedc-4371-9377-013d534ac83c}</Project>
+      <Name>TempBuilder</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ThirdParty\WindowScrape\WindowScrape.csproj">
       <Project>{d9716550-921d-44e8-a289-c297950db1f7}</Project>
       <Name>WindowScrape</Name>
@@ -391,10 +395,6 @@
     <None Include="games\AlienSwarmReactiveDrop\tilarus08obj2.jpg" />
     <None Include="games\AlienSwarmReactiveDrop\tilarus09obpowerroom.jpg" />
     <None Include="games\Synergy.js" />
-    <None Include="..\StartGame\bin\Release\StartGame.exe">
-      <Link>StartGame.exe</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="games\SaintsRow3.js" />
     <None Include="games\DebugSaintsRowIV.js" />
     <None Include="games\DebugCallOfDutyBlackOpsMultiplayerRocketV2.js" />
@@ -404,6 +404,10 @@
     <None Include="games\DontStarveTogether\steam_api.dll" />
     <None Include="config.json" />
     <None Include="games\550-Left4Dead2\game.js" />
+    <None Include="..\StartGame\bin\Debug\StartGame.exe">
+      <Link>tools\StartGame.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="icon.ico" />
     <None Include="Resources\4players.png" />
     <None Include="Resources\16players.png" />
@@ -425,7 +429,10 @@
   </Target>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <PropertyGroup>
-    <PostBuildEvent>echo.&gt;Built.flag</PostBuildEvent>
+    <PostBuildEvent>$(TargetDir)TempBuilder.exe
+del /f $(TargetDir)TempBuilder.exe
+del /f $(TargetDir)TempBuilder.pdb
+echo.&gt;Built.flag</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>

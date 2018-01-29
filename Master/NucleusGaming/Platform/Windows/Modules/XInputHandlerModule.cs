@@ -35,7 +35,7 @@ namespace Nucleus.Gaming.Platform.Windows
         {
         }
 
-        public override void PrePlayPlayer(PlayerInfo playerInfo, int index)
+        public override void PrePlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context)
         {
         }
 

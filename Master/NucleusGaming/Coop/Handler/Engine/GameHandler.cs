@@ -7,6 +7,9 @@ using System.Threading;
 
 namespace Nucleus.Gaming.Coop.Handler
 {
+    /// <summary>
+    /// Base class that loads modules based on their need
+    /// </summary>
     public class GameHandler
     {
         private UserGameInfo _userGame;
@@ -15,6 +18,16 @@ namespace Nucleus.Gaming.Coop.Handler
 
         private List<HandlerModule> modules;
 
+        /// <summary>
+        /// Action callback when the game session has ended
+        /// </summary>
+        public event Action Ended;
+
+        /// <summary>
+        /// Gets a module by its type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public T GetModule<T>()
         {
             for (int i = 0; i < modules.Count; i++)
@@ -73,13 +86,13 @@ namespace Nucleus.Gaming.Coop.Handler
             {
                 PlayerInfo player = players[i];
 
-                for (int j = 0; j < modules.Count; j++)
-                {
-                    modules[j].PrePlayPlayer(player, i);
-                }
-
                 HandlerContext context = _handlerData.CreateContext(_profile, player);
                 context.PlayerID = player.PlayerID;
+
+                for (int j = 0; j < modules.Count; j++)
+                {
+                    modules[j].PrePlayPlayer(player, i, context);
+                }
 
                 _handlerData.PrePlay(context, player);
 
@@ -102,6 +115,7 @@ namespace Nucleus.Gaming.Coop.Handler
                 PlayerInfo player = players[i];
 
             }
+
             for (int j = 0; j < modules.Count; j++)
             {
                 modules[j].Tick(delayMs);
@@ -110,7 +124,10 @@ namespace Nucleus.Gaming.Coop.Handler
 
         public void End()
         {
-
+            if (Ended != null)
+            {
+                Ended();
+            }
         }
     }
 }

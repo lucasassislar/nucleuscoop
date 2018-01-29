@@ -89,7 +89,7 @@ namespace Nucleus.Gaming.Coop.Handler.Cursor
         {
         }
 
-        public override void PrePlayPlayer(PlayerInfo playerInfo, int index)
+        public override void PrePlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context)
         {
 
         }

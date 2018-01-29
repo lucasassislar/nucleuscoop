@@ -67,7 +67,7 @@ namespace Nucleus.Gaming.Coop.Modules
             }
         }
 
-        public override void PrePlayPlayer(PlayerInfo playerInfo, int index)
+        public override void PrePlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context)
         {
             if (handlerData.SymlinkGame || handlerData.HardcopyGame)
             {
@@ -164,6 +164,10 @@ namespace Nucleus.Gaming.Coop.Modules
                 linkBinFolder = rootFolder;
                 linkFolder = workingFolder;
             }
+
+            context.ExePath = exePath;
+            context.RootInstallFolder = exeFolder;
+            context.RootFolder = linkFolder;
         }
 
         public static bool IsNeeded(HandlerData data)
@@ -173,9 +177,7 @@ namespace Nucleus.Gaming.Coop.Modules
 
         public override void PlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context)
         {
-            context.ExePath = exePath;
-            context.RootInstallFolder = exeFolder;
-            context.RootFolder = linkFolder;
+            
         }
 
         public override void Tick(double delayMs)

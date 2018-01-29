@@ -96,14 +96,15 @@ namespace Nucleus.Gaming.Coop
             engine.SetValue("SaveType", TypeReference.CreateTypeReference(engine, typeof(SaveType)));
 
             engine.SetValue("Game", this);
+            engine.Execute(jsCode);
         }
 
-        public void Execute()
-        {
-            executing = true;
-            engine.Execute(jsCode);
-            executing = false;
-        }
+        //private void Execute()
+        //{
+        //    executing = true;
+        //    engine.Execute(jsCode);
+        //    executing = false;
+        //}
 
         public void RegisterAdditional(string key, string value)
         {
@@ -163,18 +164,27 @@ namespace Nucleus.Gaming.Coop
 
             for (int i = 0; i < props.Length; i++)
             {
-                PropertyInfo p = props[i];
-                PropertyInfo d = cprops.FirstOrDefault(k => k.Name == p.Name);
-                if (d == null ||
-                    p.PropertyType != d.PropertyType ||
-                    !d.CanWrite)
-                {
-                    continue;
-                }
+                PropertyInfo source = props[i];
+                PropertyInfo dest = cprops.FirstOrDefault(k => k.Name == source.Name);
 
-                // TODO: this is dangerous for lists/dictionaries if the handler changes the size of anything
-                object value = p.GetValue(this, null);
-                d.SetValue(context, value, null);
+                if (dest != null && 
+                    source.PropertyType == dest.PropertyType && 
+                    dest.CanWrite)
+                {
+                    // TODO: this is dangerous for lists/dictionaries if the handler changes the size of anything
+                    object value = source.GetValue(this, null);
+                    dest.SetValue(context, value, null);
+                }
+                else
+                {
+                    FieldInfo fdest = cfields.FirstOrDefault(k => k.Name == source.Name);
+                    if (fdest != null &&
+                        source.PropertyType == fdest.FieldType)
+                    {
+                        object value = source.GetValue(this, null);
+                        fdest.SetValue(context, value);
+                    }
+                }
             }
 
             for (int i = 0; i < fields.Length; i++)

@@ -25,7 +25,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WINDOWS</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WINDOWS;UNSAFE;ALPHA</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -34,7 +34,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <DefineConstants>TRACE;WINDOWS;UNSAFE;ALPHA</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -204,6 +204,8 @@
     <Compile Include="Coop\Package\PackageManager.cs" />
     <Compile Include="RequestResult.cs" />
     <Compile Include="Tools\GameStarter\StartGameApp.cs" />
+    <Compile Include="Tools\GameStarter\StartGameData.cs" />
+    <Compile Include="Tools\GameStarter\GameStarterTask.cs" />
     <Compile Include="Util\RectangleUtil.cs" />
     <Compile Include="Platform\Windows\MonitorDpiType.cs" />
     <Compile Include="Platform\Windows\ProcessDpiAwareness.cs" />

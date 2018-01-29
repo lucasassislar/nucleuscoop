@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -11,6 +12,7 @@ namespace Nucleus.Gaming.Tools.GameStarter
     {
         private Process process;
         private string lastLine;
+        private StartGameData data;
 
         public StartGameApp()
         {
@@ -19,22 +21,15 @@ namespace Nucleus.Gaming.Tools.GameStarter
 
         public void BeginKillMutex(int processId, params string[] mutex)
         {
+            data = new StartGameData();
+            data.Task = GameStarterTask.KillMutex;
+            data.Parameters = mutex;
+
             string startGamePath = GetStartGamePath();
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = startGamePath;
 
-            string mu = "";
-            for (int i = 0; i < mutex.Length; i++)
-            {
-                mu += mutex[i];
-
-                if (i != mutex.Length - 1)
-                {
-                    mu += ";";
-                }
-            }
-
-            startInfo.Arguments = "\"proc:" + processId.ToString() + "\" \"mutex:" + mu + "\"";
+            startInfo.Arguments = data.GetAsArguments();
             startInfo.RedirectStandardOutput = true;
             startInfo.UseShellExecute = false;
 
@@ -45,22 +40,15 @@ namespace Nucleus.Gaming.Tools.GameStarter
 
         public void BeginMutexExists(int processId, params string[] mutex)
         {
+            data = new StartGameData();
+            data.Task = GameStarterTask.QueryMutex;
+            data.Parameters = mutex;
+
             string startGamePath = GetStartGamePath();
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = startGamePath;
 
-            string mu = "";
-            for (int i = 0; i < mutex.Length; i++)
-            {
-                mu += mutex[i];
-
-                if (i != mutex.Length - 1)
-                {
-                    mu += ";";
-                }
-            }
-
-            startInfo.Arguments = $"\"proc:{processId}\" \"output:{mu}\"";
+            startInfo.Arguments = data.GetAsArguments();
             startInfo.RedirectStandardOutput = true;
             startInfo.UseShellExecute = false;
             startInfo.CreateNoWindow = true;
@@ -72,15 +60,18 @@ namespace Nucleus.Gaming.Tools.GameStarter
 
         public void BeginStartGame(string pathToGame, string args, string workingDir = null)
         {
+            data = new StartGameData();
+            data.Task = GameStarterTask.StartGame;
+            data.Parameters = new string[3];
+            data.Parameters[0] = pathToGame;
+            data.Parameters[1] = args;
+            data.Parameters[2] = workingDir;
+
             string startGamePath = GetStartGamePath();
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = startGamePath;
 
-            if (!string.IsNullOrWhiteSpace(workingDir))
-            {
-                workingDir = "|" + workingDir;
-            }
-            startInfo.Arguments = "\"game:" + pathToGame + workingDir + ";" + args + "\"";
+            startInfo.Arguments = data.GetAsArguments();
             startInfo.RedirectStandardOutput = true;
             startInfo.UseShellExecute = false;
 
@@ -123,7 +114,7 @@ namespace Nucleus.Gaming.Tools.GameStarter
 
         public static string GetStartGamePath()
         {
-            return Path.Combine(Path.GetDirectoryName(AssemblyUtil.GetStartFolder()), "StartGame.exe");
+            return Path.Combine(AssemblyUtil.GetStartFolder(), "tools", "StartGame.exe");
         }
     }
 }

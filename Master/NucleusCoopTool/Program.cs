@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming;
+using Nucleus.Gaming.Diagnostics;
 using Nucleus.Gaming.Windows;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace Nucleus.Coop
         [STAThread]
         static void Main(string[] args)
         {
+            new Log(true);
+
             // initialize DPIManager BEFORE setting 
             // the application to be DPI aware
             DPIManager.PreInitialize();

@@ -15,14 +15,9 @@ namespace Nucleus.Gaming.IO
         private object locker = new object();
         protected string pathToFile;
 
-        public JsonPropertiesFile()
-        {
-        }
-
         public JsonPropertiesFile(string _pathToFile)
         {
             this.pathToFile = _pathToFile;
-            Load();
         }
 
         public void Load()
@@ -37,8 +32,13 @@ namespace Nucleus.Gaming.IO
             }
         }
 
-        public void Save()
+        public void Save(string location = "")
         {
+            if (!string.IsNullOrEmpty(location))
+            {
+                pathToFile = location;
+            }
+
             lock (locker)
             {
                 string serialized = JsonConvert.SerializeObject(this);

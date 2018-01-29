@@ -31,7 +31,8 @@ namespace Nucleus.Coop
 
         private GameHandlerMetadata selectedHandler;
         private HandlerData handlerData;
-        private GenericGameHandler handler;
+        //private GenericGameHandler handler;
+        private GameHandler handler;
 
         private GameProfile currentProfile;
         private bool noGamesPresent;
@@ -417,12 +418,13 @@ namespace Nucleus.Coop
             btn_Play.Visible = false;
             btn_Play.Text = "S T O P";
 
-            handler = gameManager.MakeHandler(handlerData);
+            handler = new GameHandler();
+            //handler = gameManager.MakeHandler(handlerData);
             handler.Initialize(handlerData, selectedControl.UserGameInfo, GameProfile.CleanClone(currentProfile));
             handler.Ended += handler_Ended;
 
             gameManager.Play(handler);
-            if (handler.TimerInterval > 0)
+            if (handlerData.HandlerInterval > 0)
             {
                 handlerThread = new Thread(UpdateGameManager);
                 handlerThread.Start();
@@ -467,8 +469,8 @@ namespace Nucleus.Coop
                         return;
                     }
 
-                    handler.Update(handler.TimerInterval);
-                    Thread.Sleep(TimeSpan.FromMilliseconds(handler.TimerInterval));
+                    handler.Tick(handlerData.HandlerInterval);
+                    Thread.Sleep(TimeSpan.FromMilliseconds(handlerData.HandlerInterval));
                 }
                 catch (ThreadAbortException)
                 {

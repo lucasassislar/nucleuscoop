@@ -26,7 +26,7 @@ namespace Nucleus.Gaming.Platform.Windows
             return true;
         }
 
-        public override void PrePlayPlayer(PlayerInfo player, int index)
+        public override void PrePlayPlayer(PlayerInfo player, int index, HandlerContext context)
         {
             ProcessInfo procData = player.ProcessData;
             bool hasSetted = procData != null && procData.Setted;

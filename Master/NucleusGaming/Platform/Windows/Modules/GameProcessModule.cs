@@ -49,7 +49,7 @@ namespace Nucleus.Gaming.Platform.Windows
             }
         }
 
-        public override void PrePlayPlayer(PlayerInfo playerInfo, int index)
+        public override void PrePlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context)
         {
         }
 
@@ -71,9 +71,13 @@ namespace Nucleus.Gaming.Platform.Windows
 
             if (context.KillMutex?.Length > 0)
             {
-                proc = Process.GetProcessById(StartGameUtil.StartGame(
-                    new DirectoryInfo(ioModule.ExePath).GetRelativePath(ioModule.NucleusRootFolder), startArgs,
-                    new DirectoryInfo(ioModule.LinkedFolder).GetRelativePath(ioModule.NucleusRootFolder)));
+                //DirectoryInfo exeFolderDir = new DirectoryInfo(Path.GetDirectoryName(ioModule.ExePath));
+                //DirectoryInfo linkedFolderDir = new DirectoryInfo(ioModule.LinkedFolder);
+
+                //string exePath = Path.Combine(exeFolderDir.GetRelativePath(ioModule.NucleusRootFolder), Path.GetFileName(ioModule.ExePath));
+                //string exeRoot = linkedFolderDir.GetRelativePath(ioModule.NucleusRootFolder);
+
+                proc = Process.GetProcessById(StartGameUtil.StartGame(ioModule.ExePath, startArgs, ioModule.WorkingFolder));
             }
             else
             {
