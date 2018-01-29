@@ -115,6 +115,12 @@ namespace Nucleus.Coop
                 return;
             }
 
+            if (GameManager.Instance.User.InstalledHandlers.Count == 0)
+            {
+                MessageBox.Show("You have no game handlers installed.");
+                return;
+            }
+
             btnSearch.Enabled = false;
             searching = true;
             done = 0;

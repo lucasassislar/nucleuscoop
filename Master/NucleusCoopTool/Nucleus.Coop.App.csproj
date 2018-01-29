@@ -215,7 +215,9 @@
     <None Include="SplitKey.snk" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NucleusGaming\Nucleus.Gaming.csproj">
@@ -405,7 +407,7 @@
     <None Include="config.json" />
     <None Include="games\550-Left4Dead2\game.js" />
     <None Include="..\StartGame\bin\Debug\StartGame.exe">
-      <Link>tools\StartGame.exe</Link>
+      <Link>bin\StartGame.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="icon.ico" />
@@ -431,7 +433,6 @@
   <PropertyGroup>
     <PostBuildEvent>$(TargetDir)TempBuilder.exe
 del /f $(TargetDir)TempBuilder.exe
-del /f $(TargetDir)TempBuilder.pdb
 echo.&gt;Built.flag</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>

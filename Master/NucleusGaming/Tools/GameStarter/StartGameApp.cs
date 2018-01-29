@@ -33,9 +33,9 @@ namespace Nucleus.Gaming.Tools.GameStarter
             startInfo.RedirectStandardOutput = true;
             startInfo.UseShellExecute = false;
 
-            Process proc = Process.Start(startInfo);
-            proc.OutputDataReceived += proc_OutputDataReceived;
-            proc.BeginOutputReadLine();
+            process = Process.Start(startInfo);
+            process.OutputDataReceived += proc_OutputDataReceived;
+            process.BeginOutputReadLine();
         }
 
         public void BeginMutexExists(int processId, params string[] mutex)
@@ -53,9 +53,9 @@ namespace Nucleus.Gaming.Tools.GameStarter
             startInfo.UseShellExecute = false;
             startInfo.CreateNoWindow = true;
 
-            Process proc = Process.Start(startInfo);
-            proc.OutputDataReceived += proc_OutputDataReceived;
-            proc.BeginOutputReadLine();
+            process = Process.Start(startInfo);
+            process.OutputDataReceived += proc_OutputDataReceived;
+            process.BeginOutputReadLine();
         }
 
         public void BeginStartGame(string pathToGame, string args, string workingDir = null)
@@ -114,7 +114,7 @@ namespace Nucleus.Gaming.Tools.GameStarter
 
         public static string GetStartGamePath()
         {
-            return Path.Combine(AssemblyUtil.GetStartFolder(), "tools", "StartGame.exe");
+            return Path.Combine(AssemblyUtil.GetStartFolder(), "bin", "StartGame.exe");
         }
     }
 }
