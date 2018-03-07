@@ -77,16 +77,17 @@ namespace Nucleus.Gaming.Platform.Windows
                 //string exePath = Path.Combine(exeFolderDir.GetRelativePath(ioModule.NucleusRootFolder), Path.GetFileName(ioModule.ExePath));
                 //string exeRoot = linkedFolderDir.GetRelativePath(ioModule.NucleusRootFolder);
 
-                proc = Process.GetProcessById(StartGameUtil.StartGame(ioModule.ExePath, startArgs, ioModule.WorkingFolder));
+
+                proc = Process.GetProcessById(StartGameUtil.StartGame(ioModule.LinkedExePath, startArgs, ioModule.LinkedWorkingDir));
             }
             else
             {
                 ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = ioModule.ExePath;
+                startInfo.FileName = ioModule.LinkedWorkingDir;
                 //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 startInfo.Arguments = startArgs;
                 startInfo.UseShellExecute = true;
-                startInfo.WorkingDirectory = Path.GetDirectoryName(ioModule.ExePath);
+                startInfo.WorkingDirectory = Path.GetDirectoryName(ioModule.LinkedExePath);
                 proc = Process.Start(startInfo);
             }
 

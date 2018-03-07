@@ -1,4 +1,5 @@
 ﻿using Nucleus.Gaming.Coop.Handler;
+using Nucleus.Gaming.Platform.Windows.IO;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,29 +32,38 @@ namespace Nucleus.Gaming.Coop.Modules
 
         private string nucleusRootFolder;
         private string tempDir;
+        private string tempWorkingDir;
         private string exeFolder;
         private string rootFolder;
         private string workingFolder;
 
-        public string NucleusRootFolder {  get { return nucleusRootFolder;  } }
-        public string TempDir {  get { return tempDir;  } }
-        public string ExeFolder {  get { return exeFolder;  } }
-        public string RootFolder {  get { return rootFolder;  } }
-        public string WorkingFolder {  get { return workingFolder;  } }
+        public string NucleusRootFolder { get { return nucleusRootFolder; } }
+
+
+        /// <summary>
+        /// Path to the current game instance (to be changed)
+        /// </summary>
+        public string TempDir { get { return tempDir; } }
+
+
+        public string ExeFolder { get { return exeFolder; } }
+        public string RootFolder { get { return rootFolder; } }
+        public string WorkingFolder { get { return workingFolder; } }
 
         private string exePath;
         private string linkFolder;
-        private string linkBinFolder;
+        private string linkWorkingDir;
 
-        public string ExePath { get { return exePath; } }
+        public string LinkedExePath { get { return exePath; } }
         public string LinkedFolder { get { return linkFolder; } }
-        public string LinkedBinFolder { get { return linkBinFolder; } }
+        public string LinkedWorkingDir { get { return linkWorkingDir; } }
 
         public override void PrePlay()
         {
             nucleusRootFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
             tempDir = GameManager.Instance.GempTempFolder(handlerData);
+
             exeFolder = Path.GetDirectoryName(userGame.ExePath).ToLower();
             rootFolder = exeFolder;
             workingFolder = exeFolder;
@@ -77,19 +87,29 @@ namespace Nucleus.Gaming.Coop.Modules
 
                 // symlink the game folder (and not the bin folder, if we have one)
                 linkFolder = Path.Combine(tempDir, "Instance" + index);
+
+                try
+                {
+                    if (Directory.Exists(linkFolder))
+                    {
+                        Directory.Delete(linkFolder, true);
+                    }
+                }
+                catch { }
+
                 Directory.CreateDirectory(linkFolder);
 
-                linkBinFolder = linkFolder;
+                linkWorkingDir = linkFolder;
                 if (!string.IsNullOrEmpty(handlerData.BinariesFolder))
                 {
-                    linkBinFolder = Path.Combine(linkFolder, handlerData.BinariesFolder);
+                    linkWorkingDir = Path.Combine(linkFolder, handlerData.BinariesFolder);
                     dirExclusions.Add(handlerData.BinariesFolder);
                 }
-                exePath = Path.Combine(linkBinFolder, Path.GetFileName(this.userGame.ExePath));
+                exePath = Path.Combine(linkWorkingDir, Path.GetFileName(this.userGame.ExePath));
 
                 if (!string.IsNullOrEmpty(handlerData.WorkingFolder))
                 {
-                    linkBinFolder = Path.Combine(linkFolder, handlerData.WorkingFolder);
+                    linkWorkingDir = Path.Combine(linkFolder, handlerData.WorkingFolder);
                     dirExclusions.Add(handlerData.WorkingFolder);
                 }
 
@@ -150,7 +170,8 @@ namespace Nucleus.Gaming.Coop.Modules
                 else
                 {
                     int exitCode;
-                    CmdUtil.LinkDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, fileCopiesArr, true);
+                    //CmdUtil.LinkDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, fileCopiesArr, true);
+                    WinDirectoryUtil.LinkDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, fileCopiesArr, true);
 
                     if (!handlerData.SymlinkExe)
                     {
@@ -161,7 +182,7 @@ namespace Nucleus.Gaming.Coop.Modules
             else
             {
                 exePath = userGame.ExePath;
-                linkBinFolder = rootFolder;
+                linkWorkingDir = rootFolder;
                 linkFolder = workingFolder;
             }
 
@@ -177,7 +198,7 @@ namespace Nucleus.Gaming.Coop.Modules
 
         public override void PlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context)
         {
-            
+
         }
 
         public override void Tick(double delayMs)

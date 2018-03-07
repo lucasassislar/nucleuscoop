@@ -202,15 +202,16 @@
             // 
             // list_Games
             // 
+            this.list_Games.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.list_Games.AutoScroll = true;
             this.list_Games.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.list_Games.Border = 1;
-            this.list_Games.Dock = System.Windows.Forms.DockStyle.Top;
             this.list_Games.Location = new System.Drawing.Point(0, 0);
             this.list_Games.Margin = new System.Windows.Forms.Padding(0);
             this.list_Games.Name = "list_Games";
             this.list_Games.Offset = new System.Drawing.Size(0, 2);
-            this.list_Games.Size = new System.Drawing.Size(263, 566);
+            this.list_Games.Size = new System.Drawing.Size(263, 615);
             this.list_Games.TabIndex = 3;
             // 
             // tabHandlers
@@ -222,7 +223,7 @@
             this.tabHandlers.Location = new System.Drawing.Point(4, 25);
             this.tabHandlers.Margin = new System.Windows.Forms.Padding(0);
             this.tabHandlers.Name = "tabHandlers";
-            this.tabHandlers.Size = new System.Drawing.Size(263, 657);
+            this.tabHandlers.Size = new System.Drawing.Size(263, 656);
             this.tabHandlers.TabIndex = 1;
             this.tabHandlers.Text = "Handlers";
             // 
@@ -231,7 +232,7 @@
             this.btn_Uninstall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btn_Uninstall.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btn_Uninstall.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Uninstall.Location = new System.Drawing.Point(134, 619);
+            this.btn_Uninstall.Location = new System.Drawing.Point(134, 618);
             this.btn_Uninstall.Name = "btn_Uninstall";
             this.btn_Uninstall.Size = new System.Drawing.Size(126, 35);
             this.btn_Uninstall.TabIndex = 17;
@@ -243,7 +244,7 @@
             this.btn_InstallHandler.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btn_InstallHandler.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btn_InstallHandler.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_InstallHandler.Location = new System.Drawing.Point(3, 619);
+            this.btn_InstallHandler.Location = new System.Drawing.Point(3, 618);
             this.btn_InstallHandler.Name = "btn_InstallHandler";
             this.btn_InstallHandler.Size = new System.Drawing.Size(125, 35);
             this.btn_InstallHandler.TabIndex = 16;

@@ -155,6 +155,7 @@
     <Compile Include="Globals.cs" />
     <Compile Include="IO\JsonPropertiesFile.cs" />
     <Compile Include="IO\JsPropertiesFile.cs" />
+    <Compile Include="Platform\Windows\IO\WinDirectoryUtil.cs" />
     <Compile Include="Platform\Windows\Modules\GameProcessModule.cs" />
     <Compile Include="Platform\Windows\IO\MFT\FileNameAndParentFrn.cs" />
     <Compile Include="Platform\Windows\IO\MFT\MFTReader.cs" />

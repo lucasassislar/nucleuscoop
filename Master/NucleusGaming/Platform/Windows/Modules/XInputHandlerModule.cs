@@ -51,7 +51,7 @@ namespace Nucleus.Gaming.Platform.Windows
             byte[] xdata = Properties.Resources.xinput1_3;
             if (context.Hook.XInputNames == null)
             {
-                using (Stream str = File.OpenWrite(Path.Combine(ioModule.LinkedBinFolder, "xinput1_3.dll")))
+                using (Stream str = File.OpenWrite(Path.Combine(ioModule.LinkedWorkingDir, "xinput1_3.dll")))
                 {
                     str.Write(xdata, 0, xdata.Length);
                 }
@@ -62,7 +62,7 @@ namespace Nucleus.Gaming.Platform.Windows
                 for (int z = 0; z < xinputs.Length; z++)
                 {
                     string xinputName = xinputs[z];
-                    using (Stream str = File.OpenWrite(Path.Combine(ioModule.LinkedBinFolder, xinputName)))
+                    using (Stream str = File.OpenWrite(Path.Combine(ioModule.LinkedWorkingDir, xinputName)))
                     {
                         str.Write(xdata, 0, xdata.Length);
                     }
@@ -71,7 +71,7 @@ namespace Nucleus.Gaming.Platform.Windows
 
             Rectangle playerBounds = playerInfo.MonitorBounds;
 
-            string ncoopIni = Path.Combine(ioModule.LinkedBinFolder, "ncoop.ini");
+            string ncoopIni = Path.Combine(ioModule.LinkedWorkingDir, "ncoop.ini");
             using (Stream str = File.OpenWrite(ncoopIni))
             {
                 byte[] ini = Properties.Resources.ncoop;
