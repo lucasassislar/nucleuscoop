@@ -431,8 +431,8 @@
   </Target>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <PropertyGroup>
-    <PostBuildEvent>$(TargetDir)TempBuilder.exe
-del /f $(TargetDir)TempBuilder.exe
+    <PostBuildEvent>"$(TargetDir)TempBuilder.exe"
+del /f "$(TargetDir)TempBuilder.exe"
 echo.&gt;Built.flag</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
