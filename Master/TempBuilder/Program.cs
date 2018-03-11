@@ -14,7 +14,7 @@ namespace TempBuilder
             string directory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
             DirectoryInfo dirInfo = new DirectoryInfo(directory);
-            dirInfo.Create();
+            //dirInfo.Create();
 
             List<FileInfo> files = dirInfo.GetFiles("*.dll").ToList();
             files.AddRange(dirInfo.GetFiles("*.pdb"));

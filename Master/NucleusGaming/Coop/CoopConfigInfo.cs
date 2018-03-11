@@ -16,6 +16,7 @@ namespace Nucleus.Gaming.Coop
         public CoopConfigInfo(string path)
              : base(path)
         {
+
         }
     }
 }
