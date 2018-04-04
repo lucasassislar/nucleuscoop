@@ -23,11 +23,16 @@ namespace Nucleus.Coop.Controls
             parent.Controls.Add(this);
             this.Dock = DockStyle.Fill;
             this.BringToFront();
+
+            this.parent = parent;
         }
+
+        private Form parent;
 
         public void DisableOverlay()
         {
-            this.Parent.Controls.Remove(this);
+            this.parent.Controls.Remove(this);
+            this.parent = null;
         }
 
         private void GameRunningOverlay_SizeChanged(object sender, EventArgs e)

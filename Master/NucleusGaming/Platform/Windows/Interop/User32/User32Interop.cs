@@ -9,6 +9,13 @@ namespace Nucleus.Gaming.Windows.Interop
 {
     public static class User32Interop
     {
+        internal delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        internal static extern bool EnumThreadWindows(int dwThreadId, EnumThreadDelegate lpfn,
+            IntPtr lParam);
+
+
         // size of a device name string
         private const int CCHDEVICENAME = 32;
 

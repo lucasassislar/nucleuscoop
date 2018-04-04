@@ -3,6 +3,7 @@ using Nucleus.Gaming.Coop.Handler;
 using Nucleus.Gaming.Coop.Handler.Cursor;
 using Nucleus.Gaming.Coop.Modules;
 using Nucleus.Gaming.Tools.GameStarter;
+using Nucleus.Gaming.Windows;
 using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
@@ -312,6 +313,42 @@ namespace Nucleus.Gaming.Platform.Windows
                             {
                                 data.HWnd = new HwndObject(data.Process.MainWindowHandle);
                                 Point pos = data.HWnd.Location;
+
+                                var windows = User32Util.EnumerateProcessWindowHandles(data.Process.Id);
+                                foreach (IntPtr window in windows)
+                                {
+                                    HwndObject obj = new HwndObject(window);
+
+                                    if (!string.IsNullOrEmpty(handlerData.Hook.ForceFocusWindowName) &&
+                                        StringUtil.ComputeLevenshteinDistance(obj.Title, handlerData.Hook.ForceFocusWindowName) <= 2)
+                                    {
+                                        data.HWnd = obj;
+                                        break;
+                                    }
+                                }
+
+                                List<int> children = ProcessUtil.GetChildrenProcesses(data.Process);
+                                if (children.Count > 0)
+                                {
+                                    for (int j = 0; j < children.Count; j++)
+                                    {
+                                        int id = children[j];
+                                        Process pro = Process.GetProcessById(id);
+
+                                        var proWindows = User32Util.EnumerateProcessWindowHandles(pro.Id);
+                                        foreach (IntPtr window in proWindows)
+                                        {
+                                            HwndObject obj = new HwndObject(window);
+
+                                            if (!string.IsNullOrEmpty(handlerData.Hook.ForceFocusWindowName) &&
+                                                StringUtil.ComputeLevenshteinDistance(obj.Title, handlerData.Hook.ForceFocusWindowName) <= 2)
+                                            {
+                                                data.HWnd = obj;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
 
                                 if (String.IsNullOrEmpty(data.HWnd.Title) ||
                                     pos.X == -32000 ||

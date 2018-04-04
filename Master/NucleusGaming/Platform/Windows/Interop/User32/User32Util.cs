@@ -1,6 +1,7 @@
 ﻿using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -12,6 +13,21 @@ namespace Nucleus.Gaming.Windows
 {
     public static class User32Util
     {
+        public static IEnumerable<IntPtr> EnumerateProcessWindowHandles(int processId)
+        {
+            var handles = new List<IntPtr>();
+
+            foreach (ProcessThread thread in Process.GetProcessById(processId).Threads)
+            {
+                EnumThreadWindows(thread.Id, (hWnd, lParam) => {
+                    handles.Add(hWnd);
+                    return true;
+                }, IntPtr.Zero);
+            }
+
+            return handles;
+        }
+
         public enum DeviceCap
         {
             VERTRES = 10,
