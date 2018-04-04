@@ -11,8 +11,6 @@ namespace Nucleus.Gaming
 {
     public class ContentManager : IDisposable
     {
-        public static readonly string AssetsFolder = "assets";
-
         private Dictionary<string, Image> loadedImages;
         private bool isDisposed;
         private HandlerData game;
@@ -21,6 +19,8 @@ namespace Nucleus.Gaming
 
         public Image DefaultImage { get; set; }
 
+        public string PackageFolder { get { return pkgFolder; } }
+
         public ContentManager(GameHandlerMetadata info, HandlerData game)
         {
             this.game = game;
@@ -28,6 +28,7 @@ namespace Nucleus.Gaming
 
             handlersFolder = GameManager.Instance.GetInstalledPackagePath();
             pkgFolder = PackageManager.GetInstallPath(info);
+            info.RootDirectory = pkgFolder;
 
             DefaultImage = new Bitmap(1, 1);
         }
@@ -57,7 +58,7 @@ namespace Nucleus.Gaming
                 return img;
             }
 
-            string fullPath = Path.Combine(pkgFolder, AssetsFolder, url);
+            string fullPath = Path.Combine(pkgFolder, PackageManager.AssetsFolder, url);
             if (!File.Exists(fullPath))
             {
                 return DefaultImage;

@@ -6,20 +6,13 @@ using System.Drawing;
 using System.Diagnostics;
 using SlimDX.DirectInput;
 using Nucleus.Gaming.Coop;
+using Newtonsoft.Json;
 
 namespace Nucleus.Gaming.Coop
 {
+    [AppDomainShared]
     public class PlayerInfo
     {
-        private Rectangle sourceEditBounds;
-        private Rectangle editBounds;
-        private Rectangle monitorBounds;
-        private int screenIndex = -1;
-        private object tag;
-
-        private ProcessInfo processData;
-        private bool assigned;
-
         public UserScreen Owner;
 
         public int PlayerID;
@@ -37,6 +30,8 @@ namespace Nucleus.Gaming.Coop
         public int GamepadId;
         public string GamepadName;
         public int GamepadMask;
+
+        [JsonIgnore]
         public Joystick DInputJoystick;
 
         // Serialized
@@ -79,15 +74,6 @@ namespace Nucleus.Gaming.Coop
         }
 
         /// <summary>
-        /// A custom tag object for handlers to store data in
-        /// </summary>
-        public object Tag
-        {
-            get { return tag; }
-            set { tag = value; }
-        }
-
-        /// <summary>
         /// Information about the game's process, null if its not running
         /// </summary>
         public ProcessInfo ProcessData
@@ -96,8 +82,13 @@ namespace Nucleus.Gaming.Coop
             set { processData = value; }
         }
 
-        
+        private Rectangle sourceEditBounds;
+        private Rectangle editBounds;
+        private Rectangle monitorBounds;
+        private int screenIndex = -1;
+        private object tag;
 
-        
+        private ProcessInfo processData;
+        private bool assigned;
     }
 }

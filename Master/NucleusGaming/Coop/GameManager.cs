@@ -273,7 +273,7 @@ namespace Nucleus.Gaming.Coop
 
         #region Initialize
 
-        private string GetAppDataPath()
+        private static string GetAppDataPath()
         {
 #if ALPHA
             string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
@@ -319,27 +319,29 @@ namespace Nucleus.Gaming.Coop
         public void BeginBackup(HandlerData game)
         {
             string appData = GetAppDataPath();
-            string gamePath = Path.Combine(appData, game.GUID);
+            string gamePath = Path.Combine(appData, game.GameID);
             Directory.CreateDirectory(gamePath);
 
             backupFiles = new List<BackupFile>();
         }
 
-        public GenericGameHandler MakeHandler(HandlerData game)
-        {
-            return (GenericGameHandler)Activator.CreateInstance(game.HandlerType);
-        }
-
-        public string GempTempFolder(HandlerData game)
+        public static string GetTempFolder(HandlerData game)
         {
             string appData = GetAppDataPath();
-            return Path.Combine(appData, game.GUID);
+            return Path.Combine(appData, game.GameID);
+        }
+
+
+        public static string GetTempFolder(string gameId)
+        {
+            string appData = GetAppDataPath();
+            return Path.Combine(appData, gameId);
         }
 
         public BackupFile BackupFile(HandlerData game, string path)
         {
             string appData = GetAppDataPath();
-            string gamePath = Path.Combine(appData, game.GUID);
+            string gamePath = Path.Combine(appData, game.GameID);
             string destination = Path.Combine(gamePath, Path.GetFileName(path));
 
             if (!File.Exists(path))
@@ -374,7 +376,7 @@ namespace Nucleus.Gaming.Coop
             }
 
             string appData = GetAppDataPath();
-            string gamePath = Path.Combine(appData, game.GUID);
+            string gamePath = Path.Combine(appData, game.GameID);
 
             for (int i = 0; i < backupFiles.Count; i++)
             {

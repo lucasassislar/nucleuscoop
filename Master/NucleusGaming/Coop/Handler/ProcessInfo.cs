@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Nucleus.Gaming.Coop;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -8,13 +10,12 @@ using WindowScrape.Types;
 
 namespace Nucleus.Gaming
 {
+    [AppDomainShared]
     public class ProcessInfo
     {
-        private Process process;
         public bool Finished;
 
         public Point Position;
-        private HwndObject hWnd;
         public bool HWNDRetry;
 
         public Size Size;
@@ -26,9 +27,13 @@ namespace Nucleus.Gaming
         public long RegLong;
         public int Status;
 
+        private Process process;
+        private HwndObject hWnd;
+
         /// <summary>
         /// A reference to the game's process, if it's running
         /// </summary>
+        [JsonIgnore]
         public Process Process
         {
             get { return process; }
@@ -38,6 +43,11 @@ namespace Nucleus.Gaming
         {
             get { return hWnd; }
             set { hWnd = value; }
+        }
+
+        private ProcessInfo()
+        {
+
         }
 
         public ProcessInfo(Process proc)

@@ -1,4 +1,6 @@
-﻿using Nucleus.Gaming.Coop;
+﻿using Ionic.Zip;
+using Newtonsoft.Json;
+using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Diagnostics;
 using Nucleus.Gaming.IO;
 using Nucleus.Gaming.Platform.Windows.Interop;
@@ -11,17 +13,26 @@ using System.Xml;
 
 namespace Nucleus.Gaming.Coop
 {
+    [AppDomainShared]
     public class HandlerContext
     {
         private GameProfile profile;
-        private PlayerInfo pInfo;
+
+        public PlayerInfo PlayerInfo;
 
         [Dynamic(AutoHandles = true)]
-        public string ExePath;
+        public string InstallFolder;
         [Dynamic(AutoHandles = true)]
-        public string RootInstallFolder;
+        public string InstanceFolder;
         [Dynamic(AutoHandles = true)]
-        public string RootFolder;
+        public string InstancedExePath;
+        [Dynamic(AutoHandles = true)]
+        public string InstancedWorkingPath;
+
+        [Dynamic(AutoHandles = true)]
+        public string PackageFolder;
+
+
 
         public GameHookData Hook = new GameHookData();
         public double HandlerInterval;
@@ -52,16 +63,12 @@ namespace Nucleus.Gaming.Coop
         public DPIHandling DPIHandling = DPIHandling.True;
         public Dictionary<string, string> AdditionalData;
 
-        public Type HandlerType
-        {
-            get { return typeof(GenericGameHandler); }
-        }
+        public string OverrideStartProcess { get; set; }
+       
 
-        public Dictionary<string, object> Options
-        {
-            get { return profile.Options; }
-        }
+        public Dictionary<string, object> Options { get; set; }
 
+        [JsonIgnore]
         public int Width
         {
             get
@@ -69,16 +76,17 @@ namespace Nucleus.Gaming.Coop
                 switch (DPIHandling)
                 {
                     case DPIHandling.Scaled:
-                        return (int)((pInfo.MonitorBounds.Width * DPIManager.Scale) + 0.5);
+                        return (int)((PlayerInfo.MonitorBounds.Width * DPIManager.Scale) + 0.5);
                     case DPIHandling.InvScaled:
-                        return (int)((pInfo.MonitorBounds.Width * (1 / DPIManager.Scale)) + 0.5);
+                        return (int)((PlayerInfo.MonitorBounds.Width * (1 / DPIManager.Scale)) + 0.5);
                     case DPIHandling.True:
                     default:
-                        return pInfo.MonitorBounds.Width;
+                        return PlayerInfo.MonitorBounds.Width;
                 }
             }
         }
 
+        [JsonIgnore]
         public int Height
         {
             get
@@ -86,25 +94,42 @@ namespace Nucleus.Gaming.Coop
                 switch (DPIHandling)
                 {
                     case DPIHandling.Scaled:
-                        return (int)((pInfo.MonitorBounds.Height * DPIManager.Scale) + 0.5);
+                        return (int)((PlayerInfo.MonitorBounds.Height * DPIManager.Scale) + 0.5);
                     case DPIHandling.InvScaled:
-                        return (int)((pInfo.MonitorBounds.Height * (1 / DPIManager.Scale)) + 0.5);
+                        return (int)((PlayerInfo.MonitorBounds.Height * (1 / DPIManager.Scale)) + 0.5);
                     case DPIHandling.True:
                     default:
-                        return pInfo.MonitorBounds.Height;
+                        return PlayerInfo.MonitorBounds.Height;
                 }
             }
         }
 
-        
+        [JsonConstructor]
+        private HandlerContext()
+        {
+        }
+
         public HandlerContext(GameProfile prof, PlayerInfo info)
         {
             profile = prof;
-            pInfo = info;
+            PlayerInfo = info;
+
+            Options = prof.Options;
+        }
+
+        public void SetProcessToStart(string procName)
+        {
+            OverrideStartProcess = procName;
         }
 
         public string CombinePath(string path1, string path2)
         {
+            if (string.IsNullOrEmpty(path1) ||
+                string.IsNullOrEmpty(path2))
+            {
+                System.Diagnostics.Debugger.Break();
+                throw new NotImplementedException();
+            }
             return Path.Combine(path1, path2);
         }
 
@@ -176,6 +201,36 @@ namespace Nucleus.Gaming.Coop
                     }
                     break;
             }
+        }
+
+        /// <summary>
+        /// Extracts the SmartSteamEmu and returns the folder its on
+        /// </summary>
+        /// <returns></returns>
+        public bool ExtractZip(string zipPath, string outputFolder)
+        {
+            try
+            {
+                Directory.CreateDirectory(outputFolder);
+
+                string path = Path.Combine(PackageFolder, "assets", zipPath);
+
+                using (FileStream stream = File.OpenRead(path))
+                {
+                    using (ZipFile zip1 = ZipFile.Read(stream))
+                    {
+                        foreach (ZipEntry e in zip1)
+                        {
+                            e.Extract(outputFolder, ExtractExistingFileAction.OverwriteSilently);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
 
         public void PatchFile(string originalFile, string patchedFile, byte[] patchFind, byte[] patchReplace)

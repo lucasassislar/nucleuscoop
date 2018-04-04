@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming.Coop;
+﻿using Newtonsoft.Json.Linq;
+using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Handler;
 using Nucleus.Gaming.Platform.Windows.Controls;
 using Nucleus.Gaming.Windows.Controls;
@@ -19,9 +20,10 @@ namespace Nucleus.Gaming
 
         private Font nameFont;
         private Font detailsFont;
+        private IList collection;
+        private HandlerDataManager dataManager;
 
         public CustomStep CustomStep;
-        public ContentManager Content;
 
         public override bool CanProceed
         {
@@ -36,6 +38,12 @@ namespace Nucleus.Gaming
             get { return canPlay; }
         }
 
+        public HandlerDataManager DataManager
+        {
+            get { return dataManager; }
+            set { dataManager = value; }
+        }
+
         public JSUserInputControl()
         {
             nameFont = new Font("Segoe UI", 24);
@@ -47,7 +55,6 @@ namespace Nucleus.Gaming
             return expando.ContainsKey(key);
         }
 
-        private IList collection;
 
         public override void Initialize(HandlerData handlerData, UserGameInfo game, GameProfile profile)
         {
@@ -72,7 +79,7 @@ namespace Nucleus.Gaming
                     object val = collection[i];
 
                     // TODO: make image options
-                    if (!(val is IDictionary<string, object>))
+                    if (!(val is IDictionary<string, JToken>))
                     {
                         continue;
                     }
@@ -84,7 +91,7 @@ namespace Nucleus.Gaming
                     control.Data = val;
                     control.OnSelected += Control_OnSelected;
 
-                    IDictionary<string, object> value = (IDictionary<string, object>)val;
+                    IDictionary<string, JToken> value = (IDictionary<string, JToken>)val;
                     string name = value["Name"].ToString();
 
                     control.Title = name;
@@ -92,7 +99,7 @@ namespace Nucleus.Gaming
                     control.DetailsFont = detailsFont;
 
                     string details = "";
-                    object detailsObj;
+                    JToken detailsObj;
                     if (value.TryGetValue("Details", out detailsObj))
                     {
                         details = detailsObj.ToString();
@@ -100,14 +107,14 @@ namespace Nucleus.Gaming
                         control.Details = details;
                     }
 
-                    object imageUrlObj;
+                    JToken imageUrlObj;
                     value.TryGetValue("ImageUrl", out imageUrlObj);
                     if (imageUrlObj != null)
                     {
                         string imageUrl = imageUrlObj.ToString();
                         if (!string.IsNullOrEmpty(imageUrl))
                         {
-                            Image img = Content.LoadImage(imageUrl);
+                            Image img = DataManager.Content.LoadImage(imageUrl);
 
                             PictureBox box = new PictureBox();
                             box.Anchor = AnchorStyles.Top | AnchorStyles.Right;

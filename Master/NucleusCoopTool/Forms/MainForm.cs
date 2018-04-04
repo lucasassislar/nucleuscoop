@@ -1,4 +1,6 @@
-﻿using Nucleus.Gaming;
+﻿using Newtonsoft.Json;
+using Nucleus.Coop.Controls;
+using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Handler;
 using Nucleus.Gaming.Package;
@@ -20,7 +22,6 @@ namespace Nucleus.Coop
     {
         private int currentStepIndex;
         private bool formClosing;
-        private ContentManager content;
 
         private GameManager gameManager;
         private Dictionary<UserGameInfo, GameControl> controls;
@@ -30,6 +31,7 @@ namespace Nucleus.Coop
         private GameControl selectedControl;
 
         private GameHandlerMetadata selectedHandler;
+        private HandlerDataManager handlerDataManager;
         private HandlerData handlerData;
         //private GenericGameHandler handler;
         private GameHandler handler;
@@ -46,9 +48,14 @@ namespace Nucleus.Coop
         private Thread handlerThread;
         private CoopConfigInfo configFile;
 
+        private GameRunningOverlay overlay;
+
         public MainForm(string[] args)
         {
             InitializeComponent();
+
+            overlay = new GameRunningOverlay();
+            overlay.OnStop += Overlay_OnStop;
 
             this.Text = string.Format("Nucleus Coop v{0}", Globals.Version);
 
@@ -72,6 +79,7 @@ namespace Nucleus.Coop
             //int vertScrollWidth = SystemInformation.VerticalScrollBarWidth;
             //list_Games.Padding = new Padding(0, 0, vertScrollWidth, 0);
 
+
             if (args != null)
             {
                 for (int i = 0; i < args.Length; i++)
@@ -91,6 +99,8 @@ namespace Nucleus.Coop
                 }
             }
         }
+
+        
 
         protected override Size DefaultSize
         {
@@ -274,8 +284,15 @@ namespace Nucleus.Coop
                 return;
             }
 
+            if (handlerDataManager != null)
+            {
+                // dispose
+                handlerDataManager.Dispose();
+            }
+
             selectedHandler = currentHandlers[combo_Handlers.SelectedIndex];
-            handlerData = gameManager.RepoManager.ReadHandlerDataFromInstalledPackage(selectedHandler);
+            handlerDataManager = gameManager.RepoManager.ReadHandlerDataFromInstalledPackage(selectedHandler);
+            handlerData = handlerDataManager.HandlerData;
 
             btn_Play.Enabled = false;
 
@@ -295,13 +312,6 @@ namespace Nucleus.Coop
 
             gameNameControl.GameInfo = selectedControl.UserGameInfo;
 
-            if (content != null)
-            {
-                content.Dispose();
-            }
-
-            // content manager is shared withing the same game
-            content = new ContentManager(selectedHandler, handlerData);
             GoToStep(0);
         }
 
@@ -361,15 +371,10 @@ namespace Nucleus.Coop
                 int customStepIndex = step - 2;
                 CustomStep customStep = customSteps[0];
 
-                if (customStep.UpdateRequired != null)
-                {
-                    customStep.UpdateRequired();
-                }
-
                 if (customStep.Required)
                 {
                     jsControl.CustomStep = customStep;
-                    jsControl.Content = content;
+                    jsControl.DataManager = handlerDataManager;
                 }
                 else
                 {
@@ -406,21 +411,23 @@ namespace Nucleus.Coop
             }
         }
 
-        private void btn_Play_Click(object sender, EventArgs e)
+        private void Overlay_OnStop()
         {
+            overlay.DisableOverlay();
+
             if (handler != null)
             {
                 handler.End();
-                SetBtnToPlay();
                 return;
             }
+        }
 
-            btn_Play.Visible = false;
-            btn_Play.Text = "S T O P";
+        private void btn_Play_Click(object sender, EventArgs e)
+        {
+            this.overlay.EnableOverlay(this);
 
             handler = new GameHandler();
-            //handler = gameManager.MakeHandler(handlerData);
-            handler.Initialize(handlerData, selectedControl.UserGameInfo, GameProfile.CleanClone(currentProfile));
+            handler.Initialize(handlerDataManager, selectedControl.UserGameInfo, GameProfile.CleanClone(currentProfile));
             handler.Ended += handler_Ended;
 
             gameManager.Play(handler);
@@ -433,12 +440,6 @@ namespace Nucleus.Coop
             WindowState = FormWindowState.Minimized;
         }
 
-        private void SetBtnToPlay()
-        {
-            btn_Play.Visible = true;
-            btn_Play.Text = "P L A Y";
-        }
-
         private void handler_Ended()
         {
             handler = null;
@@ -447,7 +448,6 @@ namespace Nucleus.Coop
                 handlerThread.Abort();
                 handlerThread = null;
             }
-            Invoke(new Action(SetBtnToPlay));
         }
 
         private void UpdateGameManager(object state)

@@ -41,11 +41,11 @@
             this.panel_Steps = new System.Windows.Forms.Panel();
             this.cTabControl1 = new Nucleus.Gaming.Forms.CTabControl();
             this.tabGames = new System.Windows.Forms.TabPage();
-            this.list_Games = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
             this.tabHandlers = new System.Windows.Forms.TabPage();
             this.btn_Uninstall = new System.Windows.Forms.Button();
             this.btn_InstallHandler = new System.Windows.Forms.Button();
             this.list_Handlers = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
+            this.list_Games = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
             this.cTabControl1.SuspendLayout();
             this.tabGames.SuspendLayout();
             this.tabHandlers.SuspendLayout();
@@ -200,20 +200,6 @@
             this.tabGames.TabIndex = 0;
             this.tabGames.Text = "Games";
             // 
-            // list_Games
-            // 
-            this.list_Games.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.list_Games.AutoScroll = true;
-            this.list_Games.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.list_Games.Border = 1;
-            this.list_Games.Location = new System.Drawing.Point(0, 0);
-            this.list_Games.Margin = new System.Windows.Forms.Padding(0);
-            this.list_Games.Name = "list_Games";
-            this.list_Games.Offset = new System.Drawing.Size(0, 2);
-            this.list_Games.Size = new System.Drawing.Size(263, 615);
-            this.list_Games.TabIndex = 3;
-            // 
             // tabHandlers
             // 
             this.tabHandlers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
@@ -265,6 +251,20 @@
             this.list_Handlers.Size = new System.Drawing.Size(263, 616);
             this.list_Handlers.TabIndex = 4;
             // 
+            // list_Games
+            // 
+            this.list_Games.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.list_Games.AutoScroll = true;
+            this.list_Games.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.list_Games.Border = 1;
+            this.list_Games.Location = new System.Drawing.Point(0, 0);
+            this.list_Games.Margin = new System.Windows.Forms.Padding(0);
+            this.list_Games.Name = "list_Games";
+            this.list_Games.Offset = new System.Drawing.Size(0, 2);
+            this.list_Games.Size = new System.Drawing.Size(263, 615);
+            this.list_Games.TabIndex = 3;
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -304,10 +304,10 @@
         private System.Windows.Forms.Label label1;
         private Gaming.Forms.CTabControl cTabControl1;
         private System.Windows.Forms.TabPage tabGames;
-        private Gaming.Platform.Windows.Controls.ControlListBox list_Games;
         private System.Windows.Forms.TabPage tabHandlers;
         private Gaming.Platform.Windows.Controls.ControlListBox list_Handlers;
         private System.Windows.Forms.Button btn_InstallHandler;
         private System.Windows.Forms.Button btn_Uninstall;
+        private Gaming.Platform.Windows.Controls.ControlListBox list_Games;
     }
 }

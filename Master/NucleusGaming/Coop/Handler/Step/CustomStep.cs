@@ -11,7 +11,6 @@ namespace Nucleus.Gaming.Coop.Handler
         public GameOption Option;
         public string Title;
 
-        public Action UpdateRequired;
         public bool Required;
     }
 }

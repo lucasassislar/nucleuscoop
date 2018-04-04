@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace WindowScrape.Types
         /// <summary>
         /// The registered class name (if any) of this object.
         /// </summary>
+        [JsonIgnore]
         public string ClassName
         {
             get { return HwndInterface.GetHwndClassName(NativePtr); }
@@ -30,6 +32,7 @@ namespace WindowScrape.Types
         /// <summary>
         /// The title of this object - Setting this will only effect window title-bar text.
         /// </summary>
+        [JsonIgnore]
         public string Title
         {
             get { return HwndInterface.GetHwndTitle(NativePtr); }
@@ -39,6 +42,7 @@ namespace WindowScrape.Types
         /// <summary>
         /// The text of this item - setting this will only effect controls and only with appropriate access/privacy
         /// </summary>
+        [JsonIgnore]
         public string Text
         {
             get { return HwndInterface.GetHwndText(NativePtr); }
@@ -48,6 +52,7 @@ namespace WindowScrape.Types
         /// <summary>
         /// The location of this Hwnd Object.
         /// </summary>
+        [JsonIgnore]
         public Point Location
         {
             get { return HwndInterface.GetHwndPos(NativePtr); }
@@ -66,6 +71,7 @@ namespace WindowScrape.Types
 
         private bool isTopMost;
 
+        [JsonIgnore]
         public bool TopMost
         {
             get { return isTopMost; }
@@ -86,6 +92,7 @@ namespace WindowScrape.Types
         /// <summary>
         /// The size of this Hwnd Object.
         /// </summary>
+        [JsonIgnore]
         public Size Size
         {
             get { return HwndInterface.GetHwndSize(NativePtr); }

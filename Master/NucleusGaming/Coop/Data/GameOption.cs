@@ -18,6 +18,12 @@ namespace Nucleus.Gaming.Coop
         private IList dataSet; // should we create a new GameOption for Collection options?
         private object defaultValue;
 
+        public IList DataSet
+        {
+            get { return dataSet; }
+            set { dataSet = value; }
+        }
+
         /// <summary>
         /// The value to default to when no value was set by the user
         /// </summary>
@@ -33,6 +39,7 @@ namespace Nucleus.Gaming.Coop
         public string Name
         {
             get { return name; }
+            set { name = value; }
         }
 
         /// <summary>
@@ -41,6 +48,7 @@ namespace Nucleus.Gaming.Coop
         public string Description
         {
             get { return description; }
+            set { description = value; }
         }
 
         /// <summary>
@@ -58,12 +66,18 @@ namespace Nucleus.Gaming.Coop
         public string Key
         {
             get { return key; }
+            set { key = value; }
         }
 
         /// <summary>
         /// If this option should be shown to the user
         /// </summary>
         public bool Hidden { get; set; }
+
+        private GameOption()
+        {
+
+        }
 
         /// <summary>
         /// Initializes a new instance of GameOption, with no default value

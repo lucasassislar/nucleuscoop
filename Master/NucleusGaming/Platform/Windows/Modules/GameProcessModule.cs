@@ -69,6 +69,13 @@ namespace Nucleus.Gaming.Platform.Windows
 
             string startArgs = context.StartArguments;
 
+            string startingApp = ioModule.LinkedExePath;
+
+            if (!string.IsNullOrEmpty(context.OverrideStartProcess))
+            {
+                startingApp = context.OverrideStartProcess;
+            }
+
             if (context.KillMutex?.Length > 0)
             {
                 //DirectoryInfo exeFolderDir = new DirectoryInfo(Path.GetDirectoryName(ioModule.ExePath));
@@ -83,7 +90,7 @@ namespace Nucleus.Gaming.Platform.Windows
             else
             {
                 ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = ioModule.LinkedWorkingDir;
+                startInfo.FileName = startingApp;
                 //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 startInfo.Arguments = startArgs;
                 startInfo.UseShellExecute = true;
@@ -99,7 +106,7 @@ namespace Nucleus.Gaming.Platform.Windows
 
                     Process[] procs = Process.GetProcesses();
                     string proceName = Path.GetFileNameWithoutExtension(context.ExecutableName).ToLower();
-                    string launcherName = Path.GetFileNameWithoutExtension(context.LauncherExe).ToLower();
+                    string launcherName = string.IsNullOrEmpty(context.LauncherExe) ? string.Empty : Path.GetFileNameWithoutExtension(context.LauncherExe).ToLower();
 
                     for (int j = 0; j < procs.Length; j++)
                     {

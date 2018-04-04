@@ -122,7 +122,7 @@ namespace Nucleus.Gaming
             jsData = new Dictionary<string, string>();
             jsData.Add(Folder.Documents.ToString(), Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
             jsData.Add(Folder.MainGameFolder.ToString(), Path.GetDirectoryName(game.ExePath));
-            jsData.Add(Folder.InstancedGameFolder.ToString(), Path.GetDirectoryName(game.ExePath));
+            jsData.Add(Folder.InstancedGameFolder.ToString(), "");
 
             timerInterval = this.handlerData.HandlerInterval;
 
@@ -148,13 +148,13 @@ namespace Nucleus.Gaming
 
             string nucleusRootFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
-            string tempDir = GameManager.Instance.GempTempFolder(handlerData);
+            string tempDir = GameManager.GetTempFolder(handlerData);
             string exeFolder = Path.GetDirectoryName(userGame.ExePath).ToLower();
             string rootFolder = exeFolder;
             string workingFolder = exeFolder;
-            if (!string.IsNullOrEmpty(handlerData.BinariesFolder))
+            if (!string.IsNullOrEmpty(handlerData.PathToRoot))
             {
-                rootFolder = StringUtil.ReplaceCaseInsensitive(exeFolder, handlerData.BinariesFolder.ToLower(), "");
+                rootFolder = StringUtil.ReplaceCaseInsensitive(exeFolder, handlerData.PathToRoot.ToLower(), "");
             }
             if (!string.IsNullOrEmpty(handlerData.WorkingFolder))
             {
@@ -256,10 +256,10 @@ namespace Nucleus.Gaming
                     Directory.CreateDirectory(linkFolder);
 
                     linkBinFolder = linkFolder;
-                    if (!string.IsNullOrEmpty(handlerData.BinariesFolder))
+                    if (!string.IsNullOrEmpty(handlerData.PathToRoot))
                     {
-                        linkBinFolder = Path.Combine(linkFolder, handlerData.BinariesFolder);
-                        dirExclusions.Add(handlerData.BinariesFolder);
+                        linkBinFolder = Path.Combine(linkFolder, handlerData.PathToRoot);
+                        dirExclusions.Add(handlerData.PathToRoot);
                     }
                     exePath = Path.Combine(linkBinFolder, Path.GetFileName(this.userGame.ExePath));
 
@@ -345,11 +345,11 @@ namespace Nucleus.Gaming
                 context.PlayerID = player.PlayerID;
                 context.IsFullscreen = isFullscreen;
 
-                context.ExePath = exePath;
-                context.RootInstallFolder = exeFolder;
-                context.RootFolder = linkFolder;
+                context.InstancedExePath = exePath;
+                context.InstallFolder = exeFolder;
+                context.InstanceFolder = linkFolder;
 
-                handlerData.PrePlay(context, player);
+                //handlerData.PrePlay(context, player);
 
                 string startArgs = context.StartArguments;
 
@@ -455,7 +455,7 @@ namespace Nucleus.Gaming
                     //emu.IniWriteValue("SmartSteamEmu", "MasterServer", "");
                     //emu.IniWriteValue("SmartSteamEmu", "MasterServerGoldSrc", "");
 
-                    handlerData.SetupSse?.Invoke();
+                    //handlerData.SetupSse?.Invoke();
 
                     if (context.KillMutex?.Length > 0)
                     {

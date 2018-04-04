@@ -25,7 +25,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WINDOWS;UNSAFE;ALPHA</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WINDOWS;UNSAFE;ALPHA;MAINTHREAD</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -57,8 +57,8 @@
     <Reference Include="Jint, Version=0.0.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
       <HintPath>..\packages\Jint.2.11.10\lib\net40\Jint.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
       <HintPath>..\packages\SlimDX.4.0.13.44\lib\NET40\SlimDX.dll</HintPath>
@@ -76,8 +76,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Coop\Data\AppDomain\AppDomainSharedAttribute.cs" />
+    <Compile Include="Coop\Data\CallbackData.cs" />
+    <Compile Include="Coop\Data\HandlerTools.cs" />
     <Compile Include="Coop\Data\Save\SaveInfo.cs" />
+    <Compile Include="Coop\HandlerDataManager.cs" />
     <Compile Include="Coop\Handler\Modules\IO\IOModule.cs" />
+    <Compile Include="Coop\JS\AppDomainData.cs" />
+    <Compile Include="Coop\JS\HandlerDataJSEngine.cs" />
+    <Compile Include="Coop\JS\AppDomainJSEngine.cs" />
     <Compile Include="Coop\ModuleManager.cs" />
     <Compile Include="Platform\Windows\Controls\BorderPanel.cs">
       <SubType>Component</SubType>
@@ -140,7 +147,7 @@
     <Compile Include="Coop\Handler\Modules\Cursor\NativeMethods.cs" />
     <Compile Include="Coop\Data\DynamicAttribute.cs" />
     <Compile Include="Coop\Data\HandlerContext.cs" />
-    <Compile Include="Coop\Data\HandlerData.cs" />
+    <Compile Include="Coop\Data\AppDomain\HandlerData.cs" />
     <Compile Include="Coop\Handler\JoystickDatabase.cs" />
     <Compile Include="Coop\Data\Save\CfgSaveInfo.cs" />
     <Compile Include="Coop\Data\Save\IniSaveInfo.cs" />
@@ -173,7 +180,7 @@
     <Compile Include="Coop\Data\UserProfile.cs" />
     <Compile Include="Coop\Data\UserScreen.cs" />
     <Compile Include="Coop\Data\UserScreenType.cs" />
-    <Compile Include="Coop\Handler\Engine\GenericGameHandler.cs" />
+    <None Include="Coop\Handler\Engine\GenericGameHandler.cs" />
     <Compile Include="Coop\Data\Save\SaveType.cs" />
     <Compile Include="Coop\Data\Folder.cs" />
     <Compile Include="Platform\Windows\Interop\Shell32\Shell32.cs" />
@@ -207,6 +214,7 @@
     <Compile Include="Tools\GameStarter\StartGameApp.cs" />
     <Compile Include="Tools\GameStarter\StartGameData.cs" />
     <Compile Include="Tools\GameStarter\GameStarterTask.cs" />
+    <Compile Include="Util\ObjectUtil.cs" />
     <Compile Include="Util\RectangleUtil.cs" />
     <Compile Include="Platform\Windows\MonitorDpiType.cs" />
     <Compile Include="Platform\Windows\ProcessDpiAwareness.cs" />
@@ -295,7 +303,7 @@
     <TypeScriptCompile Include="Coop\Data\GameHookInfo.cs.d.ts">
       <DependentUpon>GameHookData.cs</DependentUpon>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Coop\Data\GenericGameInfo.cs.d.ts">
+    <TypeScriptCompile Include="Coop\Data\AppDomain\GenericGameInfo.cs.d.ts">
       <DependentUpon>HandlerData.cs</DependentUpon>
     </TypeScriptCompile>
   </ItemGroup>

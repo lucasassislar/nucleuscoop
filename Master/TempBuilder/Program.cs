@@ -20,6 +20,7 @@ namespace TempBuilder
             files.AddRange(dirInfo.GetFiles("*.pdb"));
             files.AddRange(dirInfo.GetFiles("*.xml"));
 
+            Console.WriteLine($"NucleusCoop Builder Helper");
             Console.WriteLine($"Files {files.Count}");
 
             string binDir = Path.Combine(directory, "bin");

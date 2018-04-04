@@ -16,6 +16,7 @@ namespace Nucleus.Gaming.Package
 {
     public class PackageManager
     {
+        public static readonly string AssetsFolder = "assets";
         public string InfoFileName = "info";
         public string HandlerFileName = "handler";
         public readonly string JsonFormat = ".json";
@@ -231,13 +232,14 @@ namespace Nucleus.Gaming.Package
                 {
                     string fullGameInfo = reader.ReadToEnd();
                     GameHandlerMetadata metadata = JsonConvert.DeserializeObject<GameHandlerMetadata>(fullGameInfo);
+                    metadata.RootDirectory = Path.GetDirectoryName(pkgPath);
                     gameManager.NameManager.UpdateNaming(metadata);
                     return metadata;
                 }
             }
         }
 
-        public HandlerData ReadHandlerDataFromInstalledPackage(GameHandlerMetadata handler)
+        public HandlerDataManager ReadHandlerDataFromInstalledPackage(GameHandlerMetadata handler)
         {
             string installPath = GetInstallPath(handler);
             string handlerPath = Path.Combine(installPath, HandlerFileName + JsFormat);
@@ -249,7 +251,7 @@ namespace Nucleus.Gaming.Package
 
             using (Stream str = File.OpenRead(handlerPath))
             {
-                return new HandlerData(str);
+                return new HandlerDataManager(handler, str);
             }
         }
 
@@ -293,6 +295,12 @@ namespace Nucleus.Gaming.Package
             string installed = GameManager.Instance.GetInstalledPackagePath();
             string installedName = metadata.GameID + "-H" + metadata.HandlerID + "-V" + metadata.V + "-N" + metadata.PlatV + "-" + metadata.Dev;
             return Path.Combine(installed, installedName);
+        }
+
+        public static string GetAssetsFolder(GameHandlerMetadata metadata)
+        {
+            string installFolder = GetInstallPath(metadata);
+            return Path.Combine(installFolder, AssetsFolder);
         }
 
         /// <summary>

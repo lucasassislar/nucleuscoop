@@ -7,14 +7,13 @@ using System.Threading.Tasks;
 
 namespace Nucleus.Gaming.Coop
 {
+    [AppDomainShared]
     public class UserScreen
     {
         private Rectangle uiBounds;
         private Rectangle swapTypeRect;
         private UserScreenType type;
-
-        public Rectangle display;
-        public bool vertical;
+        private Rectangle monitorBounds;
 
         public Rectangle SwapTypeBounds
         {
@@ -36,12 +35,17 @@ namespace Nucleus.Gaming.Coop
 
         public Rectangle MonitorBounds
         {
-            get { return display; }
+            get { return monitorBounds; }
+            set { monitorBounds = value; }
         }
 
+        private UserScreen()
+        {
+
+        }
         public UserScreen(Rectangle display)
         {
-            this.display = display;
+            this.monitorBounds = display;
 
             type = UserScreenType.FullScreen;
         }

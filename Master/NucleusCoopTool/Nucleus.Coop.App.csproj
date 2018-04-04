@@ -77,6 +77,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
       <HintPath>..\packages\SlimDX.4.0.13.44\lib\NET40\SlimDX.dll</HintPath>
       <Private>True</Private>
@@ -101,6 +104,12 @@
     </Compile>
     <Compile Include="Controls\GameNameControl.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\GameRunningOverlay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\GameRunningOverlay.Designer.cs">
+      <DependentUpon>GameRunningOverlay.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\HandlerControl.cs">
       <SubType>UserControl</SubType>
@@ -158,6 +167,9 @@
     </None>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\GameRunningOverlay.resx">
+      <DependentUpon>GameRunningOverlay.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\PlayerCountControl.resx">
       <DependentUpon>PlayerCountControl.cs</DependentUpon>
     </EmbeddedResource>
