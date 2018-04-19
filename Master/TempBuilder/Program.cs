@@ -14,16 +14,25 @@ namespace TempBuilder
             string directory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
             DirectoryInfo dirInfo = new DirectoryInfo(directory);
-            //dirInfo.Create();
+
+            List<FileInfo> toDelete = dirInfo.GetFiles("*.pdb").ToList();
+            toDelete.AddRange(dirInfo.GetFiles("*.xml"));
 
             List<FileInfo> files = dirInfo.GetFiles("*.dll").ToList();
-            files.AddRange(dirInfo.GetFiles("*.pdb"));
-            files.AddRange(dirInfo.GetFiles("*.xml"));
 
             Console.WriteLine($"NucleusCoop Builder Helper");
             Console.WriteLine($"Files {files.Count}");
 
             string binDir = Path.Combine(directory, "bin");
+
+            for (int i = 0; i < toDelete.Count; i++)
+            {
+                FileInfo file = toDelete[i];
+                string prefix = $"({i + 1}/{toDelete.Count}) ";
+                Console.WriteLine(prefix + $"Deleting {file.Name}");
+
+                file.Delete();
+            }
 
             for (int i = 0; i < files.Count; i++)
             {

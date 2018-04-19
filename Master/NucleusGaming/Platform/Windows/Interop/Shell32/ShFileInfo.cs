@@ -20,9 +20,9 @@ namespace Nucleus.Gaming.Windows.Interop
         public IntPtr hIcon;
         public int iIcon;
         public uint dwAttributes;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Shell32.MAX_PATH)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Shell32Interop.MAX_PATH)]
         public string szDisplayName;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Shell32.MAX_TYPE)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Shell32Interop.MAX_TYPE)]
         public string szTypeName;
     };
 }

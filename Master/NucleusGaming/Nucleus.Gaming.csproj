@@ -10,13 +10,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Nucleus.Gaming</RootNamespace>
     <AssemblyName>Nucleus.Gaming</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -29,6 +30,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -38,6 +40,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -49,6 +53,7 @@
     <OutputPath>bin\TestDebug\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <DefineConstants>WINDOWS</DefineConstants>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
@@ -80,6 +85,7 @@
     <Compile Include="Coop\Data\CallbackData.cs" />
     <Compile Include="Coop\Data\HandlerTools.cs" />
     <Compile Include="Coop\Data\Save\SaveInfo.cs" />
+    <Compile Include="Coop\Data\UserProfileOptions.cs" />
     <Compile Include="Coop\HandlerDataManager.cs" />
     <Compile Include="Coop\Handler\Modules\IO\IOModule.cs" />
     <Compile Include="Coop\JS\AppDomainData.cs" />
@@ -162,6 +168,8 @@
     <Compile Include="Globals.cs" />
     <Compile Include="IO\JsonPropertiesFile.cs" />
     <Compile Include="IO\JsPropertiesFile.cs" />
+    <Compile Include="Platform\Windows\Interop\Shell32\FileAssociation.cs" />
+    <Compile Include="Platform\Windows\Interop\Shell32\FileAssociations.cs" />
     <Compile Include="Platform\Windows\IO\WinDirectoryUtil.cs" />
     <Compile Include="Platform\Windows\Modules\GameProcessModule.cs" />
     <Compile Include="Platform\Windows\IO\MFT\FileNameAndParentFrn.cs" />

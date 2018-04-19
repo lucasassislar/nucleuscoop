@@ -229,53 +229,53 @@ namespace Nucleus.Gaming.Coop
         /// Extracts the SmartSteamEmu and returns the folder its on
         /// </summary>
         /// <returns></returns>
-        public string ExtractSteamEmu(string outputFolder = null)
-        {
-            string steamEmu;
+        //public string ExtractSteamEmu(string outputFolder = null)
+        //{
+        //    string steamEmu;
 
-            if (string.IsNullOrEmpty(outputFolder))
-            {
-                string app = GetAppDataPath();
-                steamEmu = Path.Combine(app, "SteamEmu");
-            }
-            else
-            {
-                steamEmu = outputFolder;
-            }
+        //    if (string.IsNullOrEmpty(outputFolder))
+        //    {
+        //        string app = GetAppDataPath();
+        //        steamEmu = Path.Combine(app, "SteamEmu");
+        //    }
+        //    else
+        //    {
+        //        steamEmu = outputFolder;
+        //    }
 
-            try
-            {
-                //if (!Directory.Exists(steamEmu))
-                {
-                    Log.WriteLine("Extracting SmartSteamEmu");
+        //    try
+        //    {
+        //        //if (!Directory.Exists(steamEmu))
+        //        {
+        //            Log.WriteLine("Extracting SmartSteamEmu");
 
-                    Directory.CreateDirectory(steamEmu);
-                    using (MemoryStream stream = new MemoryStream(Resources.SmartSteamEmu))
-                    {
-                        using (ZipFile zip1 = ZipFile.Read(stream))
-                        {
-                            foreach (ZipEntry e in zip1)
-                            {
-                                e.Extract(steamEmu, ExtractExistingFileAction.OverwriteSilently);
-                            }
-                        }
-                    }
-                }
-            }
-            catch
-            {
-                Log.WriteLine("Extraction of SmartSteamEmu failed");
-                return string.Empty;
-            }
+        //            Directory.CreateDirectory(steamEmu);
+        //            using (MemoryStream stream = new MemoryStream(Resources.SmartSteamEmu))
+        //            {
+        //                using (ZipFile zip1 = ZipFile.Read(stream))
+        //                {
+        //                    foreach (ZipEntry e in zip1)
+        //                    {
+        //                        e.Extract(steamEmu, ExtractExistingFileAction.OverwriteSilently);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        Log.WriteLine("Extraction of SmartSteamEmu failed");
+        //        return string.Empty;
+        //    }
 
-            return steamEmu;
-        }
+        //    return steamEmu;
+        //}
 
         #region Initialize
 
-        private static string GetAppDataPath()
+        public static string GetAppDataPath()
         {
-#if ALPHA
+#if DEBUG
             string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             return Path.Combine(local, "data");
 #else
@@ -286,20 +286,17 @@ namespace Nucleus.Gaming.Coop
 
         public string GetPackageTmpPath()
         {
-            string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            return Path.Combine(local, "pkg\\tmp");
+            return Path.Combine(GetAppDataPath(), "pkg\\tmp");
         }
 
         public string GetInstalledPackagePath()
         {
-            string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            return Path.Combine(local, "pkg\\installed");
+            return Path.Combine(GetAppDataPath(), "pkg\\installed");
         }
 
         public string GetJsGamesPath()
         {
-            string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            return Path.Combine(local, "games");
+            return Path.Combine(GetAppDataPath(), "games");
         }
 
         protected string GetUserProfilePath()

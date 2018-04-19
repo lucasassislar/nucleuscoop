@@ -8,6 +8,7 @@ using Nucleus.Gaming.Windows;
 using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading;
@@ -98,9 +99,26 @@ namespace Nucleus.Coop
                     }
                 }
             }
-        }
 
-        
+#if RELEASE
+            if (!gameManager.User.Options.RequestedToAssociateFormat)
+            {
+                gameManager.User.Options.RequestedToAssociateFormat = true;
+
+                if (MessageBox.Show("Would you like to associate Nucleus Package Files (*.nc) to the application?", "Question", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    string startLocation = Process.GetCurrentProcess().MainModule.FileName;
+                    if (!FileAssociations.SetAssociation(".nc", "NucleusCoop", "Nucleus Package Files", startLocation))
+                    {
+                        MessageBox.Show("Failed to set association");
+                        gameManager.User.Options.RequestedToAssociateFormat = false;
+                    }
+                }
+
+                gameManager.User.Save();
+            }
+#endif
+        }
 
         protected override Size DefaultSize
         {
@@ -229,7 +247,7 @@ namespace Nucleus.Coop
         private void GetIcon(object state)
         {
             UserGameInfo game = (UserGameInfo)state;
-            Icon icon = Shell32.GetIcon(game.ExePath, false);
+            Icon icon = Shell32Interop.GetIcon(game.ExePath, false);
 
             Bitmap bmp = icon.ToBitmap();
             icon.Dispose();

@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Nucleus.Gaming.Coop;
+using Squirrel;
 
 namespace Nucleus.Coop
 {

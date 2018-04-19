@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>NucleusCoop</id>
+    <version>2.0.8</version>
+    <title>Nucleus Coop</title>
+    <authors>distrolucas</authors>
+    <owners></owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <iconUrl>https://raw.githubusercontent.com/lucasassislar/nucleuscoop/master/Master/NucleusCoopTool/Resources/icon.png</iconUrl>
+    <description>Splitscreen play on PC</description>
+  </metadata>
+  <files>
+    <file src="bin\*.*" target="lib\net45\bin\" exclude="*.pdb;*.nupkg;*.vshost.;*.config;*.xml"/>
+    <file src="NucleusCoop.exe" target="lib\net45\NucleusCoop.exe" />
+    <file src="NucleusCoop.exe.config" target="lib\net45\NucleusCoop.exe.config" />
+  </files>
+</package>

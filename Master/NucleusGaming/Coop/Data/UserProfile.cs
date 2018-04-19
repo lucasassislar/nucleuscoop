@@ -29,6 +29,8 @@ namespace Nucleus.Gaming.Coop
 
         public DateTime LatestMod { get; set; }
 
+        public UserProfileOptions Options { get; set; } = new UserProfileOptions();
+
         public UserProfile(string _pathToFile)
             : base(_pathToFile)
         {

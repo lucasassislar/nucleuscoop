@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -7,9 +8,12 @@ using System.Text;
 
 namespace Nucleus.Gaming.Windows.Interop
 {
-    public static class Shell32
+    public static class Shell32Interop
     {
         private static object getIconState = new object();
+
+        [DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
 
         [DllImport("shell32.dll", CharSet = CharSet.Auto)]
         private static extern int SHGetFileInfo(string pszPath, int dwFileAttributes, out ShFileInfo psfi, uint cbfileInfo, ShgFi uFlags);

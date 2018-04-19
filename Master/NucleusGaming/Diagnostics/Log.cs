@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nucleus.Gaming.Coop;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -44,6 +45,7 @@ namespace Nucleus.Gaming.Diagnostics
             if (enableLogging)
             {
                 logPath = GetLogPath();
+                Directory.CreateDirectory(Path.GetDirectoryName(logPath));
 
                 logStream = new FileStream(GetLogPath(), FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
                 logStream.Position = logStream.Length; // keep writing from where we left
@@ -65,7 +67,7 @@ namespace Nucleus.Gaming.Diagnostics
 
         public void LogExceptionFile(Exception ex)
         {
-            string local = GetAppDataPath();
+            string local = GameManager.GetAppDataPath();
             DateTime now = DateTime.Now;
             string file = string.Format("{0}{1}{2}_{3}{4}{5}", now.Day.ToString("00"), now.Month.ToString("00"), now.Year.ToString("0000"), now.Hour.ToString("00"), now.Minute.ToString("00"), now.Second.ToString("00")) + ".log";
             string path = Path.Combine(local, file);
@@ -109,14 +111,9 @@ namespace Nucleus.Gaming.Diagnostics
             instance.consoleLevel = level;
         }
 
-        private static string GetAppDataPath()
-        {
-            return Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-        }
-
         protected static string GetLogPath()
         {
-            return Path.Combine(GetAppDataPath(), "app.log");
+            return Path.Combine(GameManager.GetAppDataPath(), "app.log");
         }
 
         private object writeLineLock = new object();
