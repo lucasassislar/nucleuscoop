@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{55A98A02-6D2E-4194-B401-8FD0887E7C1D}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Nucleus.Coop.PkgManager</RootNamespace>
+    <AssemblyName>Nucleus.Coop.PkgManager</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="MainRepo\header.json" />
+    <None Include="MainRepo\infos\1\info-1.json" />
+    <None Include="MainRepo\infos\2\info-1.json" />
+    <None Include="MainRepo\packages\sources\17520\info.json" />
+    <None Include="MainRepo\packages\sources\239140\info.json" />
+    <None Include="MainRepo\packages\sources\261640\info.json" />
+    <None Include="MainRepo\packages\sources\49520\info.json" />
+    <None Include="MainRepo\packages\sources\550\info.json" />
+    <None Include="MainRepo\packages\sources\563560\info.json" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MainRepo\infos\1\header.jpg" />
+    <Content Include="MainRepo\infos\2\header.jpg" />
+    <Content Include="MainRepo\packages\sources\17520\handler.js" />
+    <Content Include="MainRepo\packages\sources\17520\screenshots\0.jpg" />
+    <Content Include="MainRepo\packages\sources\239140\handler.js" />
+    <Content Include="MainRepo\packages\sources\239140\screenshots\0.jpg" />
+    <Content Include="MainRepo\packages\sources\261640\handler.js" />
+    <Content Include="MainRepo\packages\sources\261640\screenshots\0.jpg" />
+    <Content Include="MainRepo\packages\sources\49520\handler.js" />
+    <Content Include="MainRepo\packages\sources\49520\screenshots\0.jpg" />
+    <Content Include="MainRepo\packages\sources\550\assets\bloodharvest.jpg" />
+    <Content Include="MainRepo\packages\sources\550\assets\coldstream.png" />
+    <Content Include="MainRepo\packages\sources\550\assets\crashcourse.jpg" />
+    <Content Include="MainRepo\packages\sources\550\assets\darkcarnival.png" />
+    <Content Include="MainRepo\packages\sources\550\assets\deadair.jpg" />
+    <Content Include="MainRepo\packages\sources\550\assets\deadcenter.jpg" />
+    <Content Include="MainRepo\packages\sources\550\assets\deathabroad.jpg" />
+    <Content Include="MainRepo\packages\sources\550\assets\deathtoll.jpg" />
+    <Content Include="MainRepo\packages\sources\550\assets\hardrain.jpg" />
+    <Content Include="MainRepo\packages\sources\550\assets\nomercy.jpg" />
+    <Content Include="MainRepo\packages\sources\550\assets\swampfever.JPG" />
+    <Content Include="MainRepo\packages\sources\550\assets\theparish.jpg" />
+    <Content Include="MainRepo\packages\sources\550\assets\thepassing.jpg" />
+    <Content Include="MainRepo\packages\sources\550\assets\thesacrifice.jpg" />
+    <Content Include="MainRepo\packages\sources\550\handler.js" />
+    <Content Include="MainRepo\packages\sources\550\screenshots\0.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\ad4_obj_escape_image.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\adanaxis1_access_obj_image.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\breakinganentry_missionpic.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\dm_desert_icon.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\dm_testlab_icon.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\obc17center_goo.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\obc17citadel_escape.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\obc17f_core.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\obc17ts_button2.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\obc17tunnel_eggs.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\obdeimaesc.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\oblandingelev.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\oblandinghack.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\obresidentialbio.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\obrydbergreactor.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\obsewertunnel.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\obtimorstationnuke.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\omegacity_missionpic.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd-area9800lzpic.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd-area9800pp1pic.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd-area9800pp2pic.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd-area9800wlpic.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd-lan1_bridgempic.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd-lan2_sewermpic.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd-lan3_maintenance_obj_3.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd-lan4_ventmpic.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd-lan5_complexmpic.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd-obbriefing_map3.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd-obdesertexit.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd-tarnormission2.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd_bon2_survivors.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd_bon3_blueprint.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd_ocs1mapicon.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd_ocs2mapicon.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd_ocs3mapicon.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd_ori2.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd_par_mission2.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd_par_objectif1.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd_par_objectif23.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd_par_objectif32.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd_par_objectif33.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd_res_m1missionpic.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd_res_m2missionpic.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd_res_m3missionpic.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd_res_m4missionpic.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\rd_til3arcticinfiltration_pic.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\searchandrescue_missionpic.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\tilarus01obj1.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\tilarus02obj1.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\tilarus04obj1.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\tilarus05obj1.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\tilarus06obj1access.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\tilarus07objeggs.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\tilarus08obj2.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\assets\tilarus09obpowerroom.jpg" />
+    <Content Include="MainRepo\packages\sources\563560\handler.js" />
+    <Content Include="MainRepo\packages\sources\563560\screenshots\0.jpg" />
+    <Content Include="MainRepo\source\550\bkp\bloodharvest.jpg" />
+    <Content Include="MainRepo\source\550\bkp\crashcourse.jpg" />
+    <Content Include="MainRepo\source\550\bkp\darkcarnival.jpg" />
+    <Content Include="MainRepo\source\550\bkp\deadair.jpg" />
+    <Content Include="MainRepo\source\550\bkp\deadcenter.jpg" />
+    <Content Include="MainRepo\source\550\bkp\deathaboard.jpg" />
+    <Content Include="MainRepo\source\550\bkp\deathtoll.jpg" />
+    <Content Include="MainRepo\source\550\bkp\hardrain.jpg" />
+    <Content Include="MainRepo\source\550\bkp\nomercy.jpg" />
+    <Content Include="MainRepo\source\550\bkp\swampfever.JPG" />
+    <Content Include="MainRepo\source\550\bkp\theparish.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NucleusGaming\Nucleus.Gaming.csproj">
+      <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
+      <Name>Nucleus.Gaming</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MainRepo\source\550\og\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
