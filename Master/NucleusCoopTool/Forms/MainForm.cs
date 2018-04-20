@@ -94,8 +94,11 @@ namespace Nucleus.Coop
                     string extension = Path.GetExtension(argument);
                     if (extension.ToLower().EndsWith("nc"))
                     {
-                        // try installing
-                        gameManager.RepoManager.InstallPackage(argument);
+                        // try installing if user allows it
+                        if (MessageBox.Show("Would you like to install " + argument + "?", "Question", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        {
+                            gameManager.RepoManager.InstallPackage(argument);
+                        }
                     }
                 }
             }

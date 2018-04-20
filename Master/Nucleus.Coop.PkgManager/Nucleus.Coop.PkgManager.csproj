@@ -72,8 +72,6 @@
     </Compile>
     <None Include="app.config" />
     <None Include="MainRepo\header.json" />
-    <None Include="MainRepo\infos\1\info-1.json" />
-    <None Include="MainRepo\infos\2\info-1.json" />
     <None Include="MainRepo\packages\sources\17520\info.json" />
     <None Include="MainRepo\packages\sources\239140\info.json" />
     <None Include="MainRepo\packages\sources\261640\info.json" />
@@ -92,8 +90,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MainRepo\infos\1\header.jpg" />
-    <Content Include="MainRepo\infos\2\header.jpg" />
     <Content Include="MainRepo\packages\sources\17520\handler.js" />
     <Content Include="MainRepo\packages\sources\17520\screenshots\0.jpg" />
     <Content Include="MainRepo\packages\sources\239140\handler.js" />
