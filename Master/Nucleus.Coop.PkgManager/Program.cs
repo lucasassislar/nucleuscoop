@@ -57,13 +57,19 @@ namespace Nucleus.Coop.PkgManager
             for (int i = 0; i < dirs.Length; i++)
             {
                 DirectoryInfo dir = dirs[i];
-                string pkgName = dir.Name + ".nc";
-                string destName = Path.Combine(pkgsFolder, pkgName);
 
                 // read handler data
                 string handlerPath = Path.Combine(dir.FullName, "info.json");
                 string handlerData = File.ReadAllText(handlerPath);
                 GameHandlerMetadata metadata = JsonConvert.DeserializeObject<GameHandlerMetadata>(handlerData);
+                if (metadata.GameID.ToLower().StartsWith("debug"))
+                {
+                    continue;
+                }
+
+                string pkgName = PackageManager.GetPackageFileName(metadata) + ".nc";
+                string destName = Path.Combine(pkgsFolder, pkgName);
+
                 infos.Add(new Infos() { Metadata = metadata, RootFolder = dir.FullName });
 
                 string firstPic = Path.Combine(dir.FullName, "header.jpg");
@@ -117,10 +123,14 @@ namespace Nucleus.Coop.PkgManager
                 }
 
                 indexData += "<div>";
-                indexData += string.Format("<a href='packages/{0}.nc'>", metadata.HandlerID);
-                indexData += string.Format("<img src='infos/{0}/header.jpg' />", metadata.HandlerID);
-                indexData += string.Format("<h3>{0}</h3><h4>{1}</h4>", metadata.GameTitle, metadata.Title);
-                indexData += "</a> <br /> </div>";
+
+                string pkgName = PackageManager.GetPackageFileName(metadata);
+
+                indexData += string.Format("<a href='packages/{0}.nc'>", pkgName);
+                indexData += string.Format("<img src='infos/{0}/header.jpg' /></a> ", metadata.HandlerID);
+                indexData += string.Format("<h3>{0}</h3><h4>{1}</h4><h5><a href='packages/{2}.nc'>[DOWNLOAD HANDLER v{3}]</a></h5>", 
+                    metadata.GameTitle, metadata.Title, pkgName, metadata.V);
+                indexData += "<br /> </div>";
             }
 
             indexData += "</body></html>";

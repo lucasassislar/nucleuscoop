@@ -293,8 +293,13 @@ namespace Nucleus.Gaming.Package
             }
 
             string installed = GameManager.Instance.GetInstalledPackagePath();
-            string installedName = metadata.GameID + "-H" + metadata.HandlerID + "-V" + metadata.V + "-N" + metadata.PlatV + "-" + metadata.Dev;
+            string installedName = GetPackageFileName(metadata);
             return Path.Combine(installed, installedName);
+        }
+
+        public static string GetPackageFileName(GameHandlerMetadata metadata)
+        {
+            return metadata.GameID + "-H" + metadata.HandlerID + "-V" + metadata.V + "-N" + metadata.PlatV + "-" + metadata.Dev;
         }
 
         public static string GetAssetsFolder(GameHandlerMetadata metadata)
