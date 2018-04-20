@@ -11,6 +11,13 @@ using System.Windows.Forms;
 
 namespace Nucleus.Coop.PkgManager
 {
+    public class Infos
+    {
+        public GameHandlerMetadata Metadata;
+        public string RootFolder;
+    }
+
+
     static class Program
     {
         /// <summary>
@@ -24,7 +31,10 @@ namespace Nucleus.Coop.PkgManager
             string infosFolder = Path.Combine(output, "infos");
             string pkgsFolder = Path.Combine(output, "packages");
 
-            string toBuild = Path.Combine("..\\..\\MainRepo\\packages\\sources");
+            string toBuild = "..\\..\\MainRepo\\packages\\sources";
+
+            string indexPagePath = Path.Combine(output, "index.html");
+            string indexData = "<html><head><link rel='stylesheet' href='style.css'></head><body>";
 
             if (Directory.Exists(output))
             {
@@ -35,8 +45,14 @@ namespace Nucleus.Coop.PkgManager
             Directory.CreateDirectory(infosFolder);
             Directory.CreateDirectory(pkgsFolder);
 
+            string sourceCssPath = "..\\..\\MainRepo\\bootstrap.min.css";
+            string cssPath = Path.Combine(output, "style.css");
+            File.Copy(sourceCssPath, cssPath);
+
             DirectoryInfo dirSource = new DirectoryInfo(toBuild);
             DirectoryInfo[] dirs = dirSource.GetDirectories();
+
+            List<Infos> infos = new List<Infos>();
 
             for (int i = 0; i < dirs.Length; i++)
             {
@@ -44,16 +60,13 @@ namespace Nucleus.Coop.PkgManager
                 string pkgName = dir.Name + ".nc";
                 string destName = Path.Combine(pkgsFolder, pkgName);
 
-                // search for screenshots if missing
-                string screenshotsDir = Path.Combine(dir.FullName, "screenshots");
-                Directory.CreateDirectory(screenshotsDir);
-
                 // read handler data
                 string handlerPath = Path.Combine(dir.FullName, "info.json");
                 string handlerData = File.ReadAllText(handlerPath);
                 GameHandlerMetadata metadata = JsonConvert.DeserializeObject<GameHandlerMetadata>(handlerData);
+                infos.Add(new Infos() { Metadata = metadata, RootFolder = dir.FullName });
 
-                string firstPic = Path.Combine(screenshotsDir, "0.jpg");
+                string firstPic = Path.Combine(dir.FullName, "header.jpg");
                 if (!File.Exists(firstPic))
                 {
                     // see if steam has a header pic
@@ -69,6 +82,21 @@ namespace Nucleus.Coop.PkgManager
                     catch { }
                 }
 
+                using (var file = new ZipFile())
+                {
+                    file.AddDirectory(dir.FullName);
+                    file.CompressionLevel = Ionic.Zlib.CompressionLevel.BestCompression;
+
+                    file.Save(destName);
+                }
+            }
+
+            var newInfos = infos.OrderBy(c => c.Metadata.GameTitle);
+
+            foreach (Infos info in newInfos)
+            {
+                GameHandlerMetadata metadata = info.Metadata;
+
                 // write info file
                 GameHandlerBaseMetadata baseMetadata = new GameHandlerBaseMetadata();
                 ObjectUtil.DeepCopy(metadata, baseMetadata);
@@ -80,21 +108,24 @@ namespace Nucleus.Coop.PkgManager
                 string infoFile = Path.Combine(infoFolder, "info.json");
                 File.WriteAllText(infoFile, metadataSerialized);
 
+                string firstPic = Path.Combine(info.RootFolder, "header.jpg");
                 if (File.Exists(firstPic))
                 {
-                    string destHeaderScreenshot = Path.Combine(infoFolder, "screenshots//0.jpg");
+                    string destHeaderScreenshot = Path.Combine(infoFolder, "header.jpg");
                     Directory.CreateDirectory(Path.GetDirectoryName(destHeaderScreenshot));
                     File.Copy(firstPic, destHeaderScreenshot);
                 }
 
-                using (var file = new ZipFile())
-                {
-                    file.AddDirectory(dir.FullName);
-                    file.CompressionLevel = Ionic.Zlib.CompressionLevel.BestCompression;
-
-                    file.Save(destName);
-                }
+                indexData += "<div>";
+                indexData += string.Format("<a href='packages/{0}.nc'>", metadata.HandlerID);
+                indexData += string.Format("<img src='infos/{0}/header.jpg' />", metadata.HandlerID);
+                indexData += string.Format("<h3>{0}</h3><h4>{1}</h4>", metadata.GameTitle, metadata.Title);
+                indexData += "</a> <br /> </div>";
             }
+
+            indexData += "</body></html>";
+            File.WriteAllText(indexPagePath, indexData);
+
 
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);

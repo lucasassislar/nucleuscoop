@@ -32,6 +32,11 @@ namespace Nucleus.Gaming.Package
         public string ExeName { get; set; }
 
         /// <summary>
+        /// The last time this handler was updated
+        /// </summary>
+        public long LastUpdate { get; set; }
+
+        /// <summary>
         /// The name of the developer that uploaded this game handler
         /// </summary>
         public string Dev { get; set; }
