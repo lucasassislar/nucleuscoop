@@ -52,7 +52,7 @@ namespace Nucleus.Gaming.Package
         public int V { get; set; }
 
         /// <summary>
-        /// Version of the handler included in the package
+        /// Version of the NC application on which this package handler release is based.
         /// </summary>
         public int PlatV { get; set; }
 
