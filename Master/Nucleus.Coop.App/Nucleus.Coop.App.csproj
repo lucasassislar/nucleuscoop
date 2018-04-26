@@ -270,13 +270,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NucleusGaming\Nucleus.Gaming.csproj">
+    <ProjectReference Include="..\Nucleus.Coop.AppPostBuild\Nucleus.Coop.AppPostBuild.csproj">
+      <Project>{6bacfb45-eedc-4371-9377-013d534ac83c}</Project>
+      <Name>Nucleus.Coop.AppPostBuild</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nucleus.Coop.StartGame\Nucleus.Coop.StartGame.csproj">
+      <Project>{91298ada-5999-41d4-8a7b-51f28094ab5b}</Project>
+      <Name>Nucleus.Coop.StartGame</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nucleus.Gaming\Nucleus.Gaming.csproj">
       <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
       <Name>Nucleus.Gaming</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TempBuilder\TempBuilder.csproj">
-      <Project>{6bacfb45-eedc-4371-9377-013d534ac83c}</Project>
-      <Name>TempBuilder</Name>
     </ProjectReference>
     <ProjectReference Include="..\ThirdParty\WindowScrape\WindowScrape.csproj">
       <Project>{d9716550-921d-44e8-a289-c297950db1f7}</Project>
@@ -456,7 +460,7 @@
     <None Include="games\DontStarveTogether\steam_api.dll" />
     <None Include="config.json" />
     <None Include="games\550-Left4Dead2\game.js" />
-    <None Include="..\StartGame\bin\Debug\StartGame.exe">
+    <None Include="..\Nucleus.Coop.StartGame\bin\Debug\StartGame.exe">
       <Link>bin\StartGame.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

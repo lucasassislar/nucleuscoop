@@ -96,12 +96,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NucleusGaming\Nucleus.Gaming.csproj">
-      <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
-      <Name>Nucleus.Gaming</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="MainRepo\infos\17\screenshots\0.jpg" />
     <Content Include="MainRepo\infos\1\screenshots\0.jpg" />
     <Content Include="MainRepo\infos\2\screenshots\0.jpg" />
