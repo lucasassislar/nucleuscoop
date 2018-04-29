@@ -20,6 +20,11 @@ namespace Nucleus.Gaming.Coop.Interop
         private GameHandlerMetadata metadata;
         private string jsCode;
 
+        public static string GetEnginePath()
+        {
+            return Path.Combine(AssemblyUtil.GetStartFolder(), "bin", "Nucleus.Gaming.Coop.Engine.dll");
+        }
+
         public HandlerDataEngine(GameHandlerMetadata metadata, string jsCode)
         {
             this.metadata = metadata;
@@ -32,32 +37,27 @@ namespace Nucleus.Gaming.Coop.Interop
             Evidence evidence = new Evidence();
             evidence.AddHostEvidence(new Zone(SecurityZone.Untrusted));
 
-            //PermissionSet permissionSet = SecurityManager.GetStandardSandbox(evidence);
             PermissionSet permissionSet = new PermissionSet(PermissionState.None);
 
             //permissionSet.SetPermission(new FileIOPermission(PermissionState.None));
-            permissionSet.RemovePermission(typeof(FileIOPermission));
+            //permissionSet.RemovePermission(typeof(FileIOPermission));
+            //permissionSet.AddPermission(new FileIOPermission(PermissionState.None));
 
-            //permissionSet.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery | FileIOPermissionAccess.Write, tempPath));
+            permissionSet.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery | FileIOPermissionAccess.Write, tempPath));
+            permissionSet.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, metadata.RootDirectory));
+            permissionSet.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, AssemblyUtil.GetStartFolder()));
             permissionSet.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
+
             AppDomainSetup setup = new AppDomainSetup { ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase };
 
-            domain = AppDomain.CreateDomain("JSENGINE", null, setup, permissionSet);
+            domain = AppDomain.CreateDomain("JSENGINE", evidence, setup, permissionSet);
 
-            //ObjectHandle hobj = domain.CreateInstance("Nucleus.Gaming", "Nucleus.Gaming.Coop.JS.AppDomainData");
-            //AppDomainData migrator = (AppDomainData)hobj.Unwrap();
-            //migrator.ClassType = "";
-            //migrator.Data = JsonConvert.SerializeObject(data);
+            string enginePath = GetEnginePath();
+            byte[] engineData = File.ReadAllBytes(enginePath);
+            domain.Load(engineData);
 
-            try
-            {
-                ObjectHandle jsobj = domain.CreateInstance("Nucleus.Gaming.Coop.Engine", "Nucleus.Gaming.Coop.Engine.AppDomainEngine");
-                jsEngine = jsobj.Unwrap();
-            }
-            catch
-            {
-
-            }
+            ObjectHandle jsobj = domain.CreateInstance("Nucleus.Gaming.Coop.Engine", "Nucleus.Gaming.Coop.Engine.AppDomainEngine");
+            jsEngine = jsobj.Unwrap();
         }
 
         public void Dispose()
@@ -78,5 +78,10 @@ namespace Nucleus.Gaming.Coop.Interop
             string playerData = JsonConvert.SerializeObject(player);
             return jsEngine.Play(contextData, playerData);
         }
+
+        //ObjectHandle hobj = domain.CreateInstance("Nucleus.Gaming", "Nucleus.Gaming.Coop.JS.AppDomainData");
+        //AppDomainData migrator = (AppDomainData)hobj.Unwrap();
+        //migrator.ClassType = "";
+        //migrator.Data = JsonConvert.SerializeObject(data);
     }
 }

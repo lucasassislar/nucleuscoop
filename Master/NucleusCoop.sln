@@ -12,6 +12,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nucleus.Coop.PkgManager", "Nucleus.Coop.PkgManager\Nucleus.Coop.PkgManager.csproj", "{55A98A02-6D2E-4194-B401-8FD0887E7C1D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nucleus.Coop.App", "Nucleus.Coop.App\Nucleus.Coop.App.csproj", "{7818FD81-77A6-49F3-8571-A91B1B99E63F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DBDD15A4-5580-4324-9FEB-2D4B985E8D43} = {DBDD15A4-5580-4324-9FEB-2D4B985E8D43}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nucleus.Coop.AppPostBuild", "Nucleus.Coop.AppPostBuild\Nucleus.Coop.AppPostBuild.csproj", "{6BACFB45-EEDC-4371-9377-013D534AC83C}"
 EndProject

@@ -478,6 +478,14 @@
       <Link>bin\StartGame.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\Nucleus.Gaming.Coop.Engine\bin\Debug\Nucleus.Gaming.Coop.Engine.dll" Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+      <Link>bin\Nucleus.Gaming.Coop.Engine.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Nucleus.Gaming.Coop.Engine\bin\Release\Nucleus.Gaming.Coop.Engine.dll" Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+      <Link>bin\Nucleus.Gaming.Coop.Engine.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="games\550-Left4Dead2\assets\og\" />

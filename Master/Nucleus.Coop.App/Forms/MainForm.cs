@@ -407,6 +407,8 @@ namespace Nucleus.Coop
                 }
             }
 
+            KillCurrentStep();
+
             currentStepIndex = step;
             currentStep = stepsList[step];
             currentStep.Size = panel_Steps.Size;
