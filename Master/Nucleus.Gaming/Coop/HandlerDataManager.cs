@@ -15,6 +15,7 @@ namespace Nucleus.Gaming.Coop
         private HandlerData handlerData;
         private GameHandlerMetadata handlerMetadata;
         private ContentManager content;
+        private bool isDisposed;
 
         public HandlerData HandlerData
         {
@@ -59,6 +60,12 @@ namespace Nucleus.Gaming.Coop
 
         public void Dispose()
         {
+            if (isDisposed)
+            {
+                return;
+            }
+            isDisposed = true;
+
             jsEngine.Dispose();
 
             content.Dispose();

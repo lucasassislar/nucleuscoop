@@ -17,7 +17,6 @@ namespace Nucleus.Coop.PkgManager
         public string RootFolder;
     }
 
-
     static class Program
     {
         /// <summary>
@@ -34,7 +33,7 @@ namespace Nucleus.Coop.PkgManager
             string toBuild = "..\\..\\MainRepo\\packages\\sources";
 
             string indexPagePath = Path.Combine(output, "index.html");
-            string indexData = "<html><head><link rel='stylesheet' href='style.css'></head><body>";
+            string indexData = "<html><head><link rel='stylesheet' href='bootstrap.css'><link rel='stylesheet' href='style.css'></head><body>";
 
             if (Directory.Exists(output))
             {
@@ -46,7 +45,11 @@ namespace Nucleus.Coop.PkgManager
             Directory.CreateDirectory(pkgsFolder);
 
             string sourceCssPath = "..\\..\\MainRepo\\bootstrap.min.css";
-            string cssPath = Path.Combine(output, "style.css");
+            string cssPath = Path.Combine(output, "bootstrap.css");
+            File.Copy(sourceCssPath, cssPath);
+
+            sourceCssPath = "..\\..\\MainRepo\\style.css";
+            cssPath = Path.Combine(output, "style.css");
             File.Copy(sourceCssPath, cssPath);
 
             DirectoryInfo dirSource = new DirectoryInfo(toBuild);
@@ -99,6 +102,8 @@ namespace Nucleus.Coop.PkgManager
 
             var newInfos = infos.OrderBy(c => c.Metadata.GameTitle);
 
+            indexData += "<div id='grid'>";
+
             foreach (Infos info in newInfos)
             {
                 GameHandlerMetadata metadata = info.Metadata;
@@ -132,6 +137,9 @@ namespace Nucleus.Coop.PkgManager
                     metadata.GameTitle, metadata.Title, pkgName, metadata.V);
                 indexData += "<br /> </div>";
             }
+
+            indexData += "</div>";
+
 
             indexData += "</body></html>";
             File.WriteAllText(indexPagePath, indexData);

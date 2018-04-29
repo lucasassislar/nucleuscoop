@@ -39,10 +39,6 @@ namespace Nucleus.Gaming.Coop.Interop
 
             PermissionSet permissionSet = new PermissionSet(PermissionState.None);
 
-            //permissionSet.SetPermission(new FileIOPermission(PermissionState.None));
-            //permissionSet.RemovePermission(typeof(FileIOPermission));
-            //permissionSet.AddPermission(new FileIOPermission(PermissionState.None));
-
             permissionSet.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery | FileIOPermissionAccess.Write, tempPath));
             permissionSet.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, metadata.RootDirectory));
             permissionSet.AddPermission(new FileIOPermission(FileIOPermissionAccess.Read | FileIOPermissionAccess.PathDiscovery, AssemblyUtil.GetStartFolder()));

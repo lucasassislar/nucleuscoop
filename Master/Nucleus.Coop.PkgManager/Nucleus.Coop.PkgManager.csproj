@@ -96,6 +96,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="MainRepo\bootstrap.min.css" />
     <Content Include="MainRepo\infos\17\screenshots\0.jpg" />
     <Content Include="MainRepo\infos\1\screenshots\0.jpg" />
     <Content Include="MainRepo\infos\2\screenshots\0.jpg" />
@@ -194,9 +195,16 @@
     <Content Include="MainRepo\source\550\bkp\nomercy.jpg" />
     <Content Include="MainRepo\source\550\bkp\swampfever.JPG" />
     <Content Include="MainRepo\source\550\bkp\theparish.jpg" />
+    <Content Include="MainRepo\style.css" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="MainRepo\source\550\og\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nucleus.Gaming\Nucleus.Gaming.csproj">
+      <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
+      <Name>Nucleus.Gaming</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

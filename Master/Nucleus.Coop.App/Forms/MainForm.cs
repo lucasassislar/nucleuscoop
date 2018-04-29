@@ -312,6 +312,7 @@ namespace Nucleus.Coop
             {
                 // dispose
                 handlerDataManager.Dispose();
+                handlerDataManager = null;
             }
 
             selectedHandler = currentHandlers[combo_Handlers.SelectedIndex];
