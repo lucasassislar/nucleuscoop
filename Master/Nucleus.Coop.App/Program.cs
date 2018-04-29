@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Nucleus.Gaming.Coop;
 using Squirrel;
+using System.Threading;
 
 namespace Nucleus.Coop
 {
@@ -17,6 +18,16 @@ namespace Nucleus.Coop
         static void Main(string[] args)
         {
             new Log(true);
+
+            // Add the event handler for handling UI thread exceptions to the event.
+            Application.ThreadException += new ThreadExceptionEventHandler(ThreadExceptionEventHandler);
+
+            // Set the unhandled exception mode to force all Windows Forms errors
+            // to go through our handler.
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+
+            // Add the event handler for handling non-UI thread exceptions to the event. 
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledExceptionEventHandler);
 
             // initialize DPIManager BEFORE setting 
             // the application to be DPI aware
@@ -32,5 +43,17 @@ namespace Nucleus.Coop
 
             Application.Run(form);
         }
+
+        private static void ThreadExceptionEventHandler(object sender, ThreadExceptionEventArgs e)
+        {
+            int x = 0;
+        }
+
+        private static void UnhandledExceptionEventHandler(object sender, UnhandledExceptionEventArgs e)
+        {
+            int x = 0;
+        }
     }
+
+
 }

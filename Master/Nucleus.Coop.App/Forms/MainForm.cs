@@ -105,7 +105,6 @@ namespace Nucleus.Coop
                 }
             }
 
-#if RELEASE
             if (!gameManager.User.Options.RequestedToAssociateFormat)
             {
                 gameManager.User.Options.RequestedToAssociateFormat = true;
@@ -122,7 +121,6 @@ namespace Nucleus.Coop
 
                 gameManager.User.Save();
             }
-#endif
         }
 
         protected override Size DefaultSize
@@ -315,29 +313,36 @@ namespace Nucleus.Coop
                 handlerDataManager = null;
             }
 
-            selectedHandler = currentHandlers[combo_Handlers.SelectedIndex];
-            handlerDataManager = gameManager.RepoManager.ReadHandlerDataFromInstalledPackage(selectedHandler);
-            handlerData = handlerDataManager.HandlerData;
-
-            btn_Play.Enabled = false;
-
-            stepsList = new List<UserInputControl>();
-            stepsList.Add(positionsControl);
-            stepsList.Add(optionsControl);
-            if (handlerData.CustomSteps != null)
+            try
             {
-                for (int i = 0; i < handlerData.CustomSteps.Count; i++)
+                selectedHandler = currentHandlers[combo_Handlers.SelectedIndex];
+                handlerDataManager = gameManager.RepoManager.ReadHandlerDataFromInstalledPackage(selectedHandler);
+                handlerData = handlerDataManager.HandlerData;
+
+                btn_Play.Enabled = false;
+
+                stepsList = new List<UserInputControl>();
+                stepsList.Add(positionsControl);
+                stepsList.Add(optionsControl);
+                if (handlerData.CustomSteps != null)
                 {
-                    stepsList.Add(jsControl);
+                    for (int i = 0; i < handlerData.CustomSteps.Count; i++)
+                    {
+                        stepsList.Add(jsControl);
+                    }
                 }
+
+                currentProfile = new GameProfile();
+                currentProfile.InitializeDefault(handlerData);
+
+                gameNameControl.GameInfo = selectedControl.UserGameInfo;
+
+                GoToStep(0);
             }
-
-            currentProfile = new GameProfile();
-            currentProfile.InitializeDefault(handlerData);
-
-            gameNameControl.GameInfo = selectedControl.UserGameInfo;
-
-            GoToStep(0);
+            catch (Exception ex)
+            {
+                int wat = -1;
+            }
         }
 
 
