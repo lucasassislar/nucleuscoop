@@ -7,8 +7,8 @@
     <ProjectGuid>{7818FD81-77A6-49F3-8571-A91B1B99E63F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Nucleus.Coop</RootNamespace>
-    <AssemblyName>NucleusCoop</AssemblyName>
+    <RootNamespace>Nucleus.Coop.App</RootNamespace>
+    <AssemblyName>Nucleus.Coop.App</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
@@ -460,10 +460,6 @@
     <None Include="games\DontStarveTogether\steam_api.dll" />
     <None Include="config.json" />
     <None Include="games\550-Left4Dead2\game.js" />
-    <None Include="..\Nucleus.Coop.StartGame\bin\Debug\StartGame.exe">
-      <Link>bin\StartGame.exe</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Content Include="icon.ico" />
     <None Include="Resources\4players.png" />
     <None Include="Resources\16players.png" />
@@ -472,6 +468,16 @@
     <None Include="Resources\generic.png" />
     <None Include="Resources\horizontal.png" />
     <Content Include="Resources\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Nucleus.Coop.StartGame\bin\Debug\StartGame.exe" Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+      <Link>bin\StartGame.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Nucleus.Coop.StartGame\bin\Release\StartGame.exe" Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+      <Link>bin\StartGame.exe</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="games\550-Left4Dead2\assets\og\" />

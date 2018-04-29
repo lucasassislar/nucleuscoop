@@ -6,7 +6,6 @@ using System.Reflection;
 using Microsoft.Win32;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Handler;
-using Nucleus.Gaming.Coop.JS;
 
 namespace Nucleus.Gaming.Coop
 {

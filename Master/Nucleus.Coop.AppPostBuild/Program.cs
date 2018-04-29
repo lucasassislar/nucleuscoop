@@ -21,10 +21,10 @@ namespace TempBuilder
             List<FileInfo> files = dirInfo.GetFiles("*.dll").ToList();
 
             Console.WriteLine($"NucleusCoop Builder Helper");
-            Console.WriteLine($"Files {files.Count}");
 
             string binDir = Path.Combine(directory, "bin");
 
+            Console.WriteLine($"To Delete {files.Count}");
             for (int i = 0; i < toDelete.Count; i++)
             {
                 FileInfo file = toDelete[i];
@@ -34,6 +34,7 @@ namespace TempBuilder
                 file.Delete();
             }
 
+            Console.WriteLine($"Files {files.Count}");
             for (int i = 0; i < files.Count; i++)
             {
                 FileInfo file = files[i];

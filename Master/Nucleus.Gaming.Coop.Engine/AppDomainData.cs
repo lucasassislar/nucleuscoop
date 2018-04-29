@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Nucleus.Gaming.Coop.JS
+namespace Nucleus.Gaming.Coop.Engine
 {
     [Serializable]
     public class AppDomainData

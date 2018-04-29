@@ -11,16 +11,16 @@ using System.Security.Permissions;
 using System.Security.Policy;
 using System.Text;
 
-namespace Nucleus.Gaming.Coop.JS
+namespace Nucleus.Gaming.Coop.Interop
 {
-    public class HandlerDataJSEngine : IDisposable
+    public class HandlerDataEngine : IDisposable
     {
         private AppDomain domain;
-        private AppDomainJSEngine jsEngine;
+        private dynamic jsEngine;
         private GameHandlerMetadata metadata;
         private string jsCode;
 
-        public HandlerDataJSEngine(GameHandlerMetadata metadata, string jsCode)
+        public HandlerDataEngine(GameHandlerMetadata metadata, string jsCode)
         {
             this.metadata = metadata;
             this.jsCode = jsCode;
@@ -28,10 +28,6 @@ namespace Nucleus.Gaming.Coop.JS
             string tempPath = GameManager.GetTempFolder(metadata.GameID);
 
             Assembly platform = Assembly.GetExecutingAssembly();
-
-#if MAINTHREAD
-            jsEngine = new AppDomainJSEngine();
-#else
 
             Evidence evidence = new Evidence();
             evidence.AddHostEvidence(new Zone(SecurityZone.Untrusted));
@@ -48,22 +44,25 @@ namespace Nucleus.Gaming.Coop.JS
 
             domain = AppDomain.CreateDomain("JSENGINE", null, setup, permissionSet);
 
-
             //ObjectHandle hobj = domain.CreateInstance("Nucleus.Gaming", "Nucleus.Gaming.Coop.JS.AppDomainData");
             //AppDomainData migrator = (AppDomainData)hobj.Unwrap();
             //migrator.ClassType = "";
             //migrator.Data = JsonConvert.SerializeObject(data);
 
-            ObjectHandle jsobj = domain.CreateInstance("Nucleus.Gaming", "Nucleus.Gaming.Coop.JS.AppDomainJSEngine");
-            jsEngine = (AppDomainJSEngine)jsobj.Unwrap();
-#endif
+            try
+            {
+                ObjectHandle jsobj = domain.CreateInstance("Nucleus.Gaming.Coop.Engine", "Nucleus.Gaming.Coop.Engine.AppDomainEngine");
+                jsEngine = jsobj.Unwrap();
+            }
+            catch
+            {
+
+            }
         }
 
         public void Dispose()
         {
-#if !MAINTHREAD
             AppDomain.Unload(domain);
-#endif
         }
 
         public string Initialize()

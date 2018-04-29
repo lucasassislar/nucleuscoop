@@ -26,7 +26,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WINDOWS;UNSAFE;ALPHA;MAINTHREAD</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WINDOWS;UNSAFE;ALPHA</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -59,9 +59,6 @@
     <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
     </Reference>
-    <Reference Include="Jint, Version=0.0.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jint.2.11.10\lib\net40\Jint.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -86,11 +83,9 @@
     <Compile Include="Coop\Data\HandlerTools.cs" />
     <Compile Include="Coop\Data\Save\SaveInfo.cs" />
     <Compile Include="Coop\Data\UserProfileOptions.cs" />
+    <Compile Include="Coop\Interop\HandlerDataEngine.cs" />
     <Compile Include="Coop\HandlerDataManager.cs" />
     <Compile Include="Coop\Handler\Modules\IO\IOModule.cs" />
-    <Compile Include="Coop\JS\AppDomainData.cs" />
-    <Compile Include="Coop\JS\HandlerDataJSEngine.cs" />
-    <Compile Include="Coop\JS\AppDomainJSEngine.cs" />
     <Compile Include="Coop\ModuleManager.cs" />
     <Compile Include="Platform\Windows\Controls\BorderPanel.cs">
       <SubType>Component</SubType>
@@ -167,7 +162,6 @@
     <Compile Include="DPI\IDynamicSized.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="IO\JsonPropertiesFile.cs" />
-    <Compile Include="IO\JsPropertiesFile.cs" />
     <Compile Include="Platform\Windows\Interop\Shell32\FileAssociation.cs" />
     <Compile Include="Platform\Windows\Interop\Shell32\FileAssociations.cs" />
     <Compile Include="Platform\Windows\IO\WinDirectoryUtil.cs" />

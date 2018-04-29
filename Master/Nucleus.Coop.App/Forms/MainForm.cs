@@ -51,6 +51,8 @@ namespace Nucleus.Coop
 
         private GameRunningOverlay overlay;
 
+        private GameHandlerMetadata[] currentHandlers;
+
         public MainForm(string[] args)
         {
             InitializeComponent();
@@ -269,7 +271,6 @@ namespace Nucleus.Coop
             }
         }
 
-        private GameHandlerMetadata[] currentHandlers;
 
         private void list_Games_SelectedChanged(Control arg1, Control arg2)
         {
@@ -304,6 +305,8 @@ namespace Nucleus.Coop
             {
                 return;
             }
+
+            KillCurrentStep();
 
             if (handlerDataManager != null)
             {
@@ -403,8 +406,6 @@ namespace Nucleus.Coop
                     return;
                 }
             }
-
-            KillCurrentStep();
 
             currentStepIndex = step;
             currentStep = stepsList[step];

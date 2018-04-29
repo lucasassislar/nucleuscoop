@@ -8,17 +8,17 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Nucleus.Gaming.Coop.JS
+namespace Nucleus.Gaming.Coop.Engine
 {
     [Serializable]
-    public class AppDomainJSEngine
+    public class AppDomainEngine
     {
-        private Engine engine;
+        private Jint.Engine engine;
         private HandlerData hData;
 
         private GameHandlerMetadata gameMetadata;
 
-        public AppDomainJSEngine()
+        public AppDomainEngine()
         {
 
         }
@@ -37,7 +37,7 @@ namespace Nucleus.Gaming.Coop.JS
         {
             hData = new HandlerData();
 
-            engine = new Engine();
+            engine = new Jint.Engine();
 
             gameMetadata = JsonConvert.DeserializeObject<GameHandlerMetadata>(metadata);
             gameMetadata.RootDirectory = metadataRootfolder;

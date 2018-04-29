@@ -12,7 +12,7 @@ using System.Windows.Forms;
 using SlimDX.DirectInput;
 using SlimDX.XInput;
 using Nucleus.Gaming.Coop;
-using Nucleus.Coop.Properties;
+using Nucleus.Coop.App.Properties;
 
 namespace Nucleus.Gaming.Coop
 {

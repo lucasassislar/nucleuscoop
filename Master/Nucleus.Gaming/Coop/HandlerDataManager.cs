@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Nucleus.Gaming.Coop.JS;
+using Nucleus.Gaming.Coop.Interop;
 using Nucleus.Gaming.Package;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace Nucleus.Gaming.Coop
 {
     public class HandlerDataManager : IDisposable
     {
-        private HandlerDataJSEngine jsEngine;
+        private HandlerDataEngine jsEngine;
         private HandlerData handlerData;
         private GameHandlerMetadata handlerMetadata;
         private ContentManager content;
@@ -21,7 +21,7 @@ namespace Nucleus.Gaming.Coop
             get { return handlerData; }
         }
 
-        public HandlerDataJSEngine Engine
+        public HandlerDataEngine Engine
         {
             get { return jsEngine; }
         }
@@ -48,7 +48,7 @@ namespace Nucleus.Gaming.Coop
         {
             this.handlerMetadata = metadata;
 
-            jsEngine = new HandlerDataJSEngine(metadata, jsCode);
+            jsEngine = new HandlerDataEngine(metadata, jsCode);
 
             string handlerStr = jsEngine.Initialize();
             handlerData = JsonConvert.DeserializeObject<HandlerData>(handlerStr);
