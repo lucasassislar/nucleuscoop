@@ -1,0 +1,15 @@
+{
+  "HandlerID": "550-distro",
+  "GameID": "550",
+  "Title": "Left 4 Dead 2 handler",
+  "ExeName": "left4dead2",
+  "Dev": "distrolucas",
+  "MD5": null,
+  "V": 1,
+  "PlatV": 9,
+  "ExeContext": null,
+  "GameTitle": "Left 4 Dead 2",
+  "Description": "Handler for Left 4 Dead 2",
+  "Screenshots": null,
+  "DevDescription": null
+}

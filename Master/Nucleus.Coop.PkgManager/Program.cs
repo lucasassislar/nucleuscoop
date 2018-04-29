@@ -28,9 +28,9 @@ namespace Nucleus.Coop.PkgManager
             string rootDir = AssemblyUtil.GetStartFolder();
             string output = Path.Combine(rootDir, "output");
             string infosFolder = Path.Combine(output, "infos");
-            string pkgsFolder = Path.Combine(output, "packages");
+            string pkgsFolder = Path.Combine(output, "handlers");
 
-            string toBuild = "..\\..\\MainRepo\\packages\\sources";
+            string toBuild = "..\\..\\MainRepo\\handlers\\sources";
 
             string indexPagePath = Path.Combine(output, "index.html");
             string indexData = "<html><head><link rel='stylesheet' href='bootstrap.css'><link rel='stylesheet' href='style.css'></head><body>";

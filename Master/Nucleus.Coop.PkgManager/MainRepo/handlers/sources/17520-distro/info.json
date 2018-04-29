@@ -1,0 +1,15 @@
+{
+  "HandlerID": "17520-distro",
+  "GameID": "17520",
+  "Title": "Synergy Handler",
+  "ExeName": "synergy",
+  "Dev": "d1maxa",
+  "MD5": null,
+  "V": 1,
+  "PlatV": 9,
+  "ExeContext": null,
+  "GameTitle": "Synergy",
+  "Description": "Handler for Synergy",
+  "Screenshots": null,
+  "DevDescription": "Developed by d1maxa, modified by distrolucas"
+}

@@ -1,0 +1,15 @@
+{
+  "HandlerID": "239140-distro",
+  "GameID": "DEBUG239140",
+  "Title": "Dying Light Handler",
+  "ExeName": "borderlandspresequel",
+  "Dev": "distrolucas",
+  "MD5": null,
+  "V": 1,
+  "PlatV": 9,
+  "ExeContext": null,
+  "GameTitle": "Dying Light",
+  "Description": "Handler for Dying Light",
+  "Screenshots": null,
+  "DevDescription": null
+}

@@ -1,0 +1,15 @@
+{
+  "HandlerID": "261640-distro",
+  "GameID": "261640",
+  "Title": "PreSequel Handler",
+  "ExeName": "borderlandspresequel",
+  "Dev": "distrolucas",
+  "MD5": null,
+  "V": 1,
+  "PlatV": 9,
+  "ExeContext": null,
+  "GameTitle": "Borderlands: The PreSequel",
+  "Description": "Handler for Borderlands TPS",
+  "Screenshots": null,
+  "DevDescription": null
+}
