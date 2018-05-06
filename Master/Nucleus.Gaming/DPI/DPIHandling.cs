@@ -12,7 +12,7 @@ namespace Nucleus.Gaming
     {
         /// <summary>
         /// True tries to send the correct width and height
-        /// on the game's window
+        /// to the game's window
         /// </summary>
         True,
         

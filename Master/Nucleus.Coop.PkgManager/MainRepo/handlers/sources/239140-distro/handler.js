@@ -14,13 +14,11 @@ Game.HandlerInterval = 100;
 Game.SymlinkExe = false;
 Game.SymlinkGame = true;
 Game.SupportsKeyboard = true;
-Game.ExecutableName = "borderlandspresequel.exe";
+Game.ExecutableName = "dyinglightgame.exe";
 Game.MaxPlayers = 4;
 Game.MaxPlayersOneMonitor = 4;
-Game.BinariesFolder = "binaries\\win32";
 Game.NeedsSteamEmulation = false;
-Game.LauncherTitle = "splashscreen";
-Game.SaveType = SaveType.INI;
+Game.SaveType = SaveType.SCR;
 Game.SupportsPositioning = true;
 Game.HideTaskbar = true;
 Game.Hook.ForceFocus = true;
@@ -31,24 +29,17 @@ Game.Hook.XInputReroute = false;// true; // this is beta
 Game.Hook.XInputNames = ["xinput1_3.dll"];
 
 Game.OnPlay.Callback(function () {
-    var savePath = Context.GetFolder(Folder.Documents) + "\\My Games\\Borderlands The Pre-Sequel\\WillowGame\\Config\\WillowEngine.ini";
-    Context.ModifySaveFile(savePath, savePath, SaveType.INI, [
-       Context.NewIniSaveInfo("SystemSettings", "WindowedFullscreen", Context.IsFullscreen),
-       Context.NewIniSaveInfo("SystemSettings", "ResX", Context.Width),
-       Context.NewIniSaveInfo("SystemSettings", "ResY", Context.Height),
-       Context.NewIniSaveInfo("SystemSettings", "Fullscreen", false),
-       Context.NewIniSaveInfo("Engine.Engine", "bPauseOnLossOfFocus", false),
-       Context.NewIniSaveInfo("WillowGame.WillowGameEngine", "bPauseLostFocusWindowed", false),
-       Context.NewIniSaveInfo("Engine.Engine", "bMuteAudioWhenNotInFocus", false),
-       Context.NewIniSaveInfo("Engine.Engine", "bPauseOnLossOfFocus", false),
-       Context.NewIniSaveInfo("WillowGame.WillowGameEngine", "bMuteAudioWhenNotInFocus", false),
-    ]);
+    var savePath = Context.GetFolder(Folder.Documents) + "\\DyingLight\\out\\settings\\video.scr";
+    Context.ModifySaveFile(savePath, savePath, SaveType.SCR, [
+        Context.NewScrSaveInfo("Resolution", Context.Width, Context.Height),
+        //Context.NewSaveInfo("Fullscreen", false),
+    ]); 
 
-    var playerStr = "saveid" + Context.PlayerID;
-    if (Context.IsKeyboardPlayer) {
-        Context.StartArguments = "-windowed -AlwaysFocus -NoController -nostartupmovies -SaveDataId=" + Context.Options[playerStr];
-    }
-    else {
-        Context.StartArguments = "-windowed -AlwaysFocus -NoMouse -nostartupmovies -SaveDataId=" + Context.Options[playerStr];
-    }
+    //var playerStr = "saveid" + Context.PlayerID;
+    //if (Context.IsKeyboardPlayer) {
+    //    Context.StartArguments = "-windowed -AlwaysFocus -NoController -nostartupmovies -SaveDataId=" + Context.Options[playerStr];
+    //}
+    //else {
+    //    Context.StartArguments = "-windowed -AlwaysFocus -NoMouse -nostartupmovies -SaveDataId=" + Context.Options[playerStr];
+    //}
 });

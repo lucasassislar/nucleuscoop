@@ -101,7 +101,7 @@ namespace Nucleus.Gaming.Coop.Handler
                     modules[j].PlayPlayer(player, i, context);
                 }
 
-                Thread.Sleep(TimeSpan.FromSeconds(_handlerManager.HandlerData.PauseBetweenStarts));
+                Thread.Sleep(TimeSpan.FromMilliseconds(_handlerManager.HandlerData.PauseBetweenStarts));
             }
 
             return result;

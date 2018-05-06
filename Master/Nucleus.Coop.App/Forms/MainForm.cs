@@ -341,7 +341,7 @@ namespace Nucleus.Coop
             }
             catch (Exception ex)
             {
-                int wat = -1;
+                Debugger.Break();
             }
         }
 

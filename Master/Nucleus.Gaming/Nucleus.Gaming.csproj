@@ -87,6 +87,7 @@
     <Compile Include="Coop\HandlerDataManager.cs" />
     <Compile Include="Coop\Handler\Modules\IO\IOModule.cs" />
     <Compile Include="Coop\ModuleManager.cs" />
+    <Compile Include="IO\ScrConfigFile.cs" />
     <Compile Include="Platform\Windows\Controls\BorderPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -150,8 +151,6 @@
     <Compile Include="Coop\Data\HandlerContext.cs" />
     <Compile Include="Coop\Data\AppDomain\HandlerData.cs" />
     <Compile Include="Coop\Handler\JoystickDatabase.cs" />
-    <Compile Include="Coop\Data\Save\CfgSaveInfo.cs" />
-    <Compile Include="Coop\Data\Save\IniSaveInfo.cs" />
     <Compile Include="Coop\Handler\Step\CustomStep.cs" />
     <Compile Include="Coop\Handler\Step\CustomStepType.cs" />
     <Compile Include="Coop\Handler\UserInfo.cs" />

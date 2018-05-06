@@ -16,7 +16,7 @@ namespace Nucleus.Gaming.IO
         protected string path;
         protected string rawData;
         protected string backupData;
-        private Dictionary<string, List<CfgSaveInfo>> sections;
+        private Dictionary<string, List<SaveInfo>> sections;
 
         public string RawData
         {
@@ -26,7 +26,7 @@ namespace Nucleus.Gaming.IO
         public SourceCfgFile(string filePath)
         {
             path = filePath;
-            sections = new Dictionary<string, List<CfgSaveInfo>>();
+            sections = new Dictionary<string, List<SaveInfo>>();
 
             if (File.Exists(path))
             {
@@ -44,7 +44,7 @@ namespace Nucleus.Gaming.IO
 
         private void Parse(string data)
         {
-            List<CfgSaveInfo> currentSection = null;
+            List<SaveInfo> currentSection = null;
             string currentSectionName = null;
 
             int currentIndex = 0;
@@ -64,7 +64,7 @@ namespace Nucleus.Gaming.IO
                     if (delta > 1)
                     {
                         currentSectionName = data.Substring(currentIndex, nextQuotes - currentIndex);
-                        currentSection = new List<CfgSaveInfo>();
+                        currentSection = new List<SaveInfo>();
                         sections.Add(currentSectionName, currentSection);
 
                         nextBlockEnd = data.IndexOf('}', nextQuotes);
@@ -82,7 +82,7 @@ namespace Nucleus.Gaming.IO
                             int end = data.IndexOf('"', start + 1);
 
                             string propertyValue = data.Substring(start + 1, end - start - 1);
-                            CfgSaveInfo info = new CfgSaveInfo(currentSectionName, propertyName, propertyValue);
+                            SaveInfo info = new SaveInfo(currentSectionName, propertyName, propertyValue);
                             currentSection.Add(info);
 
                             nextQuotes = end;
@@ -125,8 +125,8 @@ namespace Nucleus.Gaming.IO
 
                         for (int i = 0; i < list.Count; i++)
                         {
-                            CfgSaveInfo info = list[i];
-                            writer.WriteLine($"\r\"{info.Key}\"  \"{info.Value}\"");
+                            SaveInfo info = list[i];
+                            writer.WriteLine($"\r\"{info["Key"]}\"  \"{info["Value"]}\"");
                         }
 
                         writer.WriteLine("}");
@@ -147,23 +147,27 @@ namespace Nucleus.Gaming.IO
             rawData = string.Copy(backupData);
         }
 
-        public void ChangeProperty(string section, string propertyName, string value)
+        public void ChangeProperty(SaveInfo source)
         {
-            List<CfgSaveInfo> infos;
+            string section = source["Section"];
+            string key = source["Key"];
+            string value = source["Value"];
+
+            List<SaveInfo> infos;
             if (!sections.TryGetValue(section, out infos))
             {
-                infos = new List<CfgSaveInfo>();
+                infos = new List<SaveInfo>();
                 sections.Add(section, infos);
             }
 
-            CfgSaveInfo info = infos.FirstOrDefault(c => c.Key == propertyName);
+            SaveInfo info = infos.FirstOrDefault(c => c["Key"] == key);
             if (info == null)
             {
-                infos.Add(new CfgSaveInfo(section, propertyName, value));
+                infos.Add(new SaveInfo(section, key, value));
             }
             else
             {
-                info.Value = value;
+                info["Value"] = value;
             }
             //int start;
             //int end;

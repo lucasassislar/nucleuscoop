@@ -152,14 +152,23 @@ namespace Nucleus.Gaming.Coop
             File.WriteAllLines(path, lines);
         }
 
-        public CfgSaveInfo NewCfgSaveInfo(string section, string key, string value)
+        public SaveInfo NewSaveInfo(string section, string key, string value)
         {
-            return new CfgSaveInfo(section, key, value);
+            return new SaveInfo(section, key, value);
         }
 
-        public IniSaveInfo NewIniSaveInfo(string section, string key, string value)
+        public SaveInfo NewScrSaveInfo(string key, params string[] values)
         {
-            return new IniSaveInfo(section, key, value);
+            SaveInfo info = new SaveInfo();
+            info.Add("Key", key);
+            info.Add("Parameters", values.Length.ToString());
+            for (int i = 0; i < values.Length; i++)
+            {
+                string paramKey = "Param" + (i + 1);
+                info.Add(paramKey, values[i]);
+            }
+
+            return info;
         }
 
         public void ModifySaveFile(string installSavePath, string saveFullPath, SaveType type, params SaveInfo[] info)
@@ -173,11 +182,7 @@ namespace Nucleus.Gaming.Coop
                         for (int j = 0; j < info.Length; j++)
                         {
                             SaveInfo save = info[j];
-                            if (save is CfgSaveInfo)
-                            {
-                                CfgSaveInfo option = (CfgSaveInfo)save;
-                                cfg.ChangeProperty(option.Section, option.Key, option.Value);
-                            }
+                            cfg.ChangeProperty(save);
                         }
                         cfg.Save(saveFullPath);
                     }
@@ -192,14 +197,26 @@ namespace Nucleus.Gaming.Coop
                         for (int j = 0; j < info.Length; j++)
                         {
                             SaveInfo save = info[j];
-                            if (save is IniSaveInfo)
-                            {
-                                IniSaveInfo ini = (IniSaveInfo)save;
-                                file.IniWriteValue(ini.Section, ini.Key, ini.Value);
-                            }
+                            file.IniWriteValue(save["Section"], save["Key"], save["Value"]);
                         }
                     }
                     break;
+                case SaveType.SCR:
+                    {
+                        if (!installSavePath.Equals(saveFullPath))
+                        {
+                            File.Copy(installSavePath, saveFullPath);
+                        }
+                        ScrConfigFile file = new ScrConfigFile(saveFullPath);
+                        for (int j = 0; j < info.Length; j++)
+                        {
+                            SaveInfo save = info[j];
+                            file.ChangeProperty(save);
+                        }
+                    }
+                    break;
+                default:
+                    throw new NotImplementedException();
             }
         }
 

@@ -23,27 +23,77 @@ namespace Nucleus.Gaming.Coop
         public string[] FileSymlinkExclusions { get; set; }
         public string[] FileSymlinkCopyInstead { get; set; }
 
+        /// <summary>
+        /// If Nucleus should search and close all game instances before starting a new play instance.
+        /// </summary>
         public bool ForceFinishOnPlay { get; set; } = true;
-        public double HandlerInterval { get; set; }
+
+        /// <summary>
+        /// The interval in milliseconds the Handler should be updated at. Set it to 0 to disable updating (will lose all functionality that depends on ticks).
+        /// </summary>
+        public double HandlerInterval { get; set; } = 1000;
+
+        /// <summary>
+        /// Debug flag. Will ignore this handler in release builds.
+        /// </summary>
         public bool Debug { get; set; }
-        public bool SupportsPositionin { get; set; }
+
+        /// <summary>
+        /// If SymlinkGame is enabled, if we should copy or symbolic link the game executable
+        /// </summary>
         public bool SymlinkExe { get; set; }
+
+        /// <summary>
+        /// If we should symbolic link the game's files to a temporary directory. 
+        /// If not will launch straight from installation directory.
+        /// </summary>
         public bool SymlinkGame { get; set; }
+
+        /// <summary>
+        /// NOT VERY TESTED. Instead of symlinking just straight up hard copies the entire game folder for each player.
+        /// This is a massive storage hog and takes a long ass time to start the games, so use only in extreme cases for testing.
+        /// </summary>
         public bool HardcopyGame { get; set; }
 
+        /// <summary>
+        /// NOT WORKING ATM. If the game has keyboard support.
+        /// </summary>
         public bool SupportsKeyboard { get; set; }
-        public string[] ExecutableContext { get; set; }
-        public string ExecutableName { get; set; }
-        public string SteamID { get; set; }
-        public string GameID { get; set; }
-        public string GameName { get; set; }
-        public int MaxPlayers { get; set; }
-        public int MaxPlayersOneMonitor { get; set; }
-        public int PauseBetweenStarts { get; set; }
-        public DPIHandling DPIHandling { get; set; } = DPIHandling.True;
 
-        public string StartArguments { get; set; }
-        //public string PathToRoot { get; set; }
+        /// <summary>
+        /// Array with the name of other files found in the executable's folder (so we dont confuse different games with similar file names)
+        /// </summary>
+        public string[] ExecutableContext { get; set; }
+
+        /// <summary>
+        /// The name of the application executable with the extension (all lowercase)
+        /// </summary>
+        public string ExecutableName { get; set; }
+
+        /// <summary>
+        /// SteamID of the game. Will be used. Someday.
+        /// </summary>
+        public string SteamID { get; set; }
+
+        /// <summary>
+        /// Unique ID for the game. Necessary, else the game cannot start. Usually set to the same as SteamID.
+        /// </summary>
+        public string GameID { get; set; }
+
+        /// <summary>
+        /// Maximum amount of players this game supports.
+        /// </summary>
+        public int MaxPlayers { get; set; }
+
+        /// <summary>
+        /// Pause between game starts in milliseconds.
+        /// </summary>
+        public double PauseBetweenStarts { get; set; }
+
+        /// <summary>
+        /// The way the games handles DPI scaling. Modify this if the game is presenting different sizing behaviour after the Windows 10 Creators Update.
+        /// </summary>
+        public DPIHandling DPIHandling { get; set; } = DPIHandling.True;
 
         /// <summary>
         /// Relative path to the executable file from the root of the game installation 
@@ -52,43 +102,46 @@ namespace Nucleus.Gaming.Coop
         public string ExecutablePath { get; set; }
 
         /// <summary>
-        /// The relative path to where the games starts in
+        /// Relative path to where the games starts in
         /// </summary>
         public string WorkingFolder { get; set; }
+
+        /// <summary>
+        /// Array of mutexes to kill before starting the next game process
+        /// </summary>
         public string[] KillMutex { get; set; }
+
+        /// <summary>
+        /// If the game needs to go through a launcher before opening, the name of the launcher's executable.
+        /// </summary>
         public string LauncherExe { get; set; }
+
+        /// <summary>
+        /// The name of the launcher's window title.
+        /// </summary>
         public string LauncherTitle { get; set; }
 
-        public bool OverrideStartupBehavior { get; set; }
+        /// <summary>
+        /// Callback events that should be called right before the game instance starts playing
+        /// </summary>
         public CallbackData OnPlay { get; set; } = new CallbackData();
-        public CallbackData OnStartApp { get; set; } = new CallbackData();
+
+        /// <summary>
+        /// List with all the additional custom steps the handler could've added
+        /// </summary>
         public List<CustomStep> CustomSteps { get; set; } = new List<CustomStep>();
+
         public bool LockMouse { get; set; }
 
         public Dictionary<string, string> AdditionalData { get; set; } = new Dictionary<string, string>();
 
-        //private void ParseJs(string jsCode)
-        //{
-        //    // get the Nucleus.Gaming assembly
-
-        //    //engine = new Engine();
-
-        //    //engine.SetValue("SaveType", TypeReference.CreateTypeReference(engine, typeof(SaveType)));
-        //    //engine.SetValue("DPIHandling", TypeReference.CreateTypeReference(engine, typeof(DPIHandling)));
-        //    //engine.SetValue("Folder", TypeReference.CreateTypeReference(engine, typeof(Folder)));
-        //    //engine.SetValue("SaveType", TypeReference.CreateTypeReference(engine, typeof(SaveType)));
-
-        //    //engine.SetValue("Game", this);
-        //    //engine.Execute(jsCode);
-        //}
-
-        //private void Execute()
-        //{
-        //    executing = true;
-        //    engine.Execute(jsCode);
-        //    executing = false;
-        //}
-
+        /// <summary>
+        /// Adds an additional step to the Custom Steps list dependent on the data from a GameOption
+        /// </summary>
+        /// <param name="optionKey"></param>
+        /// <param name="required"></param>
+        /// <param name="title"></param>
+        /// <returns></returns>
         public CustomStep ShowOptionAsStep(string optionKey, bool required, string title)
         {
             GameOption option = Options.First(c => c.Key == optionKey);
@@ -142,14 +195,30 @@ namespace Nucleus.Gaming.Coop
             return result;
         }
 
-        public void AddOption(string name, string desc, string key, object value, object defaultValue)
+        /// <summary>
+        /// Registers a new game option with the specified parameters, to be later shown to the end user
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="desc"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <param name="defaultValue"></param>
+        public void AddOption(string name, string description, string key, object value, object defaultValue)
         {
-            Options.Add(new GameOption(name, desc, key, value, defaultValue));
+            Options.Add(new GameOption(name, description, key, value, defaultValue));
         }
 
-        public void AddOption(string name, string desc, string key, object value)
+        /// <summary>
+        /// Registers a new game option with the specified parameters, to be later
+        /// shown to the end user
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="desc"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        public void AddOption(string name, string description, string key, object value)
         {
-            Options.Add(new GameOption(name, desc, key, value));
+            Options.Add(new GameOption(name, description, key, value));
         }
     }
 }

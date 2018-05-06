@@ -9,6 +9,7 @@ namespace Nucleus.Gaming
     {
         None,
         INI,
-        CFG
+        CFG,
+        SCR
     }
 }
