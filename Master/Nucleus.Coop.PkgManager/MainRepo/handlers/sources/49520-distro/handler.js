@@ -36,15 +36,15 @@ Game.Hook.XInputNames = [ "xinput1_3.dll" ];
 Game.OnPlay.Callback(function () {
     var savePath = Context.GetFolder(Folder.Documents) + "\\My Games\\Borderlands 2\\WillowGame\\Config\\WillowEngine.ini";
     Context.ModifySaveFile(savePath, savePath, SaveType.INI, [
-        Context.NewIniSaveInfo("SystemSettings", "WindowedFullscreen", Context.IsFullscreen),
-        Context.NewIniSaveInfo("SystemSettings", "ResX", Context.Width),
-        Context.NewIniSaveInfo("SystemSettings", "ResY", Context.Height),
-        Context.NewIniSaveInfo("SystemSettings", "Fullscreen", false),
-        Context.NewIniSaveInfo("Engine.Engine", "bPauseOnLossOfFocus", false),
-        Context.NewIniSaveInfo("WillowGame.WillowGameEngine", "bPauseLostFocusWindowed", false),
-        Context.NewIniSaveInfo("Engine.Engine", "bMuteAudioWhenNotInFocus", false),
-        Context.NewIniSaveInfo("Engine.Engine", "bPauseOnLossOfFocus", false),
-        Context.NewIniSaveInfo("WillowGame.WillowGameEngine", "bMuteAudioWhenNotInFocus", false),
+        Context.NewSaveInfo("SystemSettings", "WindowedFullscreen", Context.IsFullscreen),
+        Context.NewSaveInfo("SystemSettings", "ResX", Context.Width),
+        Context.NewSaveInfo("SystemSettings", "ResY", Context.Height),
+        Context.NewSaveInfo("SystemSettings", "Fullscreen", false),
+        Context.NewSaveInfo("Engine.Engine", "bPauseOnLossOfFocus", false),
+        Context.NewSaveInfo("WillowGame.WillowGameEngine", "bPauseLostFocusWindowed", false),
+        Context.NewSaveInfo("Engine.Engine", "bMuteAudioWhenNotInFocus", false),
+        Context.NewSaveInfo("Engine.Engine", "bPauseOnLossOfFocus", false),
+        Context.NewSaveInfo("WillowGame.WillowGameEngine", "bMuteAudioWhenNotInFocus", false),
     ]);
 
     var playerStr = "saveid" + Context.PlayerID;

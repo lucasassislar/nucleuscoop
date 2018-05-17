@@ -31,7 +31,7 @@ Game.Hook.XInputNames = ["xinput1_3.dll"];
 Game.OnPlay.Callback(function () {
     var savePath = Context.GetFolder(Folder.Documents) + "\\DyingLight\\out\\settings\\video.scr";
     Context.ModifySaveFile(savePath, savePath, SaveType.SCR, [
-        Context.NewScrSaveInfo("Resolution", Context.Width, Context.Height),
+        Context.NewSaveInfo("Resolution", Context.Width, Context.Height),
         //Context.NewSaveInfo("Fullscreen", false),
     ]); 
 
