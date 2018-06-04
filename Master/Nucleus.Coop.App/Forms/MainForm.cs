@@ -3,6 +3,7 @@ using Nucleus.Coop.Controls;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Handler;
+using Nucleus.Gaming.Coop.Interop;
 using Nucleus.Gaming.Package;
 using Nucleus.Gaming.Windows;
 using Nucleus.Gaming.Windows.Interop;
@@ -14,7 +15,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Nucleus.Coop
+namespace Nucleus.Coop.App.Forms
 {
     /// <summary>
     /// Central UI class to the Nucleus Coop application
@@ -53,8 +54,12 @@ namespace Nucleus.Coop
 
         private GameHandlerMetadata[] currentHandlers;
 
-        public MainForm(string[] args)
+        private DomainWebApiConnection apiConnection;
+
+        public MainForm(string[] args, DomainWebApiConnection con)
         {
+            this.apiConnection = con;
+
             InitializeComponent();
 
             overlay = new GameRunningOverlay();
@@ -81,7 +86,6 @@ namespace Nucleus.Coop
             list_Games.SelectedChanged += list_Games_SelectedChanged;
             //int vertScrollWidth = SystemInformation.VerticalScrollBarWidth;
             //list_Games.Padding = new Padding(0, 0, vertScrollWidth, 0);
-
 
             if (args != null)
             {
@@ -268,7 +272,6 @@ namespace Nucleus.Coop
                 }
             }
         }
-
 
         private void list_Games_SelectedChanged(Control arg1, Control arg2)
         {

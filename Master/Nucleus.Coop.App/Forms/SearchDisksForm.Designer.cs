@@ -1,4 +1,4 @@
-﻿namespace Nucleus.Coop
+﻿namespace Nucleus.Coop.App.Forms
 {
     partial class SearchDisksForm
     {

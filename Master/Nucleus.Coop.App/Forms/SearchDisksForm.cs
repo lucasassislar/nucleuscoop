@@ -14,7 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Nucleus.Coop
+namespace Nucleus.Coop.App.Forms
 {
     public partial class SearchDisksForm : BaseForm
     {

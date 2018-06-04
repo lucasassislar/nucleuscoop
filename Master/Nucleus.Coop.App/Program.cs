@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using Nucleus.Gaming.Coop;
 using Squirrel;
 using System.Threading;
+using Nucleus.Coop.App.Forms;
+using Nucleus.Gaming.Coop.Interop;
 
 namespace Nucleus.Coop
 {
@@ -37,11 +39,21 @@ namespace Nucleus.Coop
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            MainForm form = new MainForm(args);
-            DPIManager.AddForm(form);
+            DomainWebApiConnection apiConnection = new DomainWebApiConnection();
+            apiConnection.Initialize();
+
+            LoginForm loginForm = new LoginForm(apiConnection);
+            DPIManager.AddForm(loginForm);
             DPIManager.ForceUpdate();
 
-            Application.Run(form);
+            if (loginForm.ShowDialog() == DialogResult.OK)
+            {
+                MainForm form = new MainForm(args, apiConnection);
+                DPIManager.AddForm(form);
+                DPIManager.ForceUpdate();
+
+                Application.Run(form);
+            }
         }
 
         private static void ThreadExceptionEventHandler(object sender, ThreadExceptionEventArgs e)

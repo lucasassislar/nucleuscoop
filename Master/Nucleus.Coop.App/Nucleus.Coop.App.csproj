@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Nucleus.Coop.App</RootNamespace>
     <AssemblyName>Nucleus.Coop.App</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -86,9 +86,6 @@
     </Reference>
     <Reference Include="DeltaCompressionDotNet.PatchApi, Version=1.1.0.0, Culture=neutral, PublicKeyToken=3e8888ee913ed789, processorArchitecture=MSIL">
       <HintPath>..\packages\DeltaCompressionDotNet.1.1.0\lib\net20\DeltaCompressionDotNet.PatchApi.dll</HintPath>
-    </Reference>
-    <Reference Include="Jint, Version=0.0.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Jint.2.11.58\lib\net45\Jint.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <HintPath>..\packages\Mono.Cecil.0.9.6.1\lib\net45\Mono.Cecil.dll</HintPath>
@@ -188,11 +185,23 @@
     <Compile Include="Forms\GameList.Designer.cs">
       <DependentUpon>GameList.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RegisterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RegisterForm.Designer.cs">
+      <DependentUpon>RegisterForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SearchDisksForm.cs">
       <SubType>Form</SubType>
@@ -219,8 +228,14 @@
     <EmbeddedResource Include="Forms\GameList.resx">
       <DependentUpon>GameList.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RegisterForm.resx">
+      <DependentUpon>RegisterForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SearchDisksForm.resx">
       <DependentUpon>SearchDisksForm.cs</DependentUpon>
@@ -485,8 +500,32 @@
       <Link>bin\Nucleus.Gaming.Coop.Engine.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\Nucleus.Gaming.Coop.Engine\bin\Debug\Jint.dll" Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+      <Link>bin\Jint.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="..\Nucleus.Gaming.Coop.Engine\bin\Release\Nucleus.Gaming.Coop.Engine.dll" Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
       <Link>bin\Nucleus.Gaming.Coop.Engine.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Nucleus.Gaming.Coop.Engine\bin\Release\Jint.dll" Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+      <Link>bin\Jint.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Nucleus.Gaming.Coop.Api\bin\Debug\Nucleus.Gaming.Coop.Api.dll" Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+      <Link>bin\Nucleus.Gaming.Coop.Api.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Nucleus.Gaming.Coop.Api\bin\Debug\RestSharp.dll" Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+      <Link>bin\RestSharp.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Nucleus.Gaming.Coop.Api\bin\Release\Nucleus.Gaming.Coop.Api.dll" Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+      <Link>bin\Nucleus.Gaming.Coop.Api.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Nucleus.Gaming.Coop.Api\bin\Release\RestSharp.dll" Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+      <Link>bin\RestSharp.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
