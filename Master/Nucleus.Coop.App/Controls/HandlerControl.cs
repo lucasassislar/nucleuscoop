@@ -142,34 +142,31 @@ namespace Nucleus.Gaming.Coop
             return Text;
         }
 
+        public Color SelectedColor { get; set; } = Color.FromArgb(80, 80, 80);
+        public Color NotSelectedColor { get; set; } = Color.FromArgb(30, 30, 30);
+        public Color HoverColor { get; set; } = Color.FromArgb(60, 60, 60);
+
         private bool isSelected;
         public void RadioSelected()
         {
-            BackColor = Color.FromArgb(80, 80, 80);
+            BackColor = SelectedColor;
             isSelected = true;
         }
 
         public void RadioUnselected()
         {
-            BackColor = Color.FromArgb(30, 30, 30);
+            BackColor = NotSelectedColor;
             isSelected = false;
         }
 
         public void UserOver()
         {
-            BackColor = Color.FromArgb(60, 60, 60);
+            BackColor = HoverColor;
         }
 
         public void UserLeave()
         {
-            if (isSelected)
-            {
-                BackColor = Color.FromArgb(80, 80, 80);
-            }
-            else
-            {
-                BackColor = Color.FromArgb(30, 30, 30);
-            }
+            BackColor = isSelected ? SelectedColor : NotSelectedColor;
         }
     }
 }

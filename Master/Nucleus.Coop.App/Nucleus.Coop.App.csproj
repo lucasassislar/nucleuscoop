@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Nucleus.Coop.App</RootNamespace>
     <AssemblyName>Nucleus.Coop.App</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -151,7 +151,16 @@
     <Compile Include="Controls\HandlerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\HandlerInfoControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HandlerInfoControl.Designer.cs">
+      <DependentUpon>HandlerInfoControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\JSUserInputControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\NCTextBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\PlayerCountControl.cs">
@@ -197,6 +206,12 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\PkgManagerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PkgManagerForm.Designer.cs">
+      <DependentUpon>PkgManagerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\RegisterForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -209,15 +224,12 @@
     <Compile Include="Forms\SearchDisksForm.Designer.cs">
       <DependentUpon>SearchDisksForm.cs</DependentUpon>
     </Compile>
-    <None Include="Forms\PackageManagerForm.cs">
-      <SubType>Form</SubType>
-    </None>
-    <None Include="Forms\PackageManagerForm.Designer.cs">
-      <DependentUpon>PackageManagerForm.cs</DependentUpon>
-    </None>
     <Compile Include="Program.cs" />
     <EmbeddedResource Include="Controls\GameRunningOverlay.resx">
       <DependentUpon>GameRunningOverlay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\HandlerInfoControl.resx">
+      <DependentUpon>HandlerInfoControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\PlayerCountControl.resx">
       <DependentUpon>PlayerCountControl.cs</DependentUpon>
@@ -234,14 +246,14 @@
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PkgManagerForm.resx">
+      <DependentUpon>PkgManagerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\RegisterForm.resx">
       <DependentUpon>RegisterForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SearchDisksForm.resx">
       <DependentUpon>SearchDisksForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PackageManagerForm.resx">
-      <DependentUpon>PackageManagerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -516,16 +528,8 @@
       <Link>bin\Nucleus.Gaming.Coop.Api.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\Nucleus.Gaming.Coop.Api\bin\Debug\RestSharp.dll" Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-      <Link>bin\RestSharp.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\Nucleus.Gaming.Coop.Api\bin\Release\Nucleus.Gaming.Coop.Api.dll" Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
       <Link>bin\Nucleus.Gaming.Coop.Api.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Nucleus.Gaming.Coop.Api\bin\Release\RestSharp.dll" Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-      <Link>bin\RestSharp.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

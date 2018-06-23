@@ -22,7 +22,6 @@ namespace Nucleus.Gaming.Coop
     public class GameManager
     {
         private static GameManager instance;
-        private CoopConfigInfo config;
 
         private UserProfile user;
         private List<BackupFile> backupFiles;
@@ -38,13 +37,11 @@ namespace Nucleus.Gaming.Coop
 
         public UserProfile User { get { return user; } }
         public PackageManager RepoManager { get { return repoManager; } }
-        public CoopConfigInfo Config { get { return config; } }
 
         public static GameManager Instance { get { return instance; } }
 
-        public GameManager(CoopConfigInfo config)
+        public GameManager()
         {
-            this.config = config;
             instance = this;
 
             Initialize();
@@ -472,7 +469,7 @@ namespace Nucleus.Gaming.Coop
             Directory.CreateDirectory(GetInstalledPackagePath());
             Directory.CreateDirectory(GetPackageTmpPath());
 
-            repoManager = new PackageManager(config);
+            repoManager = new PackageManager();
             moduleManager = new ModuleManager();
 
             LoadUser();

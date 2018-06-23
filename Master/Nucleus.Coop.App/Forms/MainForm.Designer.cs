@@ -41,11 +41,12 @@
             this.panel_Steps = new System.Windows.Forms.Panel();
             this.cTabControl1 = new Nucleus.Gaming.Forms.CTabControl();
             this.tabGames = new System.Windows.Forms.TabPage();
+            this.list_Games = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
             this.tabHandlers = new System.Windows.Forms.TabPage();
             this.btn_Uninstall = new System.Windows.Forms.Button();
             this.btn_InstallHandler = new System.Windows.Forms.Button();
             this.list_Handlers = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
-            this.list_Games = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
+            this.btn_Handlers = new System.Windows.Forms.Button();
             this.cTabControl1.SuspendLayout();
             this.tabGames.SuspendLayout();
             this.tabHandlers.SuspendLayout();
@@ -200,6 +201,20 @@
             this.tabGames.TabIndex = 0;
             this.tabGames.Text = "Games";
             // 
+            // list_Games
+            // 
+            this.list_Games.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.list_Games.AutoScroll = true;
+            this.list_Games.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.list_Games.Border = 1;
+            this.list_Games.Location = new System.Drawing.Point(0, 0);
+            this.list_Games.Margin = new System.Windows.Forms.Padding(0);
+            this.list_Games.Name = "list_Games";
+            this.list_Games.Offset = new System.Drawing.Size(0, 2);
+            this.list_Games.Size = new System.Drawing.Size(263, 615);
+            this.list_Games.TabIndex = 3;
+            // 
             // tabHandlers
             // 
             this.tabHandlers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
@@ -251,24 +266,25 @@
             this.list_Handlers.Size = new System.Drawing.Size(263, 616);
             this.list_Handlers.TabIndex = 4;
             // 
-            // list_Games
+            // btn_Handlers
             // 
-            this.list_Games.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.list_Games.AutoScroll = true;
-            this.list_Games.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.list_Games.Border = 1;
-            this.list_Games.Location = new System.Drawing.Point(0, 0);
-            this.list_Games.Margin = new System.Windows.Forms.Padding(0);
-            this.list_Games.Name = "list_Games";
-            this.list_Games.Offset = new System.Drawing.Size(0, 2);
-            this.list_Games.Size = new System.Drawing.Size(263, 615);
-            this.list_Games.TabIndex = 3;
+            this.btn_Handlers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Handlers.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btn_Handlers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Handlers.Location = new System.Drawing.Point(945, 12);
+            this.btn_Handlers.Name = "btn_Handlers";
+            this.btn_Handlers.Size = new System.Drawing.Size(97, 29);
+            this.btn_Handlers.TabIndex = 20;
+            this.btn_Handlers.Text = "Handlers";
+            this.btn_Handlers.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btn_Handlers.UseVisualStyleBackColor = true;
+            this.btn_Handlers.Click += new System.EventHandler(this.btn_Handlers_Click);
             // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1054, 701);
+            this.Controls.Add(this.btn_Handlers);
             this.Controls.Add(this.cTabControl1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.combo_Handlers);
@@ -298,7 +314,7 @@
         private System.Windows.Forms.Button btn_Previous;
         private System.Windows.Forms.Button btn_AutoSearchGame;
         private System.Windows.Forms.Button btn_Next;
-        private Controls.GameNameControl gameNameControl;
+        private Coop.Controls.GameNameControl gameNameControl;
         private System.Windows.Forms.Button btn_Browse;
         private System.Windows.Forms.ComboBox combo_Handlers;
         private System.Windows.Forms.Label label1;
@@ -309,5 +325,6 @@
         private System.Windows.Forms.Button btn_InstallHandler;
         private System.Windows.Forms.Button btn_Uninstall;
         private Gaming.Platform.Windows.Controls.ControlListBox list_Games;
+        private System.Windows.Forms.Button btn_Handlers;
     }
 }

@@ -75,7 +75,7 @@ namespace Nucleus.Gaming.Coop.Handler
                 players[i].PlayerID = i;
             }
 
-            var result = new RequestResult<string>();
+            RequestResult<String> result = new RequestResult<String>();
 
             for (int i = 0; i < modules.Count; i++)
             {

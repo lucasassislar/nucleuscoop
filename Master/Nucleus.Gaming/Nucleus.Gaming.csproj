@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Nucleus.Gaming</RootNamespace>
     <AssemblyName>Nucleus.Gaming</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -78,6 +78,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\Model\Game.cs" />
+    <Compile Include="Api\Model\Handler.cs" />
+    <Compile Include="Api\Model\IgdbGame.cs" />
+    <Compile Include="Api\Model\IgdbGameCover.cs" />
+    <Compile Include="Api\Model\IgdbGameReleaseDate.cs" />
+    <Compile Include="Api\Model\IgdbGames.cs" />
+    <Compile Include="Api\Model\LoginData.cs" />
+    <Compile Include="Api\Model\Package.cs" />
+    <Compile Include="Api\Model\User.cs" />
     <Compile Include="Coop\Data\AppDomain\AppDomainSharedAttribute.cs" />
     <Compile Include="Coop\Data\CallbackData.cs" />
     <Compile Include="Coop\Data\HandlerTools.cs" />
@@ -107,6 +116,9 @@
     <Compile Include="Platform\Windows\Controls\CoolListControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Platform\Windows\Controls\CustomTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Platform\Windows\Controls\HotkeyListener.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,6 +127,8 @@
     </Compile>
     <Compile Include="Platform\Windows\Controls\ICanProceed.cs" />
     <Compile Include="Platform\Windows\Controls\IHighlightControl.cs" />
+    <Compile Include="Platform\Windows\Controls\IMouseHoverControl.cs" />
+    <Compile Include="Platform\Windows\Controls\MouseMessageFilter.cs" />
     <Compile Include="Platform\Windows\Controls\NButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -139,6 +153,9 @@
     <Compile Include="Coop\HandlerModule.cs" />
     <Compile Include="Coop\UserInstalledHandler.cs" />
     <Compile Include="Diagnostics\OutputLevel.cs" />
+    <Compile Include="Platform\Windows\Controls\TransparentControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Platform\Windows\DirectInput\DInputManager.cs" />
     <Compile Include="Coop\Data\GameOption.cs" />
     <Compile Include="Coop\Data\GameOptionValue.cs" />

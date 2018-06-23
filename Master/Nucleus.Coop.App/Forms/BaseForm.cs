@@ -21,12 +21,12 @@ namespace Nucleus.Coop
             // 12 * 150% = 18
             AutoScaleMode = AutoScaleMode.None;
             BackColor = Color.FromArgb(50, 50, 50);
-            ForeColor = Color.White;
+            ForeColor = Color.FromArgb(240, 240, 240);
             Margin = new Padding(4, 4, 4, 4);
             Name = "BaseForm";
             Text = "BaseForm";
 
-            // create it here, else the desgienr will show the default windows font
+            // create it here, else the designer will show the default windows font
             Font = new Font("Segoe UI", 12, GraphicsUnit.Point); 
 
             DPIManager.Register(this);

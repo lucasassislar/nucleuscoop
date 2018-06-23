@@ -1,7 +1,12 @@
-﻿using RestSharp;
+﻿//using RestSharp;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,8 +15,8 @@ namespace Nucleus.Gaming.Coop.Api
     [Serializable]
     public class ApiConnection
     {
-        private RestClient client;
         private String token;
+        private Uri baseUri;
 
         public ApiConnection()
         {
@@ -19,7 +24,7 @@ namespace Nucleus.Gaming.Coop.Api
 
         public void Initialize()
         {
-            client = new RestClient("https://api.nucleuscoop.com/");
+            baseUri = new Uri("https://api.nucleuscoop.com/");
         }
 
         public void SetToken(string token)
@@ -27,76 +32,122 @@ namespace Nucleus.Gaming.Coop.Api
             this.token = token;
         }
 
-        private RequestResult<T> BuildRequestResult<T>(IRestResponse<T> response)
+        private HttpWebRequest BuildRequest(Uri uri, HttpMethod method = null, object requestData = null)
         {
-            var result = new RequestResult<T>();
-            result.Success = response.IsSuccessful;
-            result.Data = response.Data;
-            result.LogData = response.StatusDescription;
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+            request.AutomaticDecompression = DecompressionMethods.GZip;
+            request.ContentType = "application/json";
+            if (method == null)
+            {
+                request.Method = "GET";
+            }
+            else
+            {
+                request.Method = method.Method;
+            }
+
+            if (requestData != null)
+            {
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    string serialized = JsonConvert.SerializeObject(requestData);
+
+                    streamWriter.Write(serialized);
+                    streamWriter.Flush();
+                    streamWriter.Close();
+                }
+            }
+
+            return request;
+        }
+
+        private async Task<RequestResult<String>> ProcessResponse(HttpWebRequest request)
+        {
+            RequestResult<String> result = new RequestResult<string>();
+
+            try
+            {
+                result.SetStatus(true);
+
+                var httpResponse = (HttpWebResponse)request.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var readResult = await streamReader.ReadToEndAsync();
+                    result.SetData(readResult);
+                }
+            }
+            catch (Exception ex)
+            {
+                result.SetStatus(false);
+                result.SetLogData(ex.Message);
+
+                // parse error message?
+                //int errorPos = ex.Message.IndexOf(": (") + 3;
+                //int endErrorPos = ex.Message.IndexOf(')', errorPos);
+                //string errorCode = ex.Message.Substring(errorPos, endErrorPos - errorPos);
+                //result.SetLogData(errorCode);
+            }
 
             return result;
         }
 
-        public RequestResult<User> Register(string username, string email, string password)
+        public async Task<RequestResult<String>> Register(string username, string email, string password)
         {
-            var request = new RestRequest("auth/register", Method.POST);
-            request.RequestFormat = DataFormat.Json;
-            request.AddJsonBody(new { username, password, email });
+            Uri registerUri = new Uri(baseUri, "/auth/register");
+            HttpWebRequest request = BuildRequest(registerUri, HttpMethod.Post, new { username, password, email });
+            RequestResult<String> result = await ProcessResponse(request);
 
-            IRestResponse<User> response = client.Execute<User>(request);
-
-            return BuildRequestResult<User>(response);
+            return result;
         }
 
-        public RequestResult<LoginData> Login(string email, string password)
+        public async Task<RequestResult<String>> Login(string email, string password)
         {
-            var request = new RestRequest("auth/login", Method.POST);
-            request.RequestFormat = DataFormat.Json;
-            request.AddJsonBody(new { email, password });
-            IRestResponse<LoginData> response = client.Execute<LoginData>(request);
+            Uri uri = new Uri(baseUri, "/auth/login");
+            HttpWebRequest request = BuildRequest(uri, HttpMethod.Post, new { email, password });
+            RequestResult<String> result = await ProcessResponse(request);
 
-            return BuildRequestResult<LoginData>(response);
+            return result;
         }
 
-        public String SearchExtGame(string gameName)
+        public async Task<RequestResult<String>> SearchExtGame(string gameName)
         {
-            var request = new RestRequest("game/api/search/{gameName}", Method.GET);
-            request.AddHeader("Authorization", "Bearer " + token);
-            request.AddUrlSegment("gameName", gameName);
-            request.RequestFormat = DataFormat.Json;
+            Uri uri = new Uri(baseUri, $"game/api/search/{gameName}");
+            HttpWebRequest request = BuildRequest(uri, HttpMethod.Get);
+            request.Headers.Add("Authorization", "Bearer " + token);
 
-            IRestResponse response = client.Execute(request);
-            return response.Content;
+            RequestResult<String> result = await ProcessResponse(request);
+
+            return result;
         }
 
-        public String ImportExtGame(string gameIGDBId)
+        public async Task<RequestResult<String>> ImportExtGame(string gameIGDBId)
         {
-            var request = new RestRequest("game/api/import/{gameIGDBId}", Method.POST);
-            request.AddHeader("Authorization", "Bearer " + token);
-            request.AddUrlSegment("gameIGDBId", gameIGDBId);
-            request.RequestFormat = DataFormat.Json;
+            Uri uri = new Uri(baseUri, $"game/api/import/{gameIGDBId}");
+            HttpWebRequest request = BuildRequest(uri, HttpMethod.Get);
+            request.Headers.Add("Authorization", "Bearer " + token);
 
-            IRestResponse response = client.Execute(request);
-            return response.Content;
+            RequestResult<String> result = await ProcessResponse(request);
+
+            return result;
         }
 
-        public List<Game> ListIntGames()
+        public async Task<RequestResult<String>> ListIntGames()
         {
-            var request = new RestRequest("game", Method.GET);
-            request.RequestFormat = DataFormat.Json;
+            Uri uri = new Uri(baseUri, $"game");
+            HttpWebRequest request = BuildRequest(uri, HttpMethod.Get);
 
-            IRestResponse<List<Game>> response = client.Execute<List<Game>>(request);
-            return response.Data;
+            RequestResult<String> result = await ProcessResponse(request);
+            return result;
         }
 
-        public Game GetSpecificGameWithHandlers(int internalGameId)
+        public async Task<RequestResult<String>> GetSpecificGameWithHandlers(int internalGameId)
         {
-            var request = new RestRequest("game/{internalGameId}", Method.GET);
-            request.AddUrlSegment("internalGameId", internalGameId);
-            request.RequestFormat = DataFormat.Json;
+            Uri uri = new Uri(baseUri, $"game/{internalGameId}");
+            HttpWebRequest request = BuildRequest(uri, HttpMethod.Get);
 
-            IRestResponse<Game> response = client.Execute<Game>(request);
-            return response.Data;
+            RequestResult<String> result = await ProcessResponse(request);
+            return result;
+
         }
 
         public bool GetPackage(int handlerId, int specificVersion = -1)
@@ -111,25 +162,33 @@ namespace Nucleus.Gaming.Coop.Api
             //return true; // As for now. Should be correctly wrapped (and return false or errorcode on error...)
         }
 
-        public IRestResponse<Handler> CreateHandler(int gameId, string handlerName, string handlerDetails)
+        public async Task<RequestResult<String>> CreateHandler(int gameId, string handlerName, string handlerDetails)
         {
-            var request = new RestRequest("handler", Method.POST);
-            request.AddHeader("Authorization", "Bearer " + token);
-            request.AddJsonBody(new { game_id = gameId, name = handlerName, details = handlerDetails });
-            request.RequestFormat = DataFormat.Json;
-            IRestResponse<Handler> response = client.Execute<Handler>(request);
-            return response;
+            Uri uri = new Uri(baseUri, $"handler");
+            HttpWebRequest request = BuildRequest(uri, HttpMethod.Post, new { game_id = gameId, name = handlerName, details = handlerDetails });
+            request.Headers.Add("Authorization", "Bearer " + token);
+
+            RequestResult<String> result = await ProcessResponse(request);
+
+            //var request = new RestRequest("handler", Method.POST);
+            //request.AddHeader("Authorization", "Bearer " + token);
+            //request.AddJsonBody(new { game_id = gameId, name = handlerName, details = handlerDetails });
+            //request.RequestFormat = DataFormat.Json;
+            //IRestResponse<Handler> response = client.Execute<Handler>(request);
+            //return response;
+            return null;
         }
 
-        public IRestResponse<Package> CreatePackage(int handlerId, string packageFullPath, string packageInfos)
-        {
-            var request = new RestRequest("handler/{handlerId}", Method.POST);
-            request.AddHeader("Authorization", "Bearer " + token);
-            request.AddUrlSegment("handlerId", handlerId);
-            request.AddFile("package", @packageFullPath);
-            request.AddParameter("infos", packageInfos);
-            IRestResponse<Package> response = client.Execute<Package>(request);
-            return response;
-        }
+        //public IRestResponse<Package> CreatePackage(int handlerId, string packageFullPath, string packageInfos)
+        //{
+        //    //var request = new RestRequest("handler/{handlerId}", Method.POST);
+        //    //request.AddHeader("Authorization", "Bearer " + token);
+        //    //request.AddUrlSegment("handlerId", handlerId);
+        //    //request.AddFile("package", @packageFullPath);
+        //    //request.AddParameter("infos", packageInfos);
+        //    //IRestResponse<Package> response = client.Execute<Package>(request);
+        //    //return response;
+        //    return null;
+        //}
     }
 }

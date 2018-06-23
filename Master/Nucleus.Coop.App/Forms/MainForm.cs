@@ -48,17 +48,18 @@ namespace Nucleus.Coop.App.Forms
         private JSUserInputControl jsControl;
 
         private Thread handlerThread;
-        private CoopConfigInfo configFile;
 
         private GameRunningOverlay overlay;
 
         private GameHandlerMetadata[] currentHandlers;
 
         private DomainWebApiConnection apiConnection;
+        private PkgManagerForm pkgManager;
 
-        public MainForm(string[] args, DomainWebApiConnection con)
+        public MainForm(string[] args, GameManager gameManager, DomainWebApiConnection con)
         {
             this.apiConnection = con;
+            this.gameManager = gameManager;
 
             InitializeComponent();
 
@@ -68,9 +69,6 @@ namespace Nucleus.Coop.App.Forms
             this.Text = string.Format("Nucleus Coop v{0}", Globals.Version);
 
             controls = new Dictionary<UserGameInfo, GameControl>();
-
-            configFile = new CoopConfigInfo("config.json");
-            gameManager = new GameManager(configFile);
 
             positionsControl = new PositionsControl();
             optionsControl = new PlayerOptionsControl();
@@ -100,7 +98,7 @@ namespace Nucleus.Coop.App.Forms
                     string extension = Path.GetExtension(argument);
                     if (extension.ToLower().EndsWith("nc"))
                     {
-                        // try installing if user allows it
+                        // try installing the package in the arguments if user allows it
                         if (MessageBox.Show("Would you like to install " + argument + "?", "Question", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
                             gameManager.RepoManager.InstallPackage(argument);
@@ -116,6 +114,7 @@ namespace Nucleus.Coop.App.Forms
                 if (MessageBox.Show("Would you like to associate Nucleus Package Files (*.nc) to the application?", "Question", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     string startLocation = Process.GetCurrentProcess().MainModule.FileName;
+                    // TODO: abstract (windows exclusive code)
                     if (!FileAssociations.SetAssociation(".nc", "NucleusCoop", "Nucleus Package Files", startLocation))
                     {
                         MessageBox.Show("Failed to set association");
@@ -607,6 +606,21 @@ namespace Nucleus.Coop.App.Forms
                     RefreshGames();
                 }
             }
+        }
+
+
+        private void btn_Handlers_Click(object sender, EventArgs e)
+        {
+            if (pkgManager != null)
+            {
+                if (!pkgManager.IsDisposed)
+                {
+                    return;
+                }
+            }
+
+            pkgManager = new PkgManagerForm(this.apiConnection);
+            pkgManager.Show();
         }
     }
 }

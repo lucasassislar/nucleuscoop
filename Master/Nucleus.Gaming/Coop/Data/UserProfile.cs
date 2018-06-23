@@ -31,6 +31,8 @@ namespace Nucleus.Gaming.Coop
 
         public UserProfileOptions Options { get; set; } = new UserProfileOptions();
 
+        public string LastToken { get; set; }
+
         public UserProfile(string _pathToFile)
             : base(_pathToFile)
         {

@@ -22,14 +22,11 @@ namespace Nucleus.Gaming.Package
         public readonly string JsonFormat = ".json";
         public readonly string JsFormat = ".js";
 
-        private CoopConfigInfo config;
         private GameManager gameManager;
         //private Dictionary<string, RepoHeader> repos;
 
-        public PackageManager(CoopConfigInfo config)
+        public PackageManager()
         {
-            this.config = config;
-
             gameManager = GameManager.Instance;
             //Initialize();
         }
@@ -257,15 +254,12 @@ namespace Nucleus.Gaming.Package
 
         public GameHandlerMetadata GetFirstInstalledHandler(string gameId)
         {
-            int totalHeaders = config.RepoHeaders.Count;
             UserProfile user = GameManager.Instance.User;
-
             return user.InstalledHandlers.FirstOrDefault(c => c.GameID == gameId);
         }
 
         public GameHandlerMetadata[] GetInstalledHandlers(string gameId)
         {
-            int totalHeaders = config.RepoHeaders.Count;
             UserProfile user = GameManager.Instance.User;
 
             return user.InstalledHandlers.Where(c => c.GameID == gameId).ToArray();
@@ -278,9 +272,7 @@ namespace Nucleus.Gaming.Package
 
         public GameHandlerMetadata GetInstalledHandlerMetadata(string repoId, string handlerId, string gameId)
         {
-            int totalHeaders = config.RepoHeaders.Count;
             UserProfile user = GameManager.Instance.User;
-
             return user.InstalledHandlers.FirstOrDefault(c => c.HandlerID == handlerId &&
                                                                 c.GameID == gameId);
         }
@@ -319,8 +311,8 @@ namespace Nucleus.Gaming.Package
             if (!File.Exists(path))
             {
                 result.LogLine("File does not exist (Path: {0})", path);
-                result.Failed = true;
-                result.AdditionalData = new FileNotFoundException("Can't install package if it doesn't exist", path);
+                result.SetStatus(false);
+                result.SetAdditionalData(new FileNotFoundException("Can't install package if it doesn't exist", path));
                 return result;
             }
 
@@ -345,12 +337,12 @@ namespace Nucleus.Gaming.Package
 
             if (string.IsNullOrEmpty(metadata.Dev))
             {
-                result.Failed = true;
+                result.SetStatus(false);
                 result.LogLine("Package has JSON data but no Dev information. Cannot install");
             }
             else
             {
-                result.Success = true;
+                result.SetStatus(true);
 
                 string installPath = GetInstallPath(metadata);
 
@@ -365,7 +357,7 @@ namespace Nucleus.Gaming.Package
                     catch (Exception ex)
                     {
                         result.LogLine("Old package failed to uninstall. Please remove manually or restart the app and try again");
-                        result.AdditionalData = ex;
+                        result.SetAdditionalData(ex);
                         return result;
                     }
                 }

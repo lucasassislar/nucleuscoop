@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Nucleus.Gaming.Coop.Api;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,6 +18,7 @@ namespace Nucleus.Gaming.Coop.Interop
         private AppDomain domain;
         private dynamic apiConnection;
 
+        public bool IsOfflineMode { get; private set; }
         public string Token { get; private set; }
 
         public DomainWebApiConnection()
@@ -37,6 +40,32 @@ namespace Nucleus.Gaming.Coop.Interop
             apiConnection = apiObj.Unwrap();
         }
 
+        private RequestResult<T> ParseRequest<T>(RequestResult<String> request)
+        {
+            var result = new RequestResult<T>();
+            result.SetStatus(request.Success);
+            result.LogLine(request.LogData);
+            if (!string.IsNullOrWhiteSpace(request.Data))
+            {
+                result.SetData(JsonConvert.DeserializeObject<T>(request.Data));
+            }
+
+            return result;
+        }
+
+        public void EnableOfflineMode()
+        {
+            IsOfflineMode = true;
+
+            // remove token
+            SetToken(string.Empty);
+        }
+
+        public void DisableOfflineMode()
+        {
+            IsOfflineMode = false;
+        }
+
         public static string GetLibraryPath()
         {
             return Path.Combine(AssemblyUtil.GetStartFolder(), "bin", "Nucleus.Gaming.Coop.Api.dll");
@@ -52,32 +81,28 @@ namespace Nucleus.Gaming.Coop.Interop
             apiConnection.Initialize();
         }
 
-        public String Register(string username, string email, string password, bool loginInSuccess = true)
+        public void SetToken(string token)
         {
-            dynamic data = apiConnection.Register(username, email, password);
-
-            if (data.Success)
-            {
-                if (loginInSuccess)
-                {
-                    Login(data.email, data.password);
-                }
-                return data.Data.id;
-            }
-            return data.LogData;
+            Token = token;
+            apiConnection.SetToken(token);
         }
 
-        public String Login(string email, string password)
+        public async Task<RequestResult<User>> Register(string username, string email, string password)
         {
-            dynamic data = apiConnection.Login(email, password);
+            return ParseRequest<User>(await (Task<RequestResult<String>>)apiConnection.Register(username, email, password));
+        }
 
-            if (data.Success)
-            {
-                Token = data.Data.token;
-                apiConnection.SetToken(Token);
-                return Token;
-            }
-            return data.LogData;
+        public async Task<RequestResult<LoginData>> Login(string email, string password)
+        {
+            RequestResult<String> result = await (Task<RequestResult<String>>)apiConnection.Login(email, password);
+            RequestResult<LoginData> loginData = ParseRequest<LoginData>(result);
+            SetToken(loginData.Data.token);
+            return loginData;
+        }
+
+        public async Task<RequestResult<IgdbGames>> SearchExtGame(string gameName)
+        {
+            return ParseRequest<IgdbGames>(await (Task<RequestResult<String>>)apiConnection.SearchExtGame(gameName));
         }
     }
 }

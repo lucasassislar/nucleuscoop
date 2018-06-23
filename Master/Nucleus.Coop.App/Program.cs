@@ -42,18 +42,37 @@ namespace Nucleus.Coop
             DomainWebApiConnection apiConnection = new DomainWebApiConnection();
             apiConnection.Initialize();
 
-            LoginForm loginForm = new LoginForm(apiConnection);
-            DPIManager.AddForm(loginForm);
-            DPIManager.ForceUpdate();
+            GameManager gameManager = new GameManager();
 
-            if (loginForm.ShowDialog() == DialogResult.OK)
+            if (string.IsNullOrWhiteSpace(gameManager.User.LastToken))
             {
-                MainForm form = new MainForm(args, apiConnection);
-                DPIManager.AddForm(form);
+                LoginForm loginForm = new LoginForm(apiConnection);
+                DPIManager.AddForm(loginForm);
                 DPIManager.ForceUpdate();
 
-                Application.Run(form);
+                if (loginForm.ShowDialog() == DialogResult.OK)
+                {
+                    // save login credentials
+                    gameManager.User.LastToken = apiConnection.Token;
+                    StartMainForm(args, gameManager, apiConnection);
+                }
             }
+            else
+            {
+                // saved credentials
+                apiConnection.SetToken(gameManager.User.LastToken);
+
+                StartMainForm(args, gameManager, apiConnection);
+            }
+        }
+
+        private static void StartMainForm(string[] args, GameManager gameManager, DomainWebApiConnection apiConnection)
+        {
+            MainForm form = new MainForm(args, gameManager, apiConnection);
+            DPIManager.AddForm(form);
+            DPIManager.ForceUpdate();
+
+            Application.Run(form);
         }
 
         private static void ThreadExceptionEventHandler(object sender, ThreadExceptionEventArgs e)

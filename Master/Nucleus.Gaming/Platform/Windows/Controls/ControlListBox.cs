@@ -22,6 +22,7 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
         public Size Offset { get; set; }
         public Control SelectedControl { get; protected set; }
 
+
         public int Border
         {
             get { return border; }
@@ -54,6 +55,7 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
         {
             base.OnSizeChanged(e);
             UpdateSizes();
+
         }
 
         private bool updatingSize;
@@ -107,12 +109,22 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
                 Control c = e.Control;
 
                 c.ControlAdded += C_ControlAdded;
-                c.Click += c_Click;
                 c.SizeChanged += C_SizeChanged;
                 if (c is IRadioControl)
                 {
-                    c.MouseEnter += c_MouseEnter;
-                    c.MouseLeave += c_MouseLeave;
+                    if (c is IMouseHoverControl)
+                    {
+                        IMouseHoverControl mouse = (IMouseHoverControl)c;
+                        mouse.Mouse.MouseClick += c_MouseClick;
+                        mouse.Mouse.MouseEnter += c_MouseEnter;
+                        mouse.Mouse.MouseLeave += c_MouseLeave;
+                    }
+                    else
+                    {
+                        c.MouseClick += c_MouseClick;
+                        c.MouseEnter += c_MouseEnter;
+                        c.MouseLeave += c_MouseLeave;
+                    }
                 }
 
                 int index = this.Controls.IndexOf(c);
@@ -123,14 +135,10 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
             }
         }
 
-
-
         private void C_ControlAdded(object sender, ControlEventArgs e)
         {
             Control c = e.Control;
             c.Click += c_Click;
-            c.MouseEnter += c_MouseEnter;
-            c.MouseLeave += c_MouseLeave;
         }
 
         protected override void OnControlRemoved(ControlEventArgs e)
@@ -148,6 +156,10 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
         private void c_MouseEnter(object sender, EventArgs e)
         {
             Control parent = (Control)sender;
+            if (parent is TransparentControl)
+            {
+                parent = parent.Parent;
+            }
 
             if (parent != SelectedControl && parent is IRadioControl)
             {
@@ -159,12 +171,57 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
         private void c_MouseLeave(object sender, EventArgs e)
         {
             Control parent = (Control)sender;
+            if (parent is TransparentControl)
+            {
+                parent = parent.Parent;
+            }
 
             if (parent != SelectedControl && parent is IRadioControl)
             {
                 IRadioControl high = (IRadioControl)parent;
                 high.UserLeave();
             }
+        }
+
+        private void c_MouseClick(object sender, MouseEventArgs e)
+        {
+            Control parent = (Control)sender;
+            if (parent is TransparentControl)
+            {
+                parent = parent.Parent;
+            }
+
+            for (int i = 0; i < this.Controls.Count; i++)
+            {
+                Control c = this.Controls[i];
+                if (c is IRadioControl)
+                {
+                    IRadioControl high = (IRadioControl)c;
+                    if (parent == c)
+                    {
+                        // highlight
+                        high.RadioSelected();
+                    }
+                    else
+                    {
+                        high.RadioUnselected();
+                    }
+                }
+            }
+
+            if (parent != null &&
+                parent != SelectedControl)
+            {
+                if (this.SelectedChanged != null)
+                {
+                    SelectedControl = parent;
+                    this.SelectedChanged(SelectedControl, this);
+                }
+            }
+
+            SelectedControl = parent;
+
+            this.OnClick(e);
         }
 
         private void c_Click(object sender, EventArgs e)

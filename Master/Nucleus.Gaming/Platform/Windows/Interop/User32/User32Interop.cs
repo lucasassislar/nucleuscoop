@@ -9,6 +9,9 @@ namespace Nucleus.Gaming.Windows.Interop
 {
     public static class User32Interop
     {
+        [DllImport("user32.dll")]
+        public static extern int SetWindowRgn(IntPtr hWnd, IntPtr hRgn, bool bRedraw);
+
         internal delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
 
         [DllImport("user32.dll")]

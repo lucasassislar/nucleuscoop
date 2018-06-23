@@ -1,4 +1,7 @@
-﻿using Nucleus.Gaming.Coop.Interop;
+﻿using Nucleus.Gaming;
+using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Coop.Api;
+using Nucleus.Gaming.Coop.Interop;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,18 +40,54 @@ namespace Nucleus.Coop.App.Forms
             }
         }
 
+        private void ChangeLoginButtonStates(bool state)
+        {
+            btn_Login.Enabled = state;
+            btn_useOffline.Enabled = state;
+        }
+
         private void btn_Login_Click(object sender, EventArgs e)
         {
-            string result = apiConnection.Login(txt_userName.Text, txt_password.Text);
-            if (result.ToLower().Contains("forbidden"))
+            ChangeLoginButtonStates(false);
+
+            Task.Run(async () =>
             {
-                MessageBox.Show(result);
-            }
-            else
-            {
-                this.DialogResult = DialogResult.OK;
-                this.Close();
-            }
+                try
+                {
+                    RequestResult<LoginData> result = await apiConnection.Login(txt_email.Text, txt_password.Text);
+                    if (result.Success)
+                    {
+                        this.Invoke((Action)(() =>
+                        {
+                            this.DialogResult = DialogResult.OK;
+                            this.Close();
+                        }));
+                    }
+                    else
+                    {
+                        this.Invoke((Action)(() =>
+                        {
+                            MessageBox.Show(result.LogData);
+                            ChangeLoginButtonStates(true);
+                        }));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this.Invoke((Action)(() =>
+                    {
+                        ChangeLoginButtonStates(true);
+                    }));
+                }
+            });
+        }
+
+        private void btn_useOffline_Click(object sender, EventArgs e)
+        {
+            apiConnection.EnableOfflineMode();
+
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }
