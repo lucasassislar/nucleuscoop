@@ -54,7 +54,7 @@ namespace Nucleus.Coop.App.Forms
         private GameHandlerMetadata[] currentHandlers;
 
         private DomainWebApiConnection apiConnection;
-        private PkgManagerForm pkgManager;
+        private HandlerManagerForm pkgManager;
 
         public MainForm(string[] args, GameManager gameManager, DomainWebApiConnection con)
         {
@@ -163,7 +163,6 @@ namespace Nucleus.Coop.App.Forms
                     }
                 }
                 this.list_Games.Controls.Clear();
-                this.list_Handlers.Controls.Clear();
                 controls.Clear();
 
                 List<GameHandlerMetadata> handlers = gameManager.User.InstalledHandlers;
@@ -188,15 +187,6 @@ namespace Nucleus.Coop.App.Forms
                     con.Text = "No games";
                     this.list_Games.Controls.Add(con);
                 }
-
-                if (handlers.Count == 0)
-                {
-                    noGamesPresent = true;
-                    HandlerControl con = new HandlerControl(null);
-                    con.Width = list_Games.Width;
-                    con.Text = "No handlers";
-                    this.list_Handlers.Controls.Add(con);
-                }
             }
 
             DPIManager.ForceUpdate();
@@ -213,9 +203,10 @@ namespace Nucleus.Coop.App.Forms
             }
 
             // get all Repository Game Infos
-            HandlerControl con = new HandlerControl(metadata);
-            con.Width = list_Games.Width;
-            this.list_Handlers.Controls.Add(con);
+            this.combo_Handlers.Items.Add(metadata);
+
+            //HandlerControl con = new HandlerControl(metadata);
+            //con.Width = list_Games.Width;
         }
 
         public void NewUserGame(UserGameInfo game)
@@ -619,7 +610,7 @@ namespace Nucleus.Coop.App.Forms
                 }
             }
 
-            pkgManager = new PkgManagerForm(this.apiConnection);
+            pkgManager = new HandlerManagerForm(this.apiConnection);
             pkgManager.Show();
         }
     }

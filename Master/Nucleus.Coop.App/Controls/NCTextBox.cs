@@ -30,8 +30,8 @@ namespace Nucleus.Coop.App.Controls
 
         public bool UsePasswordChar
         {
-            get { return textBox.UseSystemPasswordChar; }
-            set { textBox.UseSystemPasswordChar = value; }
+            get { return this.textBox.UseSystemPasswordChar; }
+            set { this.textBox.UseSystemPasswordChar = value; }
         }
 
         public string WaterMarkText
@@ -150,12 +150,11 @@ namespace Nucleus.Coop.App.Controls
                 this.textBox.Text = WaterMarkText;
                 this.enablingWatermark = false;
 
-
                 this.textBox.ForeColor = WaterMarkColor;
             }
         }
 
-        private void TextBox_GotFocus(object sender, EventArgs e)
+        private void DisableWatermark()
         {
             if (this.waterMarkActive)
             {
@@ -163,8 +162,14 @@ namespace Nucleus.Coop.App.Controls
                 this.enablingWatermark = true;
                 this.textBox.Text = "";
                 this.enablingWatermark = false;
+
                 this.textBox.ForeColor = textBoxForeColor;
             }
+        }
+
+        private void TextBox_GotFocus(object sender, EventArgs e)
+        {
+            DisableWatermark();
         }
 
         private void TextBox_LostFocus(object sender, EventArgs e)

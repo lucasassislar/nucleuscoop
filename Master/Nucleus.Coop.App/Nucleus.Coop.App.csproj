@@ -206,11 +206,11 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\PkgManagerForm.cs">
+    <Compile Include="Forms\HandlerManagerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\PkgManagerForm.Designer.cs">
-      <DependentUpon>PkgManagerForm.cs</DependentUpon>
+    <Compile Include="Forms\HandlerManagerForm.Designer.cs">
+      <DependentUpon>HandlerManagerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\RegisterForm.cs">
       <SubType>Form</SubType>
@@ -246,8 +246,8 @@
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PkgManagerForm.resx">
-      <DependentUpon>PkgManagerForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\HandlerManagerForm.resx">
+      <DependentUpon>HandlerManagerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\RegisterForm.resx">
       <DependentUpon>RegisterForm.cs</DependentUpon>

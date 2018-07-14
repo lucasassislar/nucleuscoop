@@ -1,6 +1,6 @@
 ﻿namespace Nucleus.Coop.App.Forms
 {
-    partial class PkgManagerForm
+    partial class HandlerManagerForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PkgManagerForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HandlerManagerForm));
             this.list_left = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
             this.txt_gameName = new Nucleus.Coop.App.Controls.NCTextBox();
             this.panel_browse = new System.Windows.Forms.Panel();
@@ -55,6 +55,8 @@
             // 
             // txt_gameName
             // 
+            this.txt_gameName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txt_gameName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.txt_gameName.BorderColor = System.Drawing.Color.Red;
             this.txt_gameName.BorderSize = 1;
@@ -85,8 +87,9 @@
             // 
             // list_handlers
             // 
-            this.list_handlers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.list_handlers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.list_handlers.AutoScroll = true;
             this.list_handlers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(10)))), ((int)(((byte)(10)))));
             this.list_handlers.Border = 2;
@@ -137,6 +140,7 @@
             // 
             // btn_search
             // 
+            this.btn_search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_search.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_search.Location = new System.Drawing.Point(868, 51);
             this.btn_search.Name = "btn_search";
@@ -146,20 +150,20 @@
             this.btn_search.UseVisualStyleBackColor = true;
             this.btn_search.Click += new System.EventHandler(this.btn_search_Click);
             // 
-            // PkgManagerForm
+            // HandlerManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(978, 750);
             this.Controls.Add(this.btn_search);
-            this.Controls.Add(this.panel_installed);
             this.Controls.Add(this.radio_installed);
             this.Controls.Add(this.radio_browse);
             this.Controls.Add(this.panel_browse);
             this.Controls.Add(this.txt_gameName);
             this.Controls.Add(this.list_left);
+            this.Controls.Add(this.panel_installed);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "PkgManagerForm";
+            this.Name = "HandlerManagerForm";
             this.Text = "Handler Manager";
             this.panel_browse.ResumeLayout(false);
             this.ResumeLayout(false);

@@ -16,12 +16,16 @@ using System.Windows.Forms;
 
 namespace Nucleus.Coop.App.Forms
 {
-    public partial class PkgManagerForm : BaseForm
+    /// <summary>
+    /// Form that manages forms, allowing installation of new handlers 
+    /// and management of installed
+    /// </summary>
+    public partial class HandlerManagerForm : BaseForm
     {
         private DomainWebApiConnection apiConnection;
         private List<CancellationTokenSource> pendingTasks;
 
-        public PkgManagerForm(DomainWebApiConnection con)
+        public HandlerManagerForm(DomainWebApiConnection con)
         {
             this.apiConnection = con;
             pendingTasks = new List<CancellationTokenSource>();
@@ -34,6 +38,10 @@ namespace Nucleus.Coop.App.Forms
             //Search(); // lol no api cant handle
         }
 
+
+        /// <summary>
+        /// Use the web api connection to search for the user request game
+        /// </summary>
         private void Search()
         {
             if (apiConnection.IsOfflineMode)
@@ -116,9 +124,7 @@ namespace Nucleus.Coop.App.Forms
             }
             catch (Exception exception)
             {
-                this.Invoke((Action)(() =>
-                {
-                }));
+
             }
         }
 
@@ -146,6 +152,8 @@ namespace Nucleus.Coop.App.Forms
             if (e.KeyCode == Keys.Enter)
             {
                 Search();
+
+                list_left.Focus();
             }
         }
 

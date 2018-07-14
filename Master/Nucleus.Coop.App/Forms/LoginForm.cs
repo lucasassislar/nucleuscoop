@@ -16,16 +16,34 @@ namespace Nucleus.Coop.App.Forms
 {
     public partial class LoginForm : BaseForm
     {
+        private static LoginForm instance;
         private DomainWebApiConnection apiConnection;
 
         public LoginForm(DomainWebApiConnection con)
         {
+            if (instance != null)
+            {
+                // close instance
+                instance.Close();
+            }
+            instance = this;
+
             InitializeComponent();
 
             this.MaximizeBox = false;
             this.MinimizeBox = false;
 
             this.apiConnection = con;
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            if (instance == this)
+            {
+                instance = null;
+            }
+
+            base.OnFormClosing(e);
         }
 
         private void btn_Register_Click(object sender, EventArgs e)
