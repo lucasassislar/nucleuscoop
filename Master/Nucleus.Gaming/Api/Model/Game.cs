@@ -17,7 +17,7 @@ namespace Nucleus.Gaming.Coop.Api
         public float rating { get; set; }
         public string summary { get; set; }
         public string cover_igdb_id { get; set; }
-        public List<Handler> handlers { get; set; }
+        public List<GameHandler> handlers { get; set; }
 
         //public Handler CreateHandler(string handlerName, string handlerDetails)
         //{

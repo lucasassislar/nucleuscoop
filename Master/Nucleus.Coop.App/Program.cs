@@ -84,6 +84,14 @@ namespace Nucleus.Coop
         {
             int x = 0;
         }
+
+        public static bool Login(DomainWebApiConnection apiConnection)
+        {
+            GameManager.Instance.User.LastToken = "";
+            GameManager.Instance.User.Save();
+            LoginForm loginForm = new LoginForm(apiConnection);
+            return loginForm.ShowDialog() == DialogResult.OK;
+        }
     }
 
 

@@ -91,6 +91,36 @@ namespace Nucleus.Gaming.Coop.Api
             return result;
         }
 
+        private async Task<RequestResult<byte[]>> ProcessResponseRaw(HttpWebRequest request)
+        {
+            RequestResult<byte[]> result = new RequestResult<byte[]>();
+
+            try
+            {
+                result.SetStatus(true);
+
+                var httpResponse = (HttpWebResponse)request.GetResponse();
+                Stream str = httpResponse.GetResponseStream();
+                byte[] buffer = new byte[str.Length];
+                await str.ReadAsync(buffer, 0, buffer.Length);
+
+                result.SetData(buffer);
+            }
+            catch (Exception ex)
+            {
+                result.SetStatus(false);
+                result.SetLogData(ex.Message);
+
+                // parse error message?
+                //int errorPos = ex.Message.IndexOf(": (") + 3;
+                //int endErrorPos = ex.Message.IndexOf(')', errorPos);
+                //string errorCode = ex.Message.Substring(errorPos, endErrorPos - errorPos);
+                //result.SetLogData(errorCode);
+            }
+
+            return result;
+        }
+
         public async Task<RequestResult<String>> Register(string username, string email, string password)
         {
             Uri registerUri = new Uri(baseUri, "/auth/register");
@@ -150,16 +180,22 @@ namespace Nucleus.Gaming.Coop.Api
 
         }
 
-        public bool GetPackage(int handlerId, int specificVersion = -1)
+        public async Task<RequestResult<String>> GetHandler(int handlerId)
         {
-            return false;
-            //var request = new RestRequest("handler/{handlerId}/{specificVersion}", Method.GET);
-            //request.RequestFormat = DataFormat.Json;
-            //request.AddUrlSegment("handlerId", handlerId);
-            //request.AddUrlSegment("specificVersion", specificVersion >= 1 ? Convert.ToString(specificVersion) : "latest");
-            //var fileBytes = client.DownloadData(request);
-            //File.WriteAllBytes("package.nc", fileBytes);
-            //return true; // As for now. Should be correctly wrapped (and return false or errorcode on error...)
+            Uri uri = new Uri(baseUri, $"handler/{handlerId}");
+            HttpWebRequest request = BuildRequest(uri, HttpMethod.Get);
+
+            RequestResult<String> result = await ProcessResponse(request);
+            return result;
+        }
+
+        public async Task<RequestResult<byte[]>> DownloadPackage(int handlerId, string specificVersion = "-1")
+        {
+            Uri uri = new Uri(baseUri, $"handler/{handlerId}/{(specificVersion == "-1" ? "latest" : specificVersion)}");
+            HttpWebRequest request = BuildRequest(uri, HttpMethod.Get);
+
+            RequestResult<byte[]> result = await ProcessResponseRaw(request);
+            return result;
         }
 
         public async Task<RequestResult<String>> CreateHandler(int gameId, string handlerName, string handlerDetails)

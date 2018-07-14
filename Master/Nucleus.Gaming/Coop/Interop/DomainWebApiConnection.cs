@@ -104,5 +104,25 @@ namespace Nucleus.Gaming.Coop.Interop
         {
             return ParseRequest<IgdbGames>(await (Task<RequestResult<String>>)apiConnection.SearchExtGame(gameName));
         }
+
+        public async Task<RequestResult<Game>> GetSpecificGameWithHandlers(string gameId)
+        {
+            return ParseRequest<Game>(await (Task<RequestResult<String>>)apiConnection.GetSpecificGameWithHandlers(gameId));
+        }
+
+        public async Task<RequestResult<List<Game>>> ListIntGames()
+        {
+            return ParseRequest<List<Game>>(await (Task<RequestResult<String>>)apiConnection.ListIntGames());
+        }
+
+        public async Task<RequestResult<GameHandler>> GetGameHandler(string handlerId)
+        {
+            return ParseRequest<GameHandler>(await (Task<RequestResult<string>>)apiConnection.GetHandler(handlerId));
+        }
+
+        public async Task<RequestResult<byte[]>> DownloadPackage(string handlerId, string packageId)
+        {
+            return await (Task<RequestResult<byte[]>>)apiConnection.DownloadPackage(handlerId, packageId);
+        }
     }
 }

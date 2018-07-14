@@ -79,7 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\Model\Game.cs" />
-    <Compile Include="Api\Model\Handler.cs" />
+    <Compile Include="Api\Model\GameHandler.cs" />
     <Compile Include="Api\Model\IgdbGame.cs" />
     <Compile Include="Api\Model\IgdbGameCover.cs" />
     <Compile Include="Api\Model\IgdbGameReleaseDate.cs" />

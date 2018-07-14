@@ -29,75 +29,34 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HandlerManagerForm));
-            this.list_left = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
-            this.txt_gameName = new Nucleus.Coop.App.Controls.NCTextBox();
+            this.radio_installed = new System.Windows.Forms.RadioButton();
+            this.radio_browse = new System.Windows.Forms.RadioButton();
             this.panel_browse = new System.Windows.Forms.Panel();
             this.list_handlers = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
-            this.radio_browse = new System.Windows.Forms.RadioButton();
-            this.radio_installed = new System.Windows.Forms.RadioButton();
+            this.list_left = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
             this.panel_installed = new System.Windows.Forms.Panel();
-            this.btn_search = new System.Windows.Forms.Button();
+            this.txt_gameName = new Nucleus.Coop.App.Controls.NCTextBox();
+            this.panel_handlerInfo = new System.Windows.Forms.Panel();
+            this.label_gameHandlerName = new System.Windows.Forms.Label();
+            this.label_gameHandlerDescription = new System.Windows.Forms.Label();
+            this.combo_gameHandlerVersions = new System.Windows.Forms.ComboBox();
+            this.btn_gameHandlerInstall = new System.Windows.Forms.Button();
             this.panel_browse.SuspendLayout();
+            this.panel_handlerInfo.SuspendLayout();
             this.SuspendLayout();
             // 
-            // list_left
+            // radio_installed
             // 
-            this.list_left.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.list_left.AutoScroll = true;
-            this.list_left.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(10)))), ((int)(((byte)(10)))));
-            this.list_left.Border = 2;
-            this.list_left.Location = new System.Drawing.Point(12, 90);
-            this.list_left.Name = "list_left";
-            this.list_left.Offset = new System.Drawing.Size(0, 0);
-            this.list_left.Size = new System.Drawing.Size(368, 648);
-            this.list_left.TabIndex = 1;
-            // 
-            // txt_gameName
-            // 
-            this.txt_gameName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txt_gameName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.txt_gameName.BorderColor = System.Drawing.Color.Red;
-            this.txt_gameName.BorderSize = 1;
-            this.txt_gameName.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.txt_gameName.Location = new System.Drawing.Point(12, 51);
-            this.txt_gameName.Name = "txt_gameName";
-            this.txt_gameName.Padding = new System.Windows.Forms.Padding(1);
-            this.txt_gameName.Size = new System.Drawing.Size(850, 33);
-            this.txt_gameName.TabIndex = 2;
-            this.txt_gameName.TextBoxBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.txt_gameName.TextBoxForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
-            this.txt_gameName.UsePasswordChar = false;
-            this.txt_gameName.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
-            this.txt_gameName.WaterMarkText = "Game Name";
-            this.txt_gameName.TextChanged += new System.EventHandler(this.txt_gameName_OnTextChanged);
-            this.txt_gameName.TextBoxKeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_gameName_TextBoxKeyDown);
-            // 
-            // panel_browse
-            // 
-            this.panel_browse.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel_browse.Controls.Add(this.list_handlers);
-            this.panel_browse.Location = new System.Drawing.Point(388, 90);
-            this.panel_browse.Name = "panel_browse";
-            this.panel_browse.Size = new System.Drawing.Size(578, 648);
-            this.panel_browse.TabIndex = 12;
-            // 
-            // list_handlers
-            // 
-            this.list_handlers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.list_handlers.AutoScroll = true;
-            this.list_handlers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(10)))), ((int)(((byte)(10)))));
-            this.list_handlers.Border = 2;
-            this.list_handlers.Location = new System.Drawing.Point(0, 0);
-            this.list_handlers.Name = "list_handlers";
-            this.list_handlers.Offset = new System.Drawing.Size(0, 0);
-            this.list_handlers.Size = new System.Drawing.Size(368, 648);
-            this.list_handlers.TabIndex = 17;
+            this.radio_installed.Appearance = System.Windows.Forms.Appearance.Button;
+            this.radio_installed.AutoSize = true;
+            this.radio_installed.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.radio_installed.Location = new System.Drawing.Point(91, 12);
+            this.radio_installed.Name = "radio_installed";
+            this.radio_installed.Size = new System.Drawing.Size(80, 33);
+            this.radio_installed.TabIndex = 1;
+            this.radio_installed.Text = "Installed";
+            this.radio_installed.UseVisualStyleBackColor = true;
+            this.radio_installed.CheckedChanged += new System.EventHandler(this.radio_browse_CheckedChanged);
             // 
             // radio_browse
             // 
@@ -114,18 +73,43 @@
             this.radio_browse.UseVisualStyleBackColor = true;
             this.radio_browse.CheckedChanged += new System.EventHandler(this.radio_browse_CheckedChanged);
             // 
-            // radio_installed
+            // panel_browse
             // 
-            this.radio_installed.Appearance = System.Windows.Forms.Appearance.Button;
-            this.radio_installed.AutoSize = true;
-            this.radio_installed.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.radio_installed.Location = new System.Drawing.Point(91, 12);
-            this.radio_installed.Name = "radio_installed";
-            this.radio_installed.Size = new System.Drawing.Size(80, 33);
-            this.radio_installed.TabIndex = 1;
-            this.radio_installed.Text = "Installed";
-            this.radio_installed.UseVisualStyleBackColor = true;
-            this.radio_installed.CheckedChanged += new System.EventHandler(this.radio_browse_CheckedChanged);
+            this.panel_browse.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel_browse.Controls.Add(this.panel_handlerInfo);
+            this.panel_browse.Controls.Add(this.list_handlers);
+            this.panel_browse.Location = new System.Drawing.Point(388, 90);
+            this.panel_browse.Name = "panel_browse";
+            this.panel_browse.Size = new System.Drawing.Size(910, 648);
+            this.panel_browse.TabIndex = 12;
+            // 
+            // list_handlers
+            // 
+            this.list_handlers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.list_handlers.AutoScroll = true;
+            this.list_handlers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(10)))), ((int)(((byte)(10)))));
+            this.list_handlers.Border = 2;
+            this.list_handlers.Location = new System.Drawing.Point(0, 0);
+            this.list_handlers.Name = "list_handlers";
+            this.list_handlers.Offset = new System.Drawing.Size(0, 0);
+            this.list_handlers.Size = new System.Drawing.Size(368, 648);
+            this.list_handlers.TabIndex = 17;
+            // 
+            // list_left
+            // 
+            this.list_left.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.list_left.AutoScroll = true;
+            this.list_left.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(10)))), ((int)(((byte)(10)))));
+            this.list_left.Border = 2;
+            this.list_left.Location = new System.Drawing.Point(12, 90);
+            this.list_left.Name = "list_left";
+            this.list_left.Offset = new System.Drawing.Size(0, 0);
+            this.list_left.Size = new System.Drawing.Size(368, 648);
+            this.list_left.TabIndex = 1;
             // 
             // panel_installed
             // 
@@ -134,28 +118,87 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel_installed.Location = new System.Drawing.Point(388, 90);
             this.panel_installed.Name = "panel_installed";
-            this.panel_installed.Size = new System.Drawing.Size(578, 648);
+            this.panel_installed.Size = new System.Drawing.Size(910, 648);
             this.panel_installed.TabIndex = 18;
             this.panel_installed.Visible = false;
             // 
-            // btn_search
+            // txt_gameName
             // 
-            this.btn_search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_search.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_search.Location = new System.Drawing.Point(868, 51);
-            this.btn_search.Name = "btn_search";
-            this.btn_search.Size = new System.Drawing.Size(98, 33);
-            this.btn_search.TabIndex = 3;
-            this.btn_search.Text = "Search";
-            this.btn_search.UseVisualStyleBackColor = true;
-            this.btn_search.Click += new System.EventHandler(this.btn_search_Click);
+            this.txt_gameName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txt_gameName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.txt_gameName.BorderColor = System.Drawing.Color.Red;
+            this.txt_gameName.BorderSize = 1;
+            this.txt_gameName.Enabled = false;
+            this.txt_gameName.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.txt_gameName.Location = new System.Drawing.Point(12, 51);
+            this.txt_gameName.Name = "txt_gameName";
+            this.txt_gameName.Padding = new System.Windows.Forms.Padding(1);
+            this.txt_gameName.Size = new System.Drawing.Size(368, 33);
+            this.txt_gameName.TabIndex = 2;
+            this.txt_gameName.TextBoxBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
+            this.txt_gameName.TextBoxForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
+            this.txt_gameName.UsePasswordChar = false;
+            this.txt_gameName.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.txt_gameName.WaterMarkText = "Search (Disabled)";
+            this.txt_gameName.TextChanged += new System.EventHandler(this.txt_gameName_OnTextChanged);
+            this.txt_gameName.TextBoxKeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_gameName_TextBoxKeyDown);
+            // 
+            // panel_handlerInfo
+            // 
+            this.panel_handlerInfo.Controls.Add(this.btn_gameHandlerInstall);
+            this.panel_handlerInfo.Controls.Add(this.combo_gameHandlerVersions);
+            this.panel_handlerInfo.Controls.Add(this.label_gameHandlerDescription);
+            this.panel_handlerInfo.Controls.Add(this.label_gameHandlerName);
+            this.panel_handlerInfo.Location = new System.Drawing.Point(374, 3);
+            this.panel_handlerInfo.Name = "panel_handlerInfo";
+            this.panel_handlerInfo.Size = new System.Drawing.Size(533, 642);
+            this.panel_handlerInfo.TabIndex = 18;
+            // 
+            // label_gameHandlerName
+            // 
+            this.label_gameHandlerName.AutoSize = true;
+            this.label_gameHandlerName.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.label_gameHandlerName.Location = new System.Drawing.Point(0, 0);
+            this.label_gameHandlerName.Name = "label_gameHandlerName";
+            this.label_gameHandlerName.Size = new System.Drawing.Size(217, 30);
+            this.label_gameHandlerName.TabIndex = 0;
+            this.label_gameHandlerName.Text = "Game Handler Name";
+            // 
+            // label_gameHandlerDescription
+            // 
+            this.label_gameHandlerDescription.Location = new System.Drawing.Point(14, 70);
+            this.label_gameHandlerDescription.Name = "label_gameHandlerDescription";
+            this.label_gameHandlerDescription.Size = new System.Drawing.Size(516, 186);
+            this.label_gameHandlerDescription.TabIndex = 1;
+            this.label_gameHandlerDescription.Text = resources.GetString("label_gameHandlerDescription.Text");
+            // 
+            // combo_gameHandlerVersions
+            // 
+            this.combo_gameHandlerVersions.FormattingEnabled = true;
+            this.combo_gameHandlerVersions.Location = new System.Drawing.Point(5, 38);
+            this.combo_gameHandlerVersions.Name = "combo_gameHandlerVersions";
+            this.combo_gameHandlerVersions.Size = new System.Drawing.Size(427, 29);
+            this.combo_gameHandlerVersions.TabIndex = 2;
+            // 
+            // btn_gameHandlerInstall
+            // 
+            this.btn_gameHandlerInstall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_gameHandlerInstall.Enabled = false;
+            this.btn_gameHandlerInstall.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_gameHandlerInstall.Location = new System.Drawing.Point(438, 35);
+            this.btn_gameHandlerInstall.Name = "btn_gameHandlerInstall";
+            this.btn_gameHandlerInstall.Size = new System.Drawing.Size(92, 33);
+            this.btn_gameHandlerInstall.TabIndex = 19;
+            this.btn_gameHandlerInstall.Text = "Install";
+            this.btn_gameHandlerInstall.UseVisualStyleBackColor = true;
+            this.btn_gameHandlerInstall.Click += new System.EventHandler(this.btn_Install_Click);
             // 
             // HandlerManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(978, 750);
-            this.Controls.Add(this.btn_search);
+            this.ClientSize = new System.Drawing.Size(1310, 750);
             this.Controls.Add(this.radio_installed);
             this.Controls.Add(this.radio_browse);
             this.Controls.Add(this.panel_browse);
@@ -166,6 +209,8 @@
             this.Name = "HandlerManagerForm";
             this.Text = "Handler Manager";
             this.panel_browse.ResumeLayout(false);
+            this.panel_handlerInfo.ResumeLayout(false);
+            this.panel_handlerInfo.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -180,6 +225,10 @@
         private System.Windows.Forms.RadioButton radio_installed;
         private Gaming.Platform.Windows.Controls.ControlListBox list_handlers;
         private System.Windows.Forms.Panel panel_installed;
-        private System.Windows.Forms.Button btn_search;
+        private System.Windows.Forms.Panel panel_handlerInfo;
+        private System.Windows.Forms.Label label_gameHandlerName;
+        private System.Windows.Forms.Label label_gameHandlerDescription;
+        private System.Windows.Forms.ComboBox combo_gameHandlerVersions;
+        private System.Windows.Forms.Button btn_gameHandlerInstall;
     }
 }

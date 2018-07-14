@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -24,6 +25,7 @@ namespace Nucleus.Coop.App.Forms
     {
         private DomainWebApiConnection apiConnection;
         private List<CancellationTokenSource> pendingTasks;
+        private GameHandler currentHandler;
 
         public HandlerManagerForm(DomainWebApiConnection con)
         {
@@ -31,13 +33,56 @@ namespace Nucleus.Coop.App.Forms
             pendingTasks = new List<CancellationTokenSource>();
 
             InitializeComponent();
+
+            UpdateTabs();
+        }
+
+        private async Task LoadBrowseTab()
+        {
+            try
+            {
+                RequestResult<List<Game>> games = await apiConnection.ListIntGames();
+
+                this.Invoke((Action)(() =>
+                {
+                    list_left.Controls.Clear();
+                    if (games.Success)
+                    {
+                        var data = games.Data.OrderBy(c => c.name);
+
+                        foreach (var game in data)
+                        {
+                            HandlerInfoControl handlerControl = new HandlerInfoControl();
+                            handlerControl.OnSelected += Browse_Game_OnSelected;
+                            handlerControl.SetHandler(game);
+                            list_left.Controls.Add(handlerControl);
+                        }
+                    }
+                    else
+                    {
+                        if (games.LogData.Contains("403"))
+                        {
+                            // forbidden, need to login again!
+                            Program.Login(apiConnection);
+                        }
+                    }
+
+                    ChangeTabBtnStates(true);
+                }));
+            }
+            catch (Exception ex)
+            {
+                this.Invoke((Action)(() =>
+                {
+                    ChangeTabBtnStates(true);
+                }));
+            }
         }
 
         private void txt_gameName_OnTextChanged(object sender, EventArgs e)
         {
             //Search(); // lol no api cant handle
         }
-
 
         /// <summary>
         /// Use the web api connection to search for the user request game
@@ -90,6 +135,7 @@ namespace Nucleus.Coop.App.Forms
                             }
 
                             HandlerInfoControl handlerControl = new HandlerInfoControl();
+                            handlerControl.OnSelected += Browse_Game_OnSelected;
                             handlerControl.SetHandler(game);
                             list_left.Controls.Add(handlerControl);
                         }
@@ -102,23 +148,7 @@ namespace Nucleus.Coop.App.Forms
                     if (games.LogData.Contains("403"))
                     {
                         // forbidden, need to login again!
-                        GameManager.Instance.User.LastToken = "";
-                        GameManager.Instance.User.Save();
-
-                        //Application.Restart(); // that's one way to do it
-                        LoginForm loginForm = new LoginForm(apiConnection);
-                        DPIManager.AddForm(loginForm);
-                        DPIManager.ForceUpdate();
-
-                        if (loginForm.ShowDialog() == DialogResult.OK)
-                        {
-                            // retry
-                            await SearchGame(text);
-                        }
-                        else
-                        {
-                            // user didnt login, do nothing?
-                        }
+                        Program.Login(apiConnection);
                     }
                 }
             }
@@ -128,17 +158,147 @@ namespace Nucleus.Coop.App.Forms
             }
         }
 
-        private void ShowBrowse()
+        private void Browse_Game_OnSelected(HandlerInfoControl obj)
         {
+            Game g = obj.Game;
+            if (g == null)
+            {
+                return;
+            }
+            
+            // async search for available handlers for this game
+            try
+            {
+                Task task = Task.Run(async () =>
+                {
+                    RequestResult<Game> game = await apiConnection.GetSpecificGameWithHandlers(g.id.ToString(CultureInfo.InvariantCulture));
 
+                    if (game.Success)
+                    {
+                        this.Invoke((Action)(() =>
+                        {
+                            // list handlers
+                            var handlers = game.Data.handlers;
+                            if (handlers == null)
+                            {
+                                return;
+                            }
+
+                            for (int i = 0; i < handlers.Count; i++)
+                            {
+                                var handler = handlers[i];
+
+                                HandlerInfoControl handlerControl = new HandlerInfoControl();
+                                //handlerControl.OnSelected += Browse_HandlerControl_OnSelected;
+                                handlerControl.OnSelected += Browse_Handler_OnSelected;
+                                handlerControl.SetHandler(handler);
+
+                                list_handlers.Controls.Add(handlerControl);
+                            }
+                        }));
+                    }
+                    else
+                    {
+                        // failed? 
+                        if (game.LogData.Contains("403"))
+                        {
+                            // forbidden, need to login again!
+                            Program.Login(apiConnection);
+                        }
+                    }
+
+                });
+            }
+            catch (Exception exception)
+            {
+
+            }
+        }
+
+        private void Browse_Handler_OnSelected(HandlerInfoControl obj)
+        {
+            // download handler information
+            GameHandler h = obj.Handler;
+            if (h == null)
+            {
+                return;
+            }
+
+            currentHandler = h;
+            label_gameHandlerName.Text = h.name;
+            label_gameHandlerDescription.Text = h.details;
+
+            try
+            {
+                Task task = Task.Run(async () =>
+                {
+                    RequestResult<GameHandler> handler = await apiConnection.GetGameHandler(h.id.ToString(CultureInfo.InvariantCulture));
+
+                    if (handler.Success)
+                    {
+                        this.Invoke((Action)(() =>
+                        {
+                            var data = handler.Data;
+                            var packages = data.packages.OrderBy(c => c.version);
+                            combo_gameHandlerVersions.DataSource = packages;
+                            btn_gameHandlerInstall.Enabled = true;
+                        }));
+                    }
+                    else
+                    {
+                        // failed? 
+                        if (handler.LogData.Contains("403"))
+                        {
+                            // forbidden, need to login again!
+                            Program.Login(apiConnection);
+                        }
+                    }
+
+                });
+            }
+            catch (Exception exception)
+            {
+
+            }
+        }
+
+        private void btn_Install_Click(object sender, EventArgs e)
+        {
+            object val = combo_gameHandlerVersions.SelectedValue;
+            if (val == null || !(val is Package))
+            {
+                return;
+            }
+
+            Package package = (Package)val;
+            
+        }
+
+        private void ChangeTabBtnStates(bool state)
+        {
+            radio_browse.Enabled = state;
+            radio_installed.Enabled = state;
         }
 
         private void UpdateTabs()
         {
+            ChangeTabBtnStates(false);
             panel_browse.Visible = radio_browse.Checked;
             panel_installed.Visible = radio_installed.Checked;
 
             list_left.Controls.Clear();
+
+            btn_gameHandlerInstall.Enabled = false;
+
+
+            if (radio_browse.Checked)
+            {
+                Task.Run(LoadBrowseTab);
+            }
+            else
+            {
+                ChangeTabBtnStates(true);
+            }
         }
 
         private void radio_browse_CheckedChanged(object sender, EventArgs e)
@@ -161,5 +321,7 @@ namespace Nucleus.Coop.App.Forms
         {
             Search();
         }
+
+
     }
 }

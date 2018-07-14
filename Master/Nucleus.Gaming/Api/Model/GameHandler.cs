@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Nucleus.Gaming.Coop.Api
 {
     [Serializable]
-    public class Handler
+    public class GameHandler
     {
         public int id { get; set; }
         public string createdAt { get; set; }
@@ -17,6 +17,7 @@ namespace Nucleus.Gaming.Coop.Api
         public int currentVersion { get; set; }
         public int owner { get; set; }
         public int game { get; set; }
+        public Package[] packages { get; set; }
 
         //public Package CreatePackage(string packageFullPath, string packageInfos)
         //{

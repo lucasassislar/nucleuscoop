@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="label_gameHandlerDescription.Text" xml:space="preserve">
+    <value> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sodales id massa eu mollis. Sed maximus vehicula porttitor. Etiam dictum cursus porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec venenatis lectus, ut tempor lorem. Nunc lobortis varius justo vitae semper. Praesent rhoncus quam tempor pharetra malesuada. Integer eget lacus sapien. Cras hendrerit vulputate finibus. Sed ultrices ligula arcu, non ultrices ligula tempus nec. Aenean vitae placerat arcu. Ut egestas dolor mi, ut varius libero varius a. Nam condimentum mauris eget est imperdiet, vel finibus nibh scelerisque. Cras et iaculis erat, a euismod risus.</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

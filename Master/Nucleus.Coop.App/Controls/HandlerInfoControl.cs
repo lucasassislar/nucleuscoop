@@ -19,6 +19,12 @@ namespace Nucleus.Coop.App.Controls
         public Color NotSelectedColor { get; set; } = Color.FromArgb(30, 30, 30);
         public Color HoverColor { get; set; } = Color.FromArgb(60, 60, 60);
 
+        public event Action<HandlerInfoControl> OnSelected;
+
+        public IgdbGame IgdbGame { get; private set; }
+        public Game Game { get; private set; }
+        public GameHandler Handler { get; private set; }
+
         private TransparentControl mouseControl;
         public TransparentControl Mouse { get { return mouseControl; } }
 
@@ -58,10 +64,32 @@ namespace Nucleus.Coop.App.Controls
 
         public void SetHandler(IgdbGame game)
         {
+            this.IgdbGame = game;
+
             lbl_handlerName.Text = game.name;
             lbl_version.Text = game.release_dates?.First().date;
             lbl_description.Text = game.summary;
             lbl_devName.Text = "";
+        }
+
+        public void SetHandler(Game game)
+        {
+            this.Game = game;
+
+            lbl_handlerName.Text = game.name;
+            lbl_version.Text = game.updatedAt;
+            lbl_description.Text = game.summary;
+            lbl_devName.Text = "";
+        }
+
+        public void SetHandler(GameHandler handler)
+        {
+            this.Handler = handler;
+
+            lbl_handlerName.Text = handler.name;
+            lbl_version.Text = handler.currentVersion.ToString();
+            lbl_description.Text = handler.details;
+            lbl_devName.Text = handler.owner.ToString();
         }
 
         private bool isSelected;
@@ -69,6 +97,12 @@ namespace Nucleus.Coop.App.Controls
         {
             BackColor = SelectedColor;
             isSelected = true;
+
+            if (!isSelected &&
+                OnSelected != null)
+            {
+                OnSelected(this);
+            }
         }
 
         public void RadioUnselected()
