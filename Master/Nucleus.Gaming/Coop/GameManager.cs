@@ -474,7 +474,7 @@ namespace Nucleus.Gaming.Coop
 
             LoadUser();
 
-            // Right now, build the DB each time we start up
+            // TODO: Right now, build the DB each time we start up, later change
             RebuildGameDb();
         }
         #endregion

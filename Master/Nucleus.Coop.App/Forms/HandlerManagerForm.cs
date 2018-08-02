@@ -3,12 +3,15 @@ using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Api;
 using Nucleus.Gaming.Coop.Interop;
+using Nucleus.Gaming.Diagnostics;
+using Nucleus.Gaming.Package;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -39,6 +42,11 @@ namespace Nucleus.Coop.App.Forms
 
         private async Task LoadBrowseTab()
         {
+            if (apiConnection == null)
+            {
+                return;
+            }
+
             try
             {
                 RequestResult<List<Game>> games = await apiConnection.ListIntGames();
@@ -72,12 +80,31 @@ namespace Nucleus.Coop.App.Forms
             }
             catch (Exception ex)
             {
+                Log.WriteLine(ex);
+
                 this.Invoke((Action)(() =>
                 {
                     ChangeTabBtnStates(true);
                 }));
             }
         }
+
+        private void LoadInstalledTab()
+        {
+            var gm = GameManager.Instance;
+            var handlers = gm.User.InstalledHandlers;
+
+            list_left.Controls.Clear();
+            foreach (var handler in handlers)
+            {
+                HandlerInfoControl handlerControl = new HandlerInfoControl();
+                handlerControl.OnSelected += Installed_Handler_OnSelected;
+                handlerControl.SetHandler(handler);
+                list_left.Controls.Add(handlerControl);
+            }
+        }
+
+
 
         private void txt_gameName_OnTextChanged(object sender, EventArgs e)
         {
@@ -89,7 +116,8 @@ namespace Nucleus.Coop.App.Forms
         /// </summary>
         private void Search()
         {
-            if (apiConnection.IsOfflineMode)
+            if (apiConnection == null || 
+                apiConnection.IsOfflineMode)
             {
                 return;
             }
@@ -118,6 +146,11 @@ namespace Nucleus.Coop.App.Forms
         {
             try
             {
+                if (apiConnection == null)
+                {
+                    return;
+                }
+
                 RequestResult<IgdbGames> games = await apiConnection.SearchExtGame(text);
 
                 if (games.Success)
@@ -165,7 +198,7 @@ namespace Nucleus.Coop.App.Forms
             {
                 return;
             }
-            
+
             // async search for available handlers for this game
             try
             {
@@ -262,6 +295,20 @@ namespace Nucleus.Coop.App.Forms
             }
         }
 
+        private GameHandlerBaseMetadata currentMetadata;
+        private void Installed_Handler_OnSelected(HandlerInfoControl obj)
+        {
+            GameHandlerBaseMetadata metadata = obj.Metadata;
+            currentMetadata = metadata;
+            if (currentMetadata == null)
+            {
+                return;
+            }
+
+            label_installedGameName.Text = metadata.Title;
+            btn_uninstall.Enabled = true;
+        }
+
         private void btn_Install_Click(object sender, EventArgs e)
         {
             object val = combo_gameHandlerVersions.SelectedValue;
@@ -271,7 +318,7 @@ namespace Nucleus.Coop.App.Forms
             }
 
             Package package = (Package)val;
-            
+
         }
 
         private void ChangeTabBtnStates(bool state)
@@ -282,7 +329,6 @@ namespace Nucleus.Coop.App.Forms
 
         private void UpdateTabs()
         {
-            ChangeTabBtnStates(false);
             panel_browse.Visible = radio_browse.Checked;
             panel_installed.Visible = radio_installed.Checked;
 
@@ -290,14 +336,14 @@ namespace Nucleus.Coop.App.Forms
 
             btn_gameHandlerInstall.Enabled = false;
 
-
             if (radio_browse.Checked)
             {
+                //ChangeTabBtnStates(false);
                 Task.Run(LoadBrowseTab);
             }
             else
             {
-                ChangeTabBtnStates(true);
+                LoadInstalledTab();
             }
         }
 
@@ -305,7 +351,6 @@ namespace Nucleus.Coop.App.Forms
         {
             UpdateTabs();
         }
-
 
         private void txt_gameName_TextBoxKeyDown(object sender, KeyEventArgs e)
         {
@@ -322,6 +367,19 @@ namespace Nucleus.Coop.App.Forms
             Search();
         }
 
+        private void btn_uninstall_Click(object sender, EventArgs e)
+        {
+            if (currentMetadata == null)
+            {
+                return;
+            }
 
+            string path = PackageManager.GetBaseInstallPath(this.currentMetadata);
+            Directory.Delete(path, true);
+            GameManager.Instance.RebuildGameDb();
+
+            // refresh
+            UpdateTabs();
+        }
     }
 }

@@ -188,5 +188,10 @@ namespace Nucleus.Gaming.Diagnostics
         {
             Instance.PLog(str, color, displayLevel);
         }
+
+        public static void WriteLine(Exception ex)
+        {
+            Instance.PLog(ex.Message, ConsoleColor.Gray, OutputLevel.Medium);
+        }
     }
 }

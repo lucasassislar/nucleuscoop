@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Nucleus.Gaming.Coop.Api;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Platform.Windows.Controls;
+using Nucleus.Gaming.Package;
 
 namespace Nucleus.Coop.App.Controls
 {
@@ -24,6 +25,7 @@ namespace Nucleus.Coop.App.Controls
         public IgdbGame IgdbGame { get; private set; }
         public Game Game { get; private set; }
         public GameHandler Handler { get; private set; }
+        public GameHandlerBaseMetadata Metadata { get; private set; }
 
         private TransparentControl mouseControl;
         public TransparentControl Mouse { get { return mouseControl; } }
@@ -62,6 +64,16 @@ namespace Nucleus.Coop.App.Controls
             }
         }
 
+        public void SetHandler(GameHandlerBaseMetadata metadata)
+        {
+            this.Metadata = metadata;
+
+            lbl_handlerName.Text = metadata.Title;
+            lbl_version.Text = metadata.V.ToString();
+            lbl_description.Text = metadata.LastUpdate.ToString();
+            lbl_devName.Text = metadata.Dev;
+        }
+
         public void SetHandler(IgdbGame game)
         {
             this.IgdbGame = game;
@@ -95,14 +107,15 @@ namespace Nucleus.Coop.App.Controls
         private bool isSelected;
         public void RadioSelected()
         {
-            BackColor = SelectedColor;
-            isSelected = true;
-
             if (!isSelected &&
                 OnSelected != null)
             {
+                isSelected = true;
                 OnSelected(this);
             }
+
+            isSelected = true;
+            BackColor = SelectedColor;
         }
 
         public void RadioUnselected()

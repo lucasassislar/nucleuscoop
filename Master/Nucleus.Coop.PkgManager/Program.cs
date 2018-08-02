@@ -17,6 +17,9 @@ namespace Nucleus.Coop.PkgManager
         public string RootFolder;
     }
 
+    /// <summary>
+    /// Generates a dynamic website based on the available handlers
+    /// </summary>
     static class Program
     {
         /// <summary>
@@ -143,11 +146,6 @@ namespace Nucleus.Coop.PkgManager
 
             indexData += "</body></html>";
             File.WriteAllText(indexPagePath, indexData);
-
-
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
         }
     }
 }

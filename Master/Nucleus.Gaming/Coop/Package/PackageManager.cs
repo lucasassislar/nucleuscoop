@@ -289,7 +289,14 @@ namespace Nucleus.Gaming.Package
             return Path.Combine(installed, installedName);
         }
 
-        public static string GetPackageFileName(GameHandlerMetadata metadata)
+        public static string GetBaseInstallPath(GameHandlerBaseMetadata metadata)
+        {
+            string installed = GameManager.Instance.GetInstalledPackagePath();
+            string installedName = GetPackageFileName(metadata);
+            return Path.Combine(installed, installedName);
+        }
+
+        public static string GetPackageFileName(GameHandlerBaseMetadata metadata)
         {
             return metadata.GameID + "-H" + metadata.HandlerID + "-V" + metadata.V + "-N" + metadata.PlatV + "-" + metadata.Dev;
         }

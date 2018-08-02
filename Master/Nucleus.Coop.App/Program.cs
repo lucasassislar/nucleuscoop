@@ -38,11 +38,11 @@ namespace Nucleus.Coop
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
+           
+            GameManager gameManager = new GameManager();
+#if ONLINE
             DomainWebApiConnection apiConnection = new DomainWebApiConnection();
             apiConnection.Initialize();
-
-            GameManager gameManager = new GameManager();
 
             if (string.IsNullOrWhiteSpace(gameManager.User.LastToken))
             {
@@ -64,6 +64,9 @@ namespace Nucleus.Coop
 
                 StartMainForm(args, gameManager, apiConnection);
             }
+#else
+            StartMainForm(args, gameManager, null);
+#endif
         }
 
         private static void StartMainForm(string[] args, GameManager gameManager, DomainWebApiConnection apiConnection)
