@@ -30,10 +30,18 @@ namespace Nucleus.Coop.PkgManager
         {
             string rootDir = AssemblyUtil.GetStartFolder();
             string output = Path.Combine(rootDir, "output");
+            string toBuild = "..\\..\\MainRepo\\handlers\\sources";
+            BuildDir(output, toBuild);
+
+            output = Path.Combine(rootDir, "altoutput");
+            toBuild = "..\\..\\..\\..\\..\\altrepo\\packages\\source\\";
+            BuildDir(output, toBuild);
+        }
+
+        private static void BuildDir(string output, string toBuild)
+        {
             string infosFolder = Path.Combine(output, "infos");
             string pkgsFolder = Path.Combine(output, "handlers");
-
-            string toBuild = "..\\..\\MainRepo\\handlers\\sources";
 
             string indexPagePath = Path.Combine(output, "index.html");
             string indexData = "<html><head><link rel='stylesheet' href='bootstrap.css'><link rel='stylesheet' href='style.css'></head><body>";
@@ -63,6 +71,11 @@ namespace Nucleus.Coop.PkgManager
             for (int i = 0; i < dirs.Length; i++)
             {
                 DirectoryInfo dir = dirs[i];
+
+                if (dir.Name.Contains("239140")) // ignore dying light, unfinished
+                {
+                    continue;
+                }
 
                 // read handler data
                 string handlerPath = Path.Combine(dir.FullName, "info.json");
@@ -136,7 +149,7 @@ namespace Nucleus.Coop.PkgManager
 
                 indexData += string.Format("<a href='packages/{0}.nc'>", pkgName);
                 indexData += string.Format("<img src='infos/{0}/header.jpg' /></a> ", metadata.HandlerID);
-                indexData += string.Format("<h3>{0}</h3><h4>{1}</h4><h5><a href='packages/{2}.nc'>[DOWNLOAD HANDLER v{3}]</a></h5>", 
+                indexData += string.Format("<h3>{0}</h3><h4>{1}</h4><h5><a href='handlers/{2}.nc'>[DOWNLOAD HANDLER v{3}]</a></h5>",
                     metadata.GameTitle, metadata.Title, pkgName, metadata.V);
                 indexData += "<br /> </div>";
             }

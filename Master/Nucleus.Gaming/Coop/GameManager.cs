@@ -440,6 +440,11 @@ namespace Nucleus.Gaming.Coop
                 user.InstalledHandlers.Add(metadata);
             }
 
+            if (installedHandlers.Length == 0)
+            {
+                user.Games.Clear(); // TODO: better clear
+            }
+
             user.Save();
         }
 

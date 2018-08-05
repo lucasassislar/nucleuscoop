@@ -51,10 +51,10 @@ Game.OnPlay.Callback(function () {
     var saveSrc = Context.CombinePath(Context.InstallFolder, "synergy\\cfg\\video.txt");
     var savePath = Context.CombinePath(Context.InstanceFolder, "synergy\\cfg\\video.txt");
     Context.ModifySaveFile(saveSrc, savePath, SaveType.CFG, [
-        Context.NewCfgSaveInfo("VideoConfig", "setting.fullscreen", "0"),
-        Context.NewCfgSaveInfo("VideoConfig", "setting.defaultres", Math.max(640, Context.Width)),
-        Context.NewCfgSaveInfo("VideoConfig", "setting.defaultresheight", Math.max(360, Context.Height)),
-        Context.NewCfgSaveInfo("VideoConfig", "setting.nowindowborder", "0"),
+        Context.NewSaveInfo("VideoConfig", "setting.fullscreen", "0"),
+        Context.NewSaveInfo("VideoConfig", "setting.defaultres", Math.max(640, Context.Width)),
+        Context.NewSaveInfo("VideoConfig", "setting.defaultresheight", Math.max(360, Context.Height)),
+        Context.NewSaveInfo("VideoConfig", "setting.nowindowborder", "0"),
     ]);
 
     //copy config.cfg

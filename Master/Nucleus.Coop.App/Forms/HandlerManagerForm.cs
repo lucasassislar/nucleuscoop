@@ -381,5 +381,19 @@ namespace Nucleus.Coop.App.Forms
             // refresh
             UpdateTabs();
         }
+
+        private void btn_installPkg_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog open = new OpenFileDialog())
+            {
+                open.Filter = "Nucleus Package Files|*.nc";
+                if (open.ShowDialog() == DialogResult.OK)
+                {
+                    string path = open.FileName;
+                    GameManager.Instance.RepoManager.InstallPackage(path);
+                    UpdateTabs();
+                }
+            }
+        }
     }
 }

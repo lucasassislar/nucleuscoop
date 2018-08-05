@@ -134,14 +134,14 @@ Game.OnPlay.Callback(function () {
     var saveSrc = Context.CombinePath(Context.InstallFolder, "left4dead2\\cfg\\video.txt");
     var savePath = Context.CombinePath(Context.InstanceFolder, "left4dead2\\cfg\\video.txt");
     Context.ModifySaveFile(saveSrc, savePath, SaveType.CFG, [
-        Context.NewCfgSaveInfo("config", "setting.fullscreen", "0"),
-        Context.NewCfgSaveInfo("config", "setting.defaultres", Math.max(640, Context.Width)),
-        Context.NewCfgSaveInfo("config", "setting.defaultresheight", Math.max(360, Context.Height)),
-        Context.NewCfgSaveInfo("config", "setting.nowindowborder", "0"),
-        Context.NewCfgSaveInfo("VideoConfig", "setting.fullscreen", "0"),
-        Context.NewCfgSaveInfo("VideoConfig", "setting.defaultres", Math.max(640, Context.Width)),
-        Context.NewCfgSaveInfo("VideoConfig", "setting.defaultresheight", Math.max(360, Context.Height)),
-        Context.NewCfgSaveInfo("VideoConfig ", "setting.nowindowborder", "0"),
+        Context.NewSaveInfo("config", "setting.fullscreen", "0"),
+        Context.NewSaveInfo("config", "setting.defaultres", Math.max(640, Context.Width)),
+        Context.NewSaveInfo("config", "setting.defaultresheight", Math.max(360, Context.Height)),
+        Context.NewSaveInfo("config", "setting.nowindowborder", "0"),
+        Context.NewSaveInfo("VideoConfig", "setting.fullscreen", "0"),
+        Context.NewSaveInfo("VideoConfig", "setting.defaultres", Math.max(640, Context.Width)),
+        Context.NewSaveInfo("VideoConfig", "setting.defaultresheight", Math.max(360, Context.Height)),
+        Context.NewSaveInfo("VideoConfig ", "setting.nowindowborder", "0"),
     ]);
 
     //copy config.cfg

@@ -41,8 +41,10 @@
             this.list_left = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
             this.panel_installed = new System.Windows.Forms.Panel();
             this.btn_uninstall = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.label_installedGameName = new System.Windows.Forms.Label();
             this.txt_gameName = new Nucleus.Coop.App.Controls.NCTextBox();
+            this.btn_installPkg = new System.Windows.Forms.Button();
             this.panel_browse.SuspendLayout();
             this.panel_handlerInfo.SuspendLayout();
             this.panel_installed.SuspendLayout();
@@ -169,7 +171,9 @@
             this.panel_installed.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel_installed.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel_installed.Controls.Add(this.btn_uninstall);
+            this.panel_installed.Controls.Add(this.label1);
             this.panel_installed.Controls.Add(this.label_installedGameName);
             this.panel_installed.Location = new System.Drawing.Point(388, 90);
             this.panel_installed.Name = "panel_installed";
@@ -188,6 +192,16 @@
             this.btn_uninstall.Text = "Uninstall";
             this.btn_uninstall.UseVisualStyleBackColor = true;
             this.btn_uninstall.Click += new System.EventHandler(this.btn_uninstall_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(856, 623);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(50, 21);
+            this.label1.TabIndex = 19;
+            this.label1.Text = "Ｗ.Ｉ.Ｐ.";
             // 
             // label_installedGameName
             // 
@@ -220,11 +234,23 @@
             this.txt_gameName.TextChanged += new System.EventHandler(this.txt_gameName_OnTextChanged);
             this.txt_gameName.TextBoxKeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_gameName_TextBoxKeyDown);
             // 
+            // btn_installPkg
+            // 
+            this.btn_installPkg.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_installPkg.Location = new System.Drawing.Point(1115, 12);
+            this.btn_installPkg.Name = "btn_installPkg";
+            this.btn_installPkg.Size = new System.Drawing.Size(183, 33);
+            this.btn_installPkg.TabIndex = 2;
+            this.btn_installPkg.Text = "Install Package...";
+            this.btn_installPkg.UseVisualStyleBackColor = true;
+            this.btn_installPkg.Click += new System.EventHandler(this.btn_installPkg_Click);
+            // 
             // HandlerManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1310, 750);
+            this.Controls.Add(this.btn_installPkg);
             this.Controls.Add(this.radio_installed);
             this.Controls.Add(this.radio_browse);
             this.Controls.Add(this.txt_gameName);
@@ -260,5 +286,7 @@
         private System.Windows.Forms.Button btn_gameHandlerInstall;
         private System.Windows.Forms.Label label_installedGameName;
         private System.Windows.Forms.Button btn_uninstall;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btn_installPkg;
     }
 }

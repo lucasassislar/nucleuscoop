@@ -17,8 +17,14 @@ namespace TempBuilder
 
             List<FileInfo> toDelete = dirInfo.GetFiles("*.pdb").ToList();
             toDelete.AddRange(dirInfo.GetFiles("*.xml"));
+            toDelete.AddRange(dirInfo.GetFiles("*.config").Where(c => !c.Name.ToLower().StartsWith("nucleus.coop.app")));
 
             List<FileInfo> files = dirInfo.GetFiles("*.dll").ToList();
+            List<FileInfo> exes = dirInfo.GetFiles("*.exe").ToList();
+            files.AddRange(exes.Where((c) => {
+                var cname = c.Name.ToLower();
+                return !cname.StartsWith("nucleus.coop.app") && !cname.StartsWith("tempbuilder");
+            }));
 
             Console.WriteLine($"NucleusCoop Builder Helper");
 
