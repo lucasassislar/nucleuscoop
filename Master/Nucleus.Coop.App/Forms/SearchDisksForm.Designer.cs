@@ -29,108 +29,107 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchDisksForm));
-            this.disksBox = new System.Windows.Forms.CheckedListBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.listGames = new System.Windows.Forms.ListBox();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.lblProgress = new System.Windows.Forms.Label();
-            this.btnSearch = new System.Windows.Forms.Button();
+            this.listBox_drives = new System.Windows.Forms.CheckedListBox();
+            this.lbl_selectDrives = new System.Windows.Forms.Label();
+            this.lbl_foundGames = new System.Windows.Forms.Label();
+            this.list_games = new System.Windows.Forms.ListBox();
+            this.progress_search = new System.Windows.Forms.ProgressBar();
+            this.lbl_progress = new System.Windows.Forms.Label();
+            this.btn_search = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // disksBox
+            // listBox_drives
             // 
-            this.disksBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.listBox_drives.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.disksBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.disksBox.CheckOnClick = true;
-            this.disksBox.ForeColor = System.Drawing.Color.White;
-            this.disksBox.FormattingEnabled = true;
-            this.disksBox.IntegralHeight = false;
-            this.disksBox.Location = new System.Drawing.Point(12, 33);
-            this.disksBox.Name = "disksBox";
-            this.disksBox.Size = new System.Drawing.Size(336, 335);
-            this.disksBox.TabIndex = 0;
+            this.listBox_drives.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
+            this.listBox_drives.CheckOnClick = true;
+            this.listBox_drives.ForeColor = System.Drawing.Color.White;
+            this.listBox_drives.FormattingEnabled = true;
+            this.listBox_drives.IntegralHeight = false;
+            this.listBox_drives.Location = new System.Drawing.Point(12, 33);
+            this.listBox_drives.Name = "listBox_drives";
+            this.listBox_drives.Size = new System.Drawing.Size(336, 335);
+            this.listBox_drives.TabIndex = 0;
             // 
-            // label1
+            // lbl_selectDrives
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(115, 28);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Select Drive";
+            this.lbl_selectDrives.AutoSize = true;
+            this.lbl_selectDrives.Location = new System.Drawing.Point(12, 9);
+            this.lbl_selectDrives.Name = "lbl_selectDrives";
+            this.lbl_selectDrives.Size = new System.Drawing.Size(99, 21);
+            this.lbl_selectDrives.TabIndex = 1;
+            this.lbl_selectDrives.Text = "Select Drives";
             // 
-            // label2
+            // lbl_foundGames
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(354, 9);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(132, 28);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Found Games";
+            this.lbl_foundGames.AutoSize = true;
+            this.lbl_foundGames.Location = new System.Drawing.Point(354, 9);
+            this.lbl_foundGames.Name = "lbl_foundGames";
+            this.lbl_foundGames.Size = new System.Drawing.Size(106, 21);
+            this.lbl_foundGames.TabIndex = 2;
+            this.lbl_foundGames.Text = "Found Games";
             // 
-            // listGames
+            // list_games
             // 
-            this.listGames.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.list_games.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listGames.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.listGames.ForeColor = System.Drawing.Color.White;
-            this.listGames.FormattingEnabled = true;
-            this.listGames.IntegralHeight = false;
-            this.listGames.ItemHeight = 28;
-            this.listGames.Location = new System.Drawing.Point(357, 33);
-            this.listGames.Name = "listGames";
-            this.listGames.Size = new System.Drawing.Size(337, 412);
-            this.listGames.TabIndex = 3;
+            this.list_games.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
+            this.list_games.ForeColor = System.Drawing.Color.White;
+            this.list_games.FormattingEnabled = true;
+            this.list_games.IntegralHeight = false;
+            this.list_games.ItemHeight = 21;
+            this.list_games.Location = new System.Drawing.Point(357, 33);
+            this.list_games.Name = "list_games";
+            this.list_games.Size = new System.Drawing.Size(337, 412);
+            this.list_games.TabIndex = 3;
             // 
-            // progressBar1
+            // progress_search
             // 
-            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.progressBar1.Location = new System.Drawing.Point(12, 422);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(336, 23);
-            this.progressBar1.TabIndex = 6;
+            this.progress_search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.progress_search.Location = new System.Drawing.Point(12, 422);
+            this.progress_search.Name = "progress_search";
+            this.progress_search.Size = new System.Drawing.Size(336, 23);
+            this.progress_search.TabIndex = 6;
             // 
-            // lblProgress
+            // lbl_progress
             // 
-            this.lblProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblProgress.AutoSize = true;
-            this.lblProgress.Location = new System.Drawing.Point(12, 394);
-            this.lblProgress.Name = "lblProgress";
-            this.lblProgress.Size = new System.Drawing.Size(87, 28);
-            this.lblProgress.TabIndex = 7;
-            this.lblProgress.Text = "Progress";
-            this.lblProgress.Visible = false;
+            this.lbl_progress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lbl_progress.AutoSize = true;
+            this.lbl_progress.Location = new System.Drawing.Point(8, 394);
+            this.lbl_progress.Name = "lbl_progress";
+            this.lbl_progress.Size = new System.Drawing.Size(71, 21);
+            this.lbl_progress.TabIndex = 7;
+            this.lbl_progress.Text = "Progress";
+            this.lbl_progress.Visible = false;
             // 
-            // btnSearch
+            // btn_search
             // 
-            this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSearch.Location = new System.Drawing.Point(273, 372);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(75, 43);
-            this.btnSearch.TabIndex = 8;
-            this.btnSearch.Text = "Search";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            this.btn_search.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btn_search.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_search.Location = new System.Drawing.Point(245, 372);
+            this.btn_search.Name = "btn_search";
+            this.btn_search.Size = new System.Drawing.Size(103, 43);
+            this.btn_search.TabIndex = 8;
+            this.btn_search.Text = "Search";
+            this.btn_search.UseVisualStyleBackColor = true;
+            this.btn_search.Click += new System.EventHandler(this.btn_search_Click);
             // 
             // SearchDisksForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(703, 461);
-            this.Controls.Add(this.btnSearch);
-            this.Controls.Add(this.lblProgress);
-            this.Controls.Add(this.progressBar1);
-            this.Controls.Add(this.listGames);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.disksBox);
+            this.Controls.Add(this.btn_search);
+            this.Controls.Add(this.lbl_progress);
+            this.Controls.Add(this.progress_search);
+            this.Controls.Add(this.list_games);
+            this.Controls.Add(this.lbl_foundGames);
+            this.Controls.Add(this.lbl_selectDrives);
+            this.Controls.Add(this.listBox_drives);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SearchDisksForm";
             this.Text = "Search Drives";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SearchDisksForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -138,12 +137,12 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckedListBox disksBox;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ListBox listGames;
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label lblProgress;
-        private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.CheckedListBox listBox_drives;
+        private System.Windows.Forms.Label lbl_selectDrives;
+        private System.Windows.Forms.Label lbl_foundGames;
+        private System.Windows.Forms.ListBox list_games;
+        private System.Windows.Forms.ProgressBar progress_search;
+        private System.Windows.Forms.Label lbl_progress;
+        private System.Windows.Forms.Button btn_search;
     }
 }

@@ -26,7 +26,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WINDOWS;UNSAFE;ALPHA</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WINDOWS;UNSAFE;ALPHA;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -36,7 +36,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;WINDOWS;UNSAFE;ALPHA</DefineConstants>
+    <DefineConstants>TRACE;WINDOWS;UNSAFE;ALPHA;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -127,6 +127,9 @@
     </Compile>
     <Compile Include="Platform\Windows\Controls\ICanProceed.cs" />
     <Compile Include="Platform\Windows\Controls\IHighlightControl.cs" />
+    <Compile Include="Platform\Windows\Controls\ImageButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Platform\Windows\Controls\IMouseHoverControl.cs" />
     <Compile Include="Platform\Windows\Controls\MouseMessageFilter.cs" />
     <Compile Include="Platform\Windows\Controls\NButton.cs">
@@ -219,7 +222,7 @@
     <Compile Include="Diagnostics\Log.cs" />
     <Compile Include="Coop\GameManager.cs" />
     <Compile Include="Platform\Windows\Controls\ImageButtonState.cs" />
-    <Compile Include="Platform\Windows\Controls\ImageButton.cs">
+    <Compile Include="Platform\Windows\Controls\StateImageButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Coop\Data\KeyboardPlayer.cs" />

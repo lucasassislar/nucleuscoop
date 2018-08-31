@@ -298,7 +298,7 @@ namespace Nucleus.Gaming.Package
 
         public static string GetPackageFileName(GameHandlerBaseMetadata metadata)
         {
-            return metadata.GameID + "-H" + metadata.HandlerID + "-V" + metadata.V + "-N" + metadata.PlatV + "-" + metadata.Dev;
+            return $"{metadata.GameID}-{metadata.ExeName}-{metadata.HandlerID}-V{metadata.V}N{metadata.PlatV}";
         }
 
         public static string GetAssetsFolder(GameHandlerMetadata metadata)

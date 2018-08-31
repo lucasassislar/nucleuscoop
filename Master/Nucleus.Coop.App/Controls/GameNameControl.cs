@@ -47,6 +47,7 @@ namespace Nucleus.Coop.Controls
             Controls.Add(picture);
             Controls.Add(title);
 
+            UpdateSize(1);
             DPIManager.Register(this);
         }
 

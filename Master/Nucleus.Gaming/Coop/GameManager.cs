@@ -272,7 +272,7 @@ namespace Nucleus.Gaming.Coop
 
         public static string GetAppDataPath()
         {
-#if DEBUG
+#if ALPHA
             string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             return Path.Combine(local, "data");
 #else
@@ -440,10 +440,10 @@ namespace Nucleus.Gaming.Coop
                 user.InstalledHandlers.Add(metadata);
             }
 
-            if (installedHandlers.Length == 0)
-            {
-                user.Games.Clear(); // TODO: better clear
-            }
+            //if (installedHandlers.Length == 0)
+            //{
+            //    user.Games.Clear(); // TODO: better clear
+            //}
 
             user.Save();
         }
@@ -505,7 +505,7 @@ namespace Nucleus.Gaming.Coop
                 try
                 {
                     // try to save the exception
-                    LogManager.Instance.LogExceptionFile(ex);
+                    Log.Instance.LogExceptionFile(ex);
                 }
                 catch
                 {

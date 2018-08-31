@@ -79,9 +79,9 @@ namespace Nucleus.Coop.App.Forms
             jsControl.OnCanPlayUpdated += StepCanPlay;
 
             // selects the list of games, so the buttons look equal
-            list_Games.Select();
-            list_Games.AutoScroll = false;
-            list_Games.SelectedChanged += list_Games_SelectedChanged;
+            list_games.Select();
+            list_games.AutoScroll = false;
+            list_games.SelectedChanged += list_Games_SelectedChanged;
             //int vertScrollWidth = SystemInformation.VerticalScrollBarWidth;
             //list_Games.Padding = new Padding(0, 0, vertScrollWidth, 0);
 
@@ -162,7 +162,7 @@ namespace Nucleus.Coop.App.Forms
                         con.Value.Dispose();
                     }
                 }
-                this.list_Games.Controls.Clear();
+                this.list_games.Controls.Clear();
                 controls.Clear();
 
                 List<GameHandlerMetadata> handlers = gameManager.User.InstalledHandlers;
@@ -183,9 +183,9 @@ namespace Nucleus.Coop.App.Forms
                 {
                     noGamesPresent = true;
                     GameControl con = new GameControl(null);
-                    con.Width = list_Games.Width;
+                    con.Width = list_games.Width;
                     con.Text = "No games";
-                    this.list_Games.Controls.Add(con);
+                    this.list_games.Controls.Add(con);
                 }
             }
 
@@ -203,7 +203,7 @@ namespace Nucleus.Coop.App.Forms
             }
 
             // get all Repository Game Infos
-            this.combo_Handlers.Items.Add(metadata);
+            this.combo_handlers.Items.Add(metadata);
 
             //HandlerControl con = new HandlerControl(metadata);
             //con.Width = list_Games.Width;
@@ -225,10 +225,10 @@ namespace Nucleus.Coop.App.Forms
 
             // get all Repository Game Infos
             GameControl con = new GameControl(game);
-            con.Width = list_Games.Width;
+            con.Width = list_games.Width;
 
             controls.Add(game, con);
-            this.list_Games.Controls.Add(con);
+            this.list_games.Controls.Add(con);
 
             ThreadPool.QueueUserWorkItem(GetIcon, game);
         }
@@ -272,7 +272,7 @@ namespace Nucleus.Coop.App.Forms
                 return;
             }
 
-            panel_Steps.Visible = true;
+            panel_steps.Visible = true;
 
             UserGameInfo userGameInfo = selectedControl.UserGameInfo;
             string gameId = selectedControl.UserGameInfo.GameID;
@@ -286,13 +286,13 @@ namespace Nucleus.Coop.App.Forms
 
             currentHandlers = handlers;
 
-            combo_Handlers.DataSource = handlers;
-            combo_Handlers.SelectedIndex = 0;
+            combo_handlers.DataSource = handlers;
+            combo_handlers.SelectedIndex = 0;
         }
 
         private void combo_Handlers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (combo_Handlers.SelectedIndex == -1)
+            if (combo_handlers.SelectedIndex == -1)
             {
                 return;
             }
@@ -308,11 +308,11 @@ namespace Nucleus.Coop.App.Forms
 
             try
             {
-                selectedHandler = currentHandlers[combo_Handlers.SelectedIndex];
+                selectedHandler = currentHandlers[combo_handlers.SelectedIndex];
                 handlerDataManager = gameManager.RepoManager.ReadHandlerDataFromInstalledPackage(selectedHandler);
                 handlerData = handlerDataManager.HandlerData;
 
-                btn_Play.Enabled = false;
+                btn_play.Enabled = false;
 
                 stepsList = new List<UserInputControl>();
                 stepsList.Add(positionsControl);
@@ -341,14 +341,14 @@ namespace Nucleus.Coop.App.Forms
 
         private void EnablePlay()
         {
-            btn_Play.Enabled = true;
+            btn_play.Enabled = true;
         }
 
         private void StepCanPlay(UserControl obj, bool canProceed, bool autoProceed)
         {
             if (!canProceed)
             {
-                btn_Next.Enabled = false;
+                btn_next.Enabled = false;
                 return;
             }
 
@@ -364,7 +364,7 @@ namespace Nucleus.Coop.App.Forms
             }
             else
             {
-                btn_Next.Enabled = true;
+                btn_next.Enabled = true;
             }
         }
 
@@ -376,12 +376,12 @@ namespace Nucleus.Coop.App.Forms
         private void KillCurrentStep()
         {
             currentStep?.Ended();
-            this.panel_Steps.Controls.Clear();
+            this.panel_steps.Controls.Clear();
         }
 
         private void GoToStep(int step)
         {
-            btn_Previous.Enabled = step > 0;
+            btn_previous.Enabled = step > 0;
             if (step >= stepsList.Count)
             {
                 return;
@@ -410,17 +410,17 @@ namespace Nucleus.Coop.App.Forms
 
             currentStepIndex = step;
             currentStep = stepsList[step];
-            currentStep.Size = panel_Steps.Size;
+            currentStep.Size = panel_steps.Size;
             currentStep.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
 
             currentStep.Initialize(handlerData, selectedControl.UserGameInfo, currentProfile);
 
-            btn_Next.Enabled = currentStep.CanProceed && step != stepsList.Count - 1;
+            btn_next.Enabled = currentStep.CanProceed && step != stepsList.Count - 1;
 
-            panel_Steps.Controls.Add(currentStep);
-            currentStep.Size = panel_Steps.Size; // for some reason this line must exist or the PositionsControl get messed up
+            panel_steps.Controls.Add(currentStep);
+            currentStep.Size = panel_steps.Size; // for some reason this line must exist or the PositionsControl get messed up
 
-            lbl_StepTitle.Text = currentStep.Title;
+            lbl_stepTitle.Text = currentStep.Title;
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
@@ -599,8 +599,7 @@ namespace Nucleus.Coop.App.Forms
             }
         }
 
-
-        private void btn_Handlers_Click(object sender, EventArgs e)
+        private void imgBtn_handlers_Click(object sender, EventArgs e)
         {
             if (pkgManager != null)
             {

@@ -3,152 +3,45 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Platform.Windows.Controls
 {
-    /// <summary>
-    /// Customized WinForms Button, where all the button states are images
-    /// </summary>
     public class ImageButton : UserControl
     {
-        private Image image;
-        private Image imageHover;
-        private Image imagePressed;
-        private Image imageDisabled;
+        public Image Image { get; set; }
 
-        public Image Image
-        {
-            get { return image; }
-            set
-            {
-                image = value;
-                Invalidate();
-            }
-        }
-        public Image ImageHover
-        {
-            get { return imageHover; }
-            set
-            {
-                imageHover = value;
-                Invalidate();
-            }
-        }
-        public Image ImagePressed
-        {
-            get { return imagePressed; }
-            set
-            {
-                imagePressed = value;
-                Invalidate();
-            }
-        }
-
-        public Image ImageDisabled
-        {
-            get { return imageDisabled; }
-            set
-            {
-                imageDisabled = value;
-                Invalidate();
-            }
-        }
-
-        public ImageButtonState State { get; private set; }
+        public Button Button { get; private set; }
 
         public ImageButton()
         {
-            State = ImageButtonState.Default;
+            Button = new Button();
+            Button.FlatStyle = FlatStyle.Flat;
+
+            Button.FlatAppearance.BorderColor = Color.FromArgb(255, 200, 200, 200);
+            Button.FlatAppearance.BorderSize = 1;
+
+            Button.FlatAppearance.CheckedBackColor = Color.FromArgb(0, 0, 0, 0);
+            Button.FlatAppearance.MouseOverBackColor = Color.FromArgb(50, 0, 0, 0);
+            Button.FlatAppearance.MouseDownBackColor = Color.FromArgb(100, 0, 0, 0);
+
+            Button.Dock = DockStyle.Fill;
+            Button.BackColor = Color.FromArgb(0, 0, 0, 0);
+
+            this.Controls.Add(Button);
         }
 
-        protected override void OnMouseEnter(EventArgs e)
+        protected override void OnPaint(PaintEventArgs pevent)
         {
-            State = ImageButtonState.Hover;
-            base.OnMouseEnter(e);
-            Invalidate();
-        }
+            base.OnPaint(pevent);
 
-        protected override void OnMouseLeave(EventArgs e)
-        {
-            State = ImageButtonState.Default;
-            base.OnMouseLeave(e);
-            Invalidate();
-        }
-
-        private ImageButtonState lastState;
-
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            base.OnMouseDown(e);
-
-            if (e.Button == MouseButtons.Left)
+            Graphics g = pevent.Graphics;
+            if (Image != null)
             {
-                lastState = State;
-                State = ImageButtonState.Click;
-                Invalidate();
-            }
-        }
-
-        protected override void OnMouseUp(MouseEventArgs e)
-        {
-            base.OnMouseUp(e);
-
-            if (e.Button == MouseButtons.Left)
-            {
-                State = lastState;
-                Invalidate();
-            }
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-
-            if (this.Enabled)
-            {
-                switch (State)
-                {
-                    case ImageButtonState.Default:
-                        if (Image != null)
-                        {
-                            e.Graphics.DrawImage(Image, e.ClipRectangle);
-                        }
-                        break;
-                    case ImageButtonState.Hover:
-                        if (ImageHover == null)
-                        {
-                            if (Image != null)
-                            {
-                                e.Graphics.DrawImage(Image, e.ClipRectangle);
-                            }
-                        }
-                        else
-                        {
-                            e.Graphics.DrawImage(ImageHover, e.ClipRectangle);
-                        }
-                        break;
-                    case ImageButtonState.Click:
-                        if (ImagePressed == null)
-                        {
-                            if (Image != null)
-                            {
-                                e.Graphics.DrawImage(Image, e.ClipRectangle);
-                            }
-                        }
-                        else
-                        {
-                            e.Graphics.DrawImage(ImagePressed, e.ClipRectangle);
-                        }
-                        break;
-                }
-            }
-            else
-            {
-                if (ImageDisabled != null)
-                {
-                    e.Graphics.DrawImage(ImageDisabled, e.ClipRectangle);
-                }
+                int borderSize = Button.FlatAppearance.BorderSize * 2;
+                int borderSize2 = borderSize * 2;
+                g.DrawImage(Image, new Rectangle(borderSize, borderSize, this.Width - borderSize2, this.Height - borderSize2), new Rectangle(Point.Empty, Image.Size), GraphicsUnit.Pixel);
             }
         }
     }

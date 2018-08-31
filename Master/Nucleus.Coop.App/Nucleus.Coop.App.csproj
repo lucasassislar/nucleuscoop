@@ -500,10 +500,6 @@
     <Content Include="Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Nucleus.Coop.StartGame\bin\Release\StartGame.exe" Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-      <Link>bin\StartGame.exe</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\Nucleus.Gaming.Coop.Engine\bin\Debug\Nucleus.Gaming.Coop.Engine.dll" Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
       <Link>bin\Nucleus.Gaming.Coop.Engine.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
