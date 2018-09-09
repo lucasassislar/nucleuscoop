@@ -26,6 +26,8 @@ namespace Nucleus.Gaming.Windows.Interop
         public const int MIN_ALL = 419;
         public const int MIN_ALL_UNDO = 416;
 
+        public const UInt32 HT_CAPTION = 0x2;
+
         //laziness, don't want to search for the ones I don't use XD
         // Window Styles 
         public const UInt32 WS_OVERLAPPED = 0;
@@ -51,6 +53,8 @@ namespace Nucleus.Gaming.Windows.Interop
         public const UInt32 WS_TILED = WS_OVERLAPPED;
         public const UInt32 WS_ICONIC = WS_MINIMIZE;
         public const UInt32 WS_SIZEBOX = WS_THICKFRAME;
+        public const UInt32 WM_NCLBUTTONDOWN = 0xA1;
+
 
         // Extended Window Styles 
         public const UInt32 WS_EX_DLGMODALFRAME = 0x0001;

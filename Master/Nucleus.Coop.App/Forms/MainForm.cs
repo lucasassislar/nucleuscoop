@@ -35,7 +35,6 @@ namespace Nucleus.Coop.App.Forms
         private GameHandlerMetadata selectedHandler;
         private HandlerDataManager handlerDataManager;
         private HandlerData handlerData;
-        //private GenericGameHandler handler;
         private GameHandler handler;
 
         private GameProfile currentProfile;
@@ -66,7 +65,7 @@ namespace Nucleus.Coop.App.Forms
             overlay = new GameRunningOverlay();
             overlay.OnStop += Overlay_OnStop;
 
-            this.Text = string.Format("Nucleus Coop v{0}", Globals.Version);
+            this.titleBarControl1.Text = string.Format("Nucleus Coop v{0}", Globals.Version);
 
             controls = new Dictionary<UserGameInfo, GameControl>();
 
@@ -565,7 +564,7 @@ namespace Nucleus.Coop.App.Forms
 
             form.FormClosed += Form_FormClosed;
             form.Show();
-            SetUpForm(form);
+            //SetUpForm(form);
 
             DPIManager.ForceUpdate();
         }

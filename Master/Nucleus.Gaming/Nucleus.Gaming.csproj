@@ -156,6 +156,12 @@
     <Compile Include="Coop\HandlerModule.cs" />
     <Compile Include="Coop\UserInstalledHandler.cs" />
     <Compile Include="Diagnostics\OutputLevel.cs" />
+    <Compile Include="Platform\Windows\Controls\TitleBarControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Platform\Windows\Controls\TitleBarControl.Designer.cs">
+      <DependentUpon>TitleBarControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Platform\Windows\Controls\TransparentControl.cs">
       <SubType>Component</SubType>
     </Compile>

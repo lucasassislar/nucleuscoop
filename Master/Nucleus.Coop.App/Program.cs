@@ -72,8 +72,8 @@ namespace Nucleus.Coop
         private static void StartMainForm(string[] args, GameManager gameManager, DomainWebApiConnection apiConnection)
         {
             MainForm form = new MainForm(args, gameManager, apiConnection);
-            DPIManager.AddForm(form);
-            DPIManager.ForceUpdate();
+            //DPIManager.AddForm(form);
+            //DPIManager.ForceUpdate();
 
             Application.Run(form);
         }

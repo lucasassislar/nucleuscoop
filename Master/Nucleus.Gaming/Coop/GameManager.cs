@@ -33,6 +33,10 @@ namespace Nucleus.Gaming.Coop
 
         public string Error { get { return error; } }
         public ModuleManager ModuleManager { get { return moduleManager; } }
+
+        /// <summary>
+        /// Manages getting the name of games
+        /// </summary>
         public GameNameManager NameManager { get { return nameManager; } }
 
         public UserProfile User { get { return user; } }

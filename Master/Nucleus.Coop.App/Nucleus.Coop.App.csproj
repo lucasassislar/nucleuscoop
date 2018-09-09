@@ -490,6 +490,7 @@
     <None Include="games\DontStarveTogether\steam_api.dll" />
     <None Include="config.json" />
     <None Include="games\550-Left4Dead2\game.js" />
+    <Content Include="Guidelines.txt" />
     <Content Include="icon.ico" />
     <None Include="Resources\4players.png" />
     <None Include="Resources\16players.png" />

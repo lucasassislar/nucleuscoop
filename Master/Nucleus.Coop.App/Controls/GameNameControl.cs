@@ -11,9 +11,11 @@ using Nucleus.Gaming.Coop;
 
 namespace Nucleus.Coop.Controls
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class GameNameControl : UserControl, IDynamicSized
     {
-        private UserGameInfo gameInfo;
         public UserGameInfo GameInfo
         {
             get { return gameInfo; }
@@ -29,6 +31,7 @@ namespace Nucleus.Coop.Controls
             }
         }
 
+        private UserGameInfo gameInfo;
         private PictureBox picture;
         private Label title;
         private int border;

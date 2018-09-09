@@ -87,7 +87,7 @@
             this.panel_browse.Controls.Add(this.list_handlers);
             this.panel_browse.Location = new System.Drawing.Point(388, 90);
             this.panel_browse.Name = "panel_browse";
-            this.panel_browse.Size = new System.Drawing.Size(910, 648);
+            this.panel_browse.Size = new System.Drawing.Size(560, 546);
             this.panel_browse.TabIndex = 12;
             // 
             // panel_handlerInfo
@@ -150,7 +150,7 @@
             this.list_handlers.Location = new System.Drawing.Point(0, 0);
             this.list_handlers.Name = "list_handlers";
             this.list_handlers.Offset = new System.Drawing.Size(0, 0);
-            this.list_handlers.Size = new System.Drawing.Size(368, 648);
+            this.list_handlers.Size = new System.Drawing.Size(368, 546);
             this.list_handlers.TabIndex = 17;
             // 
             // list_left
@@ -163,7 +163,7 @@
             this.list_left.Location = new System.Drawing.Point(12, 90);
             this.list_left.Name = "list_left";
             this.list_left.Offset = new System.Drawing.Size(0, 0);
-            this.list_left.Size = new System.Drawing.Size(368, 648);
+            this.list_left.Size = new System.Drawing.Size(368, 546);
             this.list_left.TabIndex = 1;
             // 
             // panel_installed
@@ -177,15 +177,16 @@
             this.panel_installed.Controls.Add(this.label_installedGameName);
             this.panel_installed.Location = new System.Drawing.Point(388, 90);
             this.panel_installed.Name = "panel_installed";
-            this.panel_installed.Size = new System.Drawing.Size(910, 648);
+            this.panel_installed.Size = new System.Drawing.Size(560, 546);
             this.panel_installed.TabIndex = 18;
             this.panel_installed.Visible = false;
             // 
             // btn_uninstall
             // 
+            this.btn_uninstall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_uninstall.Enabled = false;
             this.btn_uninstall.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_uninstall.Location = new System.Drawing.Point(721, 6);
+            this.btn_uninstall.Location = new System.Drawing.Point(371, 6);
             this.btn_uninstall.Name = "btn_uninstall";
             this.btn_uninstall.Size = new System.Drawing.Size(183, 49);
             this.btn_uninstall.TabIndex = 1;
@@ -195,9 +196,10 @@
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Red;
-            this.label1.Location = new System.Drawing.Point(856, 623);
+            this.label1.Location = new System.Drawing.Point(493, 507);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(50, 21);
             this.label1.TabIndex = 19;
@@ -214,8 +216,6 @@
             // 
             // txt_gameName
             // 
-            this.txt_gameName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.txt_gameName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.txt_gameName.BorderColor = System.Drawing.Color.Red;
             this.txt_gameName.BorderSize = 1;
@@ -236,8 +236,9 @@
             // 
             // btn_installPkg
             // 
+            this.btn_installPkg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_installPkg.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_installPkg.Location = new System.Drawing.Point(1115, 12);
+            this.btn_installPkg.Location = new System.Drawing.Point(765, 12);
             this.btn_installPkg.Name = "btn_installPkg";
             this.btn_installPkg.Size = new System.Drawing.Size(183, 33);
             this.btn_installPkg.TabIndex = 2;
@@ -249,7 +250,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1310, 750);
+            this.ClientSize = new System.Drawing.Size(960, 648);
             this.Controls.Add(this.btn_installPkg);
             this.Controls.Add(this.radio_installed);
             this.Controls.Add(this.radio_browse);

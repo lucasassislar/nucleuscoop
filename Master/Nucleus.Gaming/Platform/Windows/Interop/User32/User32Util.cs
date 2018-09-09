@@ -141,7 +141,7 @@ namespace Nucleus.Gaming.Windows
         public static void MinimizeEverything()
         {
             IntPtr lHwnd = User32Interop.FindWindow("Shell_TrayWnd", null);
-            User32Interop.SendMessage(lHwnd, User32_WS.WM_COMMAND, (IntPtr)User32_WS.MIN_ALL, IntPtr.Zero);
+            User32Interop.SendMessage(lHwnd, User32_WS.WM_COMMAND, User32_WS.MIN_ALL, 0);
         }
         public static void ShowTaskBar()
         {
