@@ -40,7 +40,7 @@ namespace Nucleus.Coop
             Application.SetCompatibleTextRenderingDefault(false);
            
             GameManager gameManager = new GameManager();
-#if ONLINE
+
             DomainWebApiConnection apiConnection = new DomainWebApiConnection();
             apiConnection.Initialize();
 
@@ -64,9 +64,8 @@ namespace Nucleus.Coop
 
                 StartMainForm(args, gameManager, apiConnection);
             }
-#else
-            StartMainForm(args, gameManager, null);
-#endif
+
+            //StartMainForm(args, gameManager, null);
         }
 
         private static void StartMainForm(string[] args, GameManager gameManager, DomainWebApiConnection apiConnection)

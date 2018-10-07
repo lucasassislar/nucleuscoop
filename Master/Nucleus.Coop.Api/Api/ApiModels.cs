@@ -16,11 +16,11 @@ namespace Nucleus.Coop.Api
     /// 
     public class User
     {
-    public int id { get; set; }
-    public string createdAt { get; set; }
-    public string updatedAt { get; set; }
-    public string email { get; set; }
-    public string username { get; set; }
+        public int id { get; set; }
+        public string createdAt { get; set; }
+        public string updatedAt { get; set; }
+        public string email { get; set; }
+        public string username { get; set; }
     }
 
     public class Game

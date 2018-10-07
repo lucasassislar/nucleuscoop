@@ -29,50 +29,29 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
-            this.txt_password = new Nucleus.Coop.App.Controls.NCTextBox();
-            this.txt_email = new Nucleus.Coop.App.Controls.NCTextBox();
+            this.titleBarControl1 = new Nucleus.Gaming.Platform.Windows.Controls.TitleBarControl();
             this.btn_useOffline = new System.Windows.Forms.Button();
             this.btn_Register = new System.Windows.Forms.Button();
             this.btn_Login = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.txt_password = new Nucleus.Coop.App.Controls.NCTextBox();
+            this.txt_email = new Nucleus.Coop.App.Controls.NCTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // txt_password
+            // titleBarControl1
             // 
-            this.txt_password.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.txt_password.BorderColor = System.Drawing.Color.Red;
-            this.txt_password.BorderSize = 1;
-            this.txt_password.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.txt_password.Location = new System.Drawing.Point(12, 383);
-            this.txt_password.Name = "txt_password";
-            this.txt_password.Padding = new System.Windows.Forms.Padding(1);
-            this.txt_password.Size = new System.Drawing.Size(484, 33);
-            this.txt_password.TabIndex = 1;
-            this.txt_password.TextBoxBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.txt_password.TextBoxForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
-            this.txt_password.UsePasswordChar = true;
-            this.txt_password.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
-            this.txt_password.WaterMarkText = "";
-            // 
-            // txt_email
-            // 
-            this.txt_email.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.txt_email.BorderColor = System.Drawing.Color.Red;
-            this.txt_email.BorderSize = 1;
-            this.txt_email.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.txt_email.Location = new System.Drawing.Point(12, 304);
-            this.txt_email.Name = "txt_email";
-            this.txt_email.Padding = new System.Windows.Forms.Padding(1);
-            this.txt_email.Size = new System.Drawing.Size(484, 33);
-            this.txt_email.TabIndex = 0;
-            this.txt_email.TextBoxBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.txt_email.TextBoxForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
-            this.txt_email.UsePasswordChar = false;
-            this.txt_email.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
-            this.txt_email.WaterMarkText = "Email";
+            this.titleBarControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.titleBarControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(34)))), ((int)(((byte)(37)))));
+            this.titleBarControl1.EnableMaximize = false;
+            this.titleBarControl1.Location = new System.Drawing.Point(0, 0);
+            this.titleBarControl1.Margin = new System.Windows.Forms.Padding(0);
+            this.titleBarControl1.Name = "titleBarControl1";
+            this.titleBarControl1.Size = new System.Drawing.Size(508, 21);
+            this.titleBarControl1.TabIndex = 5;
             // 
             // btn_useOffline
             // 
@@ -114,11 +93,11 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::Nucleus.Coop.App.Properties.Resources.icon;
+            this.pictureBox1.Image = global::Nucleus.Coop.App.Properties.Resources.nucleus;
             this.pictureBox1.InitialImage = global::Nucleus.Coop.App.Properties.Resources.icon;
-            this.pictureBox1.Location = new System.Drawing.Point(12, 56);
+            this.pictureBox1.Location = new System.Drawing.Point(12, 30);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(484, 121);
+            this.pictureBox1.Size = new System.Drawing.Size(484, 247);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
@@ -126,7 +105,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 359);
+            this.label2.Location = new System.Drawing.Point(12, 389);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(76, 21);
             this.label2.TabIndex = 1;
@@ -135,17 +114,53 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 280);
+            this.label1.Location = new System.Drawing.Point(12, 310);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(48, 21);
             this.label1.TabIndex = 0;
             this.label1.Text = "Email";
             // 
+            // txt_password
+            // 
+            this.txt_password.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.txt_password.BorderColor = System.Drawing.Color.Red;
+            this.txt_password.BorderSize = 1;
+            this.txt_password.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.txt_password.Location = new System.Drawing.Point(12, 413);
+            this.txt_password.Name = "txt_password";
+            this.txt_password.Padding = new System.Windows.Forms.Padding(1);
+            this.txt_password.Size = new System.Drawing.Size(484, 33);
+            this.txt_password.TabIndex = 1;
+            this.txt_password.TextBoxBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
+            this.txt_password.TextBoxForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
+            this.txt_password.UsePasswordChar = true;
+            this.txt_password.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.txt_password.WaterMarkText = "";
+            // 
+            // txt_email
+            // 
+            this.txt_email.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.txt_email.BorderColor = System.Drawing.Color.Red;
+            this.txt_email.BorderSize = 1;
+            this.txt_email.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.txt_email.Location = new System.Drawing.Point(12, 334);
+            this.txt_email.Name = "txt_email";
+            this.txt_email.Padding = new System.Windows.Forms.Padding(1);
+            this.txt_email.Size = new System.Drawing.Size(484, 33);
+            this.txt_email.TabIndex = 0;
+            this.txt_email.TextBoxBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
+            this.txt_email.TextBoxForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
+            this.txt_email.UsePasswordChar = false;
+            this.txt_email.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.txt_email.WaterMarkText = "Email";
+            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
             this.ClientSize = new System.Drawing.Size(508, 684);
+            this.Controls.Add(this.titleBarControl1);
             this.Controls.Add(this.txt_password);
             this.Controls.Add(this.txt_email);
             this.Controls.Add(this.btn_useOffline);
@@ -154,7 +169,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LoginForm";
             this.Text = "Login";
@@ -174,5 +189,6 @@
         private System.Windows.Forms.Button btn_useOffline;
         private Controls.NCTextBox txt_email;
         private Controls.NCTextBox txt_password;
+        private Gaming.Platform.Windows.Controls.TitleBarControl titleBarControl1;
     }
 }

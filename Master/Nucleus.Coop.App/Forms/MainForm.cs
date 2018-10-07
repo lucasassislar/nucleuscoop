@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Nucleus.Coop.App.Controls;
 using Nucleus.Coop.Controls;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
@@ -54,6 +55,16 @@ namespace Nucleus.Coop.App.Forms
 
         private DomainWebApiConnection apiConnection;
         private HandlerManagerForm pkgManager;
+
+        private AppPage appPage = AppPage.None;
+
+        protected override Size DefaultSize
+        {
+            get
+            {
+                return new Size(1070, 740);
+            }
+        }
 
         public MainForm(string[] args, GameManager gameManager, DomainWebApiConnection con)
         {
@@ -125,14 +136,6 @@ namespace Nucleus.Coop.App.Forms
             }
         }
 
-        protected override Size DefaultSize
-        {
-            get
-            {
-                return new Size(1070, 740);
-            }
-        }
-
         protected override void OnGotFocus(EventArgs e)
         {
             base.OnGotFocus(e);
@@ -140,14 +143,6 @@ namespace Nucleus.Coop.App.Forms
             this.BringToFront();
 
             System.Diagnostics.Debug.WriteLine("Got Focus");
-        }
-
-        protected override void WndProc(ref Message m)
-        {
-            //int msg = m.Msg;
-            //LogManager.Log(msg.ToString());
-
-            base.WndProc(ref m);
         }
 
         public void RefreshGames()
@@ -171,6 +166,24 @@ namespace Nucleus.Coop.App.Forms
                     NewGameHandler(handler);
                 }
 
+                // make menu before games
+                GameControl pkgManagerBtn = new GameControl(null);
+                pkgManagerBtn.Width = list_games.Width;
+                pkgManagerBtn.TitleText = "Package Manager";
+                pkgManagerBtn.Image = Properties.Resources.icon;
+                pkgManagerBtn.Click += PkgManagerBtn_Click;
+                this.list_games.Controls.Add(pkgManagerBtn);
+
+                HorizontalLineControl line = new HorizontalLineControl();
+                line.LineHorizontalPc = 100;
+                line.Width = list_games.Width;
+                line.LineHeight = 2;
+                line.LineColor = Color.FromArgb(255, 41, 45, 47);
+                this.list_games.Controls.Add(line);
+
+                GamesSeparator sep = new GamesSeparator();
+                this.list_games.Controls.Add(sep);
+
                 List<UserGameInfo> games = gameManager.User.Games;
                 for (int i = 0; i < games.Count; i++)
                 {
@@ -181,15 +194,61 @@ namespace Nucleus.Coop.App.Forms
                 if (games.Count == 0)
                 {
                     noGamesPresent = true;
+                    appPage = AppPage.NoGamesInstalled;
                     GameControl con = new GameControl(null);
+                    con.Click += Con_Click;
                     con.Width = list_games.Width;
-                    con.Text = "No games";
+                    con.TitleText = "No games";
                     this.list_games.Controls.Add(con);
                 }
             }
 
             DPIManager.ForceUpdate();
+            UpdatePage();
+
             gameManager.User.Save();
+        }
+
+        private void Con_Click(object sender, EventArgs e)
+        {
+            appPage = AppPage.NoGamesInstalled;
+            UpdatePage();
+        }
+
+        private void PkgManagerBtn_Click(object sender, EventArgs e)
+        {
+            appPage = AppPage.PackageManager;
+            UpdatePage();
+        }
+
+        private void UpdatePage()
+        {
+            //panel_pageTitle.Visible = false;
+
+            // game
+            panel_game.Visible = false;
+            panel_gameBtns.Visible = false;
+
+            // no games installed
+            panel_noGames.Visible = false;
+
+            // handler manager
+            panel_handlerManager.Visible = false;
+
+            switch (appPage)
+            {
+                case AppPage.NoGamesInstalled:
+                    gameNameControl.UpdateText("No games installed");
+                    panel_noGames.Visible = true;
+                    break;
+                case AppPage.GameHandler:
+                    panel_game.Visible = true;
+                    break;
+                case AppPage.PackageManager:
+                    gameNameControl.UpdateText("Package Manager");
+                    panel_handlerManager.Visible = true;
+                    break;
+            }
         }
 
         public void NewGameHandler(GameHandlerMetadata metadata)

@@ -115,13 +115,14 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
                     if (c is IMouseHoverControl)
                     {
                         IMouseHoverControl mouse = (IMouseHoverControl)c;
-                        mouse.Mouse.MouseClick += c_MouseClick;
+                        //mouse.Mouse.MouseClick += c_MouseClick;
                         mouse.Mouse.MouseEnter += c_MouseEnter;
                         mouse.Mouse.MouseLeave += c_MouseLeave;
                     }
                     else
                     {
-                        c.MouseClick += c_MouseClick;
+                        c.Click += C_Click;
+                        //c.MouseClick += c_MouseClick;
                         c.MouseEnter += c_MouseEnter;
                         c.MouseLeave += c_MouseLeave;
                     }
@@ -183,7 +184,12 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
             }
         }
 
-        private void c_MouseClick(object sender, MouseEventArgs e)
+        private void C_Click(object sender, EventArgs e)
+        {
+            OnClick(sender);
+        }
+
+        private void OnClick(object sender)
         {
             Control parent = (Control)sender;
             if (parent is TransparentControl)
@@ -220,8 +226,6 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
             }
 
             SelectedControl = parent;
-
-            this.OnClick(e);
         }
 
         private void c_Click(object sender, EventArgs e)

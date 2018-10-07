@@ -133,6 +133,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\BasePageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\BasePageControl.Designer.cs">
+      <DependentUpon>BasePageControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -148,6 +154,12 @@
     <Compile Include="Controls\GameRunningOverlay.Designer.cs">
       <DependentUpon>GameRunningOverlay.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\GamesSeparator.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\GamesSeparator.Designer.cs">
+      <DependentUpon>GamesSeparator.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\HandlerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -156,6 +168,18 @@
     </Compile>
     <Compile Include="Controls\HandlerInfoControl.Designer.cs">
       <DependentUpon>HandlerInfoControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HandlerManagerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HandlerManagerControl.Designer.cs">
+      <DependentUpon>HandlerManagerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HorizontalLineControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HorizontalLineControl.Designer.cs">
+      <DependentUpon>HorizontalLineControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\JSUserInputControl.cs">
       <SubType>UserControl</SubType>
@@ -181,6 +205,7 @@
     <Compile Include="Forms\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="src\AppPage.cs" />
     <None Include="app.nuspec" />
     <None Include="Forms\CentralForm.cs">
       <SubType>Form</SubType>
@@ -230,6 +255,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\HandlerInfoControl.resx">
       <DependentUpon>HandlerInfoControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\HandlerManagerControl.resx">
+      <DependentUpon>HandlerManagerControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\PlayerCountControl.resx">
       <DependentUpon>PlayerCountControl.cs</DependentUpon>
@@ -388,6 +416,7 @@
     <None Include="Resources\not_found_white.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\nucleus.png" />
     <None Include="Resources\xinput1_3.dll" />
     <None Include="Resources\vertical.png" />
     <None Include="Resources\keyboard.png" />

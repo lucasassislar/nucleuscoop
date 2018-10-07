@@ -14,15 +14,34 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
     public partial class TitleBarControl : UserControl
     {
         private Label titleLabel;
+        private string text = "Form";
 
         private Button minimize;
         private Button maximize;
         private Button close;
 
-        public new string Text
+        public bool EnableMaximize { get; set; } = true;
+
+        [Browsable(true)]
+        public override string Text
         {
-            get { return titleLabel.Text; }
-            set { titleLabel.Text = value; }
+            get
+            {
+                if (titleLabel == null)
+                {
+                    return text;
+                }
+                return titleLabel.Text;
+            }
+            set
+            {
+                if (titleLabel == null)
+                {
+                    text = value;
+                    return;
+                }
+                titleLabel.Text = value;
+            }
         }
 
         private Font btnFont;
@@ -38,12 +57,22 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
             this.BackColor = Color.FromArgb(255, 32, 34, 37);
             this.Padding = Padding.Empty;
             this.Margin = Padding.Empty;
+        }
 
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+
+            InitializeButtons();
+        }
+
+        private void InitializeButtons()
+        {
             btnFont = new Font(this.Font.FontFamily, 6, FontStyle.Regular);
             titleFont = new Font(this.Font.FontFamily, 10, FontStyle.Regular);
 
             titleLabel = new Label();
-            titleLabel.Text = "Nucleus Coop";
+            titleLabel.Text = text;
             titleLabel.AutoSize = true;
             titleLabel.Location = new Point(2, 2);
             titleLabel.Font = titleFont;
@@ -51,19 +80,27 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
             Controls.Add(titleLabel);
 
             close = MakeFlatBtn();
+            maximize = MakeFlatBtn();
+            minimize = MakeFlatBtn();
+
             close.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 240, 30, 30);
             close.Location = new Point(this.Width - 26, 0);
             close.Left = this.Width - 26;
             close.Text = "X";
             close.Click += Close_Click;
 
-            maximize = MakeFlatBtn();
-            maximize.Left = close.Left - 26;
-            maximize.Text = "[]";
-            maximize.Click += Maximize_Click;
+            if (EnableMaximize)
+            {
+                maximize.Left = close.Left - 26;
+                maximize.Text = "[]";
+                maximize.Click += Maximize_Click;
+                minimize.Left = maximize.Left - 26;
+            }
+            else
+            {
+                minimize.Left = close.Left - 26;
+            }
 
-            minimize = MakeFlatBtn();
-            minimize.Left = maximize.Left - 26;
             minimize.Text = "_";
             minimize.Click += Minimize_Click;
         }
@@ -89,6 +126,11 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
         private DateTime lastUpdateDate;
         private void SwapMaximized()
         {
+            if (EnableMaximize)
+            {
+                return;
+            }
+
             Form parent = this.ParentForm;
             if (parent != null)
             {

@@ -24,7 +24,8 @@ namespace Nucleus.Gaming.Coop.Api
 
         public void Initialize()
         {
-            baseUri = new Uri("https://api.nucleuscoop.com/");
+            //baseUri = new Uri("https://api.nucleuscoop.com/");
+            baseUri = new Uri("http://127.0.0.1:1337/");
         }
 
         public void SetToken(string token)

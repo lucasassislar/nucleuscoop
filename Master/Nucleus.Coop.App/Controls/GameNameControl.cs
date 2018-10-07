@@ -40,6 +40,7 @@ namespace Nucleus.Coop.Controls
         {
             picture = new PictureBox();
             picture.SizeMode = PictureBoxSizeMode.StretchImage;
+            picture.BorderStyle = BorderStyle.FixedSingle;
 
             title = new Label();
             title.Text = "Nothing selected";
@@ -52,6 +53,11 @@ namespace Nucleus.Coop.Controls
 
             UpdateSize(1);
             DPIManager.Register(this);
+        }
+
+        public void UpdateText(string txt)
+        {
+            title.Text = txt;
         }
 
         ~GameNameControl()

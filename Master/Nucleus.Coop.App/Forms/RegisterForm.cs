@@ -38,7 +38,6 @@ namespace Nucleus.Coop.App.Forms
 
             Task.Run(async () =>
             {
-
                 // submit the data to the api
                 RequestResult<User> result = await apiConnection.Register(txtBox_userName.Text, txtBox_email.Text, password);
                 if (!result.Success)
