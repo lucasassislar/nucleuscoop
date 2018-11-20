@@ -12,10 +12,8 @@ using Nucleus.Gaming;
 using Nucleus.Gaming.Platform.Windows.Controls;
 using Nucleus.Gaming.Package;
 
-namespace Nucleus.Coop.App.Controls
-{
-    public partial class HandlerInfoControl : UserControl, IDynamicSized, IRadioControl, IMouseHoverControl
-    {
+namespace Nucleus.Coop.App.Controls {
+    public partial class HandlerInfoControl : UserControl, IDynamicSized, IRadioControl, IMouseHoverControl {
         public Color SelectedColor { get; set; } = Color.FromArgb(80, 80, 80);
         public Color NotSelectedColor { get; set; } = Color.FromArgb(30, 30, 30);
         public Color HoverColor { get; set; } = Color.FromArgb(60, 60, 60);
@@ -30,8 +28,7 @@ namespace Nucleus.Coop.App.Controls
         private TransparentControl mouseControl;
         public TransparentControl Mouse { get { return mouseControl; } }
 
-        public HandlerInfoControl()
-        {
+        public HandlerInfoControl() {
             InitializeComponent();
 
             mouseControl = new TransparentControl();
@@ -42,30 +39,29 @@ namespace Nucleus.Coop.App.Controls
             this.BackColor = NotSelectedColor;
         }
 
-        protected override void OnSizeChanged(EventArgs e)
-        {
+        protected override void OnSizeChanged(EventArgs e) {
             base.OnSizeChanged(e);
 
-            if (mouseControl != null)
-            {
+            if (mouseControl != null) {
                 mouseControl.Size = this.Size;
                 mouseControl.BringToFront();
             }
         }
 
-        protected override void OnControlAdded(ControlEventArgs e)
-        {
+        protected override void OnControlAdded(ControlEventArgs e) {
             base.OnControlAdded(e);
 
             if (mouseControl != null
-                && e.Control != mouseControl)
-            {
+                && e.Control != mouseControl) {
                 mouseControl.BringToFront();
             }
         }
 
-        public void SetHandler(GameHandlerBaseMetadata metadata)
-        {
+        public void SetEmptyHandler() {
+            lbl_handlerName.Text = "No available handlers";
+        }
+
+        public void SetHandler(GameHandlerBaseMetadata metadata) {
             this.Metadata = metadata;
 
             lbl_handlerName.Text = metadata.Title;
@@ -74,8 +70,7 @@ namespace Nucleus.Coop.App.Controls
             lbl_devName.Text = metadata.Dev;
         }
 
-        public void SetHandler(IgdbGame game)
-        {
+        public void SetHandler(IgdbGame game) {
             this.IgdbGame = game;
 
             lbl_handlerName.Text = game.name;
@@ -84,8 +79,7 @@ namespace Nucleus.Coop.App.Controls
             lbl_devName.Text = "";
         }
 
-        public void SetHandler(Game game)
-        {
+        public void SetHandler(Game game) {
             this.Game = game;
 
             lbl_handlerName.Text = game.name;
@@ -94,8 +88,7 @@ namespace Nucleus.Coop.App.Controls
             lbl_devName.Text = "";
         }
 
-        public void SetHandler(GameHandler handler)
-        {
+        public void SetHandler(GameHandler handler) {
             this.Handler = handler;
 
             lbl_handlerName.Text = handler.name;
@@ -105,11 +98,9 @@ namespace Nucleus.Coop.App.Controls
         }
 
         private bool isSelected;
-        public void RadioSelected()
-        {
+        public void RadioSelected() {
             if (!isSelected &&
-                OnSelected != null)
-            {
+                OnSelected != null) {
                 isSelected = true;
                 OnSelected(this);
             }
@@ -118,23 +109,19 @@ namespace Nucleus.Coop.App.Controls
             BackColor = SelectedColor;
         }
 
-        public void RadioUnselected()
-        {
+        public void RadioUnselected() {
             BackColor = NotSelectedColor;
             isSelected = false;
         }
 
-        public void UpdateSize(float scale)
-        {
+        public void UpdateSize(float scale) {
         }
 
-        public void UserLeave()
-        {
+        public void UserLeave() {
             BackColor = isSelected ? SelectedColor : NotSelectedColor;
         }
 
-        public void UserOver()
-        {
+        public void UserOver() {
             BackColor = HoverColor;
         }
     }

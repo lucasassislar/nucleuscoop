@@ -188,6 +188,7 @@
     <Compile Include="DPI\IDynamicSized.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="IO\JsonPropertiesFile.cs" />
+    <Compile Include="Platform\Windows\FormGraphicsUtil.cs" />
     <Compile Include="Platform\Windows\Interop\Shell32\FileAssociation.cs" />
     <Compile Include="Platform\Windows\Interop\Shell32\FileAssociations.cs" />
     <Compile Include="Platform\Windows\IO\WinDirectoryUtil.cs" />

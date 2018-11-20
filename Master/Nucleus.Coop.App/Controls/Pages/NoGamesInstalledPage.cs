@@ -8,12 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Nucleus.Coop.App.Controls
-{
-    public partial class HandlerManagerControl : BasePageControl
-    {
-        public HandlerManagerControl()
-        {
+namespace Nucleus.Coop.App.Controls.Pages {
+    public partial class NoGamesInstalledPageControl : BasePageControl {
+        public NoGamesInstalledPageControl() {
             InitializeComponent();
         }
     }

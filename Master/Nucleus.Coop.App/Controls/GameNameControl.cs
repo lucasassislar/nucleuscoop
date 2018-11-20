@@ -31,10 +31,15 @@ namespace Nucleus.Coop.Controls
             }
         }
 
+        public Image Image {
+            set { picture.Image = value; }
+        }
+
         private UserGameInfo gameInfo;
         private PictureBox picture;
         private Label title;
         private int border;
+        private float lastScale;
 
         public GameNameControl()
         {
@@ -58,6 +63,7 @@ namespace Nucleus.Coop.Controls
         public void UpdateText(string txt)
         {
             title.Text = txt;
+            UpdateSize(lastScale);
         }
 
         ~GameNameControl()
@@ -72,6 +78,7 @@ namespace Nucleus.Coop.Controls
                 DPIManager.Unregister(this);
                 return;
             }
+            lastScale = scale;
 
             SuspendLayout();
 

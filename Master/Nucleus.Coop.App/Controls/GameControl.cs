@@ -19,6 +19,7 @@ namespace Nucleus.Gaming.Coop
     public class GameControl : UserControl, IDynamicSized, IRadioControl
     {
         public UserGameInfo UserGameInfo { get; private set; }
+        public GameHandlerBaseMetadata HandlerMetadata { get; private set; }
 
         private PictureBox picture;
         private Label title;
@@ -28,24 +29,13 @@ namespace Nucleus.Gaming.Coop
         public Color ColorUnselected { get; set; } = Color.FromArgb(47, 49, 54);
         public Color ColorMouseOver { get; set; } = Color.FromArgb(54, 57, 63);
 
-        public GameControl(UserGameInfo userGame)
+        public GameControl()
         {
-            UserGameInfo = userGame;
-
             picture = new PictureBox();
             picture.SizeMode = PictureBoxSizeMode.StretchImage;
 
             title = new Label();
-            if (userGame == null)
-            {
-                title.Text = "No games";
-            }
-            else
-            {
-                title.Text = GameManager.Instance.NameManager.GetGameName(userGame.GameID);
-            }
-            TitleText = title.Text;
-
+           
             BackColor = ColorUnselected;
             Size = new Size(200, 52);
 
@@ -55,9 +45,24 @@ namespace Nucleus.Gaming.Coop
             DPIManager.Register(this);
         }
 
-        ~GameControl()
-        {
+        ~GameControl() {
             DPIManager.Unregister(this);
+        }
+
+        public void SetUserGame(UserGameInfo userGame) {
+            UserGameInfo = userGame;
+            if (userGame == null) {
+                title.Text = "No games";
+            } else {
+                title.Text = GameManager.Instance.NameManager.GetGameName(userGame.GameID);
+            }
+            TitleText = title.Text;
+        }
+
+        public void SetHandlerMetadata(GameHandlerBaseMetadata metadata) {
+            HandlerMetadata = metadata;
+            title.Text = metadata.Title;
+            TitleText = title.Text;
         }
 
         public void UpdateSize(float scale)

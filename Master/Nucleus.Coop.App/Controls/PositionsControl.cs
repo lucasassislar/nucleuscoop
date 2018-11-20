@@ -14,10 +14,9 @@ using SlimDX.XInput;
 using Nucleus.Gaming.Coop;
 using Nucleus.Coop.App.Properties;
 
-namespace Nucleus.Gaming.Coop
+namespace Nucleus.Gaming.App.Controls
 {
-    public class PositionsControl : UserInputControl
-    {
+    public class PositionsControl : UserInputControl {
         private bool canProceed;
 
         // array of users's screens
@@ -47,6 +46,7 @@ namespace Nucleus.Gaming.Coop
 
         private Image gamepadImg;
         private Image genericImg;
+        
         private Image keyboardImg;
 
         public override bool CanProceed
@@ -81,7 +81,7 @@ namespace Nucleus.Gaming.Coop
 
         private void Initialize()
         {
-            this.BackColor = Color.FromArgb(40, 40, 40);
+            BackColor = Color.FromArgb(54, 57, 63);
 
             dinput = new DirectInput();
             //dinputJoysticks = new List<Joystick>();
@@ -772,6 +772,7 @@ namespace Nucleus.Gaming.Coop
                         }
 
                         Invalidate();
+                        UpdatePlayers();
                         return;
                     }
                 }

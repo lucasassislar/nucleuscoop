@@ -12,8 +12,9 @@ using System.Reflection;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Platform.Windows.Controls;
 using Nucleus.Gaming.Windows.Controls;
+using Nucleus.Gaming.Platform.Windows;
 
-namespace Nucleus.Gaming.Coop
+namespace Nucleus.Gaming.Coop.Controls
 {
     public class PlayerOptionsControl : UserInputControl
     {
@@ -42,14 +43,14 @@ namespace Nucleus.Gaming.Coop
             detailsFont = new Font("Segoe UI", 12);
         }
 
-        public override void Initialize(HandlerData handlerData, UserGameInfo game, GameProfile profile)
-        {
+        public override void Initialize(HandlerData handlerData, UserGameInfo game, GameProfile profile) {
             base.Initialize(handlerData, game, profile);
 
             this.Controls.Clear();
 
             int wid = 200;
 
+            Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "⚙");
             list = new ControlListBox();
             list.Size = this.Size;
 
@@ -148,7 +149,7 @@ namespace Nucleus.Gaming.Coop
                     NumericUpDown num = new NumericUpDown();
                     int border = 10;
 
-                    int value = (int)(double)val;
+                    int value = int.Parse(val.ToString());
                     if (value < num.Minimum)
                     {
                         num.Minimum = value;

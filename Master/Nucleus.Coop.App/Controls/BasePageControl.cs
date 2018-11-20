@@ -12,6 +12,18 @@ namespace Nucleus.Coop.App.Controls
 {
     public partial class BasePageControl : UserControl
     {
+        public event Action<UserControl, int> OnRequiredTitleBarWidthChanged;
+        private int requiredTitleBarWidth;
+        public virtual int RequiredTitleBarWidth {
+            get { return requiredTitleBarWidth; }
+            set {
+                if (requiredTitleBarWidth != value && OnRequiredTitleBarWidthChanged != null) {
+                    OnRequiredTitleBarWidthChanged(this, value);
+                }
+                requiredTitleBarWidth = value;
+            }
+        }
+
         public BasePageControl()
         {
             InitializeComponent();
@@ -22,6 +34,7 @@ namespace Nucleus.Coop.App.Controls
             Margin = new Padding(8, 8, 8, 8);
             Name = "BaseForm";
             Text = "BaseForm";
+            Size = new Size(782, 628); // standard starting size
 
             // create it here, else the designer will show the default windows font
             Font = new Font("Segoe UI", 12, GraphicsUnit.Point);

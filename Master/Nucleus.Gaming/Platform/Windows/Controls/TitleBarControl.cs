@@ -126,7 +126,7 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
         private DateTime lastUpdateDate;
         private void SwapMaximized()
         {
-            if (EnableMaximize)
+            if (!EnableMaximize)
             {
                 return;
             }
@@ -261,13 +261,19 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
             //Application.Exit();
         }
 
+        public bool EnableShadowBorder { get; set; }
+
         protected override void OnParentChanged(EventArgs e)
         {
             base.OnParentChanged(e);
 
             if (Parent != null)
             {
-                this.Width = Parent.ClientSize.Width;
+                if (EnableShadowBorder) {
+                    this.Width = Parent.ClientSize.Width - 7;
+                } else {
+                    this.Width = Parent.ClientSize.Width;
+                }
             }
         }
     }

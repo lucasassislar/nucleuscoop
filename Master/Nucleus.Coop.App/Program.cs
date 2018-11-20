@@ -17,8 +17,7 @@ namespace Nucleus.Coop
     static class Program
     {
         [STAThread]
-        static void Main(string[] args)
-        {
+        static void Main(string[] args) {
             new Log(true);
 
             // Add the event handler for handling UI thread exceptions to the event.
@@ -38,39 +37,42 @@ namespace Nucleus.Coop
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-           
+
             GameManager gameManager = new GameManager();
 
-            DomainWebApiConnection apiConnection = new DomainWebApiConnection();
-            apiConnection.Initialize();
+            //DomainWebApiConnection apiConnection = new DomainWebApiConnection();
+            //apiConnection.Initialize();
 
-            if (string.IsNullOrWhiteSpace(gameManager.User.LastToken))
-            {
-                LoginForm loginForm = new LoginForm(apiConnection);
-                DPIManager.AddForm(loginForm);
-                DPIManager.ForceUpdate();
+            //bool isTokenExpired = gameManager.User.LastTokenDate.Add(TimeSpan.FromDays(14)) < DateTime.UtcNow;
 
-                if (loginForm.ShowDialog() == DialogResult.OK)
-                {
-                    // save login credentials
-                    gameManager.User.LastToken = apiConnection.Token;
-                    StartMainForm(args, gameManager, apiConnection);
-                }
-            }
-            else
-            {
-                // saved credentials
-                apiConnection.SetToken(gameManager.User.LastToken);
+            //if (string.IsNullOrWhiteSpace(gameManager.User.LastToken) ||
+            //    isTokenExpired)
+            //{
+            //    LoginForm loginForm = new LoginForm(apiConnection);
+            //    DPIManager.AddForm(loginForm);
+            //    DPIManager.ForceUpdate();
 
-                StartMainForm(args, gameManager, apiConnection);
-            }
+            //    if (loginForm.ShowDialog() == DialogResult.OK)
+            //    {
+            //        // save login credentials
+            //        gameManager.User.UpdateToken(apiConnection.Token);
+            //        StartMainForm(args, gameManager, apiConnection);
+            //    }
+            //}
+            //else
+            //{
+            //    // saved credentials
+            //    apiConnection.SetToken(gameManager.User.LastToken);
 
-            //StartMainForm(args, gameManager, null);
+            //    StartMainForm(args, gameManager, apiConnection);
+            //}
+
+            StartMainForm(args, gameManager);
         }
 
-        private static void StartMainForm(string[] args, GameManager gameManager, DomainWebApiConnection apiConnection)
+        private static void StartMainForm(string[] args, GameManager gameManager)
         {
-            MainForm form = new MainForm(args, gameManager, apiConnection);
+            MainForm form = new MainForm(args, gameManager);
             //DPIManager.AddForm(form);
             //DPIManager.ForceUpdate();
 
@@ -85,14 +87,6 @@ namespace Nucleus.Coop
         private static void UnhandledExceptionEventHandler(object sender, UnhandledExceptionEventArgs e)
         {
             int x = 0;
-        }
-
-        public static bool Login(DomainWebApiConnection apiConnection)
-        {
-            GameManager.Instance.User.LastToken = "";
-            GameManager.Instance.User.Save();
-            LoginForm loginForm = new LoginForm(apiConnection);
-            return loginForm.ShowDialog() == DialogResult.OK;
         }
     }
 

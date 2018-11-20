@@ -47,11 +47,9 @@ namespace Nucleus.Coop.App.Forms
 
         private bool searching;
         private int drivesFinishedSearching;
-        private MainForm main;
 
-        public SearchDisksForm(MainForm main)
+        public SearchDisksForm()
         {
-            this.main = main;
             InitializeComponent();
 
             DriveInfo[] drives = DriveInfo.GetDrives();
@@ -240,7 +238,8 @@ namespace Nucleus.Coop.App.Forms
                         {
                             list_games.Items.Add(GameManager.Instance.NameManager.GetGameName(uinfo.GameID) + " - " + path);
                             list_games.Invalidate();
-                            main.NewUserGame(uinfo);
+                            // TODO make it better
+                            MainForm.Instance.NewUserGame(uinfo);
                         }));
                     }
                 }
@@ -256,7 +255,8 @@ namespace Nucleus.Coop.App.Forms
                     UpdateProgress(0);
                     btn_search.Enabled = true;
 
-                    main.RefreshGames();
+                    // TODO make it better
+                    MainForm.Instance.RefreshGames();
                     MessageBox.Show("Finished searching!");
                 }));
             }

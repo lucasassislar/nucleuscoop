@@ -1,6 +1,6 @@
 ﻿namespace Nucleus.Coop.App.Controls
 {
-    partial class BasePageControl
+    partial class TitleSeparator
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,15 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // BasePageControl
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "BasePageControl";
-            this.ResumeLayout(false);
-
         }
 
         #endregion

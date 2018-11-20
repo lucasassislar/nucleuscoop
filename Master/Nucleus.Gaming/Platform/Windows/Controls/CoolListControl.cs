@@ -46,12 +46,14 @@ namespace Nucleus.Gaming.Windows.Controls
         public object Data { get; set; }
         public event Action<object> OnSelected;
 
+        public bool EnableClicking { get; set; }
+
         public CoolListControl(bool enableHightlighting)
         {
             EnableHighlighting = enableHightlighting;
 
             Size = new Size(400, 120);
-            BackColor = Color.FromArgb(30, 30, 30);
+            BackColor = ColorUnselected;
 
             titleLabel = new Label();
             titleLabel.Location = new Point(10, 10);
@@ -93,10 +95,14 @@ namespace Nucleus.Gaming.Windows.Controls
             OnClick(e);
         }
 
+        public Color ColorSelected { get; set; } = Color.FromArgb(66, 70, 77);
+        public Color ColorUnselected { get; set; } = Color.FromArgb(47, 49, 54);
+        public Color ColorMouseOver { get; set; } = Color.FromArgb(54, 57, 63);
+
         protected override void OnLostFocus(EventArgs e)
         {
             base.OnLostFocus(e);
-            BackColor = Color.FromArgb(30, 30, 30);
+            BackColor = ColorUnselected;
         }
 
         protected override void OnMouseEnter(EventArgs e)
@@ -104,7 +110,7 @@ namespace Nucleus.Gaming.Windows.Controls
             base.OnMouseEnter(e);
             if (!ContainsFocus)
             {
-                BackColor = Color.FromArgb(60, 60, 60);
+                BackColor = ColorMouseOver;
             }
         }
 
@@ -113,7 +119,7 @@ namespace Nucleus.Gaming.Windows.Controls
             base.OnMouseLeave(e);
             if (!ContainsFocus)
             {
-                BackColor = Color.FromArgb(30, 30, 30);
+                BackColor = ColorUnselected;
             }
         }
 
@@ -121,10 +127,11 @@ namespace Nucleus.Gaming.Windows.Controls
         {
             base.OnClick(e);
 
-            BackColor = Color.FromArgb(80, 80, 80);
-            if (OnSelected != null)
-            {
-                OnSelected(Data);
+            if (EnableClicking) {
+                BackColor = ColorSelected;
+                if (OnSelected != null) {
+                    OnSelected(Data);
+                }
             }
         }
     }

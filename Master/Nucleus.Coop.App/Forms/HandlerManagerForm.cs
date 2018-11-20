@@ -26,13 +26,11 @@ namespace Nucleus.Coop.App.Forms
     /// </summary>
     public partial class HandlerManagerForm : BaseForm
     {
-        private DomainWebApiConnection apiConnection;
         private List<CancellationTokenSource> pendingTasks;
         private GameHandler currentHandler;
 
-        public HandlerManagerForm(DomainWebApiConnection con)
+        public HandlerManagerForm()
         {
-            this.apiConnection = con;
             pendingTasks = new List<CancellationTokenSource>();
 
             InitializeComponent();
@@ -40,54 +38,54 @@ namespace Nucleus.Coop.App.Forms
             UpdateTabs();
         }
 
-        private async Task LoadBrowseTab()
-        {
-            if (apiConnection == null)
-            {
-                return;
-            }
+        //private async Task LoadBrowseTab()
+        //{
+        //    if (apiConnection == null)
+        //    {
+        //        return;
+        //    }
 
-            try
-            {
-                RequestResult<List<Game>> games = await apiConnection.ListIntGames();
+        //    try
+        //    {
+        //        RequestResult<List<Game>> games = await apiConnection.ListIntGames();
 
-                this.Invoke((Action)(() =>
-                {
-                    list_left.Controls.Clear();
-                    if (games.Success)
-                    {
-                        var data = games.Data.OrderBy(c => c.name);
+        //        this.Invoke((Action)(() =>
+        //        {
+        //            list_left.Controls.Clear();
+        //            if (games.Success)
+        //            {
+        //                var data = games.Data.OrderBy(c => c.name);
 
-                        foreach (var game in data)
-                        {
-                            HandlerInfoControl handlerControl = new HandlerInfoControl();
-                            handlerControl.OnSelected += Browse_Game_OnSelected;
-                            handlerControl.SetHandler(game);
-                            list_left.Controls.Add(handlerControl);
-                        }
-                    }
-                    else
-                    {
-                        if (games.LogData.Contains("403"))
-                        {
-                            // forbidden, need to login again!
-                            Program.Login(apiConnection);
-                        }
-                    }
+        //                foreach (var game in data)
+        //                {
+        //                    HandlerInfoControl handlerControl = new HandlerInfoControl();
+        //                    handlerControl.OnSelected += Browse_Game_OnSelected;
+        //                    handlerControl.SetHandler(game);
+        //                    list_left.Controls.Add(handlerControl);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (games.LogData.Contains("403"))
+        //                {
+        //                    // forbidden, need to login again!
+        //                    Program.Login(apiConnection);
+        //                }
+        //            }
 
-                    ChangeTabBtnStates(true);
-                }));
-            }
-            catch (Exception ex)
-            {
-                Log.WriteLine(ex);
+        //            ChangeTabBtnStates(true);
+        //        }));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log.WriteLine(ex);
 
-                this.Invoke((Action)(() =>
-                {
-                    ChangeTabBtnStates(true);
-                }));
-            }
-        }
+        //        this.Invoke((Action)(() =>
+        //        {
+        //            ChangeTabBtnStates(true);
+        //        }));
+        //    }
+        //}
 
         private void LoadInstalledTab()
         {
@@ -112,20 +110,12 @@ namespace Nucleus.Coop.App.Forms
         }
 
         /// <summary>
-        /// Use the web api connection to search for the user request game
+        /// 
         /// </summary>
-        private void Search()
-        {
-            if (apiConnection == null || 
-                apiConnection.IsOfflineMode)
-            {
-                return;
-            }
-
+        private void Search() {
             string text = txt_gameName.TextBox.Text;
             if (string.IsNullOrWhiteSpace(text) ||
-                text.Length < 3)
-            {
+                text.Length < 3) {
                 return;
             }
 
@@ -134,166 +124,153 @@ namespace Nucleus.Coop.App.Forms
             pendingTasks.ForEach(c => c.Cancel());
             pendingTasks.Clear();
 
-            Task task = Task.Run(async () =>
-            {
+            Task task = Task.Run(async () => {
                 await SearchGame(text);
             }, ts.Token);
 
             pendingTasks.Add(ts);
         }
 
-        private async Task SearchGame(string text)
-        {
-            try
-            {
-                if (apiConnection == null)
-                {
-                    return;
-                }
+        private async Task SearchGame(string text) {
+            try {
+                //if (apiConnection == null) {
+                //    return;
+                //}
 
-                RequestResult<IgdbGames> games = await apiConnection.SearchExtGame(text);
+                //RequestResult<IgdbGames> games = await apiConnection.SearchExtGame(text);
 
-                if (games.Success)
-                {
-                    this.Invoke((Action)(() =>
-                    {
-                        list_left.Controls.Clear();
+                //if (games.Success) {
+                //    this.Invoke((Action)(() => {
+                //        list_left.Controls.Clear();
 
-                        for (int i = 0; i < games.Data.Count; i++)
-                        {
-                            IgdbGame game = games.Data[i];
-                            if (game.category != "0")
-                            {
-                                continue;
-                            }
+                //        for (int i = 0; i < games.Data.Count; i++) {
+                //            IgdbGame game = games.Data[i];
+                //            if (game.category != "0") {
+                //                continue;
+                //            }
 
-                            HandlerInfoControl handlerControl = new HandlerInfoControl();
-                            handlerControl.OnSelected += Browse_Game_OnSelected;
-                            handlerControl.SetHandler(game);
-                            list_left.Controls.Add(handlerControl);
-                        }
-                        list_left.UpdateSizes();
-                    }));
-                }
-                else
-                {
-                    // failed? 
-                    if (games.LogData.Contains("403"))
-                    {
-                        // forbidden, need to login again!
-                        Program.Login(apiConnection);
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
+                //            HandlerInfoControl handlerControl = new HandlerInfoControl();
+                //            handlerControl.OnSelected += Browse_Game_OnSelected;
+                //            handlerControl.SetHandler(game);
+                //            list_left.Controls.Add(handlerControl);
+                //        }
+                //        list_left.UpdateSizes();
+                //    }));
+                //} else {
+                //    // failed? 
+                //    if (games.LogData.Contains("403")) {
+                //        // forbidden, need to login again!
+                //        Program.Login(apiConnection);
+                //    }
+                //}
+            } catch (Exception exception) {
 
             }
         }
 
-        private void Browse_Game_OnSelected(HandlerInfoControl obj)
-        {
-            Game g = obj.Game;
-            if (g == null)
-            {
-                return;
-            }
+        //private void Browse_Game_OnSelected(HandlerInfoControl obj)
+        //{
+        //    Game g = obj.Game;
+        //    if (g == null)
+        //    {
+        //        return;
+        //    }
 
-            // async search for available handlers for this game
-            try
-            {
-                Task task = Task.Run(async () =>
-                {
-                    RequestResult<Game> game = await apiConnection.GetSpecificGameWithHandlers(g.id.ToString(CultureInfo.InvariantCulture));
+        //    // async search for available handlers for this game
+        //    try
+        //    {
+        //        Task task = Task.Run(async () =>
+        //        {
+        //            RequestResult<Game> game = await apiConnection.GetSpecificGameWithHandlers(g.id.ToString(CultureInfo.InvariantCulture));
 
-                    if (game.Success)
-                    {
-                        this.Invoke((Action)(() =>
-                        {
-                            // list handlers
-                            var handlers = game.Data.handlers;
-                            if (handlers == null)
-                            {
-                                return;
-                            }
+        //            if (game.Success)
+        //            {
+        //                this.Invoke((Action)(() =>
+        //                {
+        //                    // list handlers
+        //                    var handlers = game.Data.handlers;
+        //                    if (handlers == null)
+        //                    {
+        //                        return;
+        //                    }
 
-                            for (int i = 0; i < handlers.Count; i++)
-                            {
-                                var handler = handlers[i];
+        //                    for (int i = 0; i < handlers.Count; i++)
+        //                    {
+        //                        var handler = handlers[i];
 
-                                HandlerInfoControl handlerControl = new HandlerInfoControl();
-                                //handlerControl.OnSelected += Browse_HandlerControl_OnSelected;
-                                handlerControl.OnSelected += Browse_Handler_OnSelected;
-                                handlerControl.SetHandler(handler);
+        //                        HandlerInfoControl handlerControl = new HandlerInfoControl();
+        //                        //handlerControl.OnSelected += Browse_HandlerControl_OnSelected;
+        //                        handlerControl.OnSelected += Browse_Handler_OnSelected;
+        //                        handlerControl.SetHandler(handler);
 
-                                list_handlers.Controls.Add(handlerControl);
-                            }
-                        }));
-                    }
-                    else
-                    {
-                        // failed? 
-                        if (game.LogData.Contains("403"))
-                        {
-                            // forbidden, need to login again!
-                            Program.Login(apiConnection);
-                        }
-                    }
+        //                        list_handlers.Controls.Add(handlerControl);
+        //                    }
+        //                }));
+        //            }
+        //            else
+        //            {
+        //                // failed? 
+        //                if (game.LogData.Contains("403"))
+        //                {
+        //                    // forbidden, need to login again!
+        //                    Program.Login(apiConnection);
+        //                }
+        //            }
 
-                });
-            }
-            catch (Exception exception)
-            {
+        //        });
+        //    }
+        //    catch (Exception exception)
+        //    {
 
-            }
-        }
+        //    }
+        //}
 
-        private void Browse_Handler_OnSelected(HandlerInfoControl obj)
-        {
-            // download handler information
-            GameHandler h = obj.Handler;
-            if (h == null)
-            {
-                return;
-            }
+        //private void Browse_Handler_OnSelected(HandlerInfoControl obj)
+        //{
+        //    // download handler information
+        //    GameHandler h = obj.Handler;
+        //    if (h == null)
+        //    {
+        //        return;
+        //    }
 
-            currentHandler = h;
-            label_gameHandlerName.Text = h.name;
-            label_gameHandlerDescription.Text = h.details;
+        //    currentHandler = h;
+        //    label_gameHandlerName.Text = h.name;
+        //    label_gameHandlerDescription.Text = h.details;
 
-            try
-            {
-                Task task = Task.Run(async () =>
-                {
-                    RequestResult<GameHandler> handler = await apiConnection.GetGameHandler(h.id.ToString(CultureInfo.InvariantCulture));
+        //    try
+        //    {
+        //        Task task = Task.Run(async () =>
+        //        {
+        //            RequestResult<GameHandler> handler = await apiConnection.GetGameHandler(h.id.ToString(CultureInfo.InvariantCulture));
 
-                    if (handler.Success)
-                    {
-                        this.Invoke((Action)(() =>
-                        {
-                            var data = handler.Data;
-                            var packages = data.packages.OrderBy(c => c.version);
-                            combo_gameHandlerVersions.DataSource = packages;
-                            btn_gameHandlerInstall.Enabled = true;
-                        }));
-                    }
-                    else
-                    {
-                        // failed? 
-                        if (handler.LogData.Contains("403"))
-                        {
-                            // forbidden, need to login again!
-                            Program.Login(apiConnection);
-                        }
-                    }
+        //            if (handler.Success)
+        //            {
+        //                this.Invoke((Action)(() =>
+        //                {
+        //                    var data = handler.Data;
+        //                    var packages = data.packages.OrderBy(c => c.version);
+        //                    combo_gameHandlerVersions.DataSource = packages;
+        //                    btn_gameHandlerInstall.Enabled = true;
+        //                }));
+        //            }
+        //            else
+        //            {
+        //                // failed? 
+        //                if (handler.LogData.Contains("403"))
+        //                {
+        //                    // forbidden, need to login again!
+        //                    Program.Login(apiConnection);
+        //                }
+        //            }
 
-                });
-            }
-            catch (Exception exception)
-            {
+        //        });
+        //    }
+        //    catch (Exception exception)
+        //    {
 
-            }
-        }
+        //    }
+        //}
 
         private GameHandlerBaseMetadata currentMetadata;
         private void Installed_Handler_OnSelected(HandlerInfoControl obj)
@@ -339,7 +316,7 @@ namespace Nucleus.Coop.App.Forms
             if (radio_browse.Checked)
             {
                 //ChangeTabBtnStates(false);
-                Task.Run(LoadBrowseTab);
+                //Task.Run(LoadBrowseTab);
             }
             else
             {

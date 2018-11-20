@@ -11,10 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Nucleus.Gaming
-{
-    public class JSUserInputControl : UserInputControl
-    {
+namespace Nucleus.Gaming.App.Controls {
+    public class JSUserInputControl : UserInputControl {
         private bool canProceed;
         private bool canPlay;
 
@@ -86,7 +84,8 @@ namespace Nucleus.Gaming
 
                     CoolListControl control = new CoolListControl(true);
                     control.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
-                    control.BackColor = Color.FromArgb(30, 30, 30);
+                    control.BackColor = Color.FromArgb(54, 57, 63);
+
                     control.Size = new Size(list.Width, 120);
                     control.Data = val;
                     control.OnSelected += Control_OnSelected;

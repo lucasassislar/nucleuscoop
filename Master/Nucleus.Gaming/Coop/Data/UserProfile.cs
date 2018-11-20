@@ -5,24 +5,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Nucleus.Gaming.Coop
-{
+namespace Nucleus.Gaming.Coop {
     /// <summary>
     /// Represents a user of the Nucleus Coop application
     /// </summary>
-    public class UserProfile : JsonPropertiesFile
-    {
+    public class UserProfile : JsonPropertiesFile {
         private List<UserGameInfo> games;
         private List<GameHandlerMetadata> installedHandlers;
+        private string lastToken;
 
-        public List<UserGameInfo> Games
-        {
+        public List<UserGameInfo> Games {
             get { return games; }
             set { games = value; }
         }
 
-        public List<GameHandlerMetadata> InstalledHandlers
-        {
+        public List<GameHandlerMetadata> InstalledHandlers {
             get { return installedHandlers; }
             set { installedHandlers = value; }
         }
@@ -31,25 +28,22 @@ namespace Nucleus.Gaming.Coop
 
         public UserProfileOptions Options { get; set; } = new UserProfileOptions();
 
-        public string LastToken { get; set; }
+        //public string LastToken { get; private set; }
+        //public DateTime LastTokenDate { get; private set; }
 
         public UserProfile(string _pathToFile)
-            : base(_pathToFile)
-        {
+            : base(_pathToFile) {
         }
 
         /// <summary>
         /// Initializes the user profile with all default options
         /// </summary>
-        public void InitializeDefault()
-        {
-            if (games == null)
-            {
+        public void InitializeDefault() {
+            if (games == null) {
                 games = new List<UserGameInfo>();
             }
 
-            if (installedHandlers == null)
-            {
+            if (installedHandlers == null) {
                 installedHandlers = new List<GameHandlerMetadata>();
             }
         }
