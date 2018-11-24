@@ -9,10 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Nucleus.Gaming.Windows.Interop;
 
-namespace Nucleus.Gaming.Platform.Windows.Controls
-{
-    public partial class TitleBarControl : UserControl
-    {
+namespace Nucleus.Gaming.Platform.Windows.Controls {
+    public partial class TitleBarControl : UserControl {
         private Label titleLabel;
         private string text = "Form";
 
@@ -23,20 +21,15 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
         public bool EnableMaximize { get; set; } = true;
 
         [Browsable(true)]
-        public override string Text
-        {
-            get
-            {
-                if (titleLabel == null)
-                {
+        public override string Text {
+            get {
+                if (titleLabel == null) {
                     return text;
                 }
                 return titleLabel.Text;
             }
-            set
-            {
-                if (titleLabel == null)
-                {
+            set {
+                if (titleLabel == null) {
                     text = value;
                     return;
                 }
@@ -47,8 +40,7 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
         private Font btnFont;
         private Font titleFont;
 
-        public TitleBarControl()
-        {
+        public TitleBarControl() {
             InitializeComponent();
 
             this.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
@@ -59,15 +51,13 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
             this.Margin = Padding.Empty;
         }
 
-        protected override void OnHandleCreated(EventArgs e)
-        {
+        protected override void OnHandleCreated(EventArgs e) {
             base.OnHandleCreated(e);
 
             InitializeButtons();
         }
 
-        private void InitializeButtons()
-        {
+        private void InitializeButtons() {
             btnFont = new Font(this.Font.FontFamily, 6, FontStyle.Regular);
             titleFont = new Font(this.Font.FontFamily, 10, FontStyle.Regular);
 
@@ -89,15 +79,12 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
             close.Text = "X";
             close.Click += Close_Click;
 
-            if (EnableMaximize)
-            {
+            if (EnableMaximize) {
                 maximize.Left = close.Left - 26;
                 maximize.Text = "[]";
                 maximize.Click += Maximize_Click;
                 minimize.Left = maximize.Left - 26;
-            }
-            else
-            {
+            } else {
                 minimize.Left = close.Left - 26;
             }
 
@@ -105,49 +92,38 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
             minimize.Click += Minimize_Click;
         }
 
-        private void Minimize_Click(object sender, EventArgs e)
-        {
-            if (this.ParentForm != null)
-            {
+        private void Minimize_Click(object sender, EventArgs e) {
+            if (this.ParentForm != null) {
                 this.ParentForm.WindowState = FormWindowState.Minimized;
             }
         }
 
-        private void Maximize_Click(object sender, EventArgs e)
-        {
+        private void Maximize_Click(object sender, EventArgs e) {
             SwapMaximized();
         }
 
-        private void TitleLabel_DoubleClick(object sender, EventArgs e)
-        {
+        private void TitleLabel_DoubleClick(object sender, EventArgs e) {
             SwapMaximized();
         }
 
         private DateTime lastUpdateDate;
-        private void SwapMaximized()
-        {
-            if (!EnableMaximize)
-            {
+        private void SwapMaximized() {
+            if (!EnableMaximize) {
                 return;
             }
 
             Form parent = this.ParentForm;
-            if (parent != null)
-            {
+            if (parent != null) {
                 DateTime now = DateTime.Now;
                 // TODO: is this bad
-                if (now - lastUpdateDate < TimeSpan.FromMilliseconds(300))
-                {
+                if (now - lastUpdateDate < TimeSpan.FromMilliseconds(300)) {
                     return;
                 }
                 lastUpdateDate = now;
 
-                if (parent.WindowState == FormWindowState.Maximized)
-                {
+                if (parent.WindowState == FormWindowState.Maximized) {
                     parent.WindowState = FormWindowState.Normal;
-                }
-                else
-                {
+                } else {
                     parent.WindowState = FormWindowState.Maximized;
                 }
             }
@@ -156,13 +132,10 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
         private bool mouseDown;
         private Point dragStartPoint;
 
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
+        protected override void OnMouseDown(MouseEventArgs e) {
+            if (e.Button == MouseButtons.Left) {
                 Form parent = this.ParentForm;
-                if (parent != null)
-                {
+                if (parent != null) {
                     mouseDown = true;
                     dragStartPoint = e.Location;
                     //User32Interop.ReleaseCapture();
@@ -171,17 +144,13 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
             }
         }
 
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
+        protected override void OnMouseMove(MouseEventArgs e) {
             base.OnMouseMove(e);
 
-            if (mouseDown)
-            {
+            if (mouseDown) {
                 Form parent = this.ParentForm;
-                if (parent != null)
-                {
-                    if (parent.WindowState == FormWindowState.Maximized)
-                    {
+                if (parent != null) {
+                    if (parent.WindowState == FormWindowState.Maximized) {
                         var ox = parent.Location.X;
                         var width = parent.Width;
                         parent.WindowState = FormWindowState.Normal;
@@ -202,42 +171,35 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
             }
         }
 
-        protected override void OnMouseUp(MouseEventArgs e)
-        {
+        protected override void OnMouseUp(MouseEventArgs e) {
             base.OnMouseUp(e);
 
-            if (e.Button == MouseButtons.Left)
-            {
+            if (e.Button == MouseButtons.Left) {
                 Form parent = this.ParentForm;
-                if (parent != null)
-                {
+                if (parent != null) {
                     mouseDown = false;
                     Point pos = Cursor.Position;
                     if (parent.WindowState == FormWindowState.Normal &&
-                        pos.Y < 30)
-                    {
+                        pos.Y < 30) {
                         SwapMaximized();
                     }
                 }
             }
         }
 
-        protected override void OnDoubleClick(EventArgs e)
-        {
+        protected override void OnDoubleClick(EventArgs e) {
             base.OnDoubleClick(e);
 
             SwapMaximized();
         }
 
-        protected override void OnClick(EventArgs e)
-        {
+        protected override void OnClick(EventArgs e) {
             base.OnClick(e);
 
             titleLabel.Focus();
         }
 
-        private Button MakeFlatBtn()
-        {
+        private Button MakeFlatBtn() {
             Button btn = new Button();
             btn.Font = btnFont;
             btn.FlatStyle = FlatStyle.Flat;
@@ -252,28 +214,25 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
         }
 
 
-        private void Close_Click(object sender, EventArgs e)
-        {
-            if (this.ParentForm != null)
-            {
+        private void Close_Click(object sender, EventArgs e) {
+            if (this.ParentForm != null) {
                 this.ParentForm.Close();
             }
             //Application.Exit();
         }
 
-        public bool EnableShadowBorder { get; set; }
-
-        protected override void OnParentChanged(EventArgs e)
-        {
+        protected override void OnParentChanged(EventArgs e) {
             base.OnParentChanged(e);
 
-            if (Parent != null)
-            {
-                if (EnableShadowBorder) {
-                    this.Width = Parent.ClientSize.Width - 7;
-                } else {
-                    this.Width = Parent.ClientSize.Width;
-                }
+            if (Parent != null) {
+                Parent.Resize += Parent_Resize;
+                this.Width = Parent.ClientSize.Width;
+            }
+        }
+
+        private void Parent_Resize(object sender, EventArgs e) {
+            if (Parent != null) {
+                this.Width = Parent.ClientSize.Width;
             }
         }
     }

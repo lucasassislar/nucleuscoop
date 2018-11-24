@@ -56,8 +56,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetZip, Version=1.11.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetZip.1.11.0\lib\net20\DotNetZip.dll</HintPath>
+    <Reference Include="DotNetZip, Version=1.12.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.12.0\lib\net20\DotNetZip.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -219,7 +219,7 @@
     <Compile Include="Platform\Windows\Interop\Kernel32\IniFile.cs" />
     <None Include="Platform\Windows\Interop\Interceptor\Win32.cs" />
     <None Include="Platform\Windows\Interop\Interceptor\Win32EnumWindows.cs" />
-    <None Include="Platform\Windows\Interop\Interceptor\Win32Messages.cs" />
+    <Compile Include="Platform\Windows\Interop\Interceptor\Win32Messages.cs" />
     <None Include="Platform\Windows\Interop\Interceptor\WindowInterceptor.cs" />
     <Compile Include="Platform\Windows\Interop\User32\User32Util.cs" />
     <Compile Include="Platform\Windows\Interop\User32\User32Interop.cs" />

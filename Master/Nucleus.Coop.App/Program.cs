@@ -7,7 +7,6 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Nucleus.Gaming.Coop;
-using Squirrel;
 using System.Threading;
 using Nucleus.Coop.App.Forms;
 using Nucleus.Gaming.Coop.Interop;
@@ -40,54 +39,27 @@ namespace Nucleus.Coop
 
             GameManager gameManager = new GameManager();
 
-            //DomainWebApiConnection apiConnection = new DomainWebApiConnection();
-            //apiConnection.Initialize();
-
-            //bool isTokenExpired = gameManager.User.LastTokenDate.Add(TimeSpan.FromDays(14)) < DateTime.UtcNow;
-
-            //if (string.IsNullOrWhiteSpace(gameManager.User.LastToken) ||
-            //    isTokenExpired)
-            //{
-            //    LoginForm loginForm = new LoginForm(apiConnection);
-            //    DPIManager.AddForm(loginForm);
-            //    DPIManager.ForceUpdate();
-
-            //    if (loginForm.ShowDialog() == DialogResult.OK)
-            //    {
-            //        // save login credentials
-            //        gameManager.User.UpdateToken(apiConnection.Token);
-            //        StartMainForm(args, gameManager, apiConnection);
-            //    }
-            //}
-            //else
-            //{
-            //    // saved credentials
-            //    apiConnection.SetToken(gameManager.User.LastToken);
-
-            //    StartMainForm(args, gameManager, apiConnection);
-            //}
-
             StartMainForm(args, gameManager);
         }
 
         private static void StartMainForm(string[] args, GameManager gameManager)
         {
             MainForm form = new MainForm(args, gameManager);
-            //DPIManager.AddForm(form);
-            //DPIManager.ForceUpdate();
 
             Application.Run(form);
         }
 
+#if DEBUG
         private static void ThreadExceptionEventHandler(object sender, ThreadExceptionEventArgs e)
         {
-            int x = 0;
+            System.Diagnostics.Debugger.Break();
         }
 
         private static void UnhandledExceptionEventHandler(object sender, UnhandledExceptionEventArgs e)
         {
-            int x = 0;
+            System.Diagnostics.Debugger.Break();
         }
+#endif
     }
 
 

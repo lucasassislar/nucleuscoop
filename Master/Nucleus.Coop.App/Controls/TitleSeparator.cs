@@ -26,7 +26,7 @@ namespace Nucleus.Coop.App.Controls
             InitializeComponent();
 
             this.BackColor = Color.Transparent;
-            this.Height = 20;
+            this.Height = 30;
 
             titleFont = new Font(this.Font.FontFamily, 10, FontStyle.Regular);
 

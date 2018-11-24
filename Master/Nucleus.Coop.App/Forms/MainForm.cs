@@ -47,6 +47,7 @@ namespace Nucleus.Coop.App.Forms {
             get { return this.gamePageBrowserControl1; }
         }
 
+
         public MainForm(string[] args, GameManager gameManager) {
             this.gameManager = gameManager;
             Instance = this;
@@ -99,6 +100,22 @@ namespace Nucleus.Coop.App.Forms {
 
                 gameManager.User.Save();
             }
+        }
+
+        protected override void OnResize(EventArgs e) {
+            base.OnResize(e);
+
+            // check window state
+            Size thisSize = this.Size;
+            if (WindowState == FormWindowState.Normal) {
+                // increase borders for easier resizing
+                this.panel_formContent.Size = new Size(thisSize.Width - 10, thisSize.Height - 10);
+                this.panel_formContent.Location = new Point(5, 5);
+            } else if (WindowState == FormWindowState.Maximized) {
+                this.panel_formContent.Size = new Size(thisSize.Width, thisSize.Height);
+                this.panel_formContent.Location = new Point(0, 0);
+            }
+            UpdatePageSizes();
         }
 
         protected override void OnGotFocus(EventArgs e) {
@@ -229,45 +246,75 @@ namespace Nucleus.Coop.App.Forms {
             // game btns
             gamePageBrowserControl1.Visible = false;
 
-            BasePageControl page = null;
             switch (appPage) {
                 case AppPage.NoGamesInstalled:
                     ChangeTitle("No games installed");
                     noGamesInstalledPageControl1.Visible = true;
-                    page = this.noGamesInstalledPageControl1;
                     break;
                 case AppPage.GameHandler:
                     gamePageControl1.Visible = true;
                     gamePageBrowserControl1.Visible = true;
-                    page = this.gamePageControl1;
                     break;
                 case AppPage.PackageManager:
                     ChangeTitle("Package Manager");
                     handlerManagerControl1.Visible = true;
-                    page = this.handlerManagerControl1;
                     break;
                 case AppPage.GameManager:
                     ChangeTitle("Game Manager");
-                    page = this.gameManagerPageControl1;
                     break;
             }
 
-            // dont curse me
-            int listWidth = list_games.ClientSize.Width;
-            int thisWidth = panel_formContent.ClientSize.Width;
-            if (page != null && page.RequiredTitleBarWidth > 0) {
-                panel_pageTitle.Width = thisWidth - listWidth - page.RequiredTitleBarWidth;
-                panel_pageTitle.Left = listWidth + page.RequiredTitleBarWidth;
-                panel_allPages.Height = panel_formContent.Height;
-                panel_allPages.Top = 0;
+            UpdatePageSizes();
+        }
 
-                // force bring to front
-                panel_pageTitle.BringToFront();
-            } else {
-                panel_pageTitle.Width = thisWidth - listWidth;
+        private BasePageControl GetPageControl(AppPage appPage) {
+            // crap
+            switch (appPage) {
+                case AppPage.NoGamesInstalled:
+                    return this.noGamesInstalledPageControl1;
+                case AppPage.GameHandler:
+                    return this.gamePageControl1;
+                case AppPage.PackageManager:
+                    return this.handlerManagerControl1;
+                case AppPage.GameManager:
+                    return this.gameManagerPageControl1;
+                default:
+                    return null;
+            }
+        }
+
+        private void UpdatePageSizes() {
+            // dont curse me
+            BasePageControl page = GetPageControl(this.appPage);
+            int listWidth = list_games.Size.Width;
+            int panelWidth = panel_formContent.Size.Width;
+            bool changed = false;
+
+            if (page != null) {
+                page.Location = new Point(0, 0);
+
+                if (page.RequiredTitleBarWidth > 0) {
+                    changed = true;
+                    panel_pageTitle.Width = panelWidth - listWidth - page.RequiredTitleBarWidth;
+                    panel_pageTitle.Left = listWidth + page.RequiredTitleBarWidth;
+                    panel_allPages.Width = panelWidth - listWidth;
+                    panel_allPages.Height = panel_formContent.Height - titleBarControl1.Height;
+                    panel_allPages.Top = titleBarControl1.Height;
+
+                    // force bring to front
+                    panel_pageTitle.BringToFront();
+                }
+
+                page.Size = panel_allPages.Size;
+            }
+
+            if (!changed)
+            {
+                panel_pageTitle.Width = panelWidth - listWidth;
                 panel_pageTitle.Left = listWidth;
-                panel_allPages.Height = panel_formContent.Height - panel_pageTitle.Height;
-                panel_allPages.Top = panel_pageTitle.Height;
+                panel_allPages.Width = panelWidth - listWidth;
+                panel_allPages.Height = panel_formContent.Height - panel_pageTitle.Height - titleBarControl1.Height;
+                panel_allPages.Top = panel_pageTitle.Height + titleBarControl1.Height;
             }
         }
 
