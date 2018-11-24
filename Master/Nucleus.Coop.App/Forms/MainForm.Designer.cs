@@ -40,6 +40,7 @@
             this.noGamesInstalledPageControl1 = new Nucleus.Coop.App.Controls.Pages.NoGamesInstalledPageControl();
             this.handlerManagerControl1 = new Nucleus.Coop.App.Controls.HandlerManagerControl();
             this.gameManagerPageControl1 = new Nucleus.Coop.App.Controls.Pages.GameManagerPageControl();
+            this.panel_bottomLine = new System.Windows.Forms.Panel();
             this.panel_formContent.SuspendLayout();
             this.panel_pageTitle.SuspendLayout();
             this.panel_allPages.SuspendLayout();
@@ -54,7 +55,7 @@
             this.titleBarControl1.Location = new System.Drawing.Point(0, 0);
             this.titleBarControl1.Margin = new System.Windows.Forms.Padding(0);
             this.titleBarControl1.Name = "titleBarControl1";
-            this.titleBarControl1.Size = new System.Drawing.Size(1067, 21);
+            this.titleBarControl1.Size = new System.Drawing.Size(1000, 21);
             this.titleBarControl1.TabIndex = 24;
             // 
             // panel_formContent
@@ -69,7 +70,7 @@
             this.panel_formContent.Controls.Add(this.panel_allPages);
             this.panel_formContent.Location = new System.Drawing.Point(0, 0);
             this.panel_formContent.Name = "panel_formContent";
-            this.panel_formContent.Size = new System.Drawing.Size(1067, 657);
+            this.panel_formContent.Size = new System.Drawing.Size(1000, 661);
             this.panel_formContent.TabIndex = 34;
             // 
             // panel_pageTitle
@@ -77,13 +78,13 @@
             this.panel_pageTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel_pageTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
-            this.panel_pageTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_pageTitle.Controls.Add(this.panel_bottomLine);
             this.panel_pageTitle.Controls.Add(this.gamePageBrowserControl1);
             this.panel_pageTitle.Controls.Add(this.gameNameControl);
             this.panel_pageTitle.Location = new System.Drawing.Point(272, 21);
             this.panel_pageTitle.Margin = new System.Windows.Forms.Padding(0);
             this.panel_pageTitle.Name = "panel_pageTitle";
-            this.panel_pageTitle.Size = new System.Drawing.Size(795, 52);
+            this.panel_pageTitle.Size = new System.Drawing.Size(728, 52);
             this.panel_pageTitle.TabIndex = 33;
             // 
             // gamePageBrowserControl1
@@ -92,7 +93,7 @@
             this.gamePageBrowserControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
             this.gamePageBrowserControl1.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.gamePageBrowserControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.gamePageBrowserControl1.Location = new System.Drawing.Point(615, 5);
+            this.gamePageBrowserControl1.Location = new System.Drawing.Point(550, 5);
             this.gamePageBrowserControl1.Margin = new System.Windows.Forms.Padding(8);
             this.gamePageBrowserControl1.Name = "gamePageBrowserControl1";
             this.gamePageBrowserControl1.Size = new System.Drawing.Size(156, 41);
@@ -104,7 +105,7 @@
             this.gameNameControl.GameInfo = null;
             this.gameNameControl.Location = new System.Drawing.Point(3, 2);
             this.gameNameControl.Name = "gameNameControl";
-            this.gameNameControl.Size = new System.Drawing.Size(791, 46);
+            this.gameNameControl.Size = new System.Drawing.Size(722, 46);
             this.gameNameControl.TabIndex = 13;
             // 
             // list_games
@@ -118,7 +119,7 @@
             this.list_games.Margin = new System.Windows.Forms.Padding(0);
             this.list_games.Name = "list_games";
             this.list_games.Offset = new System.Drawing.Size(0, 2);
-            this.list_games.Size = new System.Drawing.Size(272, 636);
+            this.list_games.Size = new System.Drawing.Size(272, 640);
             this.list_games.TabIndex = 3;
             // 
             // panel_allPages
@@ -132,7 +133,7 @@
             this.panel_allPages.Controls.Add(this.gameManagerPageControl1);
             this.panel_allPages.Location = new System.Drawing.Point(272, 76);
             this.panel_allPages.Name = "panel_allPages";
-            this.panel_allPages.Size = new System.Drawing.Size(795, 581);
+            this.panel_allPages.Size = new System.Drawing.Size(728, 585);
             this.panel_allPages.TabIndex = 33;
             // 
             // gamePageControl1
@@ -148,7 +149,7 @@
             this.gamePageControl1.Margin = new System.Windows.Forms.Padding(8);
             this.gamePageControl1.Name = "gamePageControl1";
             this.gamePageControl1.RequiredTitleBarWidth = 0;
-            this.gamePageControl1.Size = new System.Drawing.Size(795, 581);
+            this.gamePageControl1.Size = new System.Drawing.Size(728, 585);
             this.gamePageControl1.TabIndex = 2;
             this.gamePageControl1.Title = null;
             // 
@@ -165,7 +166,7 @@
             this.noGamesInstalledPageControl1.Margin = new System.Windows.Forms.Padding(8);
             this.noGamesInstalledPageControl1.Name = "noGamesInstalledPageControl1";
             this.noGamesInstalledPageControl1.RequiredTitleBarWidth = 0;
-            this.noGamesInstalledPageControl1.Size = new System.Drawing.Size(795, 581);
+            this.noGamesInstalledPageControl1.Size = new System.Drawing.Size(728, 585);
             this.noGamesInstalledPageControl1.TabIndex = 1;
             this.noGamesInstalledPageControl1.Title = "No games installed";
             // 
@@ -182,7 +183,7 @@
             this.handlerManagerControl1.Margin = new System.Windows.Forms.Padding(4);
             this.handlerManagerControl1.Name = "handlerManagerControl1";
             this.handlerManagerControl1.RequiredTitleBarWidth = 272;
-            this.handlerManagerControl1.Size = new System.Drawing.Size(795, 581);
+            this.handlerManagerControl1.Size = new System.Drawing.Size(728, 585);
             this.handlerManagerControl1.TabIndex = 0;
             this.handlerManagerControl1.Title = "Package Manager";
             // 
@@ -200,11 +201,22 @@
             this.gameManagerPageControl1.TabIndex = 3;
             this.gameManagerPageControl1.Title = null;
             // 
+            // panel_bottomLine
+            // 
+            this.panel_bottomLine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel_bottomLine.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(39)))), ((int)(((byte)(42)))));
+            this.panel_bottomLine.Location = new System.Drawing.Point(0, 49);
+            this.panel_bottomLine.Name = "panel_bottomLine";
+            this.panel_bottomLine.Size = new System.Drawing.Size(728, 1);
+            this.panel_bottomLine.TabIndex = 15;
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(1067, 657);
+            this.ClientSize = new System.Drawing.Size(1000, 661);
             this.Controls.Add(this.panel_formContent);
+            this.Cursor = System.Windows.Forms.Cursors.SizeNWSE;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(640, 360);
@@ -229,5 +241,6 @@
         private Controls.Pages.GameManagerPageControl gameManagerPageControl1;
         private Controls.GamePageBrowserControl gamePageBrowserControl1;
         private System.Windows.Forms.Panel panel_formContent;
+        private System.Windows.Forms.Panel panel_bottomLine;
     }
 }

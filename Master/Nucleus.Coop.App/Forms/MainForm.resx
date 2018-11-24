@@ -120,11 +120,11 @@
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="noGamesInstalledPageControl1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACVSURBVFhH7dexEYAgDIVhxtUVZALch1K3oKOjYop48bBU
-        0GhOvfffpQvwtRiEEHpBo3PUMn3XUzmiFz+cUqIQwuHEGCnnTHawukgGeu+rj/LePM0rVhV5BrjtqSKv
-        ADk15FUgp4KUALnHka1ARjBmb8ra/bUCjwIQQEkASgNQGoDSAJQGoLRPAFt+dbUp1yGEEPpXxizRwIgx
-        wR7FLgAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAJVJREFUWEft17ERgCAMhWHG1RVkAtyHUrego6NiinjxsFTQaE6999+lC/C1GIQQ
+        ekGjc9QyfddTOaIXP5xSohDC4cQYKedMdrC6SAZ676uP8t48zStWFXkGuO2pIq8AOTXkVSCngpQAuceR
+        rUBGMGZvytr9tQKPAhBASQBKA1AagNIAlAagtE8AW351tSnXIYQQ+lfGLNHAiDHBHsUuAAAAAElFTkSu
+        QmCC
 </value>
   </data>
   <data name="handlerManagerControl1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

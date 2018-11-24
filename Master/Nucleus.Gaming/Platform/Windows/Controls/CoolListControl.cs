@@ -55,7 +55,7 @@ namespace Nucleus.Gaming.Windows.Controls
         public CoolListControl(bool enableHightlighting)
         {
             EnableHighlighting = enableHightlighting;
-            this.BorderStyle = BorderStyle.FixedSingle;
+            //this.BorderStyle = BorderStyle.FixedSingle;
 
             Size = new Size(400, 120);
             BackColor = ColorUnselected;

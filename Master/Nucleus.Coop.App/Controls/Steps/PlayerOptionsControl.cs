@@ -196,6 +196,14 @@ namespace Nucleus.Gaming.Coop.Controls
                     box.SelectedValueChanged += box_SelectedValueChanged;
                     ChangeOption(box.Tag, box.SelectedItem);
                 }
+
+                UserControl bottomLine = new UserControl();
+                bottomLine.Width = cool.Width;
+                bottomLine.Height = 1;
+                bottomLine.Top = cool.Height - 1;
+                bottomLine.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+                bottomLine.BackColor = Color.FromArgb(35, 39, 42);
+                cool.Controls.Add(bottomLine);
             }
 
             this.Controls.Add(list);

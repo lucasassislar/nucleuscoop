@@ -42,10 +42,11 @@ namespace Nucleus.Coop.App.Controls
 
         protected override void OnSizeChanged(EventArgs e)
         {
-            int scaledWidth = (int)(this.Width * (LineHorizontalPc / 100.0));
-            line.Width = scaledWidth;
-            line.Left = (this.Width / 2) - (scaledWidth / 2);
-
+            if (Parent != null) {
+                int scaledWidth = (int)(Parent.Width * (LineHorizontalPc / 100.0));
+                line.Width = scaledWidth;
+                line.Left = (this.Width / 2) - (scaledWidth / 2);
+            }
             base.OnSizeChanged(e);
         }
     }
