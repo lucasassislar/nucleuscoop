@@ -32,8 +32,8 @@
             this.titleBarControl1 = new Nucleus.Gaming.Platform.Windows.Controls.TitleBarControl();
             this.panel_formContent = new System.Windows.Forms.Panel();
             this.panel_pageTitle = new System.Windows.Forms.Panel();
-            this.gameNameControl = new Nucleus.Coop.Controls.GameNameControl();
             this.gamePageBrowserControl1 = new Nucleus.Coop.App.Controls.GamePageBrowserControl();
+            this.gameNameControl = new Nucleus.Coop.Controls.GameNameControl();
             this.list_games = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
             this.panel_allPages = new System.Windows.Forms.Panel();
             this.gamePageControl1 = new Nucleus.Coop.App.Controls.GamePageControl();
@@ -86,15 +86,6 @@
             this.panel_pageTitle.Size = new System.Drawing.Size(795, 52);
             this.panel_pageTitle.TabIndex = 33;
             // 
-            // gameNameControl
-            // 
-            this.gameNameControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
-            this.gameNameControl.GameInfo = null;
-            this.gameNameControl.Location = new System.Drawing.Point(3, 2);
-            this.gameNameControl.Name = "gameNameControl";
-            this.gameNameControl.Size = new System.Drawing.Size(791, 46);
-            this.gameNameControl.TabIndex = 13;
-            // 
             // gamePageBrowserControl1
             // 
             this.gamePageBrowserControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -106,6 +97,15 @@
             this.gamePageBrowserControl1.Name = "gamePageBrowserControl1";
             this.gamePageBrowserControl1.Size = new System.Drawing.Size(156, 41);
             this.gamePageBrowserControl1.TabIndex = 14;
+            // 
+            // gameNameControl
+            // 
+            this.gameNameControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
+            this.gameNameControl.GameInfo = null;
+            this.gameNameControl.Location = new System.Drawing.Point(3, 2);
+            this.gameNameControl.Name = "gameNameControl";
+            this.gameNameControl.Size = new System.Drawing.Size(791, 46);
+            this.gameNameControl.TabIndex = 13;
             // 
             // list_games
             // 
@@ -195,7 +195,6 @@
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
             this.ClientSize = new System.Drawing.Size(1067, 657);
             this.Controls.Add(this.panel_formContent);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -207,7 +206,6 @@
             this.panel_pageTitle.ResumeLayout(false);
             this.panel_allPages.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
 
         #endregion

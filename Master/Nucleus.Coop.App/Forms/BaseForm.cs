@@ -18,14 +18,7 @@ namespace Nucleus.Coop {
         private const int cCaption = 32;   // Caption bar height;
         private MouseMessageFilter filter;
 
-        protected override CreateParams CreateParams {
-            get {
-                const int CS_DROPSHADOW = 0x20000;
-                CreateParams cp = base.CreateParams;
-                cp.ClassStyle |= CS_DROPSHADOW;
-                return cp;
-            }
-        }
+        public Panel FormContent { get; set; }
 
         public BaseForm() {
             // Default DPI = 96 = 100%
@@ -41,6 +34,12 @@ namespace Nucleus.Coop {
             Name = "BaseForm";
             Text = "BaseForm";
 
+            // Background is transparent for resizing system
+            // Inheriting classes should override the OnResize function
+            // and have all its control
+            this.TransparencyKey = Color.Turquoise;
+            this.BackColor = Color.Turquoise;
+
             this.DoubleBuffered = true;
             this.SetStyle(ControlStyles.ResizeRedraw, true); // this is to avoid visual artifacts
 
@@ -49,43 +48,33 @@ namespace Nucleus.Coop {
 
             DPIManager.Register(this);
 
-            //this.ControlAdded += BaseForm_ControlAdded;
             filter = new MouseMessageFilter();
             filter.StartFiltering();
-
-            //this.MouseMove += BaseForm_MouseMove;
-            //this.MouseDown += BaseForm_MouseDown;
-            //this.MouseUp += BaseForm_MouseUp;
 
             filter.MouseMove += BaseForm_MouseMove;
             filter.MouseDown += BaseForm_MouseDown;
             filter.MouseUp += BaseForm_MouseUp;
         }
 
-
-        private void BaseForm_ControlAdded(object sender, ControlEventArgs e) {
-            e.Control.ControlAdded += BaseForm_ControlAdded;
-            e.Control.MouseMove += BaseForm_MouseMove;
-            e.Control.MouseDown += BaseForm_MouseDown;
-            e.Control.MouseUp += BaseForm_MouseUp;
-
-            // TODO: find a better way to get mouse events everywhere
-            //RecursiveSetMouseEvents(e.Control);
-        }
-
-        private void RecursiveSetMouseEvents(Control c) {
-            foreach (Control child in c.Controls) {
-                child.ControlAdded += BaseForm_ControlAdded;
-                child.MouseMove += BaseForm_MouseMove;
-                child.MouseDown += BaseForm_MouseDown;
-                child.MouseUp += BaseForm_MouseUp;
-
-                RecursiveSetMouseEvents(child);
-            }
-        }
-
         ~BaseForm() {
             DPIManager.Unregister(this);
+        }
+
+        protected override void OnResize(EventArgs e) {
+            base.OnResize(e);
+
+            // check window state
+            if (FormContent != null) {
+                Size thisSize = this.Size;
+                if (WindowState == FormWindowState.Normal) {
+                    // increase borders for easier resizing
+                    this.FormContent.Size = new Size(thisSize.Width - 10, thisSize.Height - 10);
+                    this.FormContent.Location = new Point(5, 5);
+                } else if (WindowState == FormWindowState.Maximized) {
+                    this.FormContent.Size = new Size(thisSize.Width, thisSize.Height);
+                    this.FormContent.Location = new Point(0, 0);
+                }
+            }
         }
 
         public void UpdateSize(float scale) {
@@ -172,52 +161,58 @@ namespace Nucleus.Coop {
                 return;
             }
 
-            if (mouseCorner == MovementDirection.None || !mouseDown) {
-                Point cursor = Cursor.Position;
+            Point cursor = Cursor.Position;
+            Cursor newCursor = null;
+            MovementDirection newMouseDirection = MovementDirection.None;
 
-                if ((cursor.X > ((this.Location.X + this.Width) - borderDiameter)) &&
-                    (cursor.Y > (this.Location.Y + borderSpace)) &&
-                    (cursor.Y < ((this.Location.Y + this.Height) - borderSpace))) {
-                    this.Cursor = Cursors.SizeWE;
-                    mouseCorner = MovementDirection.Right;
-                } else if ((cursor.X < (this.Location.X + borderDiameter)) &&
-                    (cursor.Y > (this.Location.Y + borderSpace)) &&
-                    (cursor.Y < ((this.Location.Y + this.Height) - borderSpace))) {
-                    this.Cursor = Cursors.SizeWE;
-                    mouseCorner = MovementDirection.Left;
-                } else if ((cursor.Y < (this.Location.Y + topBorderDiameter)) &&
-                    (cursor.X > (this.Location.X + borderSpace)) &&
-                    (cursor.X < ((this.Location.X + this.Width) - borderSpace))) {
-                    this.Cursor = Cursors.SizeNS;
-                    mouseCorner = MovementDirection.Top;
-                } else if ((cursor.Y > ((this.Location.Y + this.Height) - borderDiameter)) &&
-                    (cursor.X > (this.Location.X + borderSpace)) &&
-                    (cursor.X < ((this.Location.X + this.Width) - borderSpace))) {
-                    this.Cursor = Cursors.SizeNS;
-                    mouseCorner = MovementDirection.Bottom;
-                } else if ((cursor.X > ((this.Location.X + this.Width) - borderDiameter)) &&
-                    (cursor.Y < (this.Location.Y + borderDiameter))) {
-                    this.Cursor = Cursors.SizeNESW;
-                    mouseCorner = MovementDirection.TopRight;
-                } else if ((cursor.X < (this.Location.X + borderDiameter)) &&
-                    (cursor.Y < (this.Location.Y + borderDiameter))) {
-                    this.Cursor = Cursors.SizeNWSE;
-                    mouseCorner = MovementDirection.TopLeft;
-                } else if ((cursor.X > ((this.Location.X + this.Width) - borderDiameter)) &&
-                    (cursor.Y > ((this.Location.Y + this.Height) - borderDiameter))) {
-                    this.Cursor = Cursors.SizeNWSE;
-                    mouseCorner = MovementDirection.BottomRight;
-                } else if ((cursor.X < (this.Location.X + borderDiameter)) &&
-                    (cursor.Y > ((this.Location.Y + this.Height) - borderDiameter))) {
-                    this.Cursor = Cursors.SizeNESW;
-                    mouseCorner = MovementDirection.BottomLeft;
-                } else {
-                    this.Cursor = Cursors.Default;
-                    mouseCorner = MovementDirection.None;
-                }
+            if ((cursor.X > ((this.Location.X + this.Width) - borderDiameter)) &&
+                (cursor.Y > (this.Location.Y + borderSpace)) &&
+                (cursor.Y < ((this.Location.Y + this.Height) - borderSpace))) {
+                newCursor = Cursors.SizeWE;
+                newMouseDirection = MovementDirection.Right;
+            } else if ((cursor.X < (this.Location.X + borderDiameter)) &&
+                (cursor.Y > (this.Location.Y + borderSpace)) &&
+                (cursor.Y < ((this.Location.Y + this.Height) - borderSpace))) {
+                newCursor = Cursors.SizeWE;
+                newMouseDirection = MovementDirection.Left;
+            } else if ((cursor.Y < (this.Location.Y + topBorderDiameter)) &&
+                (cursor.X > (this.Location.X + borderSpace)) &&
+                (cursor.X < ((this.Location.X + this.Width) - borderSpace))) {
+                newCursor = Cursors.SizeNS;
+                newMouseDirection = MovementDirection.Top;
+            } else if ((cursor.Y > ((this.Location.Y + this.Height) - borderDiameter)) &&
+                (cursor.X > (this.Location.X + borderSpace)) &&
+                (cursor.X < ((this.Location.X + this.Width) - borderSpace))) {
+                newCursor = Cursors.SizeNS;
+                newMouseDirection = MovementDirection.Bottom;
+            } else if ((cursor.X > ((this.Location.X + this.Width) - borderDiameter)) &&
+                (cursor.Y < (this.Location.Y + borderDiameter))) {
+                newCursor = Cursors.SizeNESW;
+                newMouseDirection = MovementDirection.TopRight;
+            } else if ((cursor.X < (this.Location.X + borderDiameter)) &&
+                (cursor.Y < (this.Location.Y + borderDiameter))) {
+                newCursor = Cursors.SizeNWSE;
+                newMouseDirection = MovementDirection.TopLeft;
+            } else if ((cursor.X > ((this.Location.X + this.Width) - borderDiameter)) &&
+                (cursor.Y > ((this.Location.Y + this.Height) - borderDiameter))) {
+                newCursor = Cursors.SizeNWSE;
+                newMouseDirection = MovementDirection.BottomRight;
+            } else if ((cursor.X < (this.Location.X + borderDiameter)) &&
+                (cursor.Y > ((this.Location.Y + this.Height) - borderDiameter))) {
+                newCursor = Cursors.SizeNESW;
+                newMouseDirection = MovementDirection.BottomLeft;
             } else {
-                startResizer();
+                newCursor = Cursors.Default;
+                newMouseDirection = MovementDirection.None;
             }
+
+            if (!mouseDown) {
+                // not holding the mouse button, we can change state
+                this.Cursor = newCursor;
+                this.mouseCorner = newMouseDirection;
+            }
+
+            startResizer();
         }
 
         private void startResizer() {
@@ -269,7 +264,7 @@ namespace Nucleus.Coop {
             mouseDown = false;
             mouseCorner = MovementDirection.None;
             this.Cursor = Cursors.Default;
-            Thread.Sleep(300);
+            //Thread.Sleep(300);
         }
     }
 }

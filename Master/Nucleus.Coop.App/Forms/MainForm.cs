@@ -54,8 +54,7 @@ namespace Nucleus.Coop.App.Forms {
 
             InitializeComponent();
 
-            this.TransparencyKey = Color.Turquoise;
-            this.BackColor = Color.Turquoise;
+            this.FormContent = this.panel_formContent;
 
             overlay = new GameRunningOverlay();
             overlay.OnStop += Overlay_OnStop;
@@ -104,17 +103,6 @@ namespace Nucleus.Coop.App.Forms {
 
         protected override void OnResize(EventArgs e) {
             base.OnResize(e);
-
-            // check window state
-            Size thisSize = this.Size;
-            if (WindowState == FormWindowState.Normal) {
-                // increase borders for easier resizing
-                this.panel_formContent.Size = new Size(thisSize.Width - 10, thisSize.Height - 10);
-                this.panel_formContent.Location = new Point(5, 5);
-            } else if (WindowState == FormWindowState.Maximized) {
-                this.panel_formContent.Size = new Size(thisSize.Width, thisSize.Height);
-                this.panel_formContent.Location = new Point(0, 0);
-            }
             UpdatePageSizes();
         }
 
