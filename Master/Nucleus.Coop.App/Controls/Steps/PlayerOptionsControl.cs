@@ -76,6 +76,7 @@ namespace Nucleus.Gaming.Coop.Controls
                 cool.Width = list.Width;
                 cool.TitleFont = nameFont;
                 cool.DetailsFont = detailsFont;
+                cool.EnableClicking = false;
 
                 list.Controls.Add(cool);
 

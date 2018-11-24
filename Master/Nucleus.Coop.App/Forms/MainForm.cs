@@ -113,7 +113,10 @@ namespace Nucleus.Coop.App.Forms {
             System.Diagnostics.Debug.WriteLine("Got Focus");
         }
 
+        private GameControl pkgManagerBtn;
+
         public void RefreshGames() {
+
             lock (controls) {
                 foreach (var con in controls) {
                     if (con.Value != null) {
@@ -131,12 +134,12 @@ namespace Nucleus.Coop.App.Forms {
                 }
 
                 // make menu before games
-                GameControl pkgManagerBtn = new GameControl();
+                pkgManagerBtn = new GameControl();
                 pkgManagerBtn.Width = list_games.Width;
                 pkgManagerBtn.TitleText = "Package Manager";
-                pkgManagerBtn.Image = Properties.Resources.icon;
+                pkgManagerBtn.Image = Properties.Resources.nucleus;
                 pkgManagerBtn.Click += PkgManagerBtn_Click;
-                this.list_games.Controls.Add(pkgManagerBtn);
+                this.list_games.Controls.Add(pkgManagerBtn);                
 
                 //GameControl gameManagerBtn = new GameControl(null);
                 //gameManagerBtn.Width = list_games.Width;
@@ -160,7 +163,7 @@ namespace Nucleus.Coop.App.Forms {
                 List<UserGameInfo> games = gameManager.User.Games;
                 for (int i = 0; i < games.Count; i++) {
                     UserGameInfo game = games[i];
-                    NewUserGame(game);
+                    GameControl gameControl = NewUserGame(game);
                 }
 
                 if (games.Count == 0) {
@@ -178,31 +181,37 @@ namespace Nucleus.Coop.App.Forms {
             UpdatePage();
 
             gameManager.User.Save();
+
+            // auto-click pkg manager to not open with nothing selected
+            PkgManagerBtn_Click(pkgManagerBtn, EventArgs.Empty);
+            pkgManagerBtn.RadioSelected();
         }
 
-        public void NewUserGame(UserGameInfo game) {
+        public GameControl NewUserGame(UserGameInfo game) {
             if (!game.IsGamePresent()) {
-                return;
+                return null;
             }
 
             if (noGamesPresent) {
                 noGamesPresent = false;
                 RefreshGames();
-                return;
+                return null;
             }
 
             // get all Repository Game Infos
             GameControl con = new GameControl();
             con.SetUserGame(game);
             con.Width = list_games.Width;
-            con.Click += Con_Click1;
+            con.Click += Game_Click;
             controls.Add(game, con);
             this.list_games.Controls.Add(con);
 
             ThreadPool.QueueUserWorkItem(GetIcon, game);
+
+            return con;
         }
 
-        private void Con_Click1(object sender, EventArgs e) {
+        private void Game_Click(object sender, EventArgs e) {
             GameControl gameCon = (GameControl)sender;
             gamePageControl1.ChangeSelectedGame(gameCon.UserGameInfo);
 
@@ -236,7 +245,7 @@ namespace Nucleus.Coop.App.Forms {
 
             switch (appPage) {
                 case AppPage.NoGamesInstalled:
-                    ChangeTitle("No games installed");
+                    ChangeTitle(noGamesInstalledPageControl1.Title, noGamesInstalledPageControl1.Image);
                     noGamesInstalledPageControl1.Visible = true;
                     break;
                 case AppPage.GameHandler:
@@ -244,7 +253,7 @@ namespace Nucleus.Coop.App.Forms {
                     gamePageBrowserControl1.Visible = true;
                     break;
                 case AppPage.PackageManager:
-                    ChangeTitle("Package Manager");
+                    ChangeTitle(handlerManagerControl1.Title, handlerManagerControl1.Image);
                     handlerManagerControl1.Visible = true;
                     break;
                 case AppPage.GameManager:
@@ -277,6 +286,13 @@ namespace Nucleus.Coop.App.Forms {
             int listWidth = list_games.Size.Width;
             int panelWidth = panel_formContent.Size.Width;
             bool changed = false;
+
+            // fix 1 px border looking weird with the paging system
+            if (appPage == AppPage.GameHandler) {
+                panel_allPages.Left = listWidth - 1;
+            }else {
+                panel_allPages.Left = listWidth;
+            }
 
             if (page != null) {
                 page.Location = new Point(0, 0);

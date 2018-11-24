@@ -48,6 +48,8 @@ namespace Nucleus.Gaming.App.Controls
         private Image genericImg;
         
         private Image keyboardImg;
+        private Brush lightWhite;
+        private Pen lightWhitePen;
 
         public override bool CanProceed
         {
@@ -102,6 +104,11 @@ namespace Nucleus.Gaming.App.Controls
             gamepadImg = Resources.gamepad;
             genericImg = Resources.generic;
             keyboardImg = Resources.keyboard;
+
+            this.Image = Resources._4players;
+
+            lightWhite = new SolidBrush(Color.FromArgb(240, 240, 240));
+            lightWhitePen = new Pen(lightWhite);
 
             RemoveFlicker();
         }
@@ -1030,8 +1037,8 @@ namespace Nucleus.Gaming.App.Controls
             for (int i = 0; i < screens.Length; i++)
             {
                 UserScreen s = screens[i];
-                g.DrawRectangle(Pens.White, s.UIBounds);
-                g.DrawRectangle(Pens.White, s.SwapTypeBounds);
+                g.DrawRectangle(lightWhitePen, s.UIBounds);
+                g.DrawRectangle(lightWhitePen, s.SwapTypeBounds);
 
                 switch (s.Type)
                 {
@@ -1078,7 +1085,7 @@ namespace Nucleus.Gaming.App.Controls
                         GamepadButtonFlags flags = (GamepadButtonFlags)info.GamepadMask;
                         //g.DrawString(flags.ToString(), smallTextFont, Brushes.White, new PointF(loc.X, loc.Y + gamepadRect.Height * 0.01f));
 
-                        g.DrawString((info.GamepadId + 1).ToString(), playerFont, Brushes.White, loc);
+                        g.DrawString((info.GamepadId + 1).ToString(), playerFont, lightWhite, loc);
                         g.DrawImage(gamepadImg, gamepadRect);
                     }
                     else if (info.IsKeyboardPlayer)
@@ -1088,7 +1095,7 @@ namespace Nucleus.Gaming.App.Controls
                     else
                     {
                         loc.X = s.X;
-                        g.DrawString(info.GamepadName, playerTextFont, Brushes.White, loc);
+                        g.DrawString(info.GamepadName, playerTextFont, lightWhite, loc);
                         g.DrawImage(genericImg, gamepadRect);
                     }
 
@@ -1111,17 +1118,17 @@ namespace Nucleus.Gaming.App.Controls
                 g.DrawRectangle(Pens.Red, draggingScreenRec);
             }
 
-            g.DrawString("Gamepads", playerTextFont, Brushes.White, new PointF(10, 10));
+            g.DrawString("Gamepads", playerTextFont, lightWhite, new PointF(10, 10));
 
             SizeF dragEachGamepadSize;
             string dragEachGamepad = "Drag each gamepad to a screen";
             dragEachGamepad = StringUtil.WrapString(Width * 0.6f, dragEachGamepad, g, playerTextFont, out dragEachGamepadSize);
-            g.DrawString(dragEachGamepad, playerTextFont, Brushes.White, new PointF(Width - dragEachGamepadSize.Width, playersArea.Y));
+            g.DrawString(dragEachGamepad, playerTextFont, lightWhite, new PointF(Width - dragEachGamepadSize.Width, playersArea.Y));
 
             SizeF bottomTextSize;
             string bottomText = "Click on screen's top-left corner to change players on that screen. Right click the player to change size";
             bottomText = StringUtil.WrapString(Width - 20, bottomText, g, playerTextFont, out bottomTextSize);
-            g.DrawString(bottomText, playerTextFont, Brushes.White, new PointF(10, Height - bottomTextSize.Height - 10));
+            g.DrawString(bottomText, playerTextFont, lightWhite, new PointF(10, Height - bottomTextSize.Height - 10));
         }
     }
 }

@@ -15,6 +15,7 @@ using Nucleus.Gaming.Platform.Windows;
 using Nucleus.Coop.App.Forms;
 using System.IO;
 using Nucleus.Gaming;
+using Nucleus.Coop.App.Properties;
 
 namespace Nucleus.Coop.App.Controls {
     public partial class HandlerManagerControl : BasePageControl {
@@ -29,6 +30,9 @@ namespace Nucleus.Coop.App.Controls {
 
             titleBarWidth = list_left.Width;
             bool designMode = (LicenseManager.UsageMode == LicenseUsageMode.Designtime);
+
+            this.Title = "Package Manager";
+            this.Image = Resources.nucleus;
 
             if (!designMode) {
                 LoadInstalled();

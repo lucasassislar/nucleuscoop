@@ -24,6 +24,9 @@ namespace Nucleus.Coop.App.Controls
             }
         }
 
+        public string Title { get; set; }
+        public Image Image { get; set; }
+
         public BasePageControl()
         {
             InitializeComponent();

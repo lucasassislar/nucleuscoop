@@ -130,9 +130,9 @@
             this.panel_allPages.Controls.Add(this.noGamesInstalledPageControl1);
             this.panel_allPages.Controls.Add(this.handlerManagerControl1);
             this.panel_allPages.Controls.Add(this.gameManagerPageControl1);
-            this.panel_allPages.Location = new System.Drawing.Point(272, 52);
+            this.panel_allPages.Location = new System.Drawing.Point(272, 76);
             this.panel_allPages.Name = "panel_allPages";
-            this.panel_allPages.Size = new System.Drawing.Size(795, 605);
+            this.panel_allPages.Size = new System.Drawing.Size(795, 581);
             this.panel_allPages.TabIndex = 33;
             // 
             // gamePageControl1
@@ -143,12 +143,14 @@
             this.gamePageControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
             this.gamePageControl1.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.gamePageControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.gamePageControl1.Location = new System.Drawing.Point(0, 21);
+            this.gamePageControl1.Image = null;
+            this.gamePageControl1.Location = new System.Drawing.Point(0, 0);
             this.gamePageControl1.Margin = new System.Windows.Forms.Padding(8);
             this.gamePageControl1.Name = "gamePageControl1";
             this.gamePageControl1.RequiredTitleBarWidth = 0;
-            this.gamePageControl1.Size = new System.Drawing.Size(795, 584);
+            this.gamePageControl1.Size = new System.Drawing.Size(795, 581);
             this.gamePageControl1.TabIndex = 2;
+            this.gamePageControl1.Title = null;
             // 
             // noGamesInstalledPageControl1
             // 
@@ -158,12 +160,14 @@
             this.noGamesInstalledPageControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
             this.noGamesInstalledPageControl1.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.noGamesInstalledPageControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.noGamesInstalledPageControl1.Image = ((System.Drawing.Image)(resources.GetObject("noGamesInstalledPageControl1.Image")));
             this.noGamesInstalledPageControl1.Location = new System.Drawing.Point(0, 0);
             this.noGamesInstalledPageControl1.Margin = new System.Windows.Forms.Padding(8);
             this.noGamesInstalledPageControl1.Name = "noGamesInstalledPageControl1";
             this.noGamesInstalledPageControl1.RequiredTitleBarWidth = 0;
-            this.noGamesInstalledPageControl1.Size = new System.Drawing.Size(795, 605);
+            this.noGamesInstalledPageControl1.Size = new System.Drawing.Size(795, 581);
             this.noGamesInstalledPageControl1.TabIndex = 1;
+            this.noGamesInstalledPageControl1.Title = "No games installed";
             // 
             // handlerManagerControl1
             // 
@@ -173,24 +177,28 @@
             this.handlerManagerControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
             this.handlerManagerControl1.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.handlerManagerControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.handlerManagerControl1.Image = ((System.Drawing.Image)(resources.GetObject("handlerManagerControl1.Image")));
             this.handlerManagerControl1.Location = new System.Drawing.Point(0, 0);
             this.handlerManagerControl1.Margin = new System.Windows.Forms.Padding(4);
             this.handlerManagerControl1.Name = "handlerManagerControl1";
             this.handlerManagerControl1.RequiredTitleBarWidth = 272;
-            this.handlerManagerControl1.Size = new System.Drawing.Size(795, 605);
+            this.handlerManagerControl1.Size = new System.Drawing.Size(795, 581);
             this.handlerManagerControl1.TabIndex = 0;
+            this.handlerManagerControl1.Title = "Package Manager";
             // 
             // gameManagerPageControl1
             // 
             this.gameManagerPageControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
             this.gameManagerPageControl1.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.gameManagerPageControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.gameManagerPageControl1.Image = null;
             this.gameManagerPageControl1.Location = new System.Drawing.Point(0, 0);
             this.gameManagerPageControl1.Margin = new System.Windows.Forms.Padding(8);
             this.gameManagerPageControl1.Name = "gameManagerPageControl1";
             this.gameManagerPageControl1.RequiredTitleBarWidth = 272;
             this.gameManagerPageControl1.Size = new System.Drawing.Size(782, 628);
             this.gameManagerPageControl1.TabIndex = 3;
+            this.gameManagerPageControl1.Title = null;
             // 
             // MainForm
             // 
@@ -206,6 +214,7 @@
             this.panel_pageTitle.ResumeLayout(false);
             this.panel_allPages.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         #endregion

@@ -24,6 +24,7 @@ namespace Nucleus.Coop.App.Controls {
         public Game Game { get; private set; }
         public GameHandler Handler { get; private set; }
         public GameHandlerBaseMetadata Metadata { get; private set; }
+        public bool EnableClicking { get; set; } = true;
 
         private TransparentControl mouseControl;
         public TransparentControl Mouse { get { return mouseControl; } }

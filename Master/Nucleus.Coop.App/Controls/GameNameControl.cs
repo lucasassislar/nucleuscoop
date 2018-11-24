@@ -45,7 +45,7 @@ namespace Nucleus.Coop.Controls
         {
             picture = new PictureBox();
             picture.SizeMode = PictureBoxSizeMode.StretchImage;
-            picture.BorderStyle = BorderStyle.FixedSingle;
+            //picture.BorderStyle = BorderStyle.FixedSingle;
 
             title = new Label();
             title.Text = "Nothing selected";
@@ -82,7 +82,7 @@ namespace Nucleus.Coop.Controls
 
             SuspendLayout();
 
-            border = DPIManager.Adjust(4, scale);
+            border = DPIManager.Adjust(5, scale);
             int dborder = border * 2;
             picture.Location = new Point(border, border);
 

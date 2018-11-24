@@ -23,6 +23,7 @@ namespace Nucleus.Gaming.Coop
         private PictureBox picture;
         private Label title;
         public string TitleText { get; set; }
+        public bool EnableClicking { get; set; } = true;
 
         public HandlerControl(GameHandlerMetadata metadata)
         {

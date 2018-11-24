@@ -106,10 +106,10 @@
     <Compile Include="Controls\BaseControl.Designer.cs">
       <DependentUpon>BaseControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\BasePageControl.cs">
+    <Compile Include="Controls\Pages\BasePageControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\BasePageControl.Designer.cs">
+    <Compile Include="Controls\Pages\BasePageControl.Designer.cs">
       <DependentUpon>BasePageControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\CTabControl.cs">
@@ -184,19 +184,19 @@
     <Compile Include="Controls\Pages\NoGamesInstalledPage.Designer.cs">
       <DependentUpon>NoGamesInstalledPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PlayerCountControl.cs">
+    <Compile Include="Controls\Steps\PlayerCountControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\PlayerCountControl.Designer.cs">
+    <Compile Include="Controls\Steps\PlayerCountControl.Designer.cs">
       <DependentUpon>PlayerCountControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PlayerOptionsControl.cs">
+    <Compile Include="Controls\Steps\PlayerOptionsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\PositionsControl.cs">
+    <Compile Include="Controls\Steps\PositionsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\UserInputControl.cs">
+    <Compile Include="Controls\Steps\UserInputControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\BaseForm.cs">
@@ -248,7 +248,7 @@
       <DependentUpon>SearchDisksForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <EmbeddedResource Include="Controls\BasePageControl.resx">
+    <EmbeddedResource Include="Controls\Pages\BasePageControl.resx">
       <DependentUpon>BasePageControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\GamePageBrowserControl.resx">
@@ -272,7 +272,7 @@
     <EmbeddedResource Include="Controls\Pages\NoGamesInstalledPage.resx">
       <DependentUpon>NoGamesInstalledPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\PlayerCountControl.resx">
+    <EmbeddedResource Include="Controls\Steps\PlayerCountControl.resx">
       <DependentUpon>PlayerCountControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\BaseForm.resx">

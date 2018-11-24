@@ -28,6 +28,7 @@ namespace Nucleus.Gaming.Coop
         public Color ColorSelected { get; set; } = Color.FromArgb(66, 70, 77);
         public Color ColorUnselected { get; set; } = Color.FromArgb(47, 49, 54);
         public Color ColorMouseOver { get; set; } = Color.FromArgb(54, 57, 63);
+        public bool EnableClicking { get; set; } = true;
 
         public GameControl()
         {
