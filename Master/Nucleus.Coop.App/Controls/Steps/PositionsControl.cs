@@ -74,7 +74,7 @@ namespace Nucleus.Gaming.App.Controls
         private Timer gamepadTimer;
 
         private int testDinputPlayers = -1;// 16;
-        private int testXinputPlayers = 2;// 16;
+        private int testXinputPlayers = -1;// 16;
 
         public PositionsControl()
         {
@@ -183,7 +183,6 @@ namespace Nucleus.Gaming.App.Controls
                     DeviceInstance device = devices[i];
                     bool already = false;
 
-
                     // see if this gamepad is already on a player
                     for (int j = 0; j < data.Count; j++)
                     {
@@ -219,7 +218,6 @@ namespace Nucleus.Gaming.App.Controls
             {
                 // XInput is only really enabled inside Nucleus Coop when
                 // we have 4 or less players, else we need to force DirectInput to grab everything
-
                 for (int j = 0; j < data.Count; j++)
                 {
                     PlayerInfo p = data[j];
@@ -405,9 +403,9 @@ namespace Nucleus.Gaming.App.Controls
                 {
                     // add keyboard data
                     // TODO: add keyboard back (no support for Alpha 8)
-                    //PlayerInfo kbPlayer = new PlayerInfo();
-                    //kbPlayer.IsKeyboardPlayer = true;
-                    //playerData.Add(kbPlayer);
+                    PlayerInfo kbPlayer = new PlayerInfo();
+                    kbPlayer.IsKeyboardPlayer = true;
+                    playerData.Add(kbPlayer);
                 }
 
                 // make fake data if needed

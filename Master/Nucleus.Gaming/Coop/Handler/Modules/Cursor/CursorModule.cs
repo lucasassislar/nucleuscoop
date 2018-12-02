@@ -53,7 +53,10 @@ namespace Nucleus.Gaming.Coop.Handler.Cursor
         private CursorBarrierLower _topBarrier = new CursorBarrierLower(false, 0, 0);
         private CursorBarrierUpper _bottomBarrier = new CursorBarrierUpper(false, 0, 0);
 
-        public override int Order { get { return 100; } }
+        /// <summary>
+        /// Needs to go after the GameProcessModule to access Process data
+        /// </summary>
+        public override int Order { get { return 60; } }
 
         public CursorModule()
         {
@@ -91,7 +94,7 @@ namespace Nucleus.Gaming.Coop.Handler.Cursor
 
         public override void PrePlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context)
         {
-
+            
         }
 
         public void AddOtherGameHandle(IntPtr gameHandle)
@@ -246,12 +249,22 @@ namespace Nucleus.Gaming.Coop.Handler.Cursor
 
         public override void PlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context)
         {
+            // not working?
+            //if (playerInfo.IsKeyboardPlayer) {
+            //    var processData = playerInfo.ProcessData;
+            //    Setup(processData.Process, playerInfo.MonitorBounds);
+
+            //    // block mouse to this player
+            //    LockCursorToScreen();
+
+            //    StartListeningForWindowChanges();
+            //}
         }
 
         public static bool IsNeeded(HandlerData data)
         {
 #if WINDOWS
-            return data.LockMouse;
+            return data.SupportsKeyboard;
 #else
             return false;
 #endif

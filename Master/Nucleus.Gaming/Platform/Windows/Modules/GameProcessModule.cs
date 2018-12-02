@@ -12,6 +12,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using WindowScrape.Constants;
 using WindowScrape.Types;
@@ -28,7 +29,7 @@ namespace Nucleus.Gaming.Platform.Windows
         private List<Process> attached;
         private GameHandler handler;
 
-        public override int Order { get { return int.MaxValue; } }
+        public override int Order { get { return 50; } }
 
         public override bool Initialize(GameHandler handler, HandlerData handlerData, UserGameInfo game, GameProfile profile)
         {
@@ -140,7 +141,6 @@ namespace Nucleus.Gaming.Platform.Windows
 
             int width = playerBounds.Width;
             int height = playerBounds.Height;
-            bool isFullscreen = owner.Type == UserScreenType.FullScreen;
 
             data.Position = new Point(playerBounds.X, playerBounds.Y);
             data.Size = new Size(playerBounds.Width, playerBounds.Height);
@@ -217,8 +217,7 @@ namespace Nucleus.Gaming.Platform.Windows
                             data.Finished = true;
                             Debug.WriteLine("State 2");
 
-                            if (i == players.Count - 1 && handlerData.LockMouse)
-                            {
+                            if (i == players.Count - 1 && handlerData.Hook.ClipMouse) {
                                 //last screen setuped
                                 cursorModule?.SetActiveWindow();
                             }
@@ -229,14 +228,10 @@ namespace Nucleus.Gaming.Platform.Windows
                             data.Status++;
                             Debug.WriteLine("State 1");
 
-                            if (handlerData.LockMouse)
-                            {
-                                if (p.IsKeyboardPlayer)
-                                {
+                            if (handlerData.Hook.ClipMouse) {
+                                if (p.IsKeyboardPlayer) {
                                     cursorModule?.Setup(data.Process, p.MonitorBounds);
-                                }
-                                else
-                                {
+                                } else {
                                     cursorModule?.AddOtherGameHandle(data.Process.MainWindowHandle);
                                 }
                             }
@@ -319,8 +314,8 @@ namespace Nucleus.Gaming.Platform.Windows
                                 {
                                     HwndObject obj = new HwndObject(window);
 
-                                    if (!string.IsNullOrEmpty(handlerData.Hook.ForceFocusWindowName) &&
-                                        StringUtil.ComputeLevenshteinDistance(obj.Title, handlerData.Hook.ForceFocusWindowName) <= 2)
+                                    if (!string.IsNullOrEmpty(handlerData.Hook.ForceFocusWindowRegex) &&
+                                        StringUtil.ComputeLevenshteinDistance(obj.Title, handlerData.Hook.ForceFocusWindowRegex) <= 2)
                                     {
                                         data.HWnd = obj;
                                         break;
@@ -340,8 +335,8 @@ namespace Nucleus.Gaming.Platform.Windows
                                         {
                                             HwndObject obj = new HwndObject(window);
 
-                                            if (!string.IsNullOrEmpty(handlerData.Hook.ForceFocusWindowName) &&
-                                                StringUtil.ComputeLevenshteinDistance(obj.Title, handlerData.Hook.ForceFocusWindowName) <= 2)
+                                            if (!string.IsNullOrEmpty(handlerData.Hook.ForceFocusWindowRegex) &&
+                                                StringUtil.ComputeLevenshteinDistance(obj.Title, handlerData.Hook.ForceFocusWindowRegex) <= 2)
                                             {
                                                 data.HWnd = obj;
                                                 break;
@@ -356,10 +351,11 @@ namespace Nucleus.Gaming.Platform.Windows
                                 {
                                     data.HWNDRetry = true;
                                 }
-                                else if (!string.IsNullOrEmpty(handlerData.Hook.ForceFocusWindowName) &&
+                                else if (!string.IsNullOrEmpty(handlerData.Hook.ForceFocusWindowRegex) &&
                                     // TODO: this Levenshtein distance is being used to help us around Call of Duty Black Ops, as it uses a ® icon in the title bar
                                     //       there must be a better way
-                                    StringUtil.ComputeLevenshteinDistance(data.HWnd.Title, handlerData.Hook.ForceFocusWindowName) > 2)
+                                    //StringUtil.ComputeLevenshteinDistance(data.HWnd.Title, handlerData.Hook.ForceFocusWindowRegex) > 2)
+                                    !(new Regex(handlerData.Hook.ForceFocusWindowRegex).IsMatch(data.HWnd.Title)))
                                 {
                                     data.HWNDRetry = true;
                                 }

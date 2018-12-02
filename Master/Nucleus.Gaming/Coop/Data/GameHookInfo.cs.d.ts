@@ -15,10 +15,10 @@
 		xInputReroute: boolean;
 		/** If our custom dll should set the window size and position locally, instead of the handler(inconsistent with some window sizes, look at Borderlands2.js for an example usage) */
 		setWindowSize: boolean;
-		/** If our custom DLL should hook into the game's window and fake Window's eventsso we never leave focus. Depends on the ForceFocusWindowName variable(used for games that don't work when out of focus. See Borderlands.js) */
+		/** If our custom DLL should hook into the game's window and fake Window's eventsso we never leave focus. Depends on the ForceFocusWindowRegex variable(used for games that don't work when out of focus. See Borderlands.js) */
 		forceFocus: boolean;
 		/** If force focus is enabled, this is the window we are attaching ourselves toand the window we are going to keep on top.This is used in a very specific case even out */
-		forceFocusWindowName: string;
+		ForceFocusWindowRegex: string;
 		blockMouseEvents: boolean;
 		blockKeyboardEvents: boolean;
 		blockInputEvents: boolean;
