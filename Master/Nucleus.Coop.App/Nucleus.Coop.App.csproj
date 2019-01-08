@@ -78,8 +78,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -199,9 +199,6 @@
     <Compile Include="Controls\Steps\UserInputControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\BaseForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="src\AppPage.cs" />
     <Compile Include="src\EventCapture.cs" />
     <None Include="app.nuspec" />
@@ -274,9 +271,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Steps\PlayerCountControl.resx">
       <DependentUpon>PlayerCountControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\BaseForm.resx">
-      <DependentUpon>BaseForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\GameList.resx">
       <DependentUpon>GameList.cs</DependentUpon>
@@ -352,10 +346,6 @@
     <ProjectReference Include="..\Nucleus.Gaming\Nucleus.Gaming.csproj">
       <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
       <Name>Nucleus.Gaming</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ThirdParty\WindowScrape\WindowScrape.csproj">
-      <Project>{d9716550-921d-44e8-a289-c297950db1f7}</Project>
-      <Name>WindowScrape</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

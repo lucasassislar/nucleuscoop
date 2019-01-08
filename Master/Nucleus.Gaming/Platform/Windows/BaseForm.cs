@@ -1,5 +1,4 @@
-﻿using Nucleus.Coop.App;
-using Nucleus.Gaming;
+﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Platform.Windows.Controls;
 using System;

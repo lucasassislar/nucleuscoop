@@ -22,12 +22,8 @@ namespace Nucleus.Coop.App.Forms {
     /// Central UI class to the Nucleus Coop application
     /// </summary>
     public partial class MainForm : BaseForm {
-        private bool formClosing;
-
         private GameManager gameManager;
         private Dictionary<UserGameInfo, GameControl> controls;
-
-        private GameControl selectedControl;
 
         private GameRunningOverlay overlay;
 
@@ -41,12 +37,11 @@ namespace Nucleus.Coop.App.Forms {
             }
         }
 
-        public static MainForm Instance { get; private set; }
-
         public GamePageBrowserControl BrowserBtns {
             get { return this.gamePageBrowserControl1; }
         }
 
+        public static MainForm Instance { get; private set; }
 
         public MainForm(string[] args, GameManager gameManager) {
             this.gameManager = gameManager;
@@ -88,14 +83,13 @@ namespace Nucleus.Coop.App.Forms {
             if (!gameManager.User.Options.RequestedToAssociateFormat) {
                 gameManager.User.Options.RequestedToAssociateFormat = true;
 
-                if (MessageBox.Show("Would you like to associate Nucleus Package Files (*.nc) to the application?", "Question", MessageBoxButtons.YesNo) == DialogResult.Yes) {
-                    string startLocation = Process.GetCurrentProcess().MainModule.FileName;
-                    // TODO: abstract (windows exclusive code)
-                    if (!FileAssociations.SetAssociation(".nc", "NucleusCoop", "Nucleus Package Files", startLocation)) {
-                        MessageBox.Show("Failed to set association");
-                        gameManager.User.Options.RequestedToAssociateFormat = false;
-                    }
+                //if (MessageBox.Show("Would you like to associate Nucleus Package Files (*.nc) and nuke:// links to the application?", "Question", MessageBoxButtons.YesNo) == DialogResult.Yes) {
+                string startLocation = Process.GetCurrentProcess().MainModule.FileName;
+                if (!RegistryUtil.SetAssociation(".nc", "NucleusCoop", "Nucleus Package Files", startLocation)) {
+                    //MessageBox.Show("Failed to set association");
+                    //gameManager.User.Options.RequestedToAssociateFormat = false;
                 }
+                RegistryUtil.RegisterUriScheme();
 
                 gameManager.User.Save();
             }
@@ -139,7 +133,7 @@ namespace Nucleus.Coop.App.Forms {
                 pkgManagerBtn.TitleText = "Package Manager";
                 pkgManagerBtn.Image = Properties.Resources.nucleus;
                 pkgManagerBtn.Click += PkgManagerBtn_Click;
-                this.list_games.Controls.Add(pkgManagerBtn);                
+                this.list_games.Controls.Add(pkgManagerBtn);
 
                 //GameControl gameManagerBtn = new GameControl(null);
                 //gameManagerBtn.Width = list_games.Width;
@@ -265,7 +259,6 @@ namespace Nucleus.Coop.App.Forms {
         }
 
         private BasePageControl GetPageControl(AppPage appPage) {
-            // crap
             switch (appPage) {
                 case AppPage.NoGamesInstalled:
                     return this.noGamesInstalledPageControl1;
@@ -287,10 +280,10 @@ namespace Nucleus.Coop.App.Forms {
             int panelWidth = panel_formContent.Size.Width;
             bool changed = false;
 
-            // fix 1 px border looking weird with the paging system
+            // fix 1 px border looking weird with the game handler paging system
             if (appPage == AppPage.GameHandler) {
                 panel_allPages.Left = listWidth - 1;
-            }else {
+            } else {
                 panel_allPages.Left = listWidth;
             }
 
@@ -299,21 +292,24 @@ namespace Nucleus.Coop.App.Forms {
 
                 if (page.RequiredTitleBarWidth > 0) {
                     changed = true;
+
+                    // Page requested a part of our title bar area to render things,
+                    // so we squish the title bar and update everyones sizes
                     panel_pageTitle.Width = panelWidth - listWidth - page.RequiredTitleBarWidth;
                     panel_pageTitle.Left = listWidth + page.RequiredTitleBarWidth;
                     panel_allPages.Width = panelWidth - listWidth;
                     panel_allPages.Height = panel_formContent.Height - titleBarControl1.Height;
                     panel_allPages.Top = titleBarControl1.Height;
 
-                    // force bring to front
+                    // Force bring the title bar to front, so the now full size panel_allPages
+                    // doesnt show on top
                     panel_pageTitle.BringToFront();
                 }
 
                 page.Size = panel_allPages.Size;
             }
 
-            if (!changed)
-            {
+            if (!changed) {
                 panel_pageTitle.Width = panelWidth - listWidth;
                 panel_pageTitle.Left = listWidth;
                 panel_allPages.Width = panelWidth - listWidth;
@@ -345,8 +341,6 @@ namespace Nucleus.Coop.App.Forms {
             //con.Width = list_Games.Width;
         }
 
-
-
         protected override void OnShown(EventArgs e) {
             base.OnShown(e);
             RefreshGames();
@@ -370,12 +364,6 @@ namespace Nucleus.Coop.App.Forms {
                     });
                 }
             }
-        }
-
-        protected override void OnFormClosed(FormClosedEventArgs e) {
-            base.OnFormClosed(e);
-
-            formClosing = true;
         }
 
         private void Overlay_OnStop() {

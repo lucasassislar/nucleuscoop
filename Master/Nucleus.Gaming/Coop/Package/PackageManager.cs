@@ -8,14 +8,11 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-//using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Nucleus.Gaming.Package
-{
-    public class PackageManager
-    {
+namespace Nucleus.Gaming.Package {
+    public class PackageManager {
         public static readonly string AssetsFolder = "assets";
         public string InfoFileName = "info";
         public string HandlerFileName = "handler";
@@ -25,8 +22,7 @@ namespace Nucleus.Gaming.Package
         private GameManager gameManager;
         //private Dictionary<string, RepoHeader> repos;
 
-        public PackageManager()
-        {
+        public PackageManager() {
             gameManager = GameManager.Instance;
             //Initialize();
         }
@@ -120,7 +116,6 @@ namespace Nucleus.Gaming.Package
         //    {
         //        var result = new RequestResult<GameHandlerMetadata>();
         //        Exception ex = e.Error;
-
         //        if (e.Error == null)
         //        {
         //            try
@@ -135,7 +130,6 @@ namespace Nucleus.Gaming.Package
         //                ex = nEx;
         //            }
         //        }
-
         //        if (ex != null)
         //        {
         //            string log = "Request for full Package info failed with error " + ex;
@@ -144,10 +138,8 @@ namespace Nucleus.Gaming.Package
         //            result.Failed = true;
         //            result.AdditionalData = ex;
         //        }
-
         //        callback(result);
         //    });
-
         //    client.DownloadStringAsync(uri);
         //}
 
@@ -157,21 +149,17 @@ namespace Nucleus.Gaming.Package
         //    WebClient client = new WebClient();
         //    string tmp = GameManager.Instance.GetPackageTmpPath();
         //    Directory.CreateDirectory(tmp);
-
         //    string tmpName = info.HandlerID + "-" + info.ExeName + "-" + Guid.NewGuid().ToString() + ".nc";
         //    string tmpFile = Path.Combine(tmp, tmpName);
-
         //    client.DownloadFileCompleted += new AsyncCompletedEventHandler((object sender, AsyncCompletedEventArgs e) =>
         //    {
         //        var result = new RequestResult<string>();
         //        Exception ex = e.Error;
-
         //        if (e.Error == null)
         //        {
         //            result.Data = tmpFile;
         //            result.Success = true;
         //        }
-
         //        if (ex != null)
         //        {
         //            string log = "Request for package download failed with error " + ex;
@@ -180,36 +168,27 @@ namespace Nucleus.Gaming.Package
         //            result.Failed = true;
         //            result.AdditionalData = ex;
         //        }
-
         //        callback(result);
         //    });
-
         //    client.DownloadFileAsync(uri, Path.Combine(tmp, tmpName));
         //}
 
-        public static string CalculateMD5(string filename)
-        {
-            using (var md5 = MD5.Create())
-            {
-                using (var stream = File.OpenRead(filename))
-                {
+        public static string CalculateMD5(string filename) {
+            using (var md5 = MD5.Create()) {
+                using (var stream = File.OpenRead(filename)) {
                     var hash = md5.ComputeHash(stream);
                     return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
                 }
             }
         }
 
-        public GameHandlerMetadata ReadInfoFromInstalledHandler(UserInstalledHandler handler)
-        {
+        public GameHandlerMetadata ReadInfoFromInstalledHandler(UserInstalledHandler handler) {
             return ReadInfoFromPackageFile(handler.PackagePath);
         }
 
-        public GameHandlerMetadata ReadMetadataFromFile(string metadataPath)
-        {
-            using (Stream str = File.OpenRead(metadataPath))
-            {
-                using (StreamReader reader = new StreamReader(str))
-                {
+        public GameHandlerMetadata ReadMetadataFromFile(string metadataPath) {
+            using (Stream str = File.OpenRead(metadataPath)) {
+                using (StreamReader reader = new StreamReader(str)) {
                     string fullGameInfo = reader.ReadToEnd();
                     GameHandlerMetadata metadata = JsonConvert.DeserializeObject<GameHandlerMetadata>(fullGameInfo);
                     metadata.RootDirectory = Path.GetDirectoryName(metadataPath);
@@ -219,14 +198,11 @@ namespace Nucleus.Gaming.Package
             }
         }
 
-        public GameHandlerMetadata ReadInfoFromPackageFile(string pkgPath)
-        {
+        public GameHandlerMetadata ReadInfoFromPackageFile(string pkgPath) {
             ZipFile zip = new ZipFile(pkgPath);
             ZipEntry entry = zip[InfoFileName + JsonFormat];
-            using (Stream str = entry.OpenReader())
-            {
-                using (StreamReader reader = new StreamReader(str))
-                {
+            using (Stream str = entry.OpenReader()) {
+                using (StreamReader reader = new StreamReader(str)) {
                     string fullGameInfo = reader.ReadToEnd();
                     GameHandlerMetadata metadata = JsonConvert.DeserializeObject<GameHandlerMetadata>(fullGameInfo);
                     metadata.RootDirectory = Path.GetDirectoryName(pkgPath);
@@ -236,51 +212,42 @@ namespace Nucleus.Gaming.Package
             }
         }
 
-        public HandlerDataManager ReadHandlerDataFromInstalledPackage(GameHandlerMetadata handler)
-        {
+        public HandlerDataManager ReadHandlerDataFromInstalledPackage(GameHandlerMetadata handler) {
             string installPath = GetInstallPath(handler);
             string handlerPath = Path.Combine(installPath, HandlerFileName + JsFormat);
 
-            if (!File.Exists(handlerPath))
-            {
+            if (!File.Exists(handlerPath)) {
                 return null;
             }
 
-            using (Stream str = File.OpenRead(handlerPath))
-            {
+            using (Stream str = File.OpenRead(handlerPath)) {
                 return new HandlerDataManager(handler, str);
             }
         }
 
-        public GameHandlerMetadata GetFirstInstalledHandler(string gameId)
-        {
+        public GameHandlerMetadata GetFirstInstalledHandler(string gameId) {
             UserProfile user = GameManager.Instance.User;
             return user.InstalledHandlers.FirstOrDefault(c => c.GameID == gameId);
         }
 
-        public GameHandlerMetadata[] GetInstalledHandlers(string gameId)
-        {
+        public GameHandlerMetadata[] GetInstalledHandlers(string gameId) {
             UserProfile user = GameManager.Instance.User;
 
             return user.InstalledHandlers.Where(c => c.GameID == gameId).ToArray();
         }
 
-        public GameHandlerMetadata GetInstalledHandlerMetadata(string repoId, GameHandlerBaseMetadata info)
-        {
+        public GameHandlerMetadata GetInstalledHandlerMetadata(string repoId, GameHandlerBaseMetadata info) {
             return GetInstalledHandlerMetadata(repoId, info.HandlerID, info.GameID);
         }
 
-        public GameHandlerMetadata GetInstalledHandlerMetadata(string repoId, string handlerId, string gameId)
-        {
+        public GameHandlerMetadata GetInstalledHandlerMetadata(string repoId, string handlerId, string gameId) {
             UserProfile user = GameManager.Instance.User;
             return user.InstalledHandlers.FirstOrDefault(c => c.HandlerID == handlerId &&
                                                                 c.GameID == gameId);
         }
 
-        public static string GetInstallPath(GameHandlerMetadata metadata)
-        {
-            if (!string.IsNullOrEmpty(metadata.RootDirectory))
-            {
+        public static string GetInstallPath(GameHandlerMetadata metadata) {
+            if (!string.IsNullOrEmpty(metadata.RootDirectory)) {
                 return metadata.RootDirectory;
             }
 
@@ -289,20 +256,17 @@ namespace Nucleus.Gaming.Package
             return Path.Combine(installed, installedName);
         }
 
-        public static string GetBaseInstallPath(GameHandlerBaseMetadata metadata)
-        {
+        public static string GetBaseInstallPath(GameHandlerBaseMetadata metadata) {
             string installed = GameManager.Instance.GetInstalledPackagePath();
             string installedName = GetPackageFileName(metadata);
             return Path.Combine(installed, installedName);
         }
 
-        public static string GetPackageFileName(GameHandlerBaseMetadata metadata)
-        {
+        public static string GetPackageFileName(GameHandlerBaseMetadata metadata) {
             return $"{metadata.GameID}-{metadata.ExeName}-{metadata.HandlerID}-V{metadata.V}N{metadata.PlatV}";
         }
 
-        public static string GetAssetsFolder(GameHandlerMetadata metadata)
-        {
+        public static string GetAssetsFolder(GameHandlerMetadata metadata) {
             string installFolder = GetInstallPath(metadata);
             return Path.Combine(installFolder, AssetsFolder);
         }
@@ -312,11 +276,9 @@ namespace Nucleus.Gaming.Package
         /// </summary>
         /// <param name="path">The path to the nc package file</param>
         /// <returns>Data about the installaton, if it succeeded or not and why</returns>
-        public RequestResult<GameHandlerMetadata> InstallPackage(string path)
-        {
+        public RequestResult<GameHandlerMetadata> InstallPackage(string path) {
             var result = new RequestResult<GameHandlerMetadata>();
-            if (!File.Exists(path))
-            {
+            if (!File.Exists(path)) {
                 result.LogLine("File does not exist (Path: {0})", path);
                 result.SetStatus(false);
                 result.SetAdditionalData(new FileNotFoundException("Can't install package if it doesn't exist", path));
@@ -327,42 +289,32 @@ namespace Nucleus.Gaming.Package
             GameHandlerMetadata metadata;
             ZipFile zip = new ZipFile(path);
             ZipEntry entry = zip["info.json"];
-            using (Stream str = entry.OpenReader())
-            {
-                using (StreamReader reader = new StreamReader(str))
-                {
+            using (Stream str = entry.OpenReader()) {
+                using (StreamReader reader = new StreamReader(str)) {
                     string fullGameInfo = reader.ReadToEnd();
                     metadata = JsonConvert.DeserializeObject<GameHandlerMetadata>(fullGameInfo);
                     gameManager.NameManager.UpdateNaming(metadata);
                 }
             }
 
-            if (metadata.PlatV != Globals.Version)
-            {
+            if (metadata.PlatV != Globals.Version) {
                 result.LogLine("Package platform version mismatch (Package: {0}, Nucleus: {1})", metadata.PlatV, Globals.Version);
             }
 
-            if (string.IsNullOrEmpty(metadata.Dev))
-            {
+            if (string.IsNullOrEmpty(metadata.Dev)) {
                 result.SetStatus(false);
                 result.LogLine("Package has JSON data but no Dev information. Cannot install");
-            }
-            else
-            {
+            } else {
                 result.SetStatus(true);
 
                 string installPath = GetInstallPath(metadata);
 
-                if (Directory.Exists(installPath))
-                {
+                if (Directory.Exists(installPath)) {
                     // game already installed?
                     result.LogLine("Package was already installed, removing old version.");
-                    try
-                    {
+                    try {
                         Directory.Delete(installPath, true);
-                    }
-                    catch (Exception ex)
-                    {
+                    } catch (Exception ex) {
                         result.LogLine("Old package failed to uninstall. Please remove manually or restart the app and try again");
                         result.SetAdditionalData(ex);
                         return result;
