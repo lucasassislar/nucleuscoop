@@ -14,51 +14,60 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Nucleus.Coop
+namespace Nucleus.Coop.App.Forms
 {
     public partial class SearchDisksForm : BaseForm
     {
         public struct SearchDriveInfo
         {
-            public DriveInfo drive;
-            public string text;
+            public DriveInfo Drive { get; private set; }
+            public string Info { get; private set; }
+
+            public SearchDriveInfo(DriveInfo drive)
+            {
+                Drive = drive;
+                Info = "";
+            }
+
+            public void SetInfo(string info)
+            {
+                Info = info;
+            }
 
             public override string ToString()
             {
-                return text;
+                return Info;
             }
         }
 
         private float progress;
         private float lastProgress;
 
-        private List<SearchDriveInfo> toSearch;
+        private List<SearchDriveInfo> drivesToSearch;
 
         private bool searching;
-        private int done;
-        private bool closed;
-        private MainForm main;
+        private int drivesFinishedSearching;
 
-        public SearchDisksForm(MainForm main)
+        public SearchDisksForm()
         {
-            this.main = main;
             InitializeComponent();
 
             DriveInfo[] drives = DriveInfo.GetDrives();
-            CheckedListBox checkedBox = disksBox;
+            CheckedListBox checkedBox = listBox_drives;
 
             for (int i = 0; i < drives.Length; i++)
             {
                 DriveInfo drive = drives[i];
 
-                if (drive.DriveType == DriveType.CDRom)
+                if (drive.DriveType == DriveType.CDRom ||
+                    drive.DriveType == DriveType.Network)
                 {
-                    // CDs cannot use ntfs
+                    // CDs cannot use NTFS
+                    // and network I'm not even trying
                     continue;
                 }
 
-                SearchDriveInfo d = new SearchDriveInfo();
-                d.drive = drive;
+                SearchDriveInfo d = new SearchDriveInfo(drive);
 
                 if (drive.IsReady)
                 {
@@ -74,20 +83,20 @@ namespace Nucleus.Coop
                         long total = drive.TotalSize / 1024 / 1024 / 1024;
                         long used = total - free;
 
-                        d.text = drive.Name + " " + used + " GB used";
+                        d.SetInfo(drive.Name + " " + used + " GB used");
                         checkedBox.Items.Add(d, true);
                     }
                     catch
                     {
                         // notify user of crash
-                        d.text = drive.Name + " (Not authorized)";
+                        d.SetInfo(drive.Name + " (Not authorized)");
                         checkedBox.Items.Add(d, CheckState.Indeterminate);
                     }
                 }
                 else
                 {
                     // user might want to get that drive ready
-                    d.text = drive.Name + " (Drive not ready)";
+                    d.SetInfo(drive.Name + " (Drive not ready)");
                     checkedBox.Items.Add(d, CheckState.Indeterminate);
                 }
             }
@@ -103,12 +112,15 @@ namespace Nucleus.Coop
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            base.OnFormClosing(e);
+            if (searching)
+            {
+                e.Cancel = true;
+            }
 
-            closed = true;
+            base.OnFormClosing(e);
         }
 
-        private void btnSearch_Click(object sender, EventArgs e)
+        private void btn_search_Click(object sender, EventArgs e)
         {
             if (searching)
             {
@@ -117,21 +129,21 @@ namespace Nucleus.Coop
 
             if (GameManager.Instance.User.InstalledHandlers.Count == 0)
             {
-                MessageBox.Show("You have no game handlers installed.");
-                return;
+                MessageBox.Show("You have no game handlers installed. No games to search for.");
+                //return;
             }
 
-            btnSearch.Enabled = false;
+            btn_search.Enabled = false;
             searching = true;
-            done = 0;
+            drivesFinishedSearching = 0;
 
-            toSearch = new List<SearchDriveInfo>();
-            CheckedListBox checkedBox = disksBox;
+            drivesToSearch = new List<SearchDriveInfo>();
+            CheckedListBox checkedBox = listBox_drives;
 
             for (int i = 0; i < checkedBox.CheckedItems.Count; i++)
             {
                 SearchDriveInfo info = (SearchDriveInfo)checkedBox.CheckedItems[i];
-                toSearch.Add(info);
+                drivesToSearch.Add(info);
             }
 
             SearchDrives();
@@ -139,7 +151,7 @@ namespace Nucleus.Coop
 
         private void SearchDrives()
         {
-            for (int i = 0; i < toSearch.Count; i++)
+            for (int i = 0; i < drivesToSearch.Count; i++)
             {
                 ThreadPool.QueueUserWorkItem(SearchDrive, i);
             }
@@ -150,61 +162,57 @@ namespace Nucleus.Coop
             progress += toAdd;
 
             float dif = progress - lastProgress;
-            if (dif > 0.005f || toAdd == 0) // only update after .5% or if the user has just requested an update
+            // only update after >.5% or if the user has just requested an update
+            if (dif > 0.005f || toAdd == 0)
             {
                 lastProgress = progress;
-                if (this.IsDisposed || closing)
+                if (this.IsDisposed)
                 {
                     return;
                 }
 
                 Invoke(new Action(delegate
                 {
-                    if (this.IsDisposed || progressBar1.IsDisposed || closing)
+                    if (this.IsDisposed || progress_search.IsDisposed)
                     {
                         return;
                     }
-                    progressBar1.Value = Math.Min(100, (int)(progress * 100));
+                    progress_search.Value = Math.Min(100, (int)(progress * 100));
                 }));
             }
         }
 
         private void SearchDrive(object state)
         {
-            int i = (int)state;
-            SearchDriveInfo info = toSearch[i];
-            if (!info.drive.IsReady)
+            int driveIndex = (int)state;
+            SearchDriveInfo info = drivesToSearch[driveIndex];
+            if (!info.Drive.IsReady)
             {
-                done++;
+                drivesFinishedSearching++;
                 return;
             }
 
-            float totalDiskPc = 1 / (float)toSearch.Count;
+            float totalDiskPc = 1 / (float)drivesToSearch.Count;
             float thirdDiskPc = totalDiskPc / 3.0f;
 
             // 1/3 done, we started the operation
             UpdateProgress(thirdDiskPc);
 
-            Log.WriteLine($"> Searching drive {info.drive.Name} for game executables");
+            Log.WriteLine($"> Searching drive {info.Drive.Name} for game executables");
 
-            Dictionary<ulong, FileNameAndParentFrn> mDict = new Dictionary<ulong, FileNameAndParentFrn>();
+            Dictionary<ulong, FileNameAndParentFrn> allExes = new Dictionary<ulong, FileNameAndParentFrn>();
             MFTReader mft = new MFTReader();
-            mft.Drive = info.drive.RootDirectory.FullName;
+            mft.Drive = info.Drive.RootDirectory.FullName;
 
-            mft.EnumerateVolume(out mDict, new string[] { ".exe" });
+            // TODO: search only for specific games?
+            mft.EnumerateVolume(out allExes, new string[] { ".exe" });
 
-            progress += thirdDiskPc; // 2/3 done
-            UpdateProgress(thirdDiskPc);
+            UpdateProgress(thirdDiskPc); // 2/3 done
 
-            float increment = thirdDiskPc / (float)mDict.Count;
-            foreach (KeyValuePair<UInt64, FileNameAndParentFrn> entry in mDict)
+            float perFilePCIncrement = thirdDiskPc / (float)allExes.Count;
+            foreach (KeyValuePair<UInt64, FileNameAndParentFrn> entry in allExes)
             {
-                if (closed)
-                {
-                    return;
-                }
-
-                UpdateProgress(increment);
+                UpdateProgress(perFilePCIncrement);
 
                 FileNameAndParentFrn file = (FileNameAndParentFrn)entry.Value;
 
@@ -225,41 +233,33 @@ namespace Nucleus.Coop
 
                     if (uinfo != null)
                     {
-                        Log.WriteLine($"> Found new game ID {uinfo.GameID} on drive {info.drive.Name}");
+                        Log.WriteLine($"> Found new game ID {uinfo.GameID} on drive {info.Drive.Name}");
                         Invoke(new Action(delegate
                         {
-                            listGames.Items.Add(GameManager.Instance.NameManager.GetGameName(uinfo.GameID) + " - " + path);
-                            listGames.Invalidate();
-                            main.NewUserGame(uinfo);
+                            list_games.Items.Add(GameManager.Instance.NameManager.GetGameName(uinfo.GameID) + " - " + path);
+                            list_games.Invalidate();
+                            // TODO make it better
+                            MainForm.Instance.NewUserGame(uinfo);
                         }));
                     }
                 }
             }
 
-            if (closed)
-            {
-                return;
-            }
-
-            done++;
-            if (done == toSearch.Count)
+            drivesFinishedSearching++;
+            if (drivesFinishedSearching == drivesToSearch.Count)
             {
                 searching = false;
                 Invoke(new Action(delegate
                 {
                     progress = 1;
                     UpdateProgress(0);
-                    btnSearch.Enabled = true;
+                    btn_search.Enabled = true;
 
-                    main.RefreshGames();
+                    // TODO make it better
+                    MainForm.Instance.RefreshGames();
                     MessageBox.Show("Finished searching!");
                 }));
             }
-        }
-        private bool closing;
-        private void SearchDisksForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            closing = true;
         }
     }
 }

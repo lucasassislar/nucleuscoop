@@ -9,6 +9,9 @@ namespace Nucleus.Gaming.Windows.Interop
 {
     public static class User32Interop
     {
+        [DllImport("user32.dll")]
+        public static extern int SetWindowRgn(IntPtr hWnd, IntPtr hRgn, bool bRedraw);
+
         internal delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
 
         [DllImport("user32.dll")]
@@ -156,10 +159,13 @@ namespace Nucleus.Gaming.Windows.Interop
         public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
 
         [DllImport("user32.dll", EntryPoint = "SendMessage", SetLastError = true)]
-        public static extern IntPtr SendMessage(IntPtr hWnd, Int32 Msg, IntPtr wParam, IntPtr lParam);
+        public static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, UInt32 wParam, UInt32 lParam);
 
         [DllImport("user32.dll")]
         public static extern bool SetActiveWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
 
         /// <summary>
         /// Brings the thread that created the specified window into the foreground and activates the window. Keyboard input is

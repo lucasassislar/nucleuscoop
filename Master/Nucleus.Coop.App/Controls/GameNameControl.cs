@@ -11,9 +11,11 @@ using Nucleus.Gaming.Coop;
 
 namespace Nucleus.Coop.Controls
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class GameNameControl : UserControl, IDynamicSized
     {
-        private UserGameInfo gameInfo;
         public UserGameInfo GameInfo
         {
             get { return gameInfo; }
@@ -29,14 +31,21 @@ namespace Nucleus.Coop.Controls
             }
         }
 
+        public Image Image {
+            set { picture.Image = value; }
+        }
+
+        private UserGameInfo gameInfo;
         private PictureBox picture;
         private Label title;
         private int border;
+        private float lastScale;
 
         public GameNameControl()
         {
             picture = new PictureBox();
             picture.SizeMode = PictureBoxSizeMode.StretchImage;
+            //picture.BorderStyle = BorderStyle.FixedSingle;
 
             title = new Label();
             title.Text = "Nothing selected";
@@ -47,7 +56,14 @@ namespace Nucleus.Coop.Controls
             Controls.Add(picture);
             Controls.Add(title);
 
+            UpdateSize(1);
             DPIManager.Register(this);
+        }
+
+        public void UpdateText(string txt)
+        {
+            title.Text = txt;
+            UpdateSize(lastScale);
         }
 
         ~GameNameControl()
@@ -62,10 +78,11 @@ namespace Nucleus.Coop.Controls
                 DPIManager.Unregister(this);
                 return;
             }
+            lastScale = scale;
 
             SuspendLayout();
 
-            border = DPIManager.Adjust(4, scale);
+            border = DPIManager.Adjust(5, scale);
             int dborder = border * 2;
             picture.Location = new Point(border, border);
 

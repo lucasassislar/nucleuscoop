@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -26,7 +26,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WINDOWS;UNSAFE;ALPHA</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WINDOWS;UNSAFE;ALPHA;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -36,7 +36,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;WINDOWS;UNSAFE;ALPHA</DefineConstants>
+    <DefineConstants>TRACE;WINDOWS;UNSAFE;ALPHA;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -56,11 +56,11 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
+    <Reference Include="DotNetZip, Version=1.13.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.13.0\lib\net40\DotNetZip.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
       <HintPath>..\packages\SlimDX.4.0.13.44\lib\NET40\SlimDX.dll</HintPath>
@@ -78,16 +78,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\Model\Game.cs" />
+    <Compile Include="Api\Model\GameHandler.cs" />
+    <Compile Include="Api\Model\IgdbGame.cs" />
+    <Compile Include="Api\Model\IgdbGameCover.cs" />
+    <Compile Include="Api\Model\IgdbGameReleaseDate.cs" />
+    <Compile Include="Api\Model\IgdbGames.cs" />
+    <Compile Include="Api\Model\LoginData.cs" />
+    <Compile Include="Api\Model\Package.cs" />
+    <Compile Include="Api\Model\User.cs" />
     <Compile Include="Coop\Data\AppDomain\AppDomainSharedAttribute.cs" />
     <Compile Include="Coop\Data\CallbackData.cs" />
     <Compile Include="Coop\Data\HandlerTools.cs" />
     <Compile Include="Coop\Data\Save\SaveInfo.cs" />
     <Compile Include="Coop\Data\UserProfileOptions.cs" />
+    <Compile Include="Coop\Interop\DomainWebApiConnection.cs" />
     <Compile Include="Coop\Interop\HandlerDataEngine.cs" />
     <Compile Include="Coop\HandlerDataManager.cs" />
     <Compile Include="Coop\Handler\Modules\IO\IOModule.cs" />
     <Compile Include="Coop\ModuleManager.cs" />
     <Compile Include="IO\ScrConfigFile.cs" />
+    <Compile Include="Platform\Windows\BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Platform\Windows\Controls\BorderPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -106,6 +119,9 @@
     <Compile Include="Platform\Windows\Controls\CoolListControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Platform\Windows\Controls\CustomTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Platform\Windows\Controls\HotkeyListener.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -114,6 +130,11 @@
     </Compile>
     <Compile Include="Platform\Windows\Controls\ICanProceed.cs" />
     <Compile Include="Platform\Windows\Controls\IHighlightControl.cs" />
+    <Compile Include="Platform\Windows\Controls\ImageButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Platform\Windows\Controls\IMouseHoverControl.cs" />
+    <Compile Include="Platform\Windows\Controls\MouseMessageFilter.cs" />
     <Compile Include="Platform\Windows\Controls\NButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -138,6 +159,15 @@
     <Compile Include="Coop\HandlerModule.cs" />
     <Compile Include="Coop\UserInstalledHandler.cs" />
     <Compile Include="Diagnostics\OutputLevel.cs" />
+    <Compile Include="Platform\Windows\Controls\TitleBarControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Platform\Windows\Controls\TitleBarControl.Designer.cs">
+      <DependentUpon>TitleBarControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Platform\Windows\Controls\TransparentControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Platform\Windows\DirectInput\DInputManager.cs" />
     <Compile Include="Coop\Data\GameOption.cs" />
     <Compile Include="Coop\Data\GameOptionValue.cs" />
@@ -161,8 +191,9 @@
     <Compile Include="DPI\IDynamicSized.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="IO\JsonPropertiesFile.cs" />
+    <Compile Include="Platform\Windows\FormGraphicsUtil.cs" />
     <Compile Include="Platform\Windows\Interop\Shell32\FileAssociation.cs" />
-    <Compile Include="Platform\Windows\Interop\Shell32\FileAssociations.cs" />
+    <Compile Include="Platform\Windows\Interop\Shell32\RegistryUtil.cs" />
     <Compile Include="Platform\Windows\IO\WinDirectoryUtil.cs" />
     <Compile Include="Platform\Windows\Modules\GameProcessModule.cs" />
     <Compile Include="Platform\Windows\IO\MFT\FileNameAndParentFrn.cs" />
@@ -191,7 +222,7 @@
     <Compile Include="Platform\Windows\Interop\Kernel32\IniFile.cs" />
     <None Include="Platform\Windows\Interop\Interceptor\Win32.cs" />
     <None Include="Platform\Windows\Interop\Interceptor\Win32EnumWindows.cs" />
-    <None Include="Platform\Windows\Interop\Interceptor\Win32Messages.cs" />
+    <Compile Include="Platform\Windows\Interop\Interceptor\Win32Messages.cs" />
     <None Include="Platform\Windows\Interop\Interceptor\WindowInterceptor.cs" />
     <Compile Include="Platform\Windows\Interop\User32\User32Util.cs" />
     <Compile Include="Platform\Windows\Interop\User32\User32Interop.cs" />
@@ -201,7 +232,7 @@
     <Compile Include="Diagnostics\Log.cs" />
     <Compile Include="Coop\GameManager.cs" />
     <Compile Include="Platform\Windows\Controls\ImageButtonState.cs" />
-    <Compile Include="Platform\Windows\Controls\ImageButton.cs">
+    <Compile Include="Platform\Windows\Controls\StateImageButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Coop\Data\KeyboardPlayer.cs" />
@@ -242,6 +273,9 @@
     <Compile Include="Util\StringUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Platform\Windows\BaseForm.resx">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Platform\Windows\Controls\CoolCheckbox.resx">
       <DependentUpon>CoolCheckbox.cs</DependentUpon>
     </EmbeddedResource>

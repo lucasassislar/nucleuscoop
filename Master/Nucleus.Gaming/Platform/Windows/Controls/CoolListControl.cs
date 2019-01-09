@@ -8,10 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Nucleus.Gaming;
+using Nucleus.Gaming.Platform.Windows.Controls;
 
 namespace Nucleus.Gaming.Windows.Controls
 {
-    public class CoolListControl : UserControl
+    public class CoolListControl : UserControl, IRadioControl
     {
         private Label titleLabel;
         protected Label descLabel;
@@ -43,15 +44,21 @@ namespace Nucleus.Gaming.Windows.Controls
         }
 
         public bool EnableHighlighting { get; private set; }
+        public bool EnableClicking { get; set; }
         public object Data { get; set; }
         public event Action<object> OnSelected;
+
+        public Color ColorSelected { get; set; } = Color.FromArgb(66, 70, 77);
+        public Color ColorUnselected { get; set; } = Color.FromArgb(0, 0, 0, 0);//Color.FromArgb(47, 49, 54);
+        public Color ColorMouseOver { get; set; } = Color.FromArgb(47, 49, 54);
 
         public CoolListControl(bool enableHightlighting)
         {
             EnableHighlighting = enableHightlighting;
+            //this.BorderStyle = BorderStyle.FixedSingle;
 
             Size = new Size(400, 120);
-            BackColor = Color.FromArgb(30, 30, 30);
+            BackColor = ColorUnselected;
 
             titleLabel = new Label();
             titleLabel.Location = new Point(10, 10);
@@ -64,68 +71,23 @@ namespace Nucleus.Gaming.Windows.Controls
             Controls.Add(descLabel);
         }
 
-        protected override void OnControlAdded(ControlEventArgs e)
-        {
-            base.OnControlAdded(e);
-
-            Control c = e.Control;
-            c.Click += C_Click;
-
-            if (EnableHighlighting)
-            {
-                c.MouseEnter += C_MouseEnter;
-                c.MouseLeave += C_MouseLeave;
-            }
-        }
-
-        private void C_MouseEnter(object sender, EventArgs e)
-        {
-            OnMouseEnter(e);
-        }
-
-        private void C_MouseLeave(object sender, EventArgs e)
-        {
-            OnMouseLeave(e);
-        }
-
-        private void C_Click(object sender, EventArgs e)
-        {
-            OnClick(e);
-        }
-
-        protected override void OnLostFocus(EventArgs e)
-        {
-            base.OnLostFocus(e);
-            BackColor = Color.FromArgb(30, 30, 30);
-        }
-
-        protected override void OnMouseEnter(EventArgs e)
-        {
-            base.OnMouseEnter(e);
-            if (!ContainsFocus)
-            {
-                BackColor = Color.FromArgb(60, 60, 60);
-            }
-        }
-
-        protected override void OnMouseLeave(EventArgs e)
-        {
-            base.OnMouseLeave(e);
-            if (!ContainsFocus)
-            {
-                BackColor = Color.FromArgb(30, 30, 30);
-            }
-        }
-
-        protected override void OnClick(EventArgs e)
-        {
-            base.OnClick(e);
-
-            BackColor = Color.FromArgb(80, 80, 80);
-            if (OnSelected != null)
-            {
+        public void RadioSelected() {
+            BackColor = ColorSelected;
+            if (OnSelected != null) {
                 OnSelected(Data);
             }
+        }
+
+        public void RadioUnselected() {
+            BackColor = ColorUnselected;
+        }
+
+        public void UserOver() {
+            BackColor = ColorMouseOver;
+        }
+
+        public void UserLeave() {
+            BackColor = ColorUnselected;
         }
     }
 }

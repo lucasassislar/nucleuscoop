@@ -56,7 +56,7 @@ namespace Nucleus.Gaming.Coop
         public bool HardcopyGame { get; set; }
 
         /// <summary>
-        /// NOT WORKING ATM. If the game has keyboard support.
+        /// If the game has keyboard support.
         /// </summary>
         public bool SupportsKeyboard { get; set; }
 
@@ -131,7 +131,7 @@ namespace Nucleus.Gaming.Coop
         /// </summary>
         public List<CustomStep> CustomSteps { get; set; } = new List<CustomStep>();
 
-        public bool LockMouse { get; set; }
+        //public bool LockMouse { get; set; }
 
         public Dictionary<string, string> AdditionalData { get; set; } = new Dictionary<string, string>();
 

@@ -18,17 +18,17 @@ Game.ExecutableName = "borderlandspresequel.exe";
 Game.SteamID = "261640";
 Game.MaxPlayers = 4;
 Game.MaxPlayersOneMonitor = 4;
-Game.BinariesFolder = "binaries\\win32";
+Game.ExecutablePath = "binaries\\win32";
 Game.NeedsSteamEmulation = false;
 Game.LauncherTitle = "splashscreen";
 Game.SaveType = SaveType.INI;
 Game.SupportsPositioning = true;
 Game.HideTaskbar = true;
 Game.Hook.ForceFocus = true;
-Game.Hook.ForceFocusWindowName = "Borderlands: The Pre-Sequel (32-bit, DX9)";
+Game.Hook.ForceFocusWindowRegex = "Borderlands: The Pre-Sequel (32-bit, DX9)";
 Game.Hook.DInputEnabled = false;
 Game.Hook.XInputEnabled = true;
-Game.Hook.XInputReroute = false;// true; // this is beta
+Game.Hook.XInputReroute = false;// true; // this is beta/not working at all probably
 Game.Hook.XInputNames = ["xinput1_3.dll"];
 
 Game.OnPlay.Callback(function () {

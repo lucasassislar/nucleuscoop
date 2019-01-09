@@ -22,7 +22,6 @@ namespace Nucleus.Gaming.Coop
     public class GameManager
     {
         private static GameManager instance;
-        private CoopConfigInfo config;
 
         private UserProfile user;
         private List<BackupFile> backupFiles;
@@ -34,17 +33,19 @@ namespace Nucleus.Gaming.Coop
 
         public string Error { get { return error; } }
         public ModuleManager ModuleManager { get { return moduleManager; } }
+
+        /// <summary>
+        /// Manages getting the name of games
+        /// </summary>
         public GameNameManager NameManager { get { return nameManager; } }
 
         public UserProfile User { get { return user; } }
         public PackageManager RepoManager { get { return repoManager; } }
-        public CoopConfigInfo Config { get { return config; } }
 
         public static GameManager Instance { get { return instance; } }
 
-        public GameManager(CoopConfigInfo config)
+        public GameManager()
         {
-            this.config = config;
             instance = this;
 
             Initialize();
@@ -275,7 +276,7 @@ namespace Nucleus.Gaming.Coop
 
         public static string GetAppDataPath()
         {
-#if DEBUG
+#if ALPHA
             string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             return Path.Combine(local, "data");
 #else
@@ -443,6 +444,11 @@ namespace Nucleus.Gaming.Coop
                 user.InstalledHandlers.Add(metadata);
             }
 
+            //if (installedHandlers.Length == 0)
+            //{
+            //    user.Games.Clear(); // TODO: better clear
+            //}
+
             user.Save();
         }
 
@@ -472,12 +478,12 @@ namespace Nucleus.Gaming.Coop
             Directory.CreateDirectory(GetInstalledPackagePath());
             Directory.CreateDirectory(GetPackageTmpPath());
 
-            repoManager = new PackageManager(config);
+            repoManager = new PackageManager();
             moduleManager = new ModuleManager();
 
             LoadUser();
 
-            // Right now, build the DB each time we start up
+            // TODO: Right now, build the DB each time we start up, later change
             RebuildGameDb();
         }
         #endregion
@@ -503,7 +509,7 @@ namespace Nucleus.Gaming.Coop
                 try
                 {
                     // try to save the exception
-                    LogManager.Instance.LogExceptionFile(ex);
+                    Log.Instance.LogExceptionFile(ex);
                 }
                 catch
                 {

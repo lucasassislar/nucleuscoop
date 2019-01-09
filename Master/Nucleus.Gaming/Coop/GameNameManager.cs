@@ -6,6 +6,10 @@ using System.Text;
 
 namespace Nucleus.Gaming.Coop
 {
+    /// <summary>
+    /// Manager that extracts information from handler metadata's 
+    /// and stores the game's names
+    /// </summary>
     public class GameNameManager
     {
         private Dictionary<string, string> gameNames;

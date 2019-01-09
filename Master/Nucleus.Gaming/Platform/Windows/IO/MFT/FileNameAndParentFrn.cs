@@ -46,6 +46,11 @@ namespace Nucleus.Gaming.Platform.Windows.IO.MFT
                 throw new ArgumentException("Invalid argument: less than zero", "parentFrn");
             }
         }
+
+        public override string ToString()
+        {
+            return _name;
+        }
     }
 }
 #endif

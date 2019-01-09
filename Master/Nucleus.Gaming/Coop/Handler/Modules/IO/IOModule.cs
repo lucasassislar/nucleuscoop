@@ -15,7 +15,7 @@ namespace Nucleus.Gaming.Coop.Modules
         private GameProfile profile;
         private HandlerData handlerData;
 
-        public override int Order { get { return 300; } }
+        public override int Order { get { return 10; } }
 
         public override bool Initialize(GameHandler handler, HandlerData handlerData, UserGameInfo game, GameProfile profile)
         {

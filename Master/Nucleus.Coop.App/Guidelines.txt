@@ -1,0 +1,7 @@
+﻿
+
+Patterns
+
+	Forms
+		
+		Controls: Name should be camelCaseType_camelCaseName

@@ -19,30 +19,25 @@ namespace Nucleus.Gaming.Coop
     public class GameControl : UserControl, IDynamicSized, IRadioControl
     {
         public UserGameInfo UserGameInfo { get; private set; }
+        public GameHandlerBaseMetadata HandlerMetadata { get; private set; }
 
         private PictureBox picture;
         private Label title;
         public string TitleText { get; set; }
 
-        public GameControl(UserGameInfo userGame)
-        {
-            UserGameInfo = userGame;
+        public Color ColorSelected { get; set; } = Color.FromArgb(66, 70, 77);
+        public Color ColorUnselected { get; set; } = Color.FromArgb(47, 49, 54);
+        public Color ColorMouseOver { get; set; } = Color.FromArgb(54, 57, 63);
+        public bool EnableClicking { get; set; } = true;
 
+        public GameControl()
+        {
             picture = new PictureBox();
             picture.SizeMode = PictureBoxSizeMode.StretchImage;
 
             title = new Label();
-            if (userGame == null)
-            {
-                title.Text = "No games";
-            }
-            else
-            {
-                title.Text = GameManager.Instance.NameManager.GetGameName(userGame.GameID);
-            }
-            TitleText = title.Text;
-
-            BackColor = Color.FromArgb(30, 30, 30);
+           
+            BackColor = ColorUnselected;
             Size = new Size(200, 52);
 
             Controls.Add(picture);
@@ -51,10 +46,24 @@ namespace Nucleus.Gaming.Coop
             DPIManager.Register(this);
         }
 
-
-        ~GameControl()
-        {
+        ~GameControl() {
             DPIManager.Unregister(this);
+        }
+
+        public void SetUserGame(UserGameInfo userGame) {
+            UserGameInfo = userGame;
+            if (userGame == null) {
+                title.Text = "No games";
+            } else {
+                title.Text = GameManager.Instance.NameManager.GetGameName(userGame.GameID);
+            }
+            TitleText = title.Text;
+        }
+
+        public void SetHandlerMetadata(GameHandlerBaseMetadata metadata) {
+            HandlerMetadata = metadata;
+            title.Text = metadata.Title;
+            TitleText = title.Text;
         }
 
         public void UpdateSize(float scale)
@@ -67,11 +76,11 @@ namespace Nucleus.Gaming.Coop
 
             SuspendLayout();
 
-            int border = DPIManager.Adjust(4, scale);
+            int border = DPIManager.Adjust(8, scale);
             int dborder = border * 2;
 
-            picture.Location = new Point(border, border);
-            picture.Size = new Size(DPIManager.Adjust(44, scale), DPIManager.Adjust(44, scale));
+            picture.Location = new Point(12, 11);
+            picture.Size = new Size(30, 30);
 
             Height = DPIManager.Adjust(52, scale);
 
@@ -145,31 +154,24 @@ namespace Nucleus.Gaming.Coop
         private bool isSelected;
         public void RadioSelected()
         {
-            BackColor = Color.FromArgb(80, 80, 80);
+            BackColor = ColorSelected;
             isSelected = true;
         }
 
         public void RadioUnselected()
         {
-            BackColor = Color.FromArgb(30, 30, 30);
+            BackColor = ColorUnselected;
             isSelected = false;
         }
 
         public void UserOver()
         {
-            BackColor = Color.FromArgb(60, 60, 60);
+            BackColor = ColorMouseOver;
         }
 
         public void UserLeave()
         {
-            if (isSelected)
-            {
-                BackColor = Color.FromArgb(80, 80, 80);
-            }
-            else
-            {
-                BackColor = Color.FromArgb(30, 30, 30);
-            }
+            BackColor = isSelected ? ColorSelected : ColorUnselected;
         }
     }
 }

@@ -385,7 +385,7 @@ namespace Nucleus.Gaming
 
                     IniFile x360 = new IniFile(ncoopIni);
                     x360.IniWriteValue("Options", "ForceFocus", handlerData.Hook.ForceFocus.ToString(CultureInfo.InvariantCulture));
-                    x360.IniWriteValue("Options", "ForceFocusWindowName", handlerData.Hook.ForceFocusWindowName.ToString(CultureInfo.InvariantCulture));
+                    x360.IniWriteValue("Options", "ForceFocusWindowRegex", handlerData.Hook.ForceFocusWindowRegex.ToString(CultureInfo.InvariantCulture));
 
                     x360.IniWriteValue("Options", "WindowX", playerBounds.X.ToString(CultureInfo.InvariantCulture));
                     x360.IniWriteValue("Options", "WindowY", playerBounds.Y.ToString(CultureInfo.InvariantCulture));
@@ -805,10 +805,10 @@ namespace Nucleus.Gaming
                                     {
                                         data.HWNDRetry = true;
                                     }
-                                    else if (!string.IsNullOrEmpty(handlerData.Hook.ForceFocusWindowName) &&
+                                    else if (!string.IsNullOrEmpty(handlerData.Hook.ForceFocusWindowRegex) &&
                                         // TODO: this Levenshtein distance is being used to help us around Call of Duty Black Ops, as it uses a ® icon in the title bar
                                         //       there must be a better way
-                                        StringUtil.ComputeLevenshteinDistance(data.HWnd.Title, handlerData.Hook.ForceFocusWindowName) > 2) 
+                                        StringUtil.ComputeLevenshteinDistance(data.HWnd.Title, handlerData.Hook.ForceFocusWindowRegex) > 2) 
                                     {
                                         data.HWNDRetry = true;
                                     }

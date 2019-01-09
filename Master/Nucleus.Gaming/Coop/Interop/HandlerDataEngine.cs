@@ -13,6 +13,7 @@ using System.Text;
 
 namespace Nucleus.Gaming.Coop.Interop
 {
+    // TODO: rework this class
     public class HandlerDataEngine : IDisposable
     {
         private AppDomain domain;
@@ -20,7 +21,7 @@ namespace Nucleus.Gaming.Coop.Interop
         private GameHandlerMetadata metadata;
         private string jsCode;
 
-        public static string GetEnginePath()
+        public static string GetLibraryPath()
         {
             return Path.Combine(AssemblyUtil.GetStartFolder(), "bin", "Nucleus.Gaming.Coop.Engine.dll");
         }
@@ -48,12 +49,13 @@ namespace Nucleus.Gaming.Coop.Interop
 
             domain = AppDomain.CreateDomain("JSENGINE", evidence, setup, permissionSet);
 
-            string enginePath = GetEnginePath();
+            string enginePath = GetLibraryPath();
             byte[] engineData = File.ReadAllBytes(enginePath);
             domain.Load(engineData);
 
             ObjectHandle jsobj = domain.CreateInstance("Nucleus.Gaming.Coop.Engine", "Nucleus.Gaming.Coop.Engine.AppDomainEngine");
             jsEngine = jsobj.Unwrap();
+            // TODO: strong typing on dynamic object (cache the fields/use reflection)
         }
 
         public void Dispose()
@@ -74,10 +76,5 @@ namespace Nucleus.Gaming.Coop.Interop
             string playerData = JsonConvert.SerializeObject(player);
             return jsEngine.Play(contextData, playerData);
         }
-
-        //ObjectHandle hobj = domain.CreateInstance("Nucleus.Gaming", "Nucleus.Gaming.Coop.JS.AppDomainData");
-        //AppDomainData migrator = (AppDomainData)hobj.Unwrap();
-        //migrator.ClassType = "";
-        //migrator.Data = JsonConvert.SerializeObject(data);
     }
 }

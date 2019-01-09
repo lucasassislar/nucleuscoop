@@ -21,13 +21,13 @@ Game.SupportsKeyboard = true;
 Game.ExecutableName = "borderlands2.exe";
 Game.MaxPlayers = 4;
 Game.MaxPlayersOneMonitor = 4;
-Game.BinariesFolder = "binaries\\win32";
+Game.ExecutablePath = "binaries\\win32";
 Game.NeedsSteamEmulation = false;
 Game.LauncherTitle = "splashscreen";
 Game.SaveType = SaveType.INI;
 Game.SupportsPositioning = true;
 Game.Hook.ForceFocus = true;
-Game.Hook.ForceFocusWindowName = "Borderlands 2 (32-bit, DX9)";
+Game.Hook.ForceFocusWindowRegex = "Borderlands 2";
 Game.Hook.DInputEnabled = false;
 Game.Hook.XInputEnabled = true;
 Game.Hook.XInputReroute = false;//true; // this is beta
@@ -50,6 +50,12 @@ Game.OnPlay.Callback(function () {
     var playerStr = "saveid" + Context.PlayerID;
     if (Context.IsKeyboardPlayer) {
         Context.StartArguments = "-windowed -AlwaysFocus -NoController -SaveDataId=" + Context.Options[playerStr];
+
+        // allow keyboard control
+        Context.LockMouse = true;
+        Context.Hook.BlockKeyboardEvents = false;
+        Context.Hook.BlockMouseEvents = false;
+        Context.Hook.BlockInputEvents = false;
     }
     else {
         Context.StartArguments = "-windowed -AlwaysFocus -SaveDataId=" + Context.Options[playerStr];

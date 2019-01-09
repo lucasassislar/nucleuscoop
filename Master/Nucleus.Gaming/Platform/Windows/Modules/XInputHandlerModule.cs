@@ -10,19 +10,19 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Nucleus.Gaming.Platform.Windows
-{
-    public class XInputHandlerModule : HandlerModule
-    {
+namespace Nucleus.Gaming.Platform.Windows {
+    /// <summary>
+    /// x360ce fork / xinput handling module
+    /// </summary>
+    public class XInputHandlerModule : HandlerModule {
         private GameHandler handler;
         private UserGameInfo userGame;
         private GameProfile profile;
         private HandlerData handlerData;
 
-        public override int Order { get { return 1000; } }
+        public override int Order { get { return 20; } }
 
-        public override bool Initialize(GameHandler handler, HandlerData handlerData, UserGameInfo game, GameProfile profile)
-        {
+        public override bool Initialize(GameHandler handler, HandlerData handlerData, UserGameInfo game, GameProfile profile) {
             this.handler = handler;
             this.userGame = game;
             this.profile = profile;
@@ -31,39 +31,29 @@ namespace Nucleus.Gaming.Platform.Windows
             return true;
         }
 
-        public override void PrePlay()
-        {
+        public override void PrePlay() {
         }
 
-        public override void PrePlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context)
-        {
+        public override void PrePlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context) {
         }
 
-        public override void PlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context)
-        {
-            if (!context.Hook.CustomDllEnabled)
-            {
+        public override void PlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context) {
+            if (!context.Hook.CustomDllEnabled) {
                 return;
             }
 
             IOModule ioModule = handler.GetModule<IOModule>();
 
             byte[] xdata = Properties.Resources.xinput1_3;
-            if (context.Hook.XInputNames == null)
-            {
-                using (Stream str = File.OpenWrite(Path.Combine(ioModule.LinkedWorkingDir, "xinput1_3.dll")))
-                {
+            if (context.Hook.XInputNames == null) {
+                using (Stream str = File.OpenWrite(Path.Combine(ioModule.LinkedWorkingDir, "xinput1_3.dll"))) {
                     str.Write(xdata, 0, xdata.Length);
                 }
-            }
-            else
-            {
+            } else {
                 string[] xinputs = context.Hook.XInputNames;
-                for (int z = 0; z < xinputs.Length; z++)
-                {
+                for (int z = 0; z < xinputs.Length; z++) {
                     string xinputName = xinputs[z];
-                    using (Stream str = File.OpenWrite(Path.Combine(ioModule.LinkedWorkingDir, xinputName)))
-                    {
+                    using (Stream str = File.OpenWrite(Path.Combine(ioModule.LinkedWorkingDir, xinputName))) {
                         str.Write(xdata, 0, xdata.Length);
                     }
                 }
@@ -72,29 +62,23 @@ namespace Nucleus.Gaming.Platform.Windows
             Rectangle playerBounds = playerInfo.MonitorBounds;
 
             string ncoopIni = Path.Combine(ioModule.LinkedWorkingDir, "ncoop.ini");
-            using (Stream str = File.OpenWrite(ncoopIni))
-            {
+            using (Stream str = File.OpenWrite(ncoopIni)) {
                 byte[] ini = Properties.Resources.ncoop;
                 str.Write(ini, 0, ini.Length);
             }
 
             IniFile x360 = new IniFile(ncoopIni);
             x360.IniWriteValue("Options", "ForceFocus", handlerData.Hook.ForceFocus.ToString(CultureInfo.InvariantCulture));
-            x360.IniWriteValue("Options", "ForceFocusWindowName", handlerData.Hook.ForceFocusWindowName.ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "ForceFocusWindowRegex", handlerData.Hook.ForceFocusWindowRegex.ToString(CultureInfo.InvariantCulture));
 
             x360.IniWriteValue("Options", "WindowX", playerBounds.X.ToString(CultureInfo.InvariantCulture));
             x360.IniWriteValue("Options", "WindowY", playerBounds.Y.ToString(CultureInfo.InvariantCulture));
 
-            if (context.Hook.SetWindowSize)
-            {
-                x360.IniWriteValue("Options", "ResWidth", context.Width.ToString(CultureInfo.InvariantCulture));
-                x360.IniWriteValue("Options", "ResHeight", context.Height.ToString(CultureInfo.InvariantCulture));
-            }
-            else
-            {
-                x360.IniWriteValue("Options", "ResWidth", "0");
-                x360.IniWriteValue("Options", "ResHeight", "0");
-            }
+            x360.IniWriteValue("Options", "ResWidth", context.Width.ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "ResHeight", context.Height.ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "FixResolution", context.Hook.SetWindowSize.ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "FixPosition", context.Hook.SetWindowPosition.ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "ClipMouse", (false).ToString(CultureInfo.InvariantCulture)); //context.Hook.ClipMouse
 
             x360.IniWriteValue("Options", "RerouteInput", context.Hook.XInputReroute.ToString(CultureInfo.InvariantCulture));
             x360.IniWriteValue("Options", "RerouteJoystickTemplate", JoystickDatabase.GetID(playerInfo.GamepadProductGuid.ToString()).ToString(CultureInfo.InvariantCulture));
@@ -116,8 +100,7 @@ namespace Nucleus.Gaming.Platform.Windows
             x360.IniWriteValue("Options", "DInputForceDisable", context.Hook.DInputForceDisable.ToString());
         }
 
-        public static bool IsNeeded(HandlerData data)
-        {
+        public static bool IsNeeded(HandlerData data) {
 #if WINDOWS
             return true;
 #else
@@ -125,8 +108,7 @@ namespace Nucleus.Gaming.Platform.Windows
 #endif
         }
 
-        public override void Tick(double delayMs)
-        {
+        public override void Tick(double delayMs) {
         }
     }
 }

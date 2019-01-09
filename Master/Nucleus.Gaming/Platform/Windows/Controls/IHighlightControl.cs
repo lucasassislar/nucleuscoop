@@ -15,6 +15,8 @@ namespace Nucleus.Gaming.Platform.Windows.Controls
         // mouse leave
         void UserLeave();
 
+        bool EnableClicking { get; set; }
+
         //void Highlight();
         //void SoftHighlight();
         //void Darken();
