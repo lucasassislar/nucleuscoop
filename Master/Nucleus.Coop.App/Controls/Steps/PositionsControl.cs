@@ -883,9 +883,14 @@ namespace Nucleus.Gaming.App.Controls
                                     }
                                     else if (hasTopBottomSpace)
                                     {
+                                        Rectangle edit = p.EditBounds;
+                                        if (bounds.Y == screen.MonitorBounds.Y + bounds.Height) {
+                                            bounds.Y -= bounds.Height;
+                                            edit.Y -= edit.Height;
+                                        }
+
                                         bounds.Height *= 2;
                                         p.MonitorBounds = bounds;
-                                        Rectangle edit = p.EditBounds;
                                         edit.Height *= 2;
                                         p.EditBounds = edit;
 
