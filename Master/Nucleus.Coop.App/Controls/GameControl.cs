@@ -11,32 +11,30 @@ using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Package;
 using Nucleus.Gaming.Platform.Windows.Controls;
 
-namespace Nucleus.Gaming.Coop
-{
+namespace Nucleus.Gaming.Coop {
     /// <summary>
     /// 
     /// </summary>
-    public class GameControl : UserControl, IDynamicSized, IRadioControl
-    {
+    public class GameControl : UserControl, IDynamicSized, IRadioControl {
         public UserGameInfo UserGameInfo { get; private set; }
+        public List<UserGameInfo> UserGames { get; private set; }
         public GameHandlerBaseMetadata HandlerMetadata { get; private set; }
 
         private PictureBox picture;
         private Label title;
-        public string TitleText { get; set; }
+        public string TitleText { get; protected set; }
 
         public Color ColorSelected { get; set; } = Color.FromArgb(66, 70, 77);
         public Color ColorUnselected { get; set; } = Color.FromArgb(47, 49, 54);
         public Color ColorMouseOver { get; set; } = Color.FromArgb(54, 57, 63);
         public bool EnableClicking { get; set; } = true;
 
-        public GameControl()
-        {
+        public GameControl() {
             picture = new PictureBox();
             picture.SizeMode = PictureBoxSizeMode.StretchImage;
 
             title = new Label();
-           
+
             BackColor = ColorUnselected;
             Size = new Size(200, 52);
 
@@ -50,6 +48,11 @@ namespace Nucleus.Gaming.Coop
             DPIManager.Unregister(this);
         }
 
+        public void UpdateTitleText(string titleText) {
+            TitleText = titleText;
+            title.Text = titleText;
+        }
+
         public void SetUserGame(UserGameInfo userGame) {
             UserGameInfo = userGame;
             if (userGame == null) {
@@ -60,16 +63,27 @@ namespace Nucleus.Gaming.Coop
             TitleText = title.Text;
         }
 
+        public void SetUserGameExe(UserGameInfo userGame) {
+            UserGameInfo = userGame;
+            title.Text = userGame.ExePath;
+            TitleText = title.Text;
+        }
+
+        public void SetUserGames(List<UserGameInfo> userGames) {
+            UserGames = userGames;
+            string gameTitle = GameManager.Instance.NameManager.GetGameName(userGames[0].GameID);
+            title.Text = gameTitle;
+            TitleText = gameTitle;
+        }
+
         public void SetHandlerMetadata(GameHandlerBaseMetadata metadata) {
             HandlerMetadata = metadata;
             title.Text = metadata.Title;
             TitleText = title.Text;
         }
 
-        public void UpdateSize(float scale)
-        {
-            if (IsDisposed)
-            {
+        public void UpdateSize(float scale) {
+            if (IsDisposed) {
                 DPIManager.Unregister(this);
                 return;
             }
@@ -87,16 +101,13 @@ namespace Nucleus.Gaming.Coop
             Size labelSize = TextRenderer.MeasureText(TitleText, title.Font);
             float reservedSpaceLabel = this.Width - picture.Width;
 
-            if (labelSize.Width > reservedSpaceLabel)
-            {
+            if (labelSize.Width > reservedSpaceLabel) {
                 // make text smaller
                 int charSize = TextRenderer.MeasureText("g", title.Font).Width;
                 int toRemove = (int)((reservedSpaceLabel - labelSize.Width) / (float)charSize);
                 toRemove = Math.Max(toRemove + 3, 7);
                 title.Text = TitleText.Remove(TitleText.Length - toRemove, toRemove) + "...";
-            }
-            else
-            {
+            } else {
                 title.Text = TitleText;
             }
             title.Size = labelSize;
@@ -109,8 +120,7 @@ namespace Nucleus.Gaming.Coop
             ResumeLayout();
         }
 
-        protected override void OnControlAdded(ControlEventArgs e)
-        {
+        protected override void OnControlAdded(ControlEventArgs e) {
             base.OnControlAdded(e);
 
             Control c = e.Control;
@@ -119,58 +129,48 @@ namespace Nucleus.Gaming.Coop
             c.MouseLeave += C_MouseLeave;
         }
 
-        protected override void OnSizeChanged(EventArgs e)
-        {
+        protected override void OnSizeChanged(EventArgs e) {
             base.OnSizeChanged(e);
             UpdateSize(DPIManager.Scale);
         }
 
-        private void C_MouseEnter(object sender, EventArgs e)
-        {
+        private void C_MouseEnter(object sender, EventArgs e) {
             OnMouseEnter(e);
         }
 
-        private void C_MouseLeave(object sender, EventArgs e)
-        {
+        private void C_MouseLeave(object sender, EventArgs e) {
             OnMouseLeave(e);
         }
 
-        private void C_Click(object sender, EventArgs e)
-        {
+        private void C_Click(object sender, EventArgs e) {
             OnClick(e);
         }
 
-        public Image Image
-        {
+        public Image Image {
             get { return this.picture.Image; }
             set { this.picture.Image = value; }
         }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return Text;
         }
 
         private bool isSelected;
-        public void RadioSelected()
-        {
+        public void RadioSelected() {
             BackColor = ColorSelected;
             isSelected = true;
         }
 
-        public void RadioUnselected()
-        {
+        public void RadioUnselected() {
             BackColor = ColorUnselected;
             isSelected = false;
         }
 
-        public void UserOver()
-        {
+        public void UserOver() {
             BackColor = ColorMouseOver;
         }
 
-        public void UserLeave()
-        {
+        public void UserLeave() {
             BackColor = isSelected ? ColorSelected : ColorUnselected;
         }
     }

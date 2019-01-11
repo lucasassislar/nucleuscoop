@@ -210,6 +210,7 @@ namespace Nucleus.Coop.App.Forms
             UpdateProgress(thirdDiskPc); // 2/3 done
 
             float perFilePCIncrement = thirdDiskPc / (float)allExes.Count;
+            bool shouldUpdate = false;
             foreach (KeyValuePair<UInt64, FileNameAndParentFrn> entry in allExes)
             {
                 UpdateProgress(perFilePCIncrement);
@@ -238,11 +239,15 @@ namespace Nucleus.Coop.App.Forms
                         {
                             list_games.Items.Add(GameManager.Instance.NameManager.GetGameName(uinfo.GameID) + " - " + path);
                             list_games.Invalidate();
-                            // TODO make it better
-                            MainForm.Instance.NewUserGame(uinfo);
+                            
+                            shouldUpdate = true;
                         }));
                     }
                 }
+            }
+
+            if (shouldUpdate) {
+                MainForm.Instance.RefreshGames();
             }
 
             drivesFinishedSearching++;

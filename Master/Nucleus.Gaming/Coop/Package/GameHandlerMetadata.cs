@@ -36,5 +36,13 @@ namespace Nucleus.Gaming.Package
         /// </summary>
         [JsonIgnore]
         public string RootDirectory { get; set; }
+
+
+        public static int CompareGameTitle(GameHandlerMetadata x, GameHandlerMetadata y) {
+            return x.GameTitle.CompareTo(y.GameTitle);
+        }
+        public static int CompareHandlerTitle(GameHandlerMetadata x, GameHandlerMetadata y) {
+            return x.Title.CompareTo(y.Title);
+        }
     }
 }

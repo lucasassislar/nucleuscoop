@@ -133,6 +133,12 @@
     <Compile Include="Controls\GameRunningOverlay.Designer.cs">
       <DependentUpon>GameRunningOverlay.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Pages\SelectGameFolderPageControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Pages\SelectGameFolderPageControl.Designer.cs">
+      <DependentUpon>SelectGameFolderPageControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TitleSeparator.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -244,6 +250,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Pages\NoGamesInstalledPage.resx">
       <DependentUpon>NoGamesInstalledPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Pages\SelectGameFolderPageControl.resx">
+      <DependentUpon>SelectGameFolderPageControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Steps\PlayerCountControl.resx">
       <DependentUpon>PlayerCountControl.cs</DependentUpon>

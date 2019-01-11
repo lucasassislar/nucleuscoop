@@ -33,10 +33,11 @@
             this.panel_formContent = new System.Windows.Forms.Panel();
             this.panel_pageTitle = new System.Windows.Forms.Panel();
             this.panel_bottomLine = new System.Windows.Forms.Panel();
-            this.list_games = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
-            this.panel_allPages = new System.Windows.Forms.Panel();
             this.gamePageBrowserControl1 = new Nucleus.Coop.App.Controls.GamePageBrowserControl();
             this.gameNameControl = new Nucleus.Coop.Controls.GameNameControl();
+            this.list_games = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
+            this.panel_allPages = new System.Windows.Forms.Panel();
+            this.selectGameFolderPageControl = new Nucleus.Coop.App.Controls.Pages.SelectGameFolderPageControl();
             this.gamePageControl1 = new Nucleus.Coop.App.Controls.GamePageControl();
             this.noGamesInstalledPageControl1 = new Nucleus.Coop.App.Controls.Pages.NoGamesInstalledPageControl();
             this.handlerManagerControl1 = new Nucleus.Coop.App.Controls.HandlerManagerControl();
@@ -97,34 +98,6 @@
             this.panel_bottomLine.Size = new System.Drawing.Size(735, 1);
             this.panel_bottomLine.TabIndex = 15;
             // 
-            // list_games
-            // 
-            this.list_games.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.list_games.AutoScroll = true;
-            this.list_games.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
-            this.list_games.Border = 1;
-            this.list_games.Location = new System.Drawing.Point(0, 21);
-            this.list_games.Margin = new System.Windows.Forms.Padding(0);
-            this.list_games.Name = "list_games";
-            this.list_games.Offset = new System.Drawing.Size(0, 2);
-            this.list_games.Size = new System.Drawing.Size(272, 640);
-            this.list_games.TabIndex = 3;
-            // 
-            // panel_allPages
-            // 
-            this.panel_allPages.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel_allPages.Controls.Add(this.gamePageControl1);
-            this.panel_allPages.Controls.Add(this.noGamesInstalledPageControl1);
-            this.panel_allPages.Controls.Add(this.handlerManagerControl1);
-            this.panel_allPages.Controls.Add(this.gameManagerPageControl1);
-            this.panel_allPages.Location = new System.Drawing.Point(272, 76);
-            this.panel_allPages.Name = "panel_allPages";
-            this.panel_allPages.Size = new System.Drawing.Size(735, 585);
-            this.panel_allPages.TabIndex = 33;
-            // 
             // gamePageBrowserControl1
             // 
             this.gamePageBrowserControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -146,6 +119,51 @@
             this.gameNameControl.Size = new System.Drawing.Size(722, 46);
             this.gameNameControl.TabIndex = 13;
             // 
+            // list_games
+            // 
+            this.list_games.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.list_games.AutoScroll = true;
+            this.list_games.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
+            this.list_games.Border = 1;
+            this.list_games.Location = new System.Drawing.Point(0, 21);
+            this.list_games.Margin = new System.Windows.Forms.Padding(0);
+            this.list_games.Name = "list_games";
+            this.list_games.Offset = new System.Drawing.Size(0, 2);
+            this.list_games.Size = new System.Drawing.Size(272, 640);
+            this.list_games.TabIndex = 3;
+            // 
+            // panel_allPages
+            // 
+            this.panel_allPages.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel_allPages.Controls.Add(this.selectGameFolderPageControl);
+            this.panel_allPages.Controls.Add(this.gamePageControl1);
+            this.panel_allPages.Controls.Add(this.noGamesInstalledPageControl1);
+            this.panel_allPages.Controls.Add(this.handlerManagerControl1);
+            this.panel_allPages.Controls.Add(this.gameManagerPageControl1);
+            this.panel_allPages.Location = new System.Drawing.Point(272, 76);
+            this.panel_allPages.Name = "panel_allPages";
+            this.panel_allPages.Size = new System.Drawing.Size(735, 585);
+            this.panel_allPages.TabIndex = 33;
+            // 
+            // selectGameFolderPageControl
+            // 
+            this.selectGameFolderPageControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.selectGameFolderPageControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
+            this.selectGameFolderPageControl.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.selectGameFolderPageControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.selectGameFolderPageControl.Location = new System.Drawing.Point(0, 0);
+            this.selectGameFolderPageControl.Margin = new System.Windows.Forms.Padding(8);
+            this.selectGameFolderPageControl.Name = "selectGameFolderPageControl";
+            this.selectGameFolderPageControl.RequiredTitleBarWidth = 0;
+            this.selectGameFolderPageControl.Size = new System.Drawing.Size(735, 585);
+            this.selectGameFolderPageControl.TabIndex = 4;
+            this.selectGameFolderPageControl.SelectedGame += new System.Action<Nucleus.Gaming.Coop.UserGameInfo>(this.selectGameFolderPageControl_SelectedGame);
+            // 
             // gamePageControl1
             // 
             this.gamePageControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -154,14 +172,12 @@
             this.gamePageControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
             this.gamePageControl1.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.gamePageControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.gamePageControl1.Image = null;
             this.gamePageControl1.Location = new System.Drawing.Point(0, 0);
             this.gamePageControl1.Margin = new System.Windows.Forms.Padding(8);
             this.gamePageControl1.Name = "gamePageControl1";
             this.gamePageControl1.RequiredTitleBarWidth = 0;
             this.gamePageControl1.Size = new System.Drawing.Size(735, 585);
             this.gamePageControl1.TabIndex = 2;
-            this.gamePageControl1.Title = null;
             // 
             // noGamesInstalledPageControl1
             // 
@@ -171,14 +187,12 @@
             this.noGamesInstalledPageControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
             this.noGamesInstalledPageControl1.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.noGamesInstalledPageControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.noGamesInstalledPageControl1.Image = ((System.Drawing.Image)(resources.GetObject("noGamesInstalledPageControl1.Image")));
             this.noGamesInstalledPageControl1.Location = new System.Drawing.Point(0, 0);
             this.noGamesInstalledPageControl1.Margin = new System.Windows.Forms.Padding(8);
             this.noGamesInstalledPageControl1.Name = "noGamesInstalledPageControl1";
             this.noGamesInstalledPageControl1.RequiredTitleBarWidth = 0;
             this.noGamesInstalledPageControl1.Size = new System.Drawing.Size(735, 585);
             this.noGamesInstalledPageControl1.TabIndex = 1;
-            this.noGamesInstalledPageControl1.Title = "No games installed";
             // 
             // handlerManagerControl1
             // 
@@ -188,35 +202,31 @@
             this.handlerManagerControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
             this.handlerManagerControl1.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.handlerManagerControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.handlerManagerControl1.Image = ((System.Drawing.Image)(resources.GetObject("handlerManagerControl1.Image")));
             this.handlerManagerControl1.Location = new System.Drawing.Point(0, 0);
             this.handlerManagerControl1.Margin = new System.Windows.Forms.Padding(4);
             this.handlerManagerControl1.Name = "handlerManagerControl1";
             this.handlerManagerControl1.RequiredTitleBarWidth = 272;
             this.handlerManagerControl1.Size = new System.Drawing.Size(735, 585);
             this.handlerManagerControl1.TabIndex = 0;
-            this.handlerManagerControl1.Title = "Package Manager";
             // 
             // gameManagerPageControl1
             // 
             this.gameManagerPageControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
             this.gameManagerPageControl1.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.gameManagerPageControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.gameManagerPageControl1.Image = null;
             this.gameManagerPageControl1.Location = new System.Drawing.Point(0, 0);
             this.gameManagerPageControl1.Margin = new System.Windows.Forms.Padding(8);
             this.gameManagerPageControl1.Name = "gameManagerPageControl1";
             this.gameManagerPageControl1.RequiredTitleBarWidth = 272;
             this.gameManagerPageControl1.Size = new System.Drawing.Size(782, 628);
             this.gameManagerPageControl1.TabIndex = 3;
-            this.gameManagerPageControl1.Title = null;
             // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1007, 661);
             this.Controls.Add(this.panel_formContent);
-            this.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            this.Cursor = System.Windows.Forms.Cursors.Default;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(640, 360);
@@ -242,5 +252,6 @@
         private Controls.GamePageBrowserControl gamePageBrowserControl1;
         private System.Windows.Forms.Panel panel_formContent;
         private System.Windows.Forms.Panel panel_bottomLine;
+        private Controls.Pages.SelectGameFolderPageControl selectGameFolderPageControl;
     }
 }

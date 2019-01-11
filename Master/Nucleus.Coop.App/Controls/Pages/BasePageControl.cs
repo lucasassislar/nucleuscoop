@@ -24,8 +24,8 @@ namespace Nucleus.Coop.App.Controls
             }
         }
 
-        public string Title { get; set; }
-        public Image Image { get; set; }
+        public string Title { get; protected set; }
+        public Image Image { get; protected set; }
 
         public BasePageControl()
         {

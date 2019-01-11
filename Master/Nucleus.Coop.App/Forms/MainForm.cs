@@ -16,6 +16,7 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace Nucleus.Coop.App.Forms {
     /// <summary>
@@ -23,8 +24,7 @@ namespace Nucleus.Coop.App.Forms {
     /// </summary>
     public partial class MainForm : BaseForm {
         private GameManager gameManager;
-        private Dictionary<UserGameInfo, GameControl> controls;
-
+        private Dictionary<string, GameControl> controls;
         private GameRunningOverlay overlay;
 
         private AppPage appPage = AppPage.None;
@@ -42,9 +42,11 @@ namespace Nucleus.Coop.App.Forms {
 
         public static MainForm Instance { get; private set; }
 
+        public GameControl Selected { get; private set; }
+
         public MainForm(string[] args, GameManager gameManager) {
             this.gameManager = gameManager;
-            Instance = this;
+            MainForm.Instance = this;
 
             InitializeComponent();
 
@@ -55,12 +57,11 @@ namespace Nucleus.Coop.App.Forms {
 
             this.titleBarControl1.Text = string.Format("Nucleus Coop v{0}", Globals.Version);
 
-            controls = new Dictionary<UserGameInfo, GameControl>();
+            controls = new Dictionary<string, GameControl>();
 
             // selects the list of games, so the buttons look equal
             list_games.Select();
             list_games.AutoScroll = false;
-            //list_games.SelectedChanged += list_Games_SelectedChanged;
 
             if (args != null) {
                 for (int i = 0; i < args.Length; i++) {
@@ -121,6 +122,7 @@ namespace Nucleus.Coop.App.Forms {
                 controls.Clear();
 
                 List<GameHandlerMetadata> handlers = gameManager.User.InstalledHandlers;
+                handlers.Sort(GameHandlerMetadata.CompareGameTitle);
                 for (int i = 0; i < handlers.Count; i++) {
                     GameHandlerMetadata handler = handlers[i];
                     NewGameHandler(handler);
@@ -129,19 +131,11 @@ namespace Nucleus.Coop.App.Forms {
                 // make menu before games
                 pkgManagerBtn = new GameControl();
                 pkgManagerBtn.Width = list_games.Width;
-                pkgManagerBtn.TitleText = "Package Manager";
+                pkgManagerBtn.UpdateTitleText("Package Manager");
                 pkgManagerBtn.Image = Properties.Resources.nucleus;
                 pkgManagerBtn.Click += PkgManagerBtn_Click;
                 this.list_games.Controls.Add(pkgManagerBtn);
-
-                //GameControl gameManagerBtn = new GameControl(null);
-                //gameManagerBtn.Width = list_games.Width;
-                //gameManagerBtn.TitleText = "Game Manager";
-                //gameManagerBtn.Click += GameManagerBtn_Click;
-                ////gameManagerBtn.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "🔍");
-                //gameManagerBtn.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "🎮");
-                //this.list_games.Controls.Add(gameManagerBtn);
-
+                
                 //HorizontalLineControl line = new HorizontalLineControl();
                 //line.LineHorizontalPc = 100;
                 //line.Width = list_games.Width;
@@ -154,9 +148,27 @@ namespace Nucleus.Coop.App.Forms {
                 this.list_games.Controls.Add(sep);
 
                 List<UserGameInfo> games = gameManager.User.Games;
+                Dictionary<string, List<UserGameInfo>> allGames = new Dictionary<string, List<UserGameInfo>>();
+
                 for (int i = 0; i < games.Count; i++) {
                     UserGameInfo game = games[i];
-                    GameControl gameControl = NewUserGame(game);
+                    if (!game.IsGamePresent()) {
+                        continue;
+                    }
+
+                    List<UserGameInfo> allSame;
+                    if (!allGames.TryGetValue(game.GameID, out allSame)) {
+                        allSame = new List<UserGameInfo>();
+                        allGames.Add(game.GameID, allSame);
+                    }
+
+                    allSame.Add(game);
+                }
+
+                // <3 linq
+                var ordered = allGames.OrderBy(c => GameManager.Instance.NameManager.GetGameName(c.Key));
+                foreach (var pair in ordered) {
+                    NewUserGame(pair.Value);
                 }
 
                 if (games.Count == 0) {
@@ -165,7 +177,7 @@ namespace Nucleus.Coop.App.Forms {
                     GameControl con = new GameControl();
                     con.Click += Con_Click;
                     con.Width = list_games.Width;
-                    con.TitleText = "No games";
+                    con.UpdateTitleText("No games");
                     this.list_games.Controls.Add(con);
                 }
             }
@@ -180,11 +192,7 @@ namespace Nucleus.Coop.App.Forms {
             pkgManagerBtn.RadioSelected();
         }
 
-        public GameControl NewUserGame(UserGameInfo game) {
-            if (!game.IsGamePresent()) {
-                return null;
-            }
-
+        public GameControl NewUserGame(List<UserGameInfo> games) {
             if (noGamesPresent) {
                 noGamesPresent = false;
                 RefreshGames();
@@ -193,20 +201,36 @@ namespace Nucleus.Coop.App.Forms {
 
             // get all Repository Game Infos
             GameControl con = new GameControl();
-            con.SetUserGame(game);
+            con.SetUserGames(games);
             con.Width = list_games.Width;
             con.Click += Game_Click;
-            controls.Add(game, con);
+            controls.Add(games[0].GameID, con);
             this.list_games.Controls.Add(con);
 
-            ThreadPool.QueueUserWorkItem(GetIcon, game);
+            ThreadPool.QueueUserWorkItem(GetIcon, games[0]);
 
             return con;
         }
 
         private void Game_Click(object sender, EventArgs e) {
             GameControl gameCon = (GameControl)sender;
-            gamePageControl1.ChangeSelectedGame(gameCon.UserGameInfo);
+            Selected = gameCon;
+
+            var games = gameCon.UserGames;
+            if (games.Count > 1) {
+                // if there's more than 1 of the same game,
+                // show the different game executables we can launch
+                selectGameFolderPageControl.UpdateUsers(games, gameCon.Image);
+                appPage = AppPage.SelectGameFolder;
+            } else {
+                appPage = AppPage.GameHandler;
+            }
+
+            UpdatePage();
+        }
+
+        private void selectGameFolderPageControl_SelectedGame(UserGameInfo obj) {
+            gamePageControl1.ChangeSelectedGame(obj);
 
             appPage = AppPage.GameHandler;
             UpdatePage();
@@ -228,6 +252,7 @@ namespace Nucleus.Coop.App.Forms {
         }
 
         private void UpdatePage() {
+            selectGameFolderPageControl.Visible = false;
             handlerManagerControl1.Visible = false;
             gamePageControl1.Visible = false;
             noGamesInstalledPageControl1.Visible = false;
@@ -237,6 +262,10 @@ namespace Nucleus.Coop.App.Forms {
             gamePageBrowserControl1.Visible = false;
 
             switch (appPage) {
+                case AppPage.SelectGameFolder:
+                    ChangeTitle(selectGameFolderPageControl.Title, selectGameFolderPageControl.Image);
+                    selectGameFolderPageControl.Visible = true;
+                    break;
                 case AppPage.NoGamesInstalled:
                     ChangeTitle(noGamesInstalledPageControl1.Title, noGamesInstalledPageControl1.Image);
                     noGamesInstalledPageControl1.Visible = true;
@@ -354,8 +383,8 @@ namespace Nucleus.Coop.App.Forms {
             game.Icon = bmp;
 
             lock (controls) {
-                if (controls.ContainsKey(game)) {
-                    GameControl control = controls[game];
+                GameControl control;
+                if (controls.TryGetValue(game.GameID, out control)) {
                     control.Invoke((Action)delegate () {
                         control.Image = game.Icon;
                     });
@@ -370,5 +399,7 @@ namespace Nucleus.Coop.App.Forms {
         private void btnShowTaskbar_Click(object sender, EventArgs e) {
             User32Util.ShowTaskBar();
         }
+
+
     }
 }

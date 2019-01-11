@@ -21,6 +21,7 @@ namespace Nucleus.Coop.App.Controls {
     public partial class HandlerManagerControl : BasePageControl {
         private GameHandlerBaseMetadata currentMetadata;
         private SearchDisksForm form;
+        private Bitmap interrobang;
 
         private int titleBarWidth;
         public override int RequiredTitleBarWidth { get { return titleBarWidth; } set { } }
@@ -39,7 +40,6 @@ namespace Nucleus.Coop.App.Controls {
             }
         }
 
-        private Bitmap interrobang;
         private void LoadInstalled() {
             var gm = GameManager.Instance;
             var handlers = gm.User.InstalledHandlers;
@@ -49,21 +49,21 @@ namespace Nucleus.Coop.App.Controls {
 
             GameControl installFile = new GameControl();
             installFile.Width = list_left.Width;
-            installFile.TitleText = "Install handler from file";
+            installFile.UpdateTitleText("Install handler from file");
             installFile.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "📁");
             installFile.Click += InstallFile_Click;
             list_left.Controls.Add(installFile);
 
             GameControl installGame = new GameControl();
             installGame.Width = list_left.Width;
-            installGame.TitleText = "Install game from exe";
+            installGame.UpdateTitleText("Install game from exe");
             installGame.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "📁");
             installGame.Click += InstallGame_Click;
             list_left.Controls.Add(installGame);
 
             GameControl scanGames = new GameControl();
             scanGames.Width = list_left.Width;
-            scanGames.TitleText = "Scan for game exes";
+            scanGames.UpdateTitleText("Scan for game exes");
             scanGames.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "🔍");
             scanGames.Click += ScanGames_Click;
             list_left.Controls.Add(scanGames);
@@ -78,10 +78,11 @@ namespace Nucleus.Coop.App.Controls {
             if (handlers.Count == 0) {
                 GameControl noAvailable = new GameControl();
                 noAvailable.Width = list_left.Width;
-                noAvailable.TitleText = "No available handlers";
+                noAvailable.UpdateTitleText("No available handlers");
                 noAvailable.Image = interrobang;
                 list_left.Controls.Add(noAvailable);
             } else {
+                handlers.Sort(GameHandlerMetadata.CompareHandlerTitle);
                 foreach (var handler in handlers) {
                     GameControl gameHandler = new GameControl();
                     gameHandler.Width = list_left.Width;

@@ -107,7 +107,6 @@ namespace Nucleus.Coop.App.Controls {
                 GoToStep(0);
             }
 
-
             DPIManager.ForceUpdate();
         }
 

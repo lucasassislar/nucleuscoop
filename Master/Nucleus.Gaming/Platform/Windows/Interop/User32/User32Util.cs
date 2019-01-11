@@ -24,6 +24,9 @@ namespace Nucleus.Gaming.Windows
 
         public static bool IsFormFocused(Form form) {
             Control focusControl = GetFocusControl();
+            if (focusControl == null) {
+                return false;
+            }
             return focusControl.FindForm() == form;
         }
 
