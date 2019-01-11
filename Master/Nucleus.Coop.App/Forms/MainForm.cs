@@ -49,7 +49,7 @@ namespace Nucleus.Coop.App.Forms {
 
             InitializeComponent();
 
-            this.FormContent = this.panel_formContent;
+            this.SetupBaseForm(this.panel_formContent);
 
             overlay = new GameRunningOverlay();
             overlay.OnStop += Overlay_OnStop;

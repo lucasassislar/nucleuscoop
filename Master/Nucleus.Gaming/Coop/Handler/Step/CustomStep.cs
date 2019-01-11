@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Nucleus.Gaming.Coop.Handler
 {
+    /// <summary>
+    /// Custom step for the final user to grab information for a specified Game Option
+    /// </summary>
     public class CustomStep
     {
         public GameOption Option;

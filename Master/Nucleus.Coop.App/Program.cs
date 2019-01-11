@@ -30,7 +30,8 @@ namespace Nucleus.Coop
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledExceptionEventHandler);
 
             // initialize DPIManager BEFORE setting 
-            // the application to be DPI aware
+            // the application to be DPI aware,
+            // or else Windows will give us pre-scaled monitor sizes
             DPIManager.PreInitialize();
             User32Util.SetProcessDpiAwareness(ProcessDPIAwareness.ProcessPerMonitorDPIAware);
 
