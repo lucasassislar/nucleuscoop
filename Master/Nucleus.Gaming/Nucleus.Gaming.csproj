@@ -192,6 +192,7 @@
     <Compile Include="Platform\Windows\Interop\Shell32\FileAssociation.cs" />
     <Compile Include="Platform\Windows\Interop\Shell32\RegistryUtil.cs" />
     <Compile Include="Platform\Windows\IO\WinDirectoryUtil.cs" />
+    <Compile Include="Platform\Windows\LockBitmap.cs" />
     <Compile Include="Platform\Windows\Modules\GameProcessModule.cs" />
     <Compile Include="Platform\Windows\IO\MFT\FileNameAndParentFrn.cs" />
     <Compile Include="Platform\Windows\IO\MFT\MFTReader.cs" />

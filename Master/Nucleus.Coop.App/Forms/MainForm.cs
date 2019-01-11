@@ -37,7 +37,7 @@ namespace Nucleus.Coop.App.Forms {
         }
 
         public GamePageBrowserControl BrowserBtns {
-            get { return this.gamePageBrowserControl1; }
+            get { return this.gamePageBrowserControl; }
         }
 
         public static MainForm Instance { get; private set; }
@@ -225,21 +225,16 @@ namespace Nucleus.Coop.App.Forms {
                 appPage = AppPage.SelectGameFolder;
             } else {
                 appPage = AppPage.GameHandler;
-                gamePageControl1.ChangeSelectedGame(games[0]);
+                gamePageControl.ChangeSelectedGame(games[0]);
             }
 
             UpdatePage();
         }
 
         private void selectGameFolderPageControl_SelectedGame(UserGameInfo obj) {
-            gamePageControl1.ChangeSelectedGame(obj);
+            gamePageControl.ChangeSelectedGame(obj);
 
             appPage = AppPage.GameHandler;
-            UpdatePage();
-        }
-
-        private void GameManagerBtn_Click(object sender, EventArgs e) {
-            appPage = AppPage.GameManager;
             UpdatePage();
         }
 
@@ -256,12 +251,11 @@ namespace Nucleus.Coop.App.Forms {
         private void UpdatePage() {
             selectGameFolderPageControl.Visible = false;
             handlerManagerControl1.Visible = false;
-            gamePageControl1.Visible = false;
-            noGamesInstalledPageControl1.Visible = false;
-            gameManagerPageControl1.Visible = false;
+            gamePageControl.Visible = false;
+            noGamesInstalledPageControl.Visible = false;
 
             // game btns
-            gamePageBrowserControl1.Visible = false;
+            gamePageBrowserControl.Visible = false;
 
             switch (appPage) {
                 case AppPage.SelectGameFolder:
@@ -269,19 +263,16 @@ namespace Nucleus.Coop.App.Forms {
                     selectGameFolderPageControl.Visible = true;
                     break;
                 case AppPage.NoGamesInstalled:
-                    ChangeTitle(noGamesInstalledPageControl1.Title, noGamesInstalledPageControl1.Image);
-                    noGamesInstalledPageControl1.Visible = true;
+                    ChangeTitle(noGamesInstalledPageControl.Title, noGamesInstalledPageControl.Image);
+                    noGamesInstalledPageControl.Visible = true;
                     break;
                 case AppPage.GameHandler:
-                    gamePageControl1.Visible = true;
-                    gamePageBrowserControl1.Visible = true;
+                    gamePageControl.Visible = true;
+                    gamePageBrowserControl.Visible = true;
                     break;
                 case AppPage.PackageManager:
                     ChangeTitle(handlerManagerControl1.Title, handlerManagerControl1.Image);
                     handlerManagerControl1.Visible = true;
-                    break;
-                case AppPage.GameManager:
-                    ChangeTitle("Game Manager");
                     break;
             }
 
@@ -291,13 +282,11 @@ namespace Nucleus.Coop.App.Forms {
         private BasePageControl GetPageControl(AppPage appPage) {
             switch (appPage) {
                 case AppPage.NoGamesInstalled:
-                    return this.noGamesInstalledPageControl1;
+                    return this.noGamesInstalledPageControl;
                 case AppPage.GameHandler:
-                    return this.gamePageControl1;
+                    return this.gamePageControl;
                 case AppPage.PackageManager:
                     return this.handlerManagerControl1;
-                case AppPage.GameManager:
-                    return this.gameManagerPageControl1;
                 default:
                     return null;
             }

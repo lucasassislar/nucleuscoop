@@ -154,12 +154,6 @@
     <Compile Include="Controls\HandlerInfoControl.Designer.cs">
       <DependentUpon>HandlerInfoControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Pages\GameManagerPageControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Pages\GameManagerPageControl.Designer.cs">
-      <DependentUpon>GameManagerPageControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Pages\GamePageControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -238,9 +232,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\HandlerInfoControl.resx">
       <DependentUpon>HandlerInfoControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Pages\GameManagerPageControl.resx">
-      <DependentUpon>GameManagerPageControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Pages\GamePageControl.resx">
       <DependentUpon>GamePageControl.cs</DependentUpon>

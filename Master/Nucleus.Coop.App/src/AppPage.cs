@@ -13,7 +13,6 @@ namespace Nucleus.Coop.App
         NoGamesInstalled,
         PackageManager,
         SelectGameFolder,
-        GameHandler,
-        GameManager
+        GameHandler
     }
 }

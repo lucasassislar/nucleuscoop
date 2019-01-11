@@ -1,11 +1,14 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Platform.Windows;
 using Nucleus.Gaming.Platform.Windows.Controls;
 using Nucleus.Gaming.Windows;
 using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -20,6 +23,9 @@ namespace Nucleus.Coop {
         private MouseMessageFilter filter;
 
         public Panel FormContent { get; private set; }
+
+        private Bitmap hShadowImage;
+        private Bitmap vShadowImage;
 
         public BaseForm() {
             // Default DPI = 96 = 100%
@@ -38,14 +44,35 @@ namespace Nucleus.Coop {
             // Background is transparent for resizing system
             // Inheriting classes should override the OnResize function
             // and have all its control
-            this.TransparencyKey = Color.Turquoise;
-            this.BackColor = Color.Turquoise;
+            Color alpha = Color.Turquoise;
+            this.TransparencyKey = alpha;
+            this.BackColor = alpha;
 
             this.DoubleBuffered = true;
             this.SetStyle(ControlStyles.ResizeRedraw, true); // this is to avoid visual artifacts
 
             // create it here, else the designer will show the default windows font
             Font = new Font("Segoe UI", 12, GraphicsUnit.Point);
+
+#if SHADOWS
+            int size = 5;
+            hShadowImage = new Bitmap(size, 1, PixelFormat.Format32bppArgb);
+            vShadowImage = new Bitmap(1, size, PixelFormat.Format32bppArgb);
+
+            LockBitmap hLock = new LockBitmap(hShadowImage);
+            LockBitmap vLock = new LockBitmap(vShadowImage);
+            hLock.LockBits();
+            vLock.LockBits();
+            int step = 255 / (size + 1);
+            for (int i = 1; i < size + 1; i++) {
+                byte gray = (byte)Math.Min(255, i * step);
+                Color s = Color.FromArgb(255, alpha.R / 2, alpha.G, alpha.B);
+                hLock.SetPixel(i - 1, 0, s);
+                vLock.SetPixel(0, i - 1, s);
+            }
+            hLock.UnlockBits();
+            vLock.UnlockBits();
+#endif
 
             DPIManager.Register(this);
 
@@ -65,6 +92,27 @@ namespace Nucleus.Coop {
         public void SetupBaseForm(Panel formContent) {
             this.FormContent = formContent;
         }
+
+#if SHADOWS
+        protected override void OnPaintBackground(PaintEventArgs e) {
+            base.OnPaintBackground(e);
+
+            int height = this.Height;
+            int width = this.Width;
+
+            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.Half; // or PixelOffsetMode.Half
+            e.Graphics.DrawImage(hShadowImage, new Rectangle(0, 0, hShadowImage.Width, height));
+            e.Graphics.DrawImage(vShadowImage, new Rectangle(hShadowImage.Width, 0, width, vShadowImage.Height));
+
+            //e.Graphics.ScaleTransform(1, -1);
+            //e.Graphics.TranslateTransform(0, height * 2);
+            //e.Graphics.DrawImage(hShadowImage, new Rectangle(0, 0, hShadowImage.Width, height * 2));
+
+            e.Graphics.ResetTransform();
+            //e.Graphics.DrawImage(hShadowImage, new Rectangle(0, 0, hShadowImage.Width, height * 2));
+        }
+#endif
 
         protected override void OnResize(EventArgs e) {
             base.OnResize(e);
