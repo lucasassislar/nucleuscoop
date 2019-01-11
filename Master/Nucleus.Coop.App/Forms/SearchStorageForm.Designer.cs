@@ -1,6 +1,6 @@
 ﻿namespace Nucleus.Coop.App.Forms
 {
-    partial class SearchDisksForm
+    partial class SearchStorageForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchDisksForm));
-            this.list_drives = new System.Windows.Forms.CheckedListBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchStorageForm));
+            this.list_storage = new System.Windows.Forms.CheckedListBox();
             this.lbl_selectDrives = new System.Windows.Forms.Label();
             this.lbl_foundGames = new System.Windows.Forms.Label();
             this.list_games = new System.Windows.Forms.ListBox();
@@ -41,28 +41,28 @@
             this.panel_formContent.SuspendLayout();
             this.SuspendLayout();
             // 
-            // list_drives
+            // list_storage
             // 
-            this.list_drives.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.list_storage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.list_drives.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
-            this.list_drives.CheckOnClick = true;
-            this.list_drives.ForeColor = System.Drawing.Color.White;
-            this.list_drives.FormattingEnabled = true;
-            this.list_drives.IntegralHeight = false;
-            this.list_drives.Location = new System.Drawing.Point(9, 53);
-            this.list_drives.Name = "list_drives";
-            this.list_drives.Size = new System.Drawing.Size(336, 319);
-            this.list_drives.TabIndex = 0;
+            this.list_storage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
+            this.list_storage.CheckOnClick = true;
+            this.list_storage.ForeColor = System.Drawing.Color.White;
+            this.list_storage.FormattingEnabled = true;
+            this.list_storage.IntegralHeight = false;
+            this.list_storage.Location = new System.Drawing.Point(9, 53);
+            this.list_storage.Name = "list_storage";
+            this.list_storage.Size = new System.Drawing.Size(336, 319);
+            this.list_storage.TabIndex = 0;
             // 
             // lbl_selectDrives
             // 
             this.lbl_selectDrives.AutoSize = true;
             this.lbl_selectDrives.Location = new System.Drawing.Point(5, 29);
             this.lbl_selectDrives.Name = "lbl_selectDrives";
-            this.lbl_selectDrives.Size = new System.Drawing.Size(99, 21);
+            this.lbl_selectDrives.Size = new System.Drawing.Size(108, 21);
             this.lbl_selectDrives.TabIndex = 1;
-            this.lbl_selectDrives.Text = "Select Drives";
+            this.lbl_selectDrives.Text = "Select Devices";
             // 
             // lbl_foundGames
             // 
@@ -124,7 +124,7 @@
             this.panel_formContent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
             this.panel_formContent.Controls.Add(this.titleBarControl1);
             this.panel_formContent.Controls.Add(this.btn_search);
-            this.panel_formContent.Controls.Add(this.list_drives);
+            this.panel_formContent.Controls.Add(this.list_storage);
             this.panel_formContent.Controls.Add(this.lbl_progress);
             this.panel_formContent.Controls.Add(this.list_games);
             this.panel_formContent.Controls.Add(this.progress_search);
@@ -164,7 +164,7 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckedListBox list_drives;
+        private System.Windows.Forms.CheckedListBox list_storage;
         private System.Windows.Forms.Label lbl_selectDrives;
         private System.Windows.Forms.Label lbl_foundGames;
         private System.Windows.Forms.ListBox list_games;

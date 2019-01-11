@@ -28,6 +28,9 @@ namespace Nucleus.Coop.App.Controls
         public HorizontalLineControl()
         {
             InitializeComponent();
+
+            Margin = Padding.Empty;
+            Padding = Padding.Empty;
             this.AutoScaleMode = AutoScaleMode.None; // SERIOUSLY FUCK THIS
 
             line = new Panel();

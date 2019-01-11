@@ -162,9 +162,6 @@
     <Compile Include="Platform\Windows\Controls\TitleBarControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Platform\Windows\Controls\TitleBarControl.Designer.cs">
-      <DependentUpon>TitleBarControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Platform\Windows\Controls\TransparentControl.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -20,7 +20,7 @@ using Nucleus.Coop.App.Properties;
 namespace Nucleus.Coop.App.Controls {
     public partial class HandlerManagerControl : BasePageControl {
         private GameHandlerBaseMetadata currentMetadata;
-        private SearchDisksForm form;
+        private SearchStorageForm form;
         private Bitmap interrobang;
 
         private int titleBarWidth;
@@ -32,8 +32,9 @@ namespace Nucleus.Coop.App.Controls {
             titleBarWidth = list_left.Width;
             bool designMode = (LicenseManager.UsageMode == LicenseUsageMode.Designtime);
 
-            this.Title = "Package Manager";
-            this.Image = Resources.nucleus;
+            this.Title = "Settings";
+            //this.Image = Resources.nucleus;
+            this.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "⚙");
 
             if (!designMode) {
                 LoadInstalled();
@@ -45,14 +46,18 @@ namespace Nucleus.Coop.App.Controls {
             var handlers = gm.User.InstalledHandlers;
 
             list_left.Controls.Clear();
-            btn_uninstall.Enabled = false;
 
-            GameControl installFile = new GameControl();
-            installFile.Width = list_left.Width;
-            installFile.UpdateTitleText("Install handler from file");
-            installFile.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "📁");
-            installFile.Click += InstallFile_Click;
-            list_left.Controls.Add(installFile);
+            //HorizontalLineControl line = new HorizontalLineControl();
+            //list_left.Controls.Add(line);
+            //line.LineHorizontalPc = 100;
+            //line.Width = list_left.Width;
+            //line.LineHeight = 1;
+            //line.LineColor = Color.FromArgb(255, 41, 45, 47);
+
+            TitleSeparator gamesSep = new TitleSeparator();
+            gamesSep.SetTitle("GAMES");
+            gamesSep.Height = 20;
+            this.list_left.Controls.Add(gamesSep);
 
             GameControl installGame = new GameControl();
             installGame.Width = list_left.Width;
@@ -75,10 +80,18 @@ namespace Nucleus.Coop.App.Controls {
             sep.Height = 20;
             this.list_left.Controls.Add(sep);
 
+            GameControl installFile = new GameControl();
+            installFile.Width = list_left.Width;
+            installFile.UpdateTitleText("Install handler from file");
+            //installFile.Image = Resources.nucleus;
+            installFile.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "🔍"); ;
+            installFile.Click += InstallFile_Click;
+            list_left.Controls.Add(installFile);
+
             if (handlers.Count == 0) {
                 GameControl noAvailable = new GameControl();
                 noAvailable.Width = list_left.Width;
-                noAvailable.UpdateTitleText("No available handlers");
+                noAvailable.UpdateTitleText("No installed game handlers");
                 noAvailable.Image = interrobang;
                 list_left.Controls.Add(noAvailable);
             } else {
@@ -101,7 +114,7 @@ namespace Nucleus.Coop.App.Controls {
                 return;
             }
 
-            form = new SearchDisksForm();
+            form = new SearchStorageForm();
 
             form.FormClosed += Form_FormClosed;
             form.Show();
@@ -145,7 +158,7 @@ namespace Nucleus.Coop.App.Controls {
             currentMetadata = gameHandler.HandlerMetadata;
             MainForm.Instance.ChangeTitle(currentMetadata.Title, gameHandler.Image);
 
-            btn_uninstall.Enabled = true;
+            panel_gameData.Visible = true;
 
             label_developer.Text = "Developer: " + currentMetadata.Dev;
             label_version.Text = currentMetadata.V.ToString();
@@ -154,10 +167,13 @@ namespace Nucleus.Coop.App.Controls {
 
         private void InstallFile_Click(object sender, EventArgs e) {
             using (OpenFileDialog open = new OpenFileDialog()) {
+                open.Multiselect = true;
                 open.Filter = "Nucleus Package Files|*.nc";
                 if (open.ShowDialog() == DialogResult.OK) {
-                    string path = open.FileName;
-                    GameManager.Instance.RepoManager.InstallPackage(path);
+                    string[] paths = open.FileNames;
+                    for (int i = 0; i < paths.Length; i++) {
+                        GameManager.Instance.RepoManager.InstallPackage(paths[i]);
+                    }
                     LoadInstalled();
                 }
             }
@@ -175,6 +191,10 @@ namespace Nucleus.Coop.App.Controls {
             label_developer.Text = "Developer Name";
             label_version.Text = "0.0";
             label_nukeVer.Text = "Nucleus Version";
+
+            panel_gameData.Visible = false;
+
+            MainForm.Instance.ChangeTitle(this.Title, this.Image);
 
             string path = PackageManager.GetBaseInstallPath(this.currentMetadata);
             Directory.Delete(path, true);

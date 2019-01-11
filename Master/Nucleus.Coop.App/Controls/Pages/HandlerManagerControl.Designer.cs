@@ -34,6 +34,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label_nukeVer = new System.Windows.Forms.Label();
             this.btn_uninstall = new System.Windows.Forms.Button();
+            this.panel_gameData = new System.Windows.Forms.Panel();
+            this.panel_gameData.SuspendLayout();
             this.SuspendLayout();
             // 
             // list_left
@@ -52,7 +54,7 @@
             // label_developer
             // 
             this.label_developer.AutoSize = true;
-            this.label_developer.Location = new System.Drawing.Point(279, 55);
+            this.label_developer.Location = new System.Drawing.Point(0, 0);
             this.label_developer.Name = "label_developer";
             this.label_developer.Size = new System.Drawing.Size(127, 21);
             this.label_developer.TabIndex = 5;
@@ -62,7 +64,7 @@
             // 
             this.label_version.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label_version.AutoSize = true;
-            this.label_version.Location = new System.Drawing.Point(748, 55);
+            this.label_version.Location = new System.Drawing.Point(469, 0);
             this.label_version.Name = "label_version";
             this.label_version.Size = new System.Drawing.Size(31, 21);
             this.label_version.TabIndex = 6;
@@ -80,7 +82,7 @@
             // 
             this.label_nukeVer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label_nukeVer.AutoSize = true;
-            this.label_nukeVer.Location = new System.Drawing.Point(700, 76);
+            this.label_nukeVer.Location = new System.Drawing.Point(421, 21);
             this.label_nukeVer.Name = "label_nukeVer";
             this.label_nukeVer.Size = new System.Drawing.Size(79, 21);
             this.label_nukeVer.TabIndex = 8;
@@ -89,9 +91,8 @@
             // btn_uninstall
             // 
             this.btn_uninstall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_uninstall.Enabled = false;
             this.btn_uninstall.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_uninstall.Location = new System.Drawing.Point(595, 572);
+            this.btn_uninstall.Location = new System.Drawing.Point(313, 517);
             this.btn_uninstall.Name = "btn_uninstall";
             this.btn_uninstall.Size = new System.Drawing.Size(184, 54);
             this.btn_uninstall.TabIndex = 9;
@@ -99,20 +100,33 @@
             this.btn_uninstall.UseVisualStyleBackColor = true;
             this.btn_uninstall.Click += new System.EventHandler(this.btn_uninstall_Click);
             // 
+            // panel_gameData
+            // 
+            this.panel_gameData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel_gameData.Controls.Add(this.btn_uninstall);
+            this.panel_gameData.Controls.Add(this.label_version);
+            this.panel_gameData.Controls.Add(this.label_nukeVer);
+            this.panel_gameData.Controls.Add(this.label_developer);
+            this.panel_gameData.Location = new System.Drawing.Point(279, 55);
+            this.panel_gameData.Name = "panel_gameData";
+            this.panel_gameData.Size = new System.Drawing.Size(500, 571);
+            this.panel_gameData.TabIndex = 10;
+            this.panel_gameData.Visible = false;
+            // 
             // HandlerManagerControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.btn_uninstall);
-            this.Controls.Add(this.label_nukeVer);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.label_version);
-            this.Controls.Add(this.label_developer);
             this.Controls.Add(this.list_left);
+            this.Controls.Add(this.panel_gameData);
             this.Name = "HandlerManagerControl";
             this.Size = new System.Drawing.Size(782, 629);
+            this.panel_gameData.ResumeLayout(false);
+            this.panel_gameData.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -123,5 +137,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label_nukeVer;
         private System.Windows.Forms.Button btn_uninstall;
+        private System.Windows.Forms.Panel panel_gameData;
     }
 }

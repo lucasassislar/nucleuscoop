@@ -10,7 +10,9 @@ using System.Windows.Forms;
 using Nucleus.Gaming.Windows.Interop;
 
 namespace Nucleus.Gaming.Platform.Windows.Controls {
-    public partial class TitleBarControl : UserControl {
+    public class TitleBarControl : UserControl {
+        private PictureBox icon;
+
         private Label titleLabel;
         private string text = "Form";
 
@@ -41,8 +43,6 @@ namespace Nucleus.Gaming.Platform.Windows.Controls {
         private Font titleFont;
 
         public TitleBarControl() {
-            InitializeComponent();
-
             this.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
             this.Size = new Size(1000, 21);
 
@@ -57,6 +57,25 @@ namespace Nucleus.Gaming.Platform.Windows.Controls {
             InitializeButtons();
         }
 
+        private Image cachedIcon;
+
+        public Image Icon {
+            get {
+                if (icon == null) {
+                    return cachedIcon;
+                } else { 
+                    return icon.Image;
+                }
+            }
+            set {
+                if (icon == null) {
+                    cachedIcon = value;
+                } else {
+                    icon.Image = value;
+                }
+            }
+        }
+
         private void InitializeButtons() {
             btnFont = new Font(this.Font.FontFamily, 6, FontStyle.Regular);
             titleFont = new Font(this.Font.FontFamily, 10, FontStyle.Regular);
@@ -64,10 +83,17 @@ namespace Nucleus.Gaming.Platform.Windows.Controls {
             titleLabel = new Label();
             titleLabel.Text = text;
             titleLabel.AutoSize = true;
-            titleLabel.Location = new Point(2, 2);
+            titleLabel.Location = new Point(20, 2);
             titleLabel.Font = titleFont;
             titleLabel.DoubleClick += TitleLabel_DoubleClick;
             Controls.Add(titleLabel);
+
+            icon = new PictureBox();
+            icon.Location = new Point(2, 2);
+            icon.Size = new Size(17, 17);
+            icon.SizeMode = PictureBoxSizeMode.StretchImage;
+            icon.Image = cachedIcon;
+            this.Controls.Add(icon);
 
             close = MakeFlatBtn();
             maximize = MakeFlatBtn();

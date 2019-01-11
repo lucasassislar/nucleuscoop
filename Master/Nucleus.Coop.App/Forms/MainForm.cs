@@ -131,8 +131,9 @@ namespace Nucleus.Coop.App.Forms {
                 // make menu before games
                 pkgManagerBtn = new GameControl();
                 pkgManagerBtn.Width = list_games.Width;
-                pkgManagerBtn.UpdateTitleText("Package Manager");
+                pkgManagerBtn.UpdateTitleText("Settings");
                 pkgManagerBtn.Image = Properties.Resources.nucleus;
+                //pkgManagerBtn.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "⚙");
                 pkgManagerBtn.Click += PkgManagerBtn_Click;
                 this.list_games.Controls.Add(pkgManagerBtn);
                 

@@ -53,6 +53,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.titleBarControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(34)))), ((int)(((byte)(37)))));
             this.titleBarControl1.EnableMaximize = true;
+            this.titleBarControl1.Icon = global::Nucleus.Coop.App.Properties.Resources.nucleus;
             this.titleBarControl1.Location = new System.Drawing.Point(0, 0);
             this.titleBarControl1.Margin = new System.Windows.Forms.Padding(0);
             this.titleBarControl1.Name = "titleBarControl1";
