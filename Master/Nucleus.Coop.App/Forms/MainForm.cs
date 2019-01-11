@@ -27,7 +27,6 @@ namespace Nucleus.Coop.App.Forms {
 
         private GameRunningOverlay overlay;
 
-        private HandlerManagerForm pkgManager;
         private AppPage appPage = AppPage.None;
         private bool noGamesPresent;
 
@@ -333,10 +332,8 @@ namespace Nucleus.Coop.App.Forms {
                 RefreshGames();
                 return;
             }
-
             // get all Repository Game Infos
             //this.combo_handlers.Items.Add(metadata);
-
             //HandlerControl con = new HandlerControl(metadata);
             //con.Width = list_Games.Width;
         }
@@ -372,17 +369,6 @@ namespace Nucleus.Coop.App.Forms {
 
         private void btnShowTaskbar_Click(object sender, EventArgs e) {
             User32Util.ShowTaskBar();
-        }
-
-        private void imgBtn_handlers_Click(object sender, EventArgs e) {
-            if (pkgManager != null) {
-                if (!pkgManager.IsDisposed) {
-                    return;
-                }
-            }
-
-            pkgManager = new HandlerManagerForm();
-            pkgManager.Show();
         }
     }
 }

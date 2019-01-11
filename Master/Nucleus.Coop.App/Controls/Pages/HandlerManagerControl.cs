@@ -72,6 +72,7 @@ namespace Nucleus.Coop.App.Controls {
 
             TitleSeparator sep = new TitleSeparator();
             sep.SetTitle("HANDLERS");
+            sep.Height = 20;
             this.list_left.Controls.Add(sep);
 
             if (handlers.Count == 0) {

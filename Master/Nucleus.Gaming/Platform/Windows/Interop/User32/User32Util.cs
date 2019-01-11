@@ -13,6 +13,20 @@ namespace Nucleus.Gaming.Windows
 {
     public static class User32Util
     {
+        public static Control GetFocusControl() {
+            Control focusControl = null;
+            IntPtr focusHandle = User32Interop.GetFocus();
+            if (focusHandle != IntPtr.Zero) {
+                focusControl = Control.FromHandle(focusHandle);
+            }
+            return focusControl;
+        }
+
+        public static bool IsFormFocused(Form form) {
+            Control focusControl = GetFocusControl();
+            return focusControl.FindForm() == form;
+        }
+
         public static IEnumerable<IntPtr> EnumerateProcessWindowHandles(int processId)
         {
             var handles = new List<IntPtr>();

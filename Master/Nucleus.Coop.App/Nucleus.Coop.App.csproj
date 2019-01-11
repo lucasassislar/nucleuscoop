@@ -202,41 +202,17 @@
     <Compile Include="src\AppPage.cs" />
     <Compile Include="src\EventCapture.cs" />
     <None Include="app.nuspec" />
-    <None Include="Forms\CentralForm.cs">
-      <SubType>Form</SubType>
-    </None>
-    <None Include="Forms\CentralForm.Designer.cs">
-      <DependentUpon>CentralForm.cs</DependentUpon>
-    </None>
     <Compile Include="Forms\GameList.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\GameList.Designer.cs">
       <DependentUpon>GameList.cs</DependentUpon>
     </Compile>
-    <None Include="Forms\LoginForm.cs">
-      <SubType>Form</SubType>
-    </None>
-    <None Include="Forms\LoginForm.Designer.cs">
-      <DependentUpon>LoginForm.cs</DependentUpon>
-    </None>
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\HandlerManagerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\HandlerManagerForm.Designer.cs">
-      <DependentUpon>HandlerManagerForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\RegisterForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\RegisterForm.Designer.cs">
-      <DependentUpon>RegisterForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SearchDisksForm.cs">
       <SubType>Form</SubType>
@@ -275,17 +251,8 @@
     <EmbeddedResource Include="Forms\GameList.resx">
       <DependentUpon>GameList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\LoginForm.resx">
-      <DependentUpon>LoginForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\HandlerManagerForm.resx">
-      <DependentUpon>HandlerManagerForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RegisterForm.resx">
-      <DependentUpon>RegisterForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SearchDisksForm.resx">
       <DependentUpon>SearchDisksForm.cs</DependentUpon>

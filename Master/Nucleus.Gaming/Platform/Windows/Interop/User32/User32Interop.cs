@@ -9,6 +9,9 @@ namespace Nucleus.Gaming.Windows.Interop
 {
     public static class User32Interop
     {
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.Winapi)]
+        public static extern IntPtr GetFocus();
+
         [DllImport("user32.dll")]
         public static extern int SetWindowRgn(IntPtr hWnd, IntPtr hRgn, bool bRedraw);
 

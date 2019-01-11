@@ -1,6 +1,8 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Platform.Windows.Controls;
+using Nucleus.Gaming.Windows;
+using Nucleus.Gaming.Windows.Interop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -147,6 +149,7 @@ namespace Nucleus.Coop {
             None, Right, Left, Top, Bottom,
             TopRight, TopLeft, BottomRight, BottomLeft
         }
+
         MovementDirection mouseCorner;
         bool mouseDown;
 
@@ -155,7 +158,7 @@ namespace Nucleus.Coop {
         }
 
         private void BaseForm_MouseDown(object sender, MouseEventArgs e) {
-            if (!this.Focused) {
+            if (!User32Util.IsFormFocused(this)) {
                 return;
             }
 
@@ -165,7 +168,8 @@ namespace Nucleus.Coop {
         }
 
         private void BaseForm_MouseMove(object sender, MouseEventArgs e) {
-            if (WindowState == FormWindowState.Maximized) {
+            if (!User32Util.IsFormFocused(this) ||
+                WindowState == FormWindowState.Maximized) {
                 return;
             }
 
