@@ -53,7 +53,7 @@ namespace Nucleus.Coop.App.Forms
             InitializeComponent();
 
             DriveInfo[] drives = DriveInfo.GetDrives();
-            CheckedListBox checkedBox = listBox_drives;
+            CheckedListBox checkedBox = list_drives;
 
             for (int i = 0; i < drives.Length; i++)
             {
@@ -138,7 +138,7 @@ namespace Nucleus.Coop.App.Forms
             drivesFinishedSearching = 0;
 
             drivesToSearch = new List<SearchDriveInfo>();
-            CheckedListBox checkedBox = listBox_drives;
+            CheckedListBox checkedBox = list_drives;
 
             for (int i = 0; i < checkedBox.CheckedItems.Count; i++)
             {

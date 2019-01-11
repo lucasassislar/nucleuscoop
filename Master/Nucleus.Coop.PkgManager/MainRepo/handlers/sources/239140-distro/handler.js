@@ -7,6 +7,7 @@ Game.AddOption("Save ID - Player 3", "Save ID to use for Player 3 (default 2)",
 Game.AddOption("Save ID - Player 4", "Save ID to use for Player 4 (default 3)",
     "saveid3", 3);
 
+Game.PlatformVersion = 10; // Nucleus Coop 10
 Game.SteamID = "239140";
 Game.GameID = "239140";
 Game.GameName = "Dying Light";

@@ -12,6 +12,7 @@ Game.FileSymlinkExclusions = [
     "config.cfg"
 ];
 
+Game.PlatformVersion = 10; // Nucleus Coop 10
 Game.SteamID = "17520";
 Game.GameID = "17520";
 Game.HandlerInterval = 100; // 10 FPS handler

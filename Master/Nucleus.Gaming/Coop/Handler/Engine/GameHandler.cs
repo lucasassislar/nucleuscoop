@@ -12,9 +12,9 @@ namespace Nucleus.Gaming.Coop.Handler
     /// </summary>
     public class GameHandler
     {
-        private UserGameInfo _userGame;
-        private GameProfile _profile;
-        private HandlerDataManager _handlerManager;
+        private UserGameInfo userGame;
+        private GameProfile profile;
+        private HandlerDataManager handlerManager;
 
         private List<HandlerModule> modules;
 
@@ -43,9 +43,9 @@ namespace Nucleus.Gaming.Coop.Handler
 
         public bool Initialize(HandlerDataManager handlerManager, UserGameInfo userGameInfo, GameProfile profile)
         {
-            this._handlerManager = handlerManager;
-            this._userGame = userGameInfo;
-            this._profile = profile;
+            this.handlerManager = handlerManager;
+            this.userGame = userGameInfo;
+            this.profile = profile;
 
             modules = new List<HandlerModule>();
             foreach (ModuleInfo info in GameManager.Instance.ModuleManager.Modules)
@@ -69,7 +69,7 @@ namespace Nucleus.Gaming.Coop.Handler
 
         public RequestResult<string> Play()
         {
-            List<PlayerInfo> players = _profile.PlayerData;
+            List<PlayerInfo> players = profile.PlayerData;
             for (int i = 0; i < players.Count; i++)
             {
                 players[i].PlayerID = i;
@@ -86,7 +86,7 @@ namespace Nucleus.Gaming.Coop.Handler
             {
                 PlayerInfo player = players[i];
 
-                HandlerContext context = _handlerManager.HandlerData.CreateContext(_profile, player);
+                HandlerContext context = handlerManager.HandlerData.CreateContext(profile, player);
                 context.PlayerID = player.PlayerID;
 
                 for (int j = 0; j < modules.Count; j++)
@@ -94,14 +94,14 @@ namespace Nucleus.Gaming.Coop.Handler
                     modules[j].PrePlayPlayer(player, i, context);
                 }
 
-                _handlerManager.Play(context, player);
+                handlerManager.Play(context, player);
 
                 for (int j = 0; j < modules.Count; j++)
                 {
                     modules[j].PlayPlayer(player, i, context);
                 }
 
-                Thread.Sleep(TimeSpan.FromMilliseconds(_handlerManager.HandlerData.PauseBetweenStarts));
+                Thread.Sleep(TimeSpan.FromMilliseconds(handlerManager.HandlerData.PauseBetweenStarts));
             }
 
             return result;
@@ -109,7 +109,7 @@ namespace Nucleus.Gaming.Coop.Handler
 
         public void Tick(double delayMs)
         {
-            List<PlayerInfo> players = _profile.PlayerData;
+            List<PlayerInfo> players = profile.PlayerData;
             for (int i = 0; i < players.Count; i++)
             {
                 PlayerInfo player = players[i];

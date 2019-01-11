@@ -17,7 +17,7 @@ namespace Nucleus.Coop {
         private const int cCaption = 32;   // Caption bar height;
         private MouseMessageFilter filter;
 
-        public Panel FormContent { get; set; }
+        public Panel FormContent { get; private set; }
 
         public BaseForm() {
             // Default DPI = 96 = 100%
@@ -57,6 +57,11 @@ namespace Nucleus.Coop {
 
         ~BaseForm() {
             DPIManager.Unregister(this);
+        }
+
+
+        public void SetupBaseForm(Panel formContent) {
+            this.FormContent = formContent;
         }
 
         protected override void OnResize(EventArgs e) {
@@ -150,6 +155,10 @@ namespace Nucleus.Coop {
         }
 
         private void BaseForm_MouseDown(object sender, MouseEventArgs e) {
+            if (!this.Focused) {
+                return;
+            }
+
             if (e.Button == MouseButtons.Left) {
                 mouseDown = true;
             }

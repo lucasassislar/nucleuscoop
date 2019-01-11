@@ -7,6 +7,7 @@ Game.AddOption("Save ID - Player 3", "Save ID to use for Player 3 (default 2)",
 Game.AddOption("Save ID - Player 4", "Save ID to use for Player 4 (default 3)",
     "saveid3", 3);
 
+Game.PlatformVersion = 10; // Nucleus Coop 10
 Game.SteamID = "261640";
 Game.GameID = "261640";
 Game.GameName = "Borderlands Pre-Sequel";
