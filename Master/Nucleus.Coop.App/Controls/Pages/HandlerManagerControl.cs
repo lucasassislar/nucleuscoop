@@ -114,6 +114,11 @@ namespace Nucleus.Coop.App.Controls {
                 return;
             }
 
+            if (GameManager.Instance.User.InstalledHandlers.Count == 0) {
+                MessageBox.Show("You have no game handlers installed. No games to search for.");
+                return;
+            }
+
             form = new SearchStorageForm();
 
             form.FormClosed += Form_FormClosed;

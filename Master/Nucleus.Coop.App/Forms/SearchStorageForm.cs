@@ -34,11 +34,9 @@ namespace Nucleus.Coop.App.Forms {
             }
         }
 
+        private List<SearchDriveInfo> drivesToSearch;
         private float progress;
         private float lastProgress;
-
-        private List<SearchDriveInfo> drivesToSearch;
-
         private bool searching;
         private int drivesFinishedSearching;
 
@@ -107,7 +105,7 @@ namespace Nucleus.Coop.App.Forms {
 
             if (GameManager.Instance.User.InstalledHandlers.Count == 0) {
                 MessageBox.Show("You have no game handlers installed. No games to search for.");
-                //return;
+                return;
             }
 
             btn_search.Enabled = false;
