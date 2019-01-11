@@ -1061,7 +1061,7 @@ namespace Nucleus.Gaming.App.Controls
             var players = profile.PlayerData;
             if (players.Count == 0)
             {
-                g.DrawString("No Gamepads connected", playerTextFont, Brushes.Red, new PointF(20, 40));
+                g.DrawString("No supported input devices connected", playerTextFont, Brushes.Red, new PointF(20, 40));
             }
             else
             {
@@ -1116,10 +1116,10 @@ namespace Nucleus.Gaming.App.Controls
                 g.DrawRectangle(Pens.Red, draggingScreenRec);
             }
 
-            g.DrawString("Gamepads", playerTextFont, lightWhite, new PointF(10, 10));
+            g.DrawString("Input devices", playerTextFont, lightWhite, new PointF(10, 10));
 
             SizeF dragEachGamepadSize;
-            string dragEachGamepad = "Drag each gamepad to a screen";
+            string dragEachGamepad = "Drag each device to a screen";
             dragEachGamepad = StringUtil.WrapString(Width * 0.6f, dragEachGamepad, g, playerTextFont, out dragEachGamepadSize);
             g.DrawString(dragEachGamepad, playerTextFont, lightWhite, new PointF(Width - dragEachGamepadSize.Width, playersArea.Y));
 

@@ -224,6 +224,7 @@ namespace Nucleus.Coop.App.Forms {
                 appPage = AppPage.SelectGameFolder;
             } else {
                 appPage = AppPage.GameHandler;
+                gamePageControl1.ChangeSelectedGame(games[0]);
             }
 
             UpdatePage();
