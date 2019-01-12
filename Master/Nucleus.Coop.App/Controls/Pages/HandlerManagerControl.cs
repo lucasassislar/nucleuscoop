@@ -46,6 +46,7 @@ namespace Nucleus.Coop.App.Controls {
 
             panel_gameData.Visible = false;
             panel_installedGames.Visible = false;
+            list_left.Deselect();
         }
 
         private GameControl listInstalled;
