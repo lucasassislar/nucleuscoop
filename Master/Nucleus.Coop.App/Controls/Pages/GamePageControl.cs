@@ -17,6 +17,7 @@ using Nucleus.Coop.App.Forms;
 using System.Threading;
 using Nucleus.Gaming.Coop.Controls;
 using Nucleus.Gaming.App.Controls;
+using Nucleus.Gaming.Platform.Windows;
 
 namespace Nucleus.Coop.App.Controls {
     public partial class GamePageControl : BasePageControl {
@@ -85,10 +86,14 @@ namespace Nucleus.Coop.App.Controls {
             }
 
             if (currentHandlers.Length > 1) {
+                MainForm.Instance.ChangeTitle("Choose one handler to run game", 
+                    FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "⤷"));
+
                 panel_steps.Controls.Add(list_handlers);
 
                 list_handlers.Width = panel_steps.Width;
                 list_handlers.Height = panel_steps.Height;
+                list_handlers.Left = 1;
                 list_handlers.Controls.Clear();
 
                 for (var i = 0; i < currentHandlers.Length; i++) {

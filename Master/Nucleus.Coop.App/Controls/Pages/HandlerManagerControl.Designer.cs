@@ -126,7 +126,7 @@
             this.panel_installedGames.Controls.Add(this.list_installedGames);
             this.panel_installedGames.Location = new System.Drawing.Point(274, 55);
             this.panel_installedGames.Name = "panel_installedGames";
-            this.panel_installedGames.Size = new System.Drawing.Size(505, 571);
+            this.panel_installedGames.Size = new System.Drawing.Size(507, 571);
             this.panel_installedGames.TabIndex = 10;
             // 
             // list_installedGames
@@ -136,7 +136,7 @@
             this.list_installedGames.Location = new System.Drawing.Point(0, 0);
             this.list_installedGames.Name = "list_installedGames";
             this.list_installedGames.Offset = new System.Drawing.Size(0, 0);
-            this.list_installedGames.Size = new System.Drawing.Size(505, 571);
+            this.list_installedGames.Size = new System.Drawing.Size(507, 571);
             this.list_installedGames.TabIndex = 0;
             // 
             // HandlerManagerControl
