@@ -214,6 +214,10 @@ namespace Nucleus.Coop {
             }
 
             if (e.Button == MouseButtons.Left) {
+                if (!mouseDown) {
+                    // make sure we update before we try moving anything
+                    UpdateCursor();
+                }
                 mouseDown = true;
             }
         }
@@ -227,55 +231,58 @@ namespace Nucleus.Coop {
             if (mouseDown) {
                 startResizer();
             } else {
-                Point cursor = Cursor.Position;
-                Cursor newCursor = null;
-                MovementDirection newMouseDirection = MovementDirection.None;
+                UpdateCursor();
+            }
+        }
 
-                if ((cursor.X > ((this.Location.X + this.Width) - borderDiameter)) &&
-                    (cursor.Y > (this.Location.Y + borderSpace)) &&
-                    (cursor.Y < ((this.Location.Y + this.Height) - borderSpace))) {
-                    newCursor = Cursors.SizeWE;
-                    newMouseDirection = MovementDirection.Right;
-                } else if ((cursor.X < (this.Location.X + borderDiameter)) &&
-                    (cursor.Y > (this.Location.Y + borderSpace)) &&
-                    (cursor.Y < ((this.Location.Y + this.Height) - borderSpace))) {
-                    newCursor = Cursors.SizeWE;
-                    newMouseDirection = MovementDirection.Left;
-                } else if ((cursor.Y < (this.Location.Y + topBorderDiameter)) &&
-                    (cursor.X > (this.Location.X + borderSpace)) &&
-                    (cursor.X < ((this.Location.X + this.Width) - borderSpace))) {
-                    newCursor = Cursors.SizeNS;
-                    newMouseDirection = MovementDirection.Top;
-                } else if ((cursor.Y > ((this.Location.Y + this.Height) - borderDiameter)) &&
-                    (cursor.X > (this.Location.X + borderSpace)) &&
-                    (cursor.X < ((this.Location.X + this.Width) - borderSpace))) {
-                    newCursor = Cursors.SizeNS;
-                    newMouseDirection = MovementDirection.Bottom;
-                } else if ((cursor.X > ((this.Location.X + this.Width) - borderDiameter)) &&
-                    (cursor.Y < (this.Location.Y + borderDiameter))) {
-                    newCursor = Cursors.SizeNESW;
-                    newMouseDirection = MovementDirection.TopRight;
-                } else if ((cursor.X < (this.Location.X + borderDiameter)) &&
-                    (cursor.Y < (this.Location.Y + borderDiameter))) {
-                    newCursor = Cursors.SizeNWSE;
-                    newMouseDirection = MovementDirection.TopLeft;
-                } else if ((cursor.X > ((this.Location.X + this.Width) - borderDiameter)) &&
-                    (cursor.Y > ((this.Location.Y + this.Height) - borderDiameter))) {
-                    newCursor = Cursors.SizeNWSE;
-                    newMouseDirection = MovementDirection.BottomRight;
-                } else if ((cursor.X < (this.Location.X + borderDiameter)) &&
-                    (cursor.Y > ((this.Location.Y + this.Height) - borderDiameter))) {
-                    newCursor = Cursors.SizeNESW;
-                    newMouseDirection = MovementDirection.BottomLeft;
-                } else {
-                    newCursor = Cursors.Default;
-                    newMouseDirection = MovementDirection.None;
-                }
+        private void UpdateCursor() {
+            Point cursor = Cursor.Position;
+            Cursor newCursor = null;
+            MovementDirection newMouseDirection = MovementDirection.None;
 
-                this.Cursor = newCursor;
-                this.mouseCorner = newMouseDirection;
+            if ((cursor.X > ((this.Location.X + this.Width) - borderDiameter)) &&
+                (cursor.Y > (this.Location.Y + borderSpace)) &&
+                (cursor.Y < ((this.Location.Y + this.Height) - borderSpace))) {
+                newCursor = Cursors.SizeWE;
+                newMouseDirection = MovementDirection.Right;
+            } else if ((cursor.X < (this.Location.X + borderDiameter)) &&
+                (cursor.Y > (this.Location.Y + borderSpace)) &&
+                (cursor.Y < ((this.Location.Y + this.Height) - borderSpace))) {
+                newCursor = Cursors.SizeWE;
+                newMouseDirection = MovementDirection.Left;
+            } else if ((cursor.Y < (this.Location.Y + topBorderDiameter)) &&
+                (cursor.X > (this.Location.X + borderSpace)) &&
+                (cursor.X < ((this.Location.X + this.Width) - borderSpace))) {
+                newCursor = Cursors.SizeNS;
+                newMouseDirection = MovementDirection.Top;
+            } else if ((cursor.Y > ((this.Location.Y + this.Height) - borderDiameter)) &&
+                (cursor.X > (this.Location.X + borderSpace)) &&
+                (cursor.X < ((this.Location.X + this.Width) - borderSpace))) {
+                newCursor = Cursors.SizeNS;
+                newMouseDirection = MovementDirection.Bottom;
+            } else if ((cursor.X > ((this.Location.X + this.Width) - borderDiameter)) &&
+                (cursor.Y < (this.Location.Y + borderDiameter))) {
+                newCursor = Cursors.SizeNESW;
+                newMouseDirection = MovementDirection.TopRight;
+            } else if ((cursor.X < (this.Location.X + borderDiameter)) &&
+                (cursor.Y < (this.Location.Y + borderDiameter))) {
+                newCursor = Cursors.SizeNWSE;
+                newMouseDirection = MovementDirection.TopLeft;
+            } else if ((cursor.X > ((this.Location.X + this.Width) - borderDiameter)) &&
+                (cursor.Y > ((this.Location.Y + this.Height) - borderDiameter))) {
+                newCursor = Cursors.SizeNWSE;
+                newMouseDirection = MovementDirection.BottomRight;
+            } else if ((cursor.X < (this.Location.X + borderDiameter)) &&
+                (cursor.Y > ((this.Location.Y + this.Height) - borderDiameter))) {
+                newCursor = Cursors.SizeNESW;
+                newMouseDirection = MovementDirection.BottomLeft;
+            } else {
+                newCursor = Cursors.Default;
+                newMouseDirection = MovementDirection.None;
             }
 
+            this.Cursor = newCursor;
+            this.mouseCorner = newMouseDirection;
         }
 
         private void startResizer() {
