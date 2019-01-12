@@ -44,6 +44,9 @@ namespace Nucleus.Coop.App.Forms {
 
         public GameControl Selected { get; private set; }
 
+        private GameControl pkgManagerBtn;
+        private BasePageControl currentPage;
+
         public MainForm(string[] args, GameManager gameManager) {
             this.gameManager = gameManager;
             MainForm.Instance = this;
@@ -55,7 +58,7 @@ namespace Nucleus.Coop.App.Forms {
             overlay = new GameRunningOverlay();
             overlay.OnStop += Overlay_OnStop;
 
-            this.titleBarControl1.Text = string.Format("Nucleus Coop v{0}", Globals.Version);
+            this.titleBarControl.Text = string.Format("Nucleus Coop v{0}", Globals.Version);
 
             controls = new Dictionary<string, GameControl>();
 
@@ -107,9 +110,13 @@ namespace Nucleus.Coop.App.Forms {
             System.Diagnostics.Debug.WriteLine("Got Focus");
         }
 
-        private GameControl pkgManagerBtn;
+        private bool refreshingGames;
 
         public void RefreshGames() {
+            if (refreshingGames) {
+                return;
+            }
+            refreshingGames = true;
 
             lock (controls) {
                 foreach (var con in controls) {
@@ -121,13 +128,6 @@ namespace Nucleus.Coop.App.Forms {
                 this.list_games.Controls.Clear();
                 controls.Clear();
 
-                List<GameHandlerMetadata> handlers = gameManager.User.InstalledHandlers;
-                handlers.Sort(GameHandlerMetadata.CompareGameTitle);
-                for (int i = 0; i < handlers.Count; i++) {
-                    GameHandlerMetadata handler = handlers[i];
-                    NewGameHandler(handler);
-                }
-
                 // make menu before games
                 pkgManagerBtn = new GameControl();
                 pkgManagerBtn.Width = list_games.Width;
@@ -136,7 +136,7 @@ namespace Nucleus.Coop.App.Forms {
                 //pkgManagerBtn.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "⚙");
                 pkgManagerBtn.Click += PkgManagerBtn_Click;
                 this.list_games.Controls.Add(pkgManagerBtn);
-                
+
                 //HorizontalLineControl line = new HorizontalLineControl();
                 //line.LineHorizontalPc = 100;
                 //line.Width = list_games.Width;
@@ -148,31 +148,12 @@ namespace Nucleus.Coop.App.Forms {
                 sep.SetTitle("GAMES");
                 this.list_games.Controls.Add(sep);
 
-                List<UserGameInfo> games = gameManager.User.Games;
-                Dictionary<string, List<UserGameInfo>> allGames = new Dictionary<string, List<UserGameInfo>>();
-
-                for (int i = 0; i < games.Count; i++) {
-                    UserGameInfo game = games[i];
-                    if (!game.IsGamePresent()) {
-                        continue;
-                    }
-
-                    List<UserGameInfo> allSame;
-                    if (!allGames.TryGetValue(game.GameID, out allSame)) {
-                        allSame = new List<UserGameInfo>();
-                        allGames.Add(game.GameID, allSame);
-                    }
-
-                    allSame.Add(game);
-                }
-
-                // <3 linq
-                var ordered = allGames.OrderBy(c => GameManager.Instance.NameManager.GetGameName(c.Key));
+                var ordered = gameManager.GetInstalledGamesOrdered();
                 foreach (var pair in ordered) {
                     NewUserGame(pair.Value);
                 }
 
-                if (games.Count == 0) {
+                if (ordered.Count() == 0) {
                     noGamesPresent = true;
                     appPage = AppPage.NoGamesInstalled;
                     GameControl con = new GameControl();
@@ -183,7 +164,10 @@ namespace Nucleus.Coop.App.Forms {
                 }
             }
 
+            // TODO: double-calling fixes some issues but is non-optimal
             DPIManager.ForceUpdate();
+            DPIManager.ForceUpdate();
+
             UpdatePage();
 
             gameManager.User.Save();
@@ -191,6 +175,8 @@ namespace Nucleus.Coop.App.Forms {
             // auto-click pkg manager to not open with nothing selected
             PkgManagerBtn_Click(pkgManagerBtn, EventArgs.Empty);
             pkgManagerBtn.RadioSelected();
+
+            refreshingGames = false;
         }
 
         public GameControl NewUserGame(List<UserGameInfo> games) {
@@ -208,7 +194,10 @@ namespace Nucleus.Coop.App.Forms {
             controls.Add(games[0].GameID, con);
             this.list_games.Controls.Add(con);
 
-            ThreadPool.QueueUserWorkItem(GetIcon, games[0]);
+            gameManager.MetadataManager.GetIcon(games[0], (Bitmap bmp) => {
+                con.Image = bmp;
+            });
+
 
             return con;
         }
@@ -250,9 +239,11 @@ namespace Nucleus.Coop.App.Forms {
 
         private void UpdatePage() {
             selectGameFolderPageControl.Visible = false;
-            handlerManagerControl1.Visible = false;
+            handlerManagerControl.Visible = false;
             gamePageControl.Visible = false;
             noGamesInstalledPageControl.Visible = false;
+
+            BasePageControl lastPage = currentPage;
 
             // game btns
             gamePageBrowserControl.Visible = false;
@@ -261,19 +252,27 @@ namespace Nucleus.Coop.App.Forms {
                 case AppPage.SelectGameFolder:
                     ChangeTitle(selectGameFolderPageControl.Title, selectGameFolderPageControl.Image);
                     selectGameFolderPageControl.Visible = true;
+                    currentPage = selectGameFolderPageControl;
                     break;
                 case AppPage.NoGamesInstalled:
                     ChangeTitle(noGamesInstalledPageControl.Title, noGamesInstalledPageControl.Image);
                     noGamesInstalledPageControl.Visible = true;
+                    currentPage = noGamesInstalledPageControl;
                     break;
                 case AppPage.GameHandler:
                     gamePageControl.Visible = true;
                     gamePageBrowserControl.Visible = true;
+                    currentPage = gamePageControl;
                     break;
                 case AppPage.PackageManager:
-                    ChangeTitle(handlerManagerControl1.Title, handlerManagerControl1.Image);
-                    handlerManagerControl1.Visible = true;
+                    ChangeTitle(handlerManagerControl.Title, handlerManagerControl.Image);
+                    handlerManagerControl.Visible = true;
+                    currentPage = handlerManagerControl;
                     break;
+            }
+
+            if (lastPage != null && currentPage != lastPage) {
+                lastPage.UserLeft();
             }
 
             UpdatePageSizes();
@@ -286,7 +285,7 @@ namespace Nucleus.Coop.App.Forms {
                 case AppPage.GameHandler:
                     return this.gamePageControl;
                 case AppPage.PackageManager:
-                    return this.handlerManagerControl1;
+                    return this.handlerManagerControl;
                 default:
                     return null;
             }
@@ -317,8 +316,8 @@ namespace Nucleus.Coop.App.Forms {
                     panel_pageTitle.Width = panelWidth - listWidth - page.RequiredTitleBarWidth;
                     panel_pageTitle.Left = listWidth + page.RequiredTitleBarWidth;
                     panel_allPages.Width = panelWidth - listWidth;
-                    panel_allPages.Height = panel_formContent.Height - titleBarControl1.Height;
-                    panel_allPages.Top = titleBarControl1.Height;
+                    panel_allPages.Height = panel_formContent.Height - titleBarControl.Height;
+                    panel_allPages.Top = titleBarControl.Height;
 
                     // Force bring the title bar to front, so the now full size panel_allPages
                     // doesnt show on top
@@ -332,8 +331,8 @@ namespace Nucleus.Coop.App.Forms {
                 panel_pageTitle.Width = panelWidth - listWidth;
                 panel_pageTitle.Left = listWidth;
                 panel_allPages.Width = panelWidth - listWidth;
-                panel_allPages.Height = panel_formContent.Height - panel_pageTitle.Height - titleBarControl1.Height;
-                panel_allPages.Top = panel_pageTitle.Height + titleBarControl1.Height;
+                panel_allPages.Height = panel_formContent.Height - panel_pageTitle.Height - titleBarControl.Height;
+                panel_allPages.Top = panel_pageTitle.Height + titleBarControl.Height;
             }
         }
 
@@ -344,18 +343,6 @@ namespace Nucleus.Coop.App.Forms {
 
         public void ChangeGameInfo(UserGameInfo userGameInfo) {
             gameNameControl.GameInfo = userGameInfo;
-        }
-
-        public void NewGameHandler(GameHandlerMetadata metadata) {
-            if (noGamesPresent) {
-                noGamesPresent = false;
-                RefreshGames();
-                return;
-            }
-            // get all Repository Game Infos
-            //this.combo_handlers.Items.Add(metadata);
-            //HandlerControl con = new HandlerControl(metadata);
-            //con.Width = list_Games.Width;
         }
 
         protected override void OnShown(EventArgs e) {

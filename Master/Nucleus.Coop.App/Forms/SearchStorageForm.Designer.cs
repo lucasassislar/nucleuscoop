@@ -37,7 +37,7 @@
             this.lbl_progress = new System.Windows.Forms.Label();
             this.btn_search = new System.Windows.Forms.Button();
             this.panel_formContent = new System.Windows.Forms.Panel();
-            this.titleBarControl1 = new Nucleus.Gaming.Platform.Windows.Controls.TitleBarControl();
+            this.titleBarControl = new Nucleus.Gaming.Platform.Windows.Controls.TitleBarControl();
             this.panel_formContent.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -122,7 +122,7 @@
             // panel_formContent
             // 
             this.panel_formContent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
-            this.panel_formContent.Controls.Add(this.titleBarControl1);
+            this.panel_formContent.Controls.Add(this.titleBarControl);
             this.panel_formContent.Controls.Add(this.btn_search);
             this.panel_formContent.Controls.Add(this.list_storage);
             this.panel_formContent.Controls.Add(this.lbl_progress);
@@ -135,26 +135,27 @@
             this.panel_formContent.Size = new System.Drawing.Size(703, 461);
             this.panel_formContent.TabIndex = 9;
             // 
-            // titleBarControl1
+            // titleBarControl
             // 
-            this.titleBarControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.titleBarControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.titleBarControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(34)))), ((int)(((byte)(37)))));
-            this.titleBarControl1.EnableMaximize = true;
-            this.titleBarControl1.Location = new System.Drawing.Point(0, 0);
-            this.titleBarControl1.Margin = new System.Windows.Forms.Padding(0);
-            this.titleBarControl1.Name = "titleBarControl1";
-            this.titleBarControl1.Size = new System.Drawing.Size(703, 21);
-            this.titleBarControl1.TabIndex = 9;
+            this.titleBarControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(34)))), ((int)(((byte)(37)))));
+            this.titleBarControl.EnableMaximize = true;
+            this.titleBarControl.Icon = null;
+            this.titleBarControl.Location = new System.Drawing.Point(0, 0);
+            this.titleBarControl.Margin = new System.Windows.Forms.Padding(0);
+            this.titleBarControl.Name = "titleBarControl";
+            this.titleBarControl.Size = new System.Drawing.Size(703, 21);
+            this.titleBarControl.TabIndex = 9;
             // 
-            // SearchDisksForm
+            // SearchStorageForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(703, 461);
             this.Controls.Add(this.panel_formContent);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "SearchDisksForm";
+            this.Name = "SearchStorageForm";
             this.Text = "Search Drives";
             this.panel_formContent.ResumeLayout(false);
             this.panel_formContent.PerformLayout();
@@ -172,6 +173,6 @@
         private System.Windows.Forms.Label lbl_progress;
         private System.Windows.Forms.Button btn_search;
         private System.Windows.Forms.Panel panel_formContent;
-        private Gaming.Platform.Windows.Controls.TitleBarControl titleBarControl1;
+        private Gaming.Platform.Windows.Controls.TitleBarControl titleBarControl;
     }
 }

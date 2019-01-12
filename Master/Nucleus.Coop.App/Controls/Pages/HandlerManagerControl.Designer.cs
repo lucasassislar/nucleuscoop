@@ -31,11 +31,14 @@
             this.list_left = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
             this.label_developer = new System.Windows.Forms.Label();
             this.label_version = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel_titleSizeReference = new System.Windows.Forms.Panel();
             this.label_nukeVer = new System.Windows.Forms.Label();
             this.btn_uninstall = new System.Windows.Forms.Button();
             this.panel_gameData = new System.Windows.Forms.Panel();
+            this.panel_installedGames = new System.Windows.Forms.Panel();
+            this.list_installedGames = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
             this.panel_gameData.SuspendLayout();
+            this.panel_installedGames.SuspendLayout();
             this.SuspendLayout();
             // 
             // list_left
@@ -70,13 +73,13 @@
             this.label_version.TabIndex = 6;
             this.label_version.Text = "0.0";
             // 
-            // panel1
+            // panel_titleSizeReference
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.panel1.Location = new System.Drawing.Point(279, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(503, 52);
-            this.panel1.TabIndex = 7;
+            this.panel_titleSizeReference.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.panel_titleSizeReference.Location = new System.Drawing.Point(279, 0);
+            this.panel_titleSizeReference.Name = "panel_titleSizeReference";
+            this.panel_titleSizeReference.Size = new System.Drawing.Size(503, 52);
+            this.panel_titleSizeReference.TabIndex = 7;
             // 
             // label_nukeVer
             // 
@@ -115,17 +118,40 @@
             this.panel_gameData.TabIndex = 10;
             this.panel_gameData.Visible = false;
             // 
+            // panel_installedGames
+            // 
+            this.panel_installedGames.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel_installedGames.Controls.Add(this.list_installedGames);
+            this.panel_installedGames.Location = new System.Drawing.Point(274, 55);
+            this.panel_installedGames.Name = "panel_installedGames";
+            this.panel_installedGames.Size = new System.Drawing.Size(505, 571);
+            this.panel_installedGames.TabIndex = 10;
+            // 
+            // list_installedGames
+            // 
+            this.list_installedGames.Border = 1;
+            this.list_installedGames.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.list_installedGames.Location = new System.Drawing.Point(0, 0);
+            this.list_installedGames.Name = "list_installedGames";
+            this.list_installedGames.Offset = new System.Drawing.Size(0, 0);
+            this.list_installedGames.Size = new System.Drawing.Size(505, 571);
+            this.list_installedGames.TabIndex = 0;
+            // 
             // HandlerManagerControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panel_installedGames);
+            this.Controls.Add(this.panel_titleSizeReference);
             this.Controls.Add(this.list_left);
             this.Controls.Add(this.panel_gameData);
             this.Name = "HandlerManagerControl";
             this.Size = new System.Drawing.Size(782, 629);
             this.panel_gameData.ResumeLayout(false);
             this.panel_gameData.PerformLayout();
+            this.panel_installedGames.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -134,9 +160,11 @@
         private Gaming.Platform.Windows.Controls.ControlListBox list_left;
         private System.Windows.Forms.Label label_developer;
         private System.Windows.Forms.Label label_version;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel_titleSizeReference;
         private System.Windows.Forms.Label label_nukeVer;
         private System.Windows.Forms.Button btn_uninstall;
         private System.Windows.Forms.Panel panel_gameData;
+        private System.Windows.Forms.Panel panel_installedGames;
+        private Gaming.Platform.Windows.Controls.ControlListBox list_installedGames;
     }
 }

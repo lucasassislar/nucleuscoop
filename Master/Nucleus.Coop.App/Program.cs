@@ -19,6 +19,8 @@ namespace Nucleus.Coop
         static void Main(string[] args) {
             new Log(true);
 
+            ThreadUtil.Initialize();
+
             // Add the event handler for handling UI thread exceptions to the event.
             Application.ThreadException += new ThreadExceptionEventHandler(ThreadExceptionEventHandler);
 

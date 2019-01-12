@@ -22,14 +22,14 @@ namespace Nucleus.Coop.App.Controls {
         private GameHandlerBaseMetadata currentMetadata;
         private SearchStorageForm form;
         private Bitmap interrobang;
-
         private int titleBarWidth;
+
         public override int RequiredTitleBarWidth { get { return titleBarWidth; } set { } }
 
         public HandlerManagerControl() {
             InitializeComponent();
 
-            titleBarWidth = list_left.Width;
+            titleBarWidth = list_left.Width + 1;
             bool designMode = (LicenseManager.UsageMode == LicenseUsageMode.Designtime);
 
             this.Title = "Settings";
@@ -41,10 +41,20 @@ namespace Nucleus.Coop.App.Controls {
             }
         }
 
+        public override void UserLeft() {
+            base.UserLeft();
+
+            panel_gameData.Visible = false;
+            panel_installedGames.Visible = false;
+        }
+
+        private GameControl listInstalled;
+
         private void LoadInstalled() {
             var gm = GameManager.Instance;
             var handlers = gm.User.InstalledHandlers;
 
+            interrobang = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "🗋");
             list_left.Controls.Clear();
 
             //HorizontalLineControl line = new HorizontalLineControl();
@@ -73,7 +83,12 @@ namespace Nucleus.Coop.App.Controls {
             scanGames.Click += ScanGames_Click;
             list_left.Controls.Add(scanGames);
 
-            interrobang = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "🗋");
+            listInstalled = new GameControl();
+            listInstalled.Width = list_left.Width;
+            listInstalled.UpdateTitleText("Remove games from list");
+            listInstalled.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "⌫");
+            listInstalled.Click += ListInstalled_Click;
+            list_left.Controls.Add(listInstalled);            
 
             TitleSeparator sep = new TitleSeparator();
             sep.SetTitle("HANDLERS");
@@ -84,7 +99,7 @@ namespace Nucleus.Coop.App.Controls {
             installFile.Width = list_left.Width;
             installFile.UpdateTitleText("Install handler from file");
             //installFile.Image = Resources.nucleus;
-            installFile.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "🔍"); ;
+            installFile.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "🔍");
             installFile.Click += InstallFile_Click;
             list_left.Controls.Add(installFile);
 
@@ -109,7 +124,73 @@ namespace Nucleus.Coop.App.Controls {
             DPIManager.ForceUpdate();
         }
 
+        private void ResetPanels() {
+            panel_installedGames.Visible = false;
+            panel_gameData.Visible = false;
+            MainForm.Instance.ChangeTitle(this.Title, this.Image);
+        }
+
+        private void ListInstalled_Click(object sender, EventArgs e) {
+            MainForm.Instance.ChangeTitle("Remove Game From List", listInstalled.Image);
+
+            panel_installedGames.Visible = true;
+            panel_gameData.Visible = false;
+
+            GameManager gm = GameManager.Instance;
+            list_installedGames.Controls.Clear();
+            // force a collect?
+            GC.Collect();
+
+            var installedGames = gm.GetInstalledGamesOrdered();
+            foreach (var pair in installedGames) {
+                List<UserGameInfo> games = pair.Value;
+
+                string gameTitle = gm.MetadataManager.GetGameName(pair.Key);
+                TitleSeparator sep = new TitleSeparator();
+                sep.SetTitle(gameTitle);
+                sep.Height = 20;
+                this.list_installedGames.Controls.Add(sep);
+
+                // get all Repository Game Infos
+                for (int i = 0; i < games.Count; i++) {
+                    GameControl con = new GameControl();
+                    UserGameInfo game = games[i];
+                    con.SetUserGameExe(game);
+                    con.Width = list_installedGames.Width;
+                    con.Click += Installed_Game_Click;
+
+                    gm.MetadataManager.GetIcon(game, (Bitmap bmp) => {
+                        con.Image = bmp;
+                    });
+                    this.list_installedGames.Controls.Add(con);
+                }
+            }
+
+            DPIManager.ForceUpdate();
+            DPIManager.ForceUpdate();
+        }
+
+
+        private void Installed_Game_Click(object sender, EventArgs e) {
+            ResetPanels();
+
+            GameControl gameHandler = (GameControl)sender;
+            var games = gameHandler.UserGames;
+            GameManager gm = GameManager.Instance;
+
+            // delete game from user
+            var gameInfo = gameHandler.UserGameInfo;
+            gm.User.Games.Remove(gameInfo);
+            gm.User.Save();
+
+            // refresh installed games
+            ListInstalled_Click(null, EventArgs.Empty);
+            MainForm.Instance.RefreshGames();
+        }
+
         private void ScanGames_Click(object sender, EventArgs e) {
+            ResetPanels();
+
             if (form != null) {
                 return;
             }
@@ -132,6 +213,8 @@ namespace Nucleus.Coop.App.Controls {
         }
 
         private void InstallGame_Click(object sender, EventArgs e) {
+            ResetPanels();
+
             var gm = GameManager.Instance;
             using (OpenFileDialog open = new OpenFileDialog()) {
                 open.Filter = "Game Executable Files|*.exe";
@@ -164,6 +247,7 @@ namespace Nucleus.Coop.App.Controls {
             MainForm.Instance.ChangeTitle(currentMetadata.Title, gameHandler.Image);
 
             panel_gameData.Visible = true;
+            panel_installedGames.Visible = false;
 
             label_developer.Text = "Developer: " + currentMetadata.Dev;
             label_version.Text = currentMetadata.V.ToString();
@@ -171,6 +255,8 @@ namespace Nucleus.Coop.App.Controls {
         }
 
         private void InstallFile_Click(object sender, EventArgs e) {
+            ResetPanels();
+
             using (OpenFileDialog open = new OpenFileDialog()) {
                 open.Multiselect = true;
                 open.Filter = "Nucleus Package Files|*.nc";
@@ -184,22 +270,12 @@ namespace Nucleus.Coop.App.Controls {
             }
         }
 
-        private void Installed_Handler_OnSelected(HandlerInfoControl obj) {
-            GameHandlerBaseMetadata metadata = obj.Metadata;
-            currentMetadata = metadata;
-            if (currentMetadata == null) {
-                return;
-            }
-        }
-
         private void btn_uninstall_Click(object sender, EventArgs e) {
+            ResetPanels();
+
             label_developer.Text = "Developer Name";
             label_version.Text = "0.0";
             label_nukeVer.Text = "Nucleus Version";
-
-            panel_gameData.Visible = false;
-
-            MainForm.Instance.ChangeTitle(this.Title, this.Image);
 
             string path = PackageManager.GetBaseInstallPath(this.currentMetadata);
             Directory.Delete(path, true);

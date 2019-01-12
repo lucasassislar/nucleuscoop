@@ -63,7 +63,7 @@ namespace Nucleus.Gaming.Platform.Windows.Controls {
             get {
                 if (icon == null) {
                     return cachedIcon;
-                } else { 
+                } else {
                     return icon.Image;
                 }
             }
@@ -76,6 +76,8 @@ namespace Nucleus.Gaming.Platform.Windows.Controls {
             }
         }
 
+        public bool ShowIcon { get; set; }
+
         private void InitializeButtons() {
             btnFont = new Font(this.Font.FontFamily, 6, FontStyle.Regular);
             titleFont = new Font(this.Font.FontFamily, 10, FontStyle.Regular);
@@ -83,7 +85,6 @@ namespace Nucleus.Gaming.Platform.Windows.Controls {
             titleLabel = new Label();
             titleLabel.Text = text;
             titleLabel.AutoSize = true;
-            titleLabel.Location = new Point(20, 2);
             titleLabel.Font = titleFont;
             titleLabel.DoubleClick += TitleLabel_DoubleClick;
             Controls.Add(titleLabel);
@@ -94,6 +95,14 @@ namespace Nucleus.Gaming.Platform.Windows.Controls {
             icon.SizeMode = PictureBoxSizeMode.StretchImage;
             icon.Image = cachedIcon;
             this.Controls.Add(icon);
+
+            if (ShowIcon) {
+                titleLabel.Location = new Point(20, 2);
+            } else {
+                titleLabel.Location = new Point(2, 2);
+                icon.Visible = false;
+            }
+
 
             close = MakeFlatBtn();
             maximize = MakeFlatBtn();

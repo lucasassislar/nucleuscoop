@@ -35,6 +35,7 @@ namespace Nucleus.Coop.App.Controls
             label.Font = titleFont;
             label.Text = "GAMES";
             label.Location = new Point(10, 6);
+            label.AutoSize = true;
             this.Controls.Add(label);
         }
 

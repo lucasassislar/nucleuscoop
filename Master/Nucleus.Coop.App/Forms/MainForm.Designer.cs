@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.titleBarControl1 = new Nucleus.Gaming.Platform.Windows.Controls.TitleBarControl();
+            this.titleBarControl = new Nucleus.Gaming.Platform.Windows.Controls.TitleBarControl();
             this.panel_formContent = new System.Windows.Forms.Panel();
             this.panel_pageTitle = new System.Windows.Forms.Panel();
             this.panel_bottomLine = new System.Windows.Forms.Panel();
@@ -40,24 +40,25 @@
             this.selectGameFolderPageControl = new Nucleus.Coop.App.Controls.Pages.SelectGameFolderPageControl();
             this.gamePageControl = new Nucleus.Coop.App.Controls.GamePageControl();
             this.noGamesInstalledPageControl = new Nucleus.Coop.App.Controls.Pages.NoGamesInstalledPageControl();
-            this.handlerManagerControl1 = new Nucleus.Coop.App.Controls.HandlerManagerControl();
+            this.handlerManagerControl = new Nucleus.Coop.App.Controls.HandlerManagerControl();
             this.panel_formContent.SuspendLayout();
             this.panel_pageTitle.SuspendLayout();
             this.panel_allPages.SuspendLayout();
             this.SuspendLayout();
             // 
-            // titleBarControl1
+            // titleBarControl
             // 
-            this.titleBarControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.titleBarControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.titleBarControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(34)))), ((int)(((byte)(37)))));
-            this.titleBarControl1.EnableMaximize = true;
-            this.titleBarControl1.Icon = global::Nucleus.Coop.App.Properties.Resources.nucleus;
-            this.titleBarControl1.Location = new System.Drawing.Point(0, 0);
-            this.titleBarControl1.Margin = new System.Windows.Forms.Padding(0);
-            this.titleBarControl1.Name = "titleBarControl1";
-            this.titleBarControl1.Size = new System.Drawing.Size(1007, 21);
-            this.titleBarControl1.TabIndex = 24;
+            this.titleBarControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(34)))), ((int)(((byte)(37)))));
+            this.titleBarControl.EnableMaximize = true;
+            this.titleBarControl.Icon = global::Nucleus.Coop.App.Properties.Resources.nucleus;
+            this.titleBarControl.Location = new System.Drawing.Point(0, 0);
+            this.titleBarControl.Margin = new System.Windows.Forms.Padding(0);
+            this.titleBarControl.Name = "titleBarControl";
+            this.titleBarControl.ShowIcon = false;
+            this.titleBarControl.Size = new System.Drawing.Size(1007, 21);
+            this.titleBarControl.TabIndex = 24;
             // 
             // panel_formContent
             // 
@@ -65,7 +66,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel_formContent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
-            this.panel_formContent.Controls.Add(this.titleBarControl1);
+            this.panel_formContent.Controls.Add(this.titleBarControl);
             this.panel_formContent.Controls.Add(this.panel_pageTitle);
             this.panel_formContent.Controls.Add(this.list_games);
             this.panel_formContent.Controls.Add(this.panel_allPages);
@@ -141,7 +142,7 @@
             this.panel_allPages.Controls.Add(this.selectGameFolderPageControl);
             this.panel_allPages.Controls.Add(this.gamePageControl);
             this.panel_allPages.Controls.Add(this.noGamesInstalledPageControl);
-            this.panel_allPages.Controls.Add(this.handlerManagerControl1);
+            this.panel_allPages.Controls.Add(this.handlerManagerControl);
             this.panel_allPages.Location = new System.Drawing.Point(272, 76);
             this.panel_allPages.Name = "panel_allPages";
             this.panel_allPages.Size = new System.Drawing.Size(735, 585);
@@ -193,20 +194,20 @@
             this.noGamesInstalledPageControl.Size = new System.Drawing.Size(735, 585);
             this.noGamesInstalledPageControl.TabIndex = 1;
             // 
-            // handlerManagerControl1
+            // handlerManagerControl
             // 
-            this.handlerManagerControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.handlerManagerControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.handlerManagerControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
-            this.handlerManagerControl1.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.handlerManagerControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.handlerManagerControl1.Location = new System.Drawing.Point(0, 0);
-            this.handlerManagerControl1.Margin = new System.Windows.Forms.Padding(4);
-            this.handlerManagerControl1.Name = "handlerManagerControl1";
-            this.handlerManagerControl1.RequiredTitleBarWidth = 272;
-            this.handlerManagerControl1.Size = new System.Drawing.Size(735, 585);
-            this.handlerManagerControl1.TabIndex = 0;
+            this.handlerManagerControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
+            this.handlerManagerControl.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.handlerManagerControl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.handlerManagerControl.Location = new System.Drawing.Point(0, 0);
+            this.handlerManagerControl.Margin = new System.Windows.Forms.Padding(4);
+            this.handlerManagerControl.Name = "handlerManagerControl";
+            this.handlerManagerControl.RequiredTitleBarWidth = 273;
+            this.handlerManagerControl.Size = new System.Drawing.Size(735, 585);
+            this.handlerManagerControl.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -228,10 +229,10 @@
 
         #endregion
         private Gaming.Platform.Windows.Controls.ControlListBox list_games;
-        private Gaming.Platform.Windows.Controls.TitleBarControl titleBarControl1;
+        private Gaming.Platform.Windows.Controls.TitleBarControl titleBarControl;
         private Coop.Controls.GameNameControl gameNameControl;
         private System.Windows.Forms.Panel panel_pageTitle;
-        private Controls.HandlerManagerControl handlerManagerControl1;
+        private Controls.HandlerManagerControl handlerManagerControl;
         private System.Windows.Forms.Panel panel_allPages;
         private Controls.Pages.NoGamesInstalledPageControl noGamesInstalledPageControl;
         private Controls.GamePageControl gamePageControl;

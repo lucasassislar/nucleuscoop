@@ -58,7 +58,7 @@ namespace Nucleus.Gaming.Coop {
             if (userGame == null) {
                 title.Text = "No games";
             } else {
-                title.Text = GameManager.Instance.NameManager.GetGameName(userGame.GameID);
+                title.Text = GameManager.Instance.MetadataManager.GetGameName(userGame.GameID);
             }
             TitleText = title.Text;
         }
@@ -71,7 +71,7 @@ namespace Nucleus.Gaming.Coop {
 
         public void SetUserGames(List<UserGameInfo> userGames) {
             UserGames = userGames;
-            string gameTitle = GameManager.Instance.NameManager.GetGameName(userGames[0].GameID);
+            string gameTitle = GameManager.Instance.MetadataManager.GetGameName(userGames[0].GameID);
             title.Text = gameTitle;
             TitleText = gameTitle;
         }

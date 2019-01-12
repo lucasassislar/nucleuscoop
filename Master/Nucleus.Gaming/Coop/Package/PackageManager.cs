@@ -192,7 +192,7 @@ namespace Nucleus.Gaming.Package {
                     string fullGameInfo = reader.ReadToEnd();
                     GameHandlerMetadata metadata = JsonConvert.DeserializeObject<GameHandlerMetadata>(fullGameInfo);
                     metadata.RootDirectory = Path.GetDirectoryName(metadataPath);
-                    gameManager.NameManager.UpdateNaming(metadata);
+                    gameManager.MetadataManager.UpdateNaming(metadata);
                     return metadata;
                 }
             }
@@ -206,7 +206,7 @@ namespace Nucleus.Gaming.Package {
                     string fullGameInfo = reader.ReadToEnd();
                     GameHandlerMetadata metadata = JsonConvert.DeserializeObject<GameHandlerMetadata>(fullGameInfo);
                     metadata.RootDirectory = Path.GetDirectoryName(pkgPath);
-                    gameManager.NameManager.UpdateNaming(metadata);
+                    gameManager.MetadataManager.UpdateNaming(metadata);
                     return metadata;
                 }
             }
@@ -293,7 +293,7 @@ namespace Nucleus.Gaming.Package {
                 using (StreamReader reader = new StreamReader(str)) {
                     string fullGameInfo = reader.ReadToEnd();
                     metadata = JsonConvert.DeserializeObject<GameHandlerMetadata>(fullGameInfo);
-                    gameManager.NameManager.UpdateNaming(metadata);
+                    gameManager.MetadataManager.UpdateNaming(metadata);
                 }
             }
 

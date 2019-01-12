@@ -26,7 +26,7 @@ namespace Nucleus.Gaming.Coop {
         private string error;
         private PackageManager repoManager;
 
-        private GameNameManager nameManager;
+        private GameMetadataManager metadataManager;
         private ModuleManager moduleManager;
 
         public string Error { get { return error; } }
@@ -35,7 +35,7 @@ namespace Nucleus.Gaming.Coop {
         /// <summary>
         /// Manages getting the name of games
         /// </summary>
-        public GameNameManager NameManager { get { return nameManager; } }
+        public GameMetadataManager MetadataManager { get { return metadataManager; } }
 
         public UserProfile User { get { return user; } }
         public PackageManager RepoManager { get { return repoManager; } }
@@ -44,8 +44,34 @@ namespace Nucleus.Gaming.Coop {
 
         public GameManager() {
             instance = this;
-
             Initialize();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public IOrderedEnumerable<KeyValuePair<string, List<UserGameInfo>>> GetInstalledGamesOrdered() {
+            List<UserGameInfo> games = user.Games;
+            Dictionary<string, List<UserGameInfo>> allGames = new Dictionary<string, List<UserGameInfo>>();
+
+            for (int i = 0; i < games.Count; i++) {
+                UserGameInfo game = games[i];
+                if (!game.IsGamePresent()) {
+                    continue;
+                }
+
+                List<UserGameInfo> allSame;
+                if (!allGames.TryGetValue(game.GameID, out allSame)) {
+                    allSame = new List<UserGameInfo>();
+                    allGames.Add(game.GameID, allSame);
+                }
+
+                allSame.Add(game);
+            }
+
+            // <3 linq
+            return allGames.OrderBy(c => GameManager.Instance.MetadataManager.GetGameName(c.Key));
         }
 
         /// <summary>
@@ -411,7 +437,7 @@ namespace Nucleus.Gaming.Coop {
         }
 
         private void Initialize() {
-            nameManager = new GameNameManager();
+            metadataManager = new GameMetadataManager();
 
             string appData = GetAppDataPath();
             Directory.CreateDirectory(appData);

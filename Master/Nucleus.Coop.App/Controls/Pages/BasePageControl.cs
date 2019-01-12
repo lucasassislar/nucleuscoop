@@ -42,5 +42,9 @@ namespace Nucleus.Coop.App.Controls
             // create it here, else the designer will show the default windows font
             Font = new Font("Segoe UI", 12, GraphicsUnit.Point);
         }
+
+        public virtual void UserLeft() {
+
+        }
     }
 }

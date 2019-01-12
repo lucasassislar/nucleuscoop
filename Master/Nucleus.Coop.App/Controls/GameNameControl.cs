@@ -24,7 +24,7 @@ namespace Nucleus.Coop.Controls
                 if (gameInfo != value && value != null)
                 {
                     picture.Image = value.Icon;
-                    title.Text = GameManager.Instance.NameManager.GetGameName(value.GameID);
+                    title.Text = GameManager.Instance.MetadataManager.GetGameName(value.GameID);
                     DPIManager.Update(this);
                 }
                 gameInfo = value;

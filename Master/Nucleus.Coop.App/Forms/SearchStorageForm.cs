@@ -43,6 +43,7 @@ namespace Nucleus.Coop.App.Forms {
         public SearchStorageForm() {
             InitializeComponent();
 
+            titleBarControl.Text = "Search Storage";
             DriveInfo[] drives = DriveInfo.GetDrives();
             CheckedListBox checkedBox = list_storage;
 
@@ -197,7 +198,7 @@ namespace Nucleus.Coop.App.Forms {
                     if (uinfo != null) {
                         Log.WriteLine($"> Found new game ID {uinfo.GameID} on drive {info.Drive.Name}");
                         Invoke(new Action(delegate {
-                            list_games.Items.Add(GameManager.Instance.NameManager.GetGameName(uinfo.GameID) + " - " + path);
+                            list_games.Items.Add(GameManager.Instance.MetadataManager.GetGameName(uinfo.GameID) + " - " + path);
                             list_games.Invalidate();
 
                             shouldUpdate = true;
@@ -207,7 +208,7 @@ namespace Nucleus.Coop.App.Forms {
             }
 
             if (shouldUpdate) {
-                MainForm.Instance.RefreshGames();
+                MainForm.Instance.Invoke((Action)MainForm.Instance.RefreshGames);
             }
 
             drivesFinishedSearching++;
