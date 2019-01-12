@@ -91,9 +91,9 @@ namespace Nucleus.Gaming.Coop
         public int MaxPlayers { get; set; }
 
         /// <summary>
-        /// Pause between game starts in milliseconds.
+        /// Pause between game starts in milliseconds (defaults to 1000).
         /// </summary>
-        public double PauseBetweenStarts { get; set; }
+        public double PauseBetweenStarts { get; set; } = 1000;
 
         /// <summary>
         /// The way the games handles DPI scaling. Modify this if the game is presenting different sizing behaviour after the Windows 10 Creators Update.

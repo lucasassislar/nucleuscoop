@@ -85,8 +85,9 @@
             // 
             this.label_nukeVer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label_nukeVer.AutoSize = true;
-            this.label_nukeVer.Location = new System.Drawing.Point(421, 21);
+            this.label_nukeVer.Location = new System.Drawing.Point(420, 21);
             this.label_nukeVer.Name = "label_nukeVer";
+            this.label_nukeVer.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.label_nukeVer.Size = new System.Drawing.Size(79, 21);
             this.label_nukeVer.TabIndex = 8;
             this.label_nukeVer.Text = "Nucleus 9";
@@ -143,10 +144,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.panel_gameData);
             this.Controls.Add(this.panel_installedGames);
             this.Controls.Add(this.panel_titleSizeReference);
             this.Controls.Add(this.list_left);
-            this.Controls.Add(this.panel_gameData);
             this.Name = "HandlerManagerControl";
             this.Size = new System.Drawing.Size(782, 629);
             this.panel_gameData.ResumeLayout(false);

@@ -17,10 +17,8 @@ using System.Threading;
 using WindowScrape.Constants;
 using WindowScrape.Types;
 
-namespace Nucleus.Gaming.Platform.Windows
-{
-    public class GameProcessModule : HandlerModule
-    {
+namespace Nucleus.Gaming.Platform.Windows {
+    public class GameProcessModule : HandlerModule {
         private const float HWndInterval = 10000;
 
         private UserGameInfo userGame;
@@ -31,8 +29,7 @@ namespace Nucleus.Gaming.Platform.Windows
 
         public override int Order { get { return 50; } }
 
-        public override bool Initialize(GameHandler handler, HandlerData handlerData, UserGameInfo game, GameProfile profile)
-        {
+        public override bool Initialize(GameHandler handler, HandlerData handlerData, UserGameInfo game, GameProfile profile) {
             this.handler = handler;
             this.userGame = game;
             this.profile = profile;
@@ -43,20 +40,16 @@ namespace Nucleus.Gaming.Platform.Windows
             return true;
         }
 
-        public override void PrePlay()
-        {
-            if (handlerData.ForceFinishOnPlay)
-            {
+        public override void PrePlay() {
+            if (handlerData.ForceFinishOnPlay) {
                 ProcessUtil.ForceKill(Path.GetFileNameWithoutExtension(handlerData.ExecutableName.ToLower()));
             }
         }
 
-        public override void PrePlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context)
-        {
+        public override void PrePlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context) {
         }
 
-        public static bool IsNeeded(HandlerData data)
-        {
+        public static bool IsNeeded(HandlerData data) {
 #if WINDOWS
             return true;
 #else
@@ -64,8 +57,7 @@ namespace Nucleus.Gaming.Platform.Windows
 #endif
         }
 
-        public override void PlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context)
-        {
+        public override void PlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context) {
             Process proc;
             IOModule ioModule = handler.GetModule<IOModule>();
 
@@ -73,24 +65,19 @@ namespace Nucleus.Gaming.Platform.Windows
 
             string startingApp = ioModule.LinkedExePath;
 
-            if (!string.IsNullOrEmpty(context.OverrideStartProcess))
-            {
+            if (!string.IsNullOrEmpty(context.OverrideStartProcess)) {
                 startingApp = context.OverrideStartProcess;
             }
 
-            if (context.KillMutex?.Length > 0)
-            {
+            if (context.KillMutex?.Length > 0) {
                 //DirectoryInfo exeFolderDir = new DirectoryInfo(Path.GetDirectoryName(ioModule.ExePath));
                 //DirectoryInfo linkedFolderDir = new DirectoryInfo(ioModule.LinkedFolder);
 
                 //string exePath = Path.Combine(exeFolderDir.GetRelativePath(ioModule.NucleusRootFolder), Path.GetFileName(ioModule.ExePath));
                 //string exeRoot = linkedFolderDir.GetRelativePath(ioModule.NucleusRootFolder);
-
-
                 proc = Process.GetProcessById(StartGameUtil.StartGame(ioModule.LinkedExePath, startArgs, ioModule.LinkedWorkingDir));
-            }
-            else
-            {
+
+            } else {
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = startingApp;
                 //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
@@ -100,37 +87,30 @@ namespace Nucleus.Gaming.Platform.Windows
                 proc = Process.Start(startInfo);
             }
 
-            if (proc == null)
-            {
-                for (int times = 0; times < 200; times++)
-                {
+            if (proc == null) {
+                for (int times = 0; times < 200; times++) {
                     Thread.Sleep(50);
 
                     Process[] procs = Process.GetProcesses();
                     string proceName = Path.GetFileNameWithoutExtension(context.ExecutableName).ToLower();
                     string launcherName = string.IsNullOrEmpty(context.LauncherExe) ? string.Empty : Path.GetFileNameWithoutExtension(context.LauncherExe).ToLower();
 
-                    for (int j = 0; j < procs.Length; j++)
-                    {
+                    for (int j = 0; j < procs.Length; j++) {
                         Process p = procs[j];
                         string lowerP = p.ProcessName.ToLower();
                         if (((lowerP == proceName) || lowerP == launcherName) &&
-                            !attached.Contains(p))
-                        {
+                            !attached.Contains(p)) {
                             attached.Add(p);
                             proc = p;
                             break;
                         }
                     }
 
-                    if (proc != null)
-                    {
+                    if (proc != null) {
                         break;
                     }
                 }
-            }
-            else
-            {
+            } else {
                 attached.Add(proc);
             }
 
@@ -151,14 +131,12 @@ namespace Nucleus.Gaming.Platform.Windows
         private int exited;
         private double timer;
 
-        public override void Tick(double delayMs)
-        {
+        public override void Tick(double delayMs) {
             exited = 0;
             timer += delayMs;
 
             bool updatedHwnd = false;
-            if (timer > HWndInterval)
-            {
+            if (timer > HWndInterval) {
                 updatedHwnd = true;
                 timer = 0;
             }
@@ -166,38 +144,30 @@ namespace Nucleus.Gaming.Platform.Windows
             List<PlayerInfo> players = profile.PlayerData;
             CursorModule cursorModule = handler.GetModule<CursorModule>();
 
-            for (int i = 0; i < players.Count; i++)
-            {
+            for (int i = 0; i < players.Count; i++) {
                 PlayerInfo p = players[i];
                 ProcessInfo data = p.ProcessData;
-                if (data == null)
-                {
+                if (data == null) {
                     continue;
                 }
 
-                if (data.Finished)
-                {
-                    if (data.Process.HasExited)
-                    {
+                if (data.Finished) {
+                    if (data.Process.HasExited) {
                         exited++;
                     }
                     continue;
                 }
 
-                if (updatedHwnd)
-                {
-                    if (data.Setted)
-                    {
-                        if (data.Process.HasExited)
-                        {
+                if (updatedHwnd) {
+                    if (data.Setted) {
+                        if (data.Process.HasExited) {
                             exited++;
                             continue;
                         }
 
                         data.HWnd.TopMost = true;
 
-                        if (data.Status == 2)
-                        {
+                        if (data.Status == 2) {
                             uint lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE);
                             lStyle = lStyle & ~User32_WS.WS_CAPTION;
                             lStyle = lStyle & ~User32_WS.WS_THICKFRAME;
@@ -221,9 +191,7 @@ namespace Nucleus.Gaming.Platform.Windows
                                 //last screen setuped
                                 cursorModule?.SetActiveWindow();
                             }
-                        }
-                        else if (data.Status == 1)
-                        {
+                        } else if (data.Status == 1) {
                             data.HWnd.Location = data.Position;
                             data.Status++;
                             Debug.WriteLine("State 1");
@@ -235,39 +203,27 @@ namespace Nucleus.Gaming.Platform.Windows
                                     cursorModule?.AddOtherGameHandle(data.Process.MainWindowHandle);
                                 }
                             }
-                        }
-                        else if (data.Status == 0)
-                        {
+                        } else if (data.Status == 0) {
                             data.HWnd.Size = data.Size;
 
                             data.Status++;
                             Debug.WriteLine("State 0");
                         }
-                    }
-                    else
-                    {
+                    } else {
                         data.Process.Refresh();
 
-                        if (data.Process.HasExited)
-                        {
-                            if (p.GotLauncher)
-                            {
-                                if (p.GotGame)
-                                {
+                        if (data.Process.HasExited) {
+                            if (p.GotLauncher) {
+                                if (p.GotGame) {
                                     exited++;
-                                }
-                                else
-                                {
+                                } else {
                                     List<int> children = ProcessUtil.GetChildrenProcesses(data.Process);
-                                    if (children.Count > 0)
-                                    {
-                                        for (int j = 0; j < children.Count; j++)
-                                        {
+                                    if (children.Count > 0) {
+                                        for (int j = 0; j < children.Count; j++) {
                                             int id = children[j];
                                             Process pro = Process.GetProcessById(id);
 
-                                            if (!attached.Contains(pro))
-                                            {
+                                            if (!attached.Contains(pro)) {
                                                 attached.Add(pro);
                                                 data.HWnd = null;
                                                 p.GotGame = true;
@@ -276,24 +232,18 @@ namespace Nucleus.Gaming.Platform.Windows
                                         }
                                     }
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 // Steam showing a launcher, need to find our game process
                                 string launcher = handlerData.LauncherExe;
-                                if (!string.IsNullOrEmpty(launcher))
-                                {
-                                    if (launcher.ToLower().EndsWith(".exe"))
-                                    {
+                                if (!string.IsNullOrEmpty(launcher)) {
+                                    if (launcher.ToLower().EndsWith(".exe")) {
                                         launcher = launcher.Remove(launcher.Length - 4, 4);
                                     }
 
                                     Process[] procs = Process.GetProcessesByName(launcher);
-                                    for (int j = 0; j < procs.Length; j++)
-                                    {
+                                    for (int j = 0; j < procs.Length; j++) {
                                         Process pro = procs[j];
-                                        if (!attached.Contains(pro))
-                                        {
+                                        if (!attached.Contains(pro)) {
                                             attached.Add(pro);
                                             data.AssignProcess(pro);
                                             p.GotLauncher = true;
@@ -301,43 +251,34 @@ namespace Nucleus.Gaming.Platform.Windows
                                     }
                                 }
                             }
-                        }
-                        else
-                        {
-                            if (data.HWNDRetry || data.HWnd == null || data.HWnd.NativePtr != data.Process.MainWindowHandle)
-                            {
+                        } else {
+                            if (data.HWNDRetry || data.HWnd == null || data.HWnd.NativePtr != data.Process.MainWindowHandle) {
                                 data.HWnd = new HwndObject(data.Process.MainWindowHandle);
                                 Point pos = data.HWnd.Location;
 
                                 var windows = User32Util.EnumerateProcessWindowHandles(data.Process.Id);
-                                foreach (IntPtr window in windows)
-                                {
+                                foreach (IntPtr window in windows) {
                                     HwndObject obj = new HwndObject(window);
 
                                     if (!string.IsNullOrEmpty(handlerData.Hook.ForceFocusWindowRegex) &&
-                                        StringUtil.ComputeLevenshteinDistance(obj.Title, handlerData.Hook.ForceFocusWindowRegex) <= 2)
-                                    {
+                                        new Regex(handlerData.Hook.ForceFocusWindowRegex).IsMatch(obj.Title)) {
                                         data.HWnd = obj;
                                         break;
                                     }
                                 }
 
                                 List<int> children = ProcessUtil.GetChildrenProcesses(data.Process);
-                                if (children.Count > 0)
-                                {
-                                    for (int j = 0; j < children.Count; j++)
-                                    {
+                                if (children.Count > 0) {
+                                    for (int j = 0; j < children.Count; j++) {
                                         int id = children[j];
                                         Process pro = Process.GetProcessById(id);
 
                                         var proWindows = User32Util.EnumerateProcessWindowHandles(pro.Id);
-                                        foreach (IntPtr window in proWindows)
-                                        {
+                                        foreach (IntPtr window in proWindows) {
                                             HwndObject obj = new HwndObject(window);
 
                                             if (!string.IsNullOrEmpty(handlerData.Hook.ForceFocusWindowRegex) &&
-                                                StringUtil.ComputeLevenshteinDistance(obj.Title, handlerData.Hook.ForceFocusWindowRegex) <= 2)
-                                            {
+                                                new Regex(handlerData.Hook.ForceFocusWindowRegex).IsMatch(obj.Title)) {
                                                 data.HWnd = obj;
                                                 break;
                                             }
@@ -347,20 +288,16 @@ namespace Nucleus.Gaming.Platform.Windows
 
                                 if (String.IsNullOrEmpty(data.HWnd.Title) ||
                                     pos.X == -32000 ||
-                                    data.HWnd.Title.ToLower() == handlerData.LauncherTitle.ToLower())
-                                {
+                                    data.HWnd.Title.ToLower() == handlerData.LauncherTitle.ToLower()) {
                                     data.HWNDRetry = true;
-                                }
-                                else if (!string.IsNullOrEmpty(handlerData.Hook.ForceFocusWindowRegex) &&
-                                    // TODO: this Levenshtein distance is being used to help us around Call of Duty Black Ops, as it uses a ® icon in the title bar
-                                    //       there must be a better way
-                                    //StringUtil.ComputeLevenshteinDistance(data.HWnd.Title, handlerData.Hook.ForceFocusWindowRegex) > 2)
-                                    !(new Regex(handlerData.Hook.ForceFocusWindowRegex).IsMatch(data.HWnd.Title)))
-                                {
+                                } else if (!string.IsNullOrEmpty(handlerData.Hook.ForceFocusWindowRegex) &&
+                                      // TODO: this Levenshtein distance is being used to help us around Call of Duty Black Ops, as it uses a ® icon in the title bar
+                                      //       there must be a better way
+                                      //StringUtil.ComputeLevenshteinDistance(data.HWnd.Title, handlerData.Hook.ForceFocusWindowRegex) > 2)
+                                      !(new Regex(handlerData.Hook.ForceFocusWindowRegex).IsMatch(data.HWnd.Title))) {
+                                    /// ?? redundant call??
                                     data.HWNDRetry = true;
-                                }
-                                else
-                                {
+                                } else {
                                     Size s = data.Size;
                                     data.Setted = true;
                                 }
@@ -370,8 +307,7 @@ namespace Nucleus.Gaming.Platform.Windows
                 }
             }
 
-            if (exited == players.Count)
-            {
+            if (exited == players.Count) {
                 handler.End();
             }
         }

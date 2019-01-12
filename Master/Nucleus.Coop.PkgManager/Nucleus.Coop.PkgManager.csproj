@@ -65,7 +65,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
-    <None Include="MainRepo\handlers\sources\49520-distrotest\info.json" />
     <None Include="MainRepo\header.json" />
     <None Include="MainRepo\infos\17\info.json" />
     <None Include="MainRepo\infos\1\info.json" />
@@ -92,8 +91,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="MainRepo\bootstrap.min.css" />
-    <None Include="MainRepo\handlers\sources\49520-distrotest\handler.js" />
-    <None Include="MainRepo\handlers\sources\49520-distrotest\header.jpg" />
     <Content Include="MainRepo\infos\17\screenshots\0.jpg" />
     <Content Include="MainRepo\infos\1\screenshots\0.jpg" />
     <Content Include="MainRepo\infos\2\screenshots\0.jpg" />

@@ -121,7 +121,7 @@ namespace Nucleus.Gaming.Coop.Modules
                         linkWorkingDir = Path.Combine(linkFolder, handlerData.WorkingFolder);
                         dirExclusions.Add(handlerData.WorkingFolder);
                     }
-                    else;
+                    else
                     {
                         linkWorkingDir = Path.Combine(linkFolder, handlerData.ExecutablePath);
                     }

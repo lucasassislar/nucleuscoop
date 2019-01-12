@@ -294,7 +294,9 @@
     <None Include="GamingKey.snk" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\xinput1_3.dll" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\4players.png" />
   </ItemGroup>
@@ -314,9 +316,6 @@
       <Project>{d9716550-921d-44e8-a289-c297950db1f7}</Project>
       <Name>WindowScrape</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\xinput1_3.dll" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\gamepad.png" />

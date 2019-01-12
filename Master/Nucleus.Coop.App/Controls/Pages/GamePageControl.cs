@@ -253,7 +253,7 @@ namespace Nucleus.Coop.App.Controls {
             for (; ; )
             {
                 try {
-                    if (GameManager.Instance == null || handler == null) {
+                    if (GameManager.Instance == null || handler == null || this.IsDisposed) {
                         break;
                     }
 

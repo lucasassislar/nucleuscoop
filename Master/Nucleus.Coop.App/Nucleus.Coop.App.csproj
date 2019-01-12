@@ -387,7 +387,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\nucleus.png" />
-    <None Include="Resources\xinput1_3.dll" />
     <None Include="Resources\vertical.png" />
     <None Include="Resources\keyboard.png" />
     <None Include="games\DebugBattlefront2.js" />

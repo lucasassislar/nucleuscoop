@@ -321,7 +321,7 @@ namespace Nucleus.Gaming.Coop {
 
         public static string GetTempFolder(HandlerData game) {
             string appData = GetAppDataPath();
-            return Path.Combine(appData, "Temp", game.GameID);
+            return Path.Combine(appData, "temp", game.GameID);
         }
 
 
