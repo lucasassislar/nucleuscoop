@@ -86,7 +86,7 @@ namespace Nucleus.Coop.App.Controls {
             listInstalled = new GameControl();
             listInstalled.Width = list_left.Width;
             listInstalled.UpdateTitleText("Remove games from list");
-            listInstalled.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "⌫");
+            listInstalled.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "⌫", 0, 8);
             listInstalled.Click += ListInstalled_Click;
             list_left.Controls.Add(listInstalled);            
 

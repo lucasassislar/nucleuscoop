@@ -9,17 +9,18 @@ using System.Windows.Forms;
 
 namespace Nucleus.Gaming.Platform.Windows {
     public static class FormGraphicsUtil {
-        public static Bitmap BuildCharToBitmap(Size size, int fontSize, Color color, string str, int rectBorder = 0) {
+        public static Bitmap BuildCharToBitmap(Size size, int fontSize, Color color, string str, int rectBorder = 0, int reduce = 0) {
             using (Font font = new Font("Arial", fontSize)) {
-                return BuildCharToBitmap(size, font, color, str, rectBorder);
+                return BuildCharToBitmap(size, font, color, str, rectBorder, reduce);
             }
         }
 
-        public static Bitmap BuildCharToBitmap(Size size, Font font, Color color, string str, int rectBorder = 0) {
+        public static Bitmap BuildCharToBitmap(Size size, Font font, Color color, string str, int rectBorder = 0, int reduce = 0) {
             Bitmap bmp = new Bitmap(size.Width, size.Height);
             Graphics g = Graphics.FromImage(bmp);
 
             SizeF fontSize = g.MeasureString(str, font);
+            fontSize.Width -= reduce;
             Point pos = new Point((int)((size.Width / 2) - (fontSize.Width / 2)), (int)((size.Height / 2) - (fontSize.Height / 2)));
 
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
