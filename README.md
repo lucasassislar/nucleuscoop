@@ -1,6 +1,7 @@
 # Nucleus Co-Op
 Nucleus Co-Op is a tool for Windows that allows split-screen play on many games that do not initially support it.
 Its purpose is to make it as easy as possible for the average user to play games locally.
+Essentially, Nucleus opens multiple instances of the same game with sym-linked files, each with its own customized version of xinput libraries that will only answer to ony specific gamepad instance.
 
 Support its development by donating to my Patreon! https://www.patreon.com/distro
 
