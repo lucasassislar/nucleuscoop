@@ -52,15 +52,15 @@ namespace Nucleus.Gaming.Coop
         /// If our custom dll should set the window size and position locally, instead of the handler
         /// (inconsistent with some window sizes, look at Borderlands2.js for an example usage)
         /// </summary>
-        [Dynamic]
-        public bool SetWindowSize { get; set; }
+        //[Dynamic]
+        //public bool SetWindowSize { get; set; } = true;
 
         /// <summary>
         /// If our custom dll should set the window size and position locally, instead of the handler
         /// (inconsistent with some window sizes, look at Borderlands2.js for an example usage)
         /// </summary>
-        [Dynamic]
-        public bool SetWindowPosition { get; set; }
+        //[Dynamic]
+        //public bool SetWindowPosition { get; set; }
 
         /// <summary>
         /// If our custom DLL should hook into the game's window and fake Window's events
@@ -77,10 +77,5 @@ namespace Nucleus.Gaming.Coop
         /// </summary>
         [Dynamic]
         public string ForceFocusWindowRegex { get; set; } = "";
-
-
-        public bool BlockMouseEvents { get; set; } = true;
-        public bool BlockKeyboardEvents { get; set; } = true;
-        public bool BlockInputEvents { get; set; } = true;
     }
 }

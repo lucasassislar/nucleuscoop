@@ -1,6 +1,5 @@
 ﻿using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Handler;
-using Nucleus.Gaming.Coop.Handler.Cursor;
 using Nucleus.Gaming.Coop.Modules;
 using Nucleus.Gaming.Tools.GameStarter;
 using Nucleus.Gaming.Windows;
@@ -76,7 +75,6 @@ namespace Nucleus.Gaming.Platform.Windows {
                 //string exePath = Path.Combine(exeFolderDir.GetRelativePath(ioModule.NucleusRootFolder), Path.GetFileName(ioModule.ExePath));
                 //string exeRoot = linkedFolderDir.GetRelativePath(ioModule.NucleusRootFolder);
                 proc = Process.GetProcessById(StartGameUtil.StartGame(ioModule.LinkedExePath, startArgs, ioModule.LinkedWorkingDir));
-
             } else {
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = startingApp;
@@ -142,7 +140,7 @@ namespace Nucleus.Gaming.Platform.Windows {
             }
 
             List<PlayerInfo> players = profile.PlayerData;
-            CursorModule cursorModule = handler.GetModule<CursorModule>();
+            //CursorModule cursorModule = handler.GetModule<CursorModule>();
 
             for (int i = 0; i < players.Count; i++) {
                 PlayerInfo p = players[i];
@@ -165,50 +163,49 @@ namespace Nucleus.Gaming.Platform.Windows {
                             continue;
                         }
 
-                        data.HWnd.TopMost = true;
+                        //data.HWnd.TopMost = true;
+                        //if (data.Status == 2) {
+                        //    uint lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE);
+                        //    lStyle = lStyle & ~User32_WS.WS_CAPTION;
+                        //    lStyle = lStyle & ~User32_WS.WS_THICKFRAME;
+                        //    lStyle = lStyle & ~User32_WS.WS_MINIMIZE;
+                        //    lStyle = lStyle & ~User32_WS.WS_MAXIMIZE;
+                        //    lStyle = lStyle & ~User32_WS.WS_SYSMENU;
+                        //    User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE, lStyle);
 
-                        if (data.Status == 2) {
-                            uint lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE);
-                            lStyle = lStyle & ~User32_WS.WS_CAPTION;
-                            lStyle = lStyle & ~User32_WS.WS_THICKFRAME;
-                            lStyle = lStyle & ~User32_WS.WS_MINIMIZE;
-                            lStyle = lStyle & ~User32_WS.WS_MAXIMIZE;
-                            lStyle = lStyle & ~User32_WS.WS_SYSMENU;
-                            User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE, lStyle);
+                        //    lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_EXSTYLE);
+                        //    lStyle = lStyle & ~User32_WS.WS_EX_DLGMODALFRAME;
+                        //    lStyle = lStyle & ~User32_WS.WS_EX_CLIENTEDGE;
+                        //    lStyle = lStyle & ~User32_WS.WS_EX_STATICEDGE;
+                        //    User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_EXSTYLE, lStyle);
+                        //    User32Interop.SetWindowPos(data.HWnd.NativePtr, IntPtr.Zero, 0, 0, 0, 0, (uint)(PositioningFlags.SWP_FRAMECHANGED | PositioningFlags.SWP_NOMOVE | PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOZORDER | PositioningFlags.SWP_NOOWNERZORDER));
+                        //    //User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
 
-                            lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_EXSTYLE);
-                            lStyle = lStyle & ~User32_WS.WS_EX_DLGMODALFRAME;
-                            lStyle = lStyle & ~User32_WS.WS_EX_CLIENTEDGE;
-                            lStyle = lStyle & ~User32_WS.WS_EX_STATICEDGE;
-                            User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_EXSTYLE, lStyle);
-                            User32Interop.SetWindowPos(data.HWnd.NativePtr, IntPtr.Zero, 0, 0, 0, 0, (uint)(PositioningFlags.SWP_FRAMECHANGED | PositioningFlags.SWP_NOMOVE | PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOZORDER | PositioningFlags.SWP_NOOWNERZORDER));
-                            //User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
+                        //    data.Finished = true;
+                        //    Debug.WriteLine("State 2");
 
-                            data.Finished = true;
-                            Debug.WriteLine("State 2");
+                        //    if (i == players.Count - 1 && handlerData.Hook.ClipMouse) {
+                        //        //last screen setuped
+                        //        cursorModule?.SetActiveWindow();
+                        //    }
+                        //} else if (data.Status == 1) {
+                        //    data.HWnd.Location = data.Position;
+                        //    data.Status++;
+                        //    Debug.WriteLine("State 1");
 
-                            if (i == players.Count - 1 && handlerData.Hook.ClipMouse) {
-                                //last screen setuped
-                                cursorModule?.SetActiveWindow();
-                            }
-                        } else if (data.Status == 1) {
-                            data.HWnd.Location = data.Position;
-                            data.Status++;
-                            Debug.WriteLine("State 1");
+                        //    if (handlerData.Hook.ClipMouse) {
+                        //        if (p.IsKeyboardPlayer) {
+                        //            cursorModule?.Setup(data.Process, p.MonitorBounds);
+                        //        } else {
+                        //            cursorModule?.AddOtherGameHandle(data.Process.MainWindowHandle);
+                        //        }
+                        //    }
+                        //} else if (data.Status == 0) {
+                        //    data.HWnd.Size = data.Size;
 
-                            if (handlerData.Hook.ClipMouse) {
-                                if (p.IsKeyboardPlayer) {
-                                    cursorModule?.Setup(data.Process, p.MonitorBounds);
-                                } else {
-                                    cursorModule?.AddOtherGameHandle(data.Process.MainWindowHandle);
-                                }
-                            }
-                        } else if (data.Status == 0) {
-                            data.HWnd.Size = data.Size;
-
-                            data.Status++;
-                            Debug.WriteLine("State 0");
-                        }
+                        //    data.Status++;
+                        //    Debug.WriteLine("State 0");
+                        //}
                     } else {
                         data.Process.Refresh();
 

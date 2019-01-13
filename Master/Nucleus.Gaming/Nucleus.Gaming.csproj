@@ -78,21 +78,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\Model\Game.cs" />
-    <Compile Include="Api\Model\GameHandler.cs" />
-    <Compile Include="Api\Model\IgdbGame.cs" />
-    <Compile Include="Api\Model\IgdbGameCover.cs" />
-    <Compile Include="Api\Model\IgdbGameReleaseDate.cs" />
-    <Compile Include="Api\Model\IgdbGames.cs" />
-    <Compile Include="Api\Model\LoginData.cs" />
-    <Compile Include="Api\Model\Package.cs" />
-    <Compile Include="Api\Model\User.cs" />
     <Compile Include="Coop\Data\AppDomain\AppDomainSharedAttribute.cs" />
     <Compile Include="Coop\Data\CallbackData.cs" />
     <Compile Include="Coop\Data\HandlerTools.cs" />
     <Compile Include="Coop\Data\Save\SaveInfo.cs" />
     <Compile Include="Coop\Data\UserProfileOptions.cs" />
-    <Compile Include="Coop\Interop\DomainWebApiConnection.cs" />
+    <None Include="Coop\Interop\DomainWebApiConnection.cs" />
     <Compile Include="Coop\Interop\HandlerDataEngine.cs" />
     <Compile Include="Coop\HandlerDataManager.cs" />
     <Compile Include="Coop\Handler\Modules\IO\IOModule.cs" />

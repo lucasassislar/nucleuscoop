@@ -1,5 +1,4 @@
-﻿using Nucleus.Gaming.Coop.Handler.Cursor;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -69,6 +68,9 @@ namespace Nucleus.Gaming.Coop.Handler {
             for (int i = 0; i < modules.Count; i++) {
                 modules[i].PrePlay();
             }
+
+            // if there's a keyboard player, re-order play list
+            players.Sort((x, y) => x.IsKeyboardPlayer.CompareTo(y.IsKeyboardPlayer));
 
             for (int i = 0; i < players.Count; i++) {
                 PlayerInfo player = players[i];

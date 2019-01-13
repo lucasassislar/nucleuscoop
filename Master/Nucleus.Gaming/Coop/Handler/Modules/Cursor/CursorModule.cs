@@ -22,15 +22,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using Nucleus.Gaming.Coop.Handler;
 using Nucleus.Gaming.Windows.Interop;
 
-namespace Nucleus.Gaming.Coop.Handler.Cursor
-{
+namespace Nucleus.Gaming.Coop.Modules {
     /// <summary>
     /// Module for handling mouse/cursor related features
     /// </summary>
-    public class CursorModule : HandlerModule
-    {
+    public class CursorModule : HandlerModule {
         private UserGameInfo userGame;
         private GameProfile profile;
         private HandlerData handlerData;
@@ -58,29 +58,23 @@ namespace Nucleus.Gaming.Coop.Handler.Cursor
         /// </summary>
         public override int Order { get { return 60; } }
 
-        public CursorModule()
-        {
+        public CursorModule() {
             llMouseProc = llMouseHookCallback;
             winEventProc = EventCallback;
-
-            StartListeningForWindowChanges();
         }
 
-        public void Setup(Process p, Rectangle rectangle)
-        {
+        public void Setup(Process p, Rectangle rectangle) {
             _process = p;
             _rectangle = rectangle;
             ReBuildBarriers(_rectangle);
             processHandle = p.MainWindowHandle;
 
-            _process.Exited += (sender, args) =>
-            {
+            _process.Exited += (sender, args) => {
                 Stop();
             };
         }
 
-        public override bool Initialize(GameHandler handler, HandlerData handlerData, UserGameInfo game, GameProfile profile)
-        {
+        public override bool Initialize(GameHandler handler, HandlerData handlerData, UserGameInfo game, GameProfile profile) {
             this.userGame = game;
             this.profile = profile;
             this.handlerData = handlerData;
@@ -88,35 +82,27 @@ namespace Nucleus.Gaming.Coop.Handler.Cursor
             return true;
         }
 
-        public override void PrePlay()
-        {
+        public override void PrePlay() {
         }
 
-        public override void PrePlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context)
-        {
-            
+        public override void PrePlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context) {
+
         }
 
-        public void AddOtherGameHandle(IntPtr gameHandle)
-        {
+        public void AddOtherGameHandle(IntPtr gameHandle) {
             _otherGames.Add(gameHandle);
         }
 
-        public void Stop()
-        {
+        public void Stop() {
             StopListeningForWindowChanges();
             UnLockCursor();
         }
 
         // The cursor should be locked (possibly just sticky) to the screen it is currently on.
-        public void LockCursorToScreen()
-        {
-            if (llMouseHook == IntPtr.Zero)
-            {
-                using (Process curProcess = Process.GetCurrentProcess())
-                {
-                    using (ProcessModule curModule = curProcess.MainModule)
-                    {
+        public void LockCursorToScreen() {
+            if (llMouseHook == IntPtr.Zero) {
+                using (Process curProcess = Process.GetCurrentProcess()) {
+                    using (ProcessModule curModule = curProcess.MainModule) {
                         IntPtr hModule = NativeMethods.GetModuleHandle(curModule.ModuleName);
                         llMouseHook = NativeMethods.SetWindowsHookEx(NativeMethods.WH_MOUSE_LL, llMouseProc, hModule, 0);
                     }
@@ -130,8 +116,7 @@ namespace Nucleus.Gaming.Coop.Handler.Cursor
         // so needs to be reasonably efficient.
         //
         // Note: no locking is currently employed so need to be carefull of the order in which things are done
-        private void ReBuildBarriers(Rectangle r)
-        {
+        private void ReBuildBarriers(Rectangle r) {
             _leftBarrier.ChangeBarrier(true, r.Left + 1, _minForce);
             _rightBarrier.ChangeBarrier(true, r.Right - 1, _minForce);
             _topBarrier.ChangeBarrier(true, r.Top + 1, _minForce);
@@ -139,11 +124,9 @@ namespace Nucleus.Gaming.Coop.Handler.Cursor
         }
 
         // The cursor's movement should not be hindered by screen edges
-        public void UnLockCursor()
-        {
+        public void UnLockCursor() {
             // make sure the low level mouse hook is unhooked
-            if (llMouseHook != IntPtr.Zero)
-            {
+            if (llMouseHook != IntPtr.Zero) {
                 // unhook our callback to make sure there is no performance degredation
                 NativeMethods.UnhookWindowsHookEx(llMouseHook);
                 llMouseHook = IntPtr.Zero;
@@ -153,104 +136,90 @@ namespace Nucleus.Gaming.Coop.Handler.Cursor
         // This is the low level Mouse hook callback
         // Processing in here should be efficient as possible
         // as it can be called very frequently.
-        public int llMouseHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
-        {
-            if (nCode >= 0)
-            {
+        public int llMouseHookCallback(int nCode, IntPtr wParam, IntPtr lParam) {
+            if (nCode >= 0) {
                 // lParam is a pointer to a MSLLHOOKSTRUCT, 
                 NativeMethods.MSLLHOOKSTRUCT msllHookStruct =
-                    (NativeMethods.MSLLHOOKSTRUCT) Marshal.PtrToStructure(lParam, typeof (NativeMethods.MSLLHOOKSTRUCT));
+                    (NativeMethods.MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(NativeMethods.MSLLHOOKSTRUCT));
                 int originalX = msllHookStruct.pt.x;
                 int originalY = msllHookStruct.pt.y;
                 int x = originalX;
                 int y = originalY;
-                
+
                 // check if the cursor has moved from one screen to another
                 // and if so add the required amount of stickiness to the cursor
                 // restraining it to the current screen if necessary
 
                 bool brokenThrough = _leftBarrier.BrokenThrough(ref x);
-                if (_rightBarrier.BrokenThrough(ref x))
-                {
+                if (_rightBarrier.BrokenThrough(ref x)) {
                     brokenThrough = true;
                 }
 
-                if (_topBarrier.BrokenThrough(ref y))
-                {
+                if (_topBarrier.BrokenThrough(ref y)) {
                     brokenThrough = true;
                 }
 
-                if (_bottomBarrier.BrokenThrough(ref y))
-                {
+                if (_bottomBarrier.BrokenThrough(ref y)) {
                     brokenThrough = true;
                 }
 
-                if (brokenThrough)
-                {
+                if (brokenThrough) {
                     //ReBuildBarriers(new Point(x, y));
                     //????
                     //UnLockCursor();
                 }
 
-                if (x != originalX || y != originalY)
-                {
+                if (x != originalX || y != originalY) {
                     // override the position that Windows wants to place the cursor
-                    System.Windows.Forms.Cursor.Position = new Point(x, y);
+                    Cursor.Position = new Point(x, y);
                     return 1;
                 }
             }
 
             return NativeMethods.CallNextHookEx(llMouseHook, nCode, wParam, lParam);
         }
-        
-        public void StartListeningForWindowChanges()
-        {
+
+        public void StartListeningForWindowChanges() {
             //setting the window hook
-            if (winEventHook == IntPtr.Zero)
-            {
+            if (winEventHook == IntPtr.Zero) {
                 winEventHook = NativeMethods.SetWinEventHook(NativeMethods.EVENT_SYSTEM_FOREGROUND, NativeMethods.EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, winEventProc, 0, 0, NativeMethods.WINEVENT_OUTOFCONTEXT);
             }
         }
 
-        public void StopListeningForWindowChanges()
-        {
-            if (winEventHook != IntPtr.Zero)
-            {
+        public void StopListeningForWindowChanges() {
+            if (winEventHook != IntPtr.Zero) {
                 NativeMethods.UnhookWinEvent(winEventHook);
                 winEventHook = IntPtr.Zero;
             }
         }
 
-        private void EventCallback(IntPtr hWinEventHook, uint iEvent, IntPtr hWnd, int idObject, int idChild, int dwEventThread, int dwmsEventTime)
-        {
+        private void EventCallback(IntPtr hWinEventHook, uint iEvent, IntPtr hWnd, int idObject, int idChild, int dwEventThread, int dwmsEventTime) {
+            // ???? this is not being called at all, maybe our way of tinkering with foreground processes is getting in the way?
+
             // handle active window changed!
-            if (processHandle == hWnd)
-            {
-                //Debug.WriteLine("Lock cursor to main game screen"); 
+            if (processHandle == hWnd) {
+                Debug.WriteLine("Lock cursor to main game screen");
                 LockCursorToScreen();
-            }
-            else if (_otherGames.Contains(hWnd))
-            {
-                //Debug.WriteLine("Other game screen, focus to main");
+            } else if (_otherGames.Contains(hWnd)) {
+                Debug.WriteLine("Other game screen, focus to main");
                 SetActiveWindow();
-            }
-            else
-            {
-                //Debug.WriteLine("Not game window is active");
+            } else {
+                Debug.WriteLine("Not game window is active");
                 UnLockCursor();
             }
         }
 
-        public void SetActiveWindow()
-        {
+        public void SetActiveWindow() {
             NativeMethods.ShowWindow(processHandle, NativeMethods.SW_RESTORE | NativeMethods.SW_SHOW);
             NativeMethods.SetForegroundWindow(processHandle);
         }
 
-        public override void PlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context)
-        {
+        public override void PlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context) {
             // not working?
-            //if (playerInfo.IsKeyboardPlayer) {
+            if (playerInfo.IsKeyboardPlayer) {
+                StartListeningForWindowChanges();
+            }
+
             //    var processData = playerInfo.ProcessData;
             //    Setup(processData.Process, playerInfo.MonitorBounds);
 
@@ -261,8 +230,8 @@ namespace Nucleus.Gaming.Coop.Handler.Cursor
             //}
         }
 
-        public static bool IsNeeded(HandlerData data)
-        {
+        public static bool IsNeeded(HandlerData data) {
+            return false;
 #if WINDOWS
             return data.SupportsKeyboard;
 #else
@@ -270,8 +239,7 @@ namespace Nucleus.Gaming.Coop.Handler.Cursor
 #endif
         }
 
-        public override void Tick(double delayMs)
-        {
+        public override void Tick(double delayMs) {
         }
     }
 }

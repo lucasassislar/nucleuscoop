@@ -3,7 +3,12 @@ namespace Win32
 {
 	public enum Messages: int
 	{
-		WM_NULL = 0x0000,
+        // THESE 2 ARE NOT DOCUMENTED IN THE OFFICIAL DOCS!
+        WM_NCUAHDRAWCAPTION = 0x00AE,
+        WM_NCUAHDRAWFRAME = 0x00AF,
+
+
+        WM_NULL = 0x0000,
 		WM_CREATE = 0x0001,
 		WM_DESTROY = 0x0002,
 		WM_MOVE = 0x0003,

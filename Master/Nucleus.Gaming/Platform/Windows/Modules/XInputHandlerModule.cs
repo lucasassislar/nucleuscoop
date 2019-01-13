@@ -77,9 +77,11 @@ namespace Nucleus.Gaming.Platform.Windows {
 
             x360.IniWriteValue("Options", "ResWidth", context.Width.ToString(CultureInfo.InvariantCulture));
             x360.IniWriteValue("Options", "ResHeight", context.Height.ToString(CultureInfo.InvariantCulture));
-            x360.IniWriteValue("Options", "FixResolution", context.Hook.SetWindowSize.ToString(CultureInfo.InvariantCulture));
-            x360.IniWriteValue("Options", "FixPosition", context.Hook.SetWindowPosition.ToString(CultureInfo.InvariantCulture));
-            x360.IniWriteValue("Options", "ClipMouse", (false).ToString(CultureInfo.InvariantCulture)); //context.Hook.ClipMouse
+            //x360.IniWriteValue("Options", "FixResolution", context.Hook.SetWindowSize.ToString(CultureInfo.InvariantCulture));
+            //x360.IniWriteValue("Options", "FixPosition", context.Hook.SetWindowPosition.ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "FixResolution", (true).ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "FixPosition", (true).ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "ClipMouse", playerInfo.IsKeyboardPlayer.ToString(CultureInfo.InvariantCulture)); //context.Hook.ClipMouse
 
             x360.IniWriteValue("Options", "RerouteInput", context.Hook.XInputReroute.ToString(CultureInfo.InvariantCulture));
             x360.IniWriteValue("Options", "RerouteJoystickTemplate", JoystickDatabase.GetID(playerInfo.GamepadProductGuid.ToString()).ToString(CultureInfo.InvariantCulture));
@@ -87,9 +89,9 @@ namespace Nucleus.Gaming.Platform.Windows {
             x360.IniWriteValue("Options", "EnableMKBInput", playerInfo.IsKeyboardPlayer.ToString(CultureInfo.InvariantCulture));
 
             // windows events
-            x360.IniWriteValue("Options", "BlockInputEvents", context.Hook.BlockInputEvents.ToString(CultureInfo.InvariantCulture));
-            x360.IniWriteValue("Options", "BlockMouseEvents", context.Hook.BlockMouseEvents.ToString(CultureInfo.InvariantCulture));
-            x360.IniWriteValue("Options", "BlockKeyboardEvents", context.Hook.BlockKeyboardEvents.ToString(CultureInfo.InvariantCulture));
+            //x360.IniWriteValue("Options", "BlockInputEvents", context.Hook.BlockInputEvents.ToString(CultureInfo.InvariantCulture));
+            //x360.IniWriteValue("Options", "BlockMouseEvents", context.Hook.BlockMouseEvents.ToString(CultureInfo.InvariantCulture));
+            //x360.IniWriteValue("Options", "BlockKeyboardEvents", context.Hook.BlockKeyboardEvents.ToString(CultureInfo.InvariantCulture));
 
             // xinput
             x360.IniWriteValue("Options", "XInputEnabled", context.Hook.XInputEnabled.ToString(CultureInfo.InvariantCulture));

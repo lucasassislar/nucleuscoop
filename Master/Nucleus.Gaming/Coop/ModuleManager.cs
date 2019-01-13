@@ -1,5 +1,4 @@
-﻿using Nucleus.Gaming.Coop.Handler.Cursor;
-using Nucleus.Gaming.Coop.Modules;
+﻿using Nucleus.Gaming.Coop.Modules;
 using Nucleus.Gaming.Platform.Windows;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Nucleus.Gaming.Coop.Api;
 using System;
 using System.Collections.Generic;
 using System.IO;
