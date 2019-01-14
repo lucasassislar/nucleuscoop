@@ -86,7 +86,7 @@ namespace Nucleus.Coop.App.Controls {
             }
 
             if (currentHandlers.Length > 1) {
-                MainForm.Instance.ChangeTitle("Choose one handler to run game", 
+                MainForm.Instance.ChangeTitle("Choose one handler to run game",
                     FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "⤷"));
 
                 panel_steps.Controls.Add(list_handlers);
@@ -115,7 +115,7 @@ namespace Nucleus.Coop.App.Controls {
             DPIManager.ForceUpdate();
         }
 
-        
+
 
         private void SetupSteps(GameHandlerMetadata metadataSelected) {
             KillCurrentStep();
@@ -154,10 +154,18 @@ namespace Nucleus.Coop.App.Controls {
         }
 
         private void GoToStep(int step) {
+            if (step == 1 &&
+                // TODO better if too sleepy
+                currentProfile.Options.Count == handlerData.CustomSteps.Count) {
+                step++;
+            }
+
             BrowserBtns.SetPreviousButtonState(step > 0);
             if (step >= stepsList.Count) {
                 return;
             }
+
+
 
             if (step >= 2) {
                 // Custom steps
@@ -175,6 +183,8 @@ namespace Nucleus.Coop.App.Controls {
             }
 
             KillCurrentStep();
+
+
 
             currentStepIndex = step;
             currentStep = stepsList[step];

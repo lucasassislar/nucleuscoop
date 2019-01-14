@@ -60,8 +60,13 @@ namespace Nucleus.Gaming.Coop.Handler {
         public RequestResult<string> Play() {
             List<PlayerInfo> players = profile.PlayerData;
             // if there's a keyboard player, re-order play list
-            if (players.Any(c => c.IsKeyboardPlayer)) {
-                players.Sort((x, y) => x.IsKeyboardPlayer.CompareTo(y.IsKeyboardPlayer));
+            bool hasKeyboardPlayer = players.Any(c => c.IsKeyboardPlayer);
+            if (hasKeyboardPlayer) {
+                if (handlerManager.HandlerData.KeyboardPlayerFirst) {
+                    players.Sort((x, y) => y.IsKeyboardPlayer.CompareTo(x.IsKeyboardPlayer));
+                } else {
+                    players.Sort((x, y) => x.IsKeyboardPlayer.CompareTo(y.IsKeyboardPlayer));
+                }
             }
 
             for (int i = 0; i < players.Count; i++) {
@@ -73,12 +78,10 @@ namespace Nucleus.Gaming.Coop.Handler {
                 modules[i].PrePlay();
             }
 
-           
-
             for (int i = 0; i < players.Count; i++) {
                 PlayerInfo player = players[i];
 
-                HandlerContext context = handlerManager.HandlerData.CreateContext(profile, player);
+                HandlerContext context = handlerManager.HandlerData.CreateContext(profile, player, hasKeyboardPlayer);
                 context.PlayerID = player.PlayerID;
 
                 for (int j = 0; j < modules.Count; j++) {

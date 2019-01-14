@@ -122,13 +122,13 @@ Game.WorkingFolder = "bin";
 Game.StartArguments = "-novid -insecure -window";
 Game.MaxPlayersOneMonitor = 8;
 Game.MaxPlayers = 8;
-Game.Hook.ForceFocus = false;
+Game.Hook.ForceFocus = true;
 Game.Hook.ForceFocusWindowRegex = "Alien Swarm";
 Game.Hook.DInputEnabled = false;
 Game.Hook.DInputForceDisable = true;
 Game.Hook.XInputEnabled = true;
 Game.Hook.XInputReroute = false;
-Game.Hook.CustomDllEnabled = true;
+Game.KeyboardPlayerFirst = true;
 
 // this game will multiply the values on the creators Update
 // ... but is it only in the creators update?
@@ -178,7 +178,7 @@ Game.OnPlay.Callback(function () {
         [ 0x74, 0x12, 0x46, 0x83, 0xFE, 0x20 ],
         [ 0xEB ]);
 
-    var autoExec = Context.GetFolder(Folder.InstanceFolder) + "\\reactivedrop\\cfg\\autoexec.cfg";
+    var autoExec = Context.InstanceFolder + "\\reactivedrop\\cfg\\autoexec.cfg";
     var lines = [
         "sv_lan 1",
         "sv_allow_lobby_connect_only 0",
@@ -187,10 +187,15 @@ Game.OnPlay.Callback(function () {
         //"fps_max 999"
     ];
 
+    map = Context.Options["MapID"].Console;
     if (Player.IsKeyboardPlayer) {
         lines.push("joystick 0");
         lines.push("sk_autoaim_mode 1");
         //lines.push("exec undo360controller.cfg");
+
+        if (map !== "") {
+            lines.push("map " + map);
+        }
     }
     else {
         lines.push("exec 360controller_pc.cfg");
@@ -209,22 +214,26 @@ Game.OnPlay.Callback(function () {
         lines.push("bind \"POV_DOWN\" \"asw_squad_hotbar 4\"");
         lines.push("bind \"DOWN\" \"asw_squad_hotbar 4\"");
         //lines.push("");
-    }
-    
-    var map = Context.Options["MapID"].Console;
-    if (Context.PlayerID === 0) {
-        if (map !== "") {
-            lines.push("map " + map);
+
+        if (Context.HasKeyboardPlayer()) {
+            lines.push("connect " + Context.User.GetLocalIP());
+        } else {
+            if (Context.PlayerID == 0) {
+                if (map !== "") {
+                    lines.push("map " + map);
+                }
+            } else {
+                lines.push("connect " + Context.User.GetLocalIP());
+            }
         }
-    } else {
-        lines.push("connect " + Context.User.GetLocalIP());
     }
 
-    if (map.indexOf("dm_") === 0 && !Player.IsKeyboardPlayer) {
-        //for deathmatch map use BACK button to show/close choose marine panel
-        lines.push("bind \"JOY7\" \"cl_select_loadout\"");
-        lines.push("bind \"BACK\" \"cl_select_loadout\"");
-    }
+    Context.LogLine(map);
+    //if (map.indexOf("dm_") === 0 && !Player.IsKeyboardPlayer) {
+    //    //for deathmatch map use BACK button to show/close choose marine panel
+    //    lines.push("bind \"JOY7\" \"cl_select_loadout\"");
+    //    lines.push("bind \"BACK\" \"cl_select_loadout\"");
+    //}
 
     Context.WriteTextFile(autoExec, lines);
 });

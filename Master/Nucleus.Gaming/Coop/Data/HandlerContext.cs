@@ -63,6 +63,7 @@ namespace Nucleus.Gaming.Coop
         public Dictionary<string, string> AdditionalData;
         public int PlayerID;
 
+        public bool bHasKeyboardPlayer;
         public string OverrideStartProcess { get; set; }
        
 
@@ -109,18 +110,25 @@ namespace Nucleus.Gaming.Coop
         {
         }
 
-        public HandlerContext(GameProfile prof, PlayerInfo info)
+        public HandlerContext(GameProfile prof, PlayerInfo info, bool hasKeyboard)
         {
             profile = prof;
             PlayerInfo = info;
 
             Options = prof.Options;
+            bHasKeyboardPlayer = hasKeyboard;
+        }
+
+        public bool HasKeyboardPlayer() {
+            return bHasKeyboardPlayer;
         }
 
         public void SetProcessToStart(string procName)
         {
             OverrideStartProcess = procName;
         }
+
+
 
         public string CombinePath(string path1, string path2)
         {
@@ -248,6 +256,10 @@ namespace Nucleus.Gaming.Coop
                 return false;
             }
             return true;
+        }
+
+        public void LogLine(string str) {
+            Log.WriteLine(str);
         }
 
         public void PatchFile(string originalFile, string patchedFile, byte[] patchFind, byte[] patchReplace)

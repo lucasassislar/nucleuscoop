@@ -141,6 +141,8 @@ namespace Nucleus.Gaming.Coop
         /// </summary>
         public Dictionary<string, string> AdditionalData { get; set; } = new Dictionary<string, string>();
 
+        public bool KeyboardPlayerFirst { get; set; }
+
         /// <summary>
         /// Adds an additional step to the Custom Steps list dependent on the data from a GameOption
         /// </summary>
@@ -178,9 +180,9 @@ namespace Nucleus.Gaming.Coop
         /// Clones this Game Info into a new Generic Context
         /// </summary>
         /// <returns></returns>
-        public virtual HandlerContext CreateContext(GameProfile profile, PlayerInfo info)
+        public virtual HandlerContext CreateContext(GameProfile profile, PlayerInfo info, bool hasKeyboardPlayer)
         {
-            HandlerContext context = new HandlerContext(profile, info);
+            HandlerContext context = new HandlerContext(profile, info, hasKeyboardPlayer);
             ObjectUtil.DeepCopy(this, context);
 
             return context;
