@@ -68,6 +68,7 @@ namespace Nucleus.Gaming.App.Controls {
                 ControlListBox list = new ControlListBox();
                 list.Size = this.Size;
                 list.AutoScroll = true;
+                list.SelectedChanged += List_SelectedChanged;
 
                 Controls.Add(list);
 
@@ -102,7 +103,6 @@ namespace Nucleus.Gaming.App.Controls {
                     if (value.TryGetValue("Details", out detailsObj))
                     {
                         details = detailsObj.ToString();
-
                         control.Details = details;
                     }
 
@@ -130,16 +130,22 @@ namespace Nucleus.Gaming.App.Controls {
             }
             else
             {
-                
+            }
+        }
+
+        private void List_SelectedChanged(Control selected) {
+            if (selected is CoolListControl) {
+                CoolListControl list = (CoolListControl)selected;
+                profile.Options[CustomStep.Option.Key] = list.Data;
+
+                canProceed = true;
+                CanPlayUpdated(true, true);
             }
         }
 
         private void Control_OnSelected(object obj)
         {
-            profile.Options[CustomStep.Option.Key] = obj;
-
-            canProceed = true;
-            CanPlayUpdated(true, true);
+            
         }
     }
 }

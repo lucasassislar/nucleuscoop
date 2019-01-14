@@ -16,7 +16,7 @@ namespace Nucleus.Gaming.Platform.Windows.Controls {
         private int totalHeight;
         private int border = 1;
 
-        public event Action<Control, Control> SelectedChanged;
+        public event Action<Control> SelectedChanged;
         public Size Offset { get; set; }
         public Control SelectedControl { get; protected set; }
 
@@ -194,7 +194,7 @@ namespace Nucleus.Gaming.Platform.Windows.Controls {
                 parent != SelectedControl) {
                 if (this.SelectedChanged != null) {
                     SelectedControl = parent;
-                    this.SelectedChanged(SelectedControl, this);
+                    this.SelectedChanged(SelectedControl);
                 }
             }
 

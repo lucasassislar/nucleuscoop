@@ -44,7 +44,7 @@ namespace Nucleus.Gaming.Windows.Controls
         }
 
         public bool EnableHighlighting { get; private set; }
-        public bool EnableClicking { get; set; }
+        public bool EnableClicking { get; set; } = true;
         public object Data { get; set; }
         public event Action<object> OnSelected;
 

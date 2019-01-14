@@ -59,18 +59,21 @@ namespace Nucleus.Gaming.Coop.Handler {
 
         public RequestResult<string> Play() {
             List<PlayerInfo> players = profile.PlayerData;
+            // if there's a keyboard player, re-order play list
+            if (players.Any(c => c.IsKeyboardPlayer)) {
+                players.Sort((x, y) => x.IsKeyboardPlayer.CompareTo(y.IsKeyboardPlayer));
+            }
+
             for (int i = 0; i < players.Count; i++) {
                 players[i].PlayerID = i;
             }
-
             RequestResult<String> result = new RequestResult<String>();
 
             for (int i = 0; i < modules.Count; i++) {
                 modules[i].PrePlay();
             }
 
-            // if there's a keyboard player, re-order play list
-            players.Sort((x, y) => x.IsKeyboardPlayer.CompareTo(y.IsKeyboardPlayer));
+           
 
             for (int i = 0; i < players.Count; i++) {
                 PlayerInfo player = players[i];

@@ -57,11 +57,11 @@ namespace Nucleus.Gaming.Coop
         public string[] KillMutex;
         public string LauncherExe;
         public string LauncherTitle;
-        public int PlayerID;
         public bool IsFullscreen;
         public UserInfo User = new UserInfo();
         public DPIHandling DPIHandling = DPIHandling.True;
         public Dictionary<string, string> AdditionalData;
+        public int PlayerID;
 
         public string OverrideStartProcess { get; set; }
        

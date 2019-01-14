@@ -74,7 +74,8 @@ namespace Nucleus.Gaming.Platform.Windows {
 
                 //string exePath = Path.Combine(exeFolderDir.GetRelativePath(ioModule.NucleusRootFolder), Path.GetFileName(ioModule.ExePath));
                 //string exeRoot = linkedFolderDir.GetRelativePath(ioModule.NucleusRootFolder);
-                proc = Process.GetProcessById(StartGameUtil.StartGame(ioModule.LinkedExePath, startArgs, ioModule.LinkedWorkingDir));
+                int processId = StartGameUtil.StartGame(ioModule.LinkedExePath, startArgs, ioModule.LinkedWorkingDir);
+                proc = Process.GetProcessById(processId);
             } else {
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = startingApp;

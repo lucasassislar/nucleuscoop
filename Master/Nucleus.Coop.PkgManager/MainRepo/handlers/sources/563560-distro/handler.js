@@ -105,6 +105,7 @@ Game.FileSymlinkExclusions = [
     "server.dll"
 ];
 
+Game.PlatformVersion = 10;
 Game.SteamID = "563560";
 Game.GameID = "563560";
 Game.HandlerInterval = 100; // 10 FPS handler
@@ -122,7 +123,7 @@ Game.StartArguments = "-novid -insecure -window";
 Game.MaxPlayersOneMonitor = 8;
 Game.MaxPlayers = 8;
 Game.Hook.ForceFocus = false;
-Game.Hook.ForceFocusWindowRegex = "Alien Swarm: Reactive Drop";
+Game.Hook.ForceFocusWindowRegex = "Alien Swarm";
 Game.Hook.DInputEnabled = false;
 Game.Hook.DInputForceDisable = true;
 Game.Hook.XInputEnabled = true;
@@ -136,11 +137,11 @@ Game.DPIHandling = DPIHandling.InvScaled;
 Game.OnPlay.Callback(function () {
     // Only enable setting the window size on the XInput hook dll
     // when its dual vertical, as it doenst work 100% of the time on DualHorizontal
-    Context.Hook.SetWindowSize = Player.Owner.IsDualVertical();
-    Context.Hook.ForceFocus = false;//!Player.IsKeyboardPlayer;
+    //Context.Hook.SetWindowSize = Player.Owner.IsDualVertical();
+    //Context.Hook.ForceFocus = false;//!Player.IsKeyboardPlayer;
 
-    var saveSrc = Context.CombinePath(Context.RootInstallFolder, "reactivedrop\\cfg\\video.txt");
-    var savePath = Context.CombinePath(Context.RootFolder, "reactivedrop\\cfg\\video.txt");
+    var saveSrc = Context.CombinePath(Context.InstallFolder, "reactivedrop\\cfg\\video.txt");
+    var savePath = Context.CombinePath(Context.InstanceFolder, "reactivedrop\\cfg\\video.txt");
     Context.ModifySaveFile(saveSrc, savePath, SaveType.CFG, [
         Context.NewSaveInfo("VideoConfig", "setting.fullscreen", "0"),
         Context.NewSaveInfo("VideoConfig", "setting.defaultres", Math.max(640, Context.Width)),
@@ -149,35 +150,35 @@ Game.OnPlay.Callback(function () {
     ]);
     
     //copy config.cfg
-    Context.CopyFile(Context.CombinePath(Context.RootInstallFolder, "reactivedrop\\cfg\\config.cfg"),
-        Context.CombinePath(Context.RootFolder, "reactivedrop\\cfg\\config.cfg"),
+    Context.CopyFile(Context.CombinePath(Context.InstallFolder, "reactivedrop\\cfg\\config.cfg"),
+        Context.CombinePath(Context.InstanceFolder, "reactivedrop\\cfg\\config.cfg"),
         true);
 
     //copy steam.inf
-    Context.CopyFile(Context.CombinePath(Context.RootInstallFolder, "reactivedrop\\steam.inf"),
-        Context.CombinePath(Context.RootFolder, "reactivedrop\\steam.inf"),
+    Context.CopyFile(Context.CombinePath(Context.InstallFolder, "reactivedrop\\steam.inf"),
+        Context.CombinePath(Context.InstanceFolder, "reactivedrop\\steam.inf"),
         true);
 
     // TODO: how to update these if it comes the case?
 
     //patch dlls
     //patch engine no sleep
-    Context.PatchFile(Context.CombinePath(Context.RootInstallFolder, "bin\\engine.dll"),
-        Context.CombinePath(Context.RootFolder, "bin\\engine.dll"), 
+    Context.PatchFile(Context.CombinePath(Context.InstallFolder, "bin\\engine.dll"),
+        Context.CombinePath(Context.InstanceFolder, "bin\\engine.dll"), 
         [ 0x8B, 0x01, 0x8B, 0x50, 0x3C, 0xFF, 0xD2, 0x84, 0xC0, 0x75, 0x1A ],
         [ 0x8B, 0x01, 0x8B, 0x50, 0x3C, 0x90, 0x90 ]);
     //patch select weapon for players in briefing
-    Context.PatchFile(Context.CombinePath(Context.RootInstallFolder, "reactivedrop\\bin\\client.dll"),
-        Context.CombinePath(Context.RootFolder, "reactivedrop\\bin\\client.dll"),
+    Context.PatchFile(Context.CombinePath(Context.InstallFolder, "reactivedrop\\bin\\client.dll"),
+        Context.CombinePath(Context.InstanceFolder, "reactivedrop\\bin\\client.dll"),
         [ 0x0F, 0x84, 0xA8, 0x00, 0x00, 0x00, 0x53, 0x8D ],
         [ 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 ]);
     //patch select weapon for players in briefing
-    Context.PatchFile(Context.CombinePath(Context.RootInstallFolder, "reactivedrop\\bin\\server.dll"),
-        Context.CombinePath(Context.RootFolder, "reactivedrop\\bin\\server.dll"),
+    Context.PatchFile(Context.CombinePath(Context.InstallFolder, "reactivedrop\\bin\\server.dll"),
+        Context.CombinePath(Context.InstanceFolder, "reactivedrop\\bin\\server.dll"),
         [ 0x74, 0x12, 0x46, 0x83, 0xFE, 0x20 ],
         [ 0xEB ]);
 
-    var autoExec = Context.GetFolder(Folder.InstancedGameFolder) + "\\reactivedrop\\cfg\\autoexec.cfg";
+    var autoExec = Context.GetFolder(Folder.InstanceFolder) + "\\reactivedrop\\cfg\\autoexec.cfg";
     var lines = [
         "sv_lan 1",
         "sv_allow_lobby_connect_only 0",
@@ -211,8 +212,8 @@ Game.OnPlay.Callback(function () {
     }
     
     var map = Context.Options["MapID"].Console;
-    if (Context.PlayerID == 0) {
-        if (map != "") {
+    if (Context.PlayerID === 0) {
+        if (map !== "") {
             lines.push("map " + map);
         }
     } else {

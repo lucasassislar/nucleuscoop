@@ -129,9 +129,8 @@ Game.DPIHandling = DPIHandling.InvScaled;
 Game.OnPlay.Callback(function () {
     // Only enable setting the window size on the XInput hook dll
     // when its dual vertical, as it doenst work 100% of the time on DualHorizontal
-    Context.Hook.SetWindowSize = Player.Owner.IsDualVertical();
-    Context.Hook.ForceFocus = !Player.IsKeyboardPlayer;
-
+    //Context.Hook.SetWindowSize = Player.Owner.IsDualVertical();
+    //Context.Hook.ForceFocus = !Player.IsKeyboardPlayer;
     var saveSrc = Context.CombinePath(Context.InstallFolder, "left4dead2\\cfg\\video.txt");
     var savePath = Context.CombinePath(Context.InstanceFolder, "left4dead2\\cfg\\video.txt");
     Context.ModifySaveFile(saveSrc, savePath, SaveType.CFG, [
