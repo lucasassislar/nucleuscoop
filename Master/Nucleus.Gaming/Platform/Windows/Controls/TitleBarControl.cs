@@ -31,8 +31,8 @@ namespace Nucleus.Gaming.Platform.Windows.Controls {
                 return titleLabel.Text;
             }
             set {
+                text = value;
                 if (titleLabel == null) {
-                    text = value;
                     return;
                 }
                 titleLabel.Text = value;
@@ -103,7 +103,6 @@ namespace Nucleus.Gaming.Platform.Windows.Controls {
                 icon.Visible = false;
             }
 
-
             close = MakeFlatBtn();
             maximize = MakeFlatBtn();
             minimize = MakeFlatBtn();
@@ -142,6 +141,9 @@ namespace Nucleus.Gaming.Platform.Windows.Controls {
         }
 
         private DateTime lastUpdateDate;
+        private bool mouseDown;
+        private Point dragStartPoint;
+
         private void SwapMaximized() {
             if (!EnableMaximize) {
                 return;
@@ -164,15 +166,13 @@ namespace Nucleus.Gaming.Platform.Windows.Controls {
             }
         }
 
-        private bool mouseDown;
-        private Point dragStartPoint;
-
         protected override void OnMouseDown(MouseEventArgs e) {
             if (e.Button == MouseButtons.Left) {
                 Form parent = this.ParentForm;
                 if (parent != null) {
                     mouseDown = true;
-                    dragStartPoint = e.Location;
+                    Point nP = new Point(e.Location.X + this.Location.X, e.Location.Y + this.Location.Y);
+                    dragStartPoint = nP;
                     //User32Interop.ReleaseCapture();
                     //User32Interop.SendMessage(parent.Handle, User32_WS.WM_NCLBUTTONDOWN, User32_WS.HT_CAPTION, 0);
                 }
@@ -247,7 +247,6 @@ namespace Nucleus.Gaming.Platform.Windows.Controls {
             Controls.Add(btn);
             return btn;
         }
-
 
         private void Close_Click(object sender, EventArgs e) {
             if (this.ParentForm != null) {

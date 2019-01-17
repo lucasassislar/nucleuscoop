@@ -153,10 +153,14 @@ namespace Nucleus.Coop.App.Controls {
             GoToStep(0);
         }
 
+        private bool DoesntNeedOptions() {
+            // TODO better if too sleepy
+            return currentProfile.Options.Count == handlerData.CustomSteps.Count;
+        }
+
         private void GoToStep(int step) {
             if (step == 1 &&
-                // TODO better if too sleepy
-                currentProfile.Options.Count == handlerData.CustomSteps.Count) {
+                DoesntNeedOptions()) {
                 step++;
             }
 
@@ -164,10 +168,7 @@ namespace Nucleus.Coop.App.Controls {
             if (step >= stepsList.Count) {
                 return;
             }
-
-
-
-            if (step >= 2) {
+            else if (step >= 2) {
                 // Custom steps
                 List<CustomStep> customSteps = handlerData.CustomSteps;
                 int customStepIndex = step - 2;
@@ -183,8 +184,6 @@ namespace Nucleus.Coop.App.Controls {
             }
 
             KillCurrentStep();
-
-
 
             currentStepIndex = step;
             currentStep = stepsList[step];
@@ -212,7 +211,9 @@ namespace Nucleus.Coop.App.Controls {
                 return;
             }
 
-            if (currentStepIndex + 1 > stepsList.Count - 1) {
+            bool needs = DoesntNeedOptions();
+            if (needs && currentStepIndex + 1 >= stepsList.Count - 1 ||
+                currentStepIndex + 1 > stepsList.Count - 1) {
                 BrowserBtns.SetPlayButtonState(true);
                 return;
             }

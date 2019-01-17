@@ -345,7 +345,12 @@ namespace Nucleus.Gaming.App.Controls {
             }
 
             List<PlayerInfo> playerData = profile.PlayerData;
+            bool couldProceed = canProceed;
             canProceed = playerData.Count(c => c.ScreenIndex != -1) >= 2;
+            if (couldProceed != canProceed) {
+                CanPlayUpdated(canProceed, false);
+            }
+
             if (playerData.Count == 0) {
                 if (handlerData.SupportsKeyboard) {
                     // add keyboard data
@@ -410,7 +415,6 @@ namespace Nucleus.Gaming.App.Controls {
                 }
             }
 
-            CanPlayUpdated(canProceed, false);
             Invalidate();
         }
 

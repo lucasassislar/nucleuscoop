@@ -77,5 +77,11 @@ namespace Nucleus.Gaming.Coop
         /// </summary>
         [Dynamic]
         public string ForceFocusWindowRegex { get; set; } = "";
+
+        /// <summary>
+        /// If the XInput hook dll should remove the height of the title bar
+        /// when scaling the application
+        /// </summary>
+        public bool RemoveTitleBar { get; set; }
     }
 }

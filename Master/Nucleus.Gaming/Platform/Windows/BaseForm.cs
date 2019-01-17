@@ -76,7 +76,9 @@ namespace Nucleus.Coop {
             vLock.UnlockBits();
 #endif
 
-            DPIManager.Register(this);
+            if (!DesignMode) {
+                DPIManager.Register(this);
+            }
 
             filter = new MouseMessageFilter();
             filter.StartFiltering();
@@ -87,7 +89,9 @@ namespace Nucleus.Coop {
         }
 
         ~BaseForm() {
-            DPIManager.Unregister(this);
+            if (!DesignMode) {
+                DPIManager.Unregister(this);
+            }
         }
 
 
@@ -163,6 +167,9 @@ namespace Nucleus.Coop {
         protected override void OnVisibleChanged(EventArgs e) {
             base.OnVisibleChanged(e);
 
+            if (DesignMode) {
+                return;
+            }
             SetUpForm();
         }
 
