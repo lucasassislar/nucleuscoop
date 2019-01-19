@@ -84,8 +84,6 @@ namespace Nucleus.Gaming.Platform.Windows {
             x360.IniWriteValue("Options", "FixPosition", (true).ToString(CultureInfo.InvariantCulture));
             x360.IniWriteValue("Options", "ClipMouse", playerInfo.IsKeyboardPlayer.ToString(CultureInfo.InvariantCulture)); //context.Hook.ClipMouse
 
-            x360.IniWriteValue("Options", "RemoveTitleBar", handlerData.Hook.RemoveTitleBar.ToString(CultureInfo.InvariantCulture));
-            
             x360.IniWriteValue("Options", "RerouteInput", context.Hook.XInputReroute.ToString(CultureInfo.InvariantCulture));
             x360.IniWriteValue("Options", "RerouteJoystickTemplate", JoystickDatabase.GetID(playerInfo.GamepadProductGuid.ToString()).ToString(CultureInfo.InvariantCulture));
 

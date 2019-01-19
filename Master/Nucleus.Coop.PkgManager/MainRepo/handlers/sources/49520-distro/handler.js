@@ -33,7 +33,6 @@ Game.Hook.DInputEnabled = false;
 Game.Hook.XInputEnabled = true;
 Game.Hook.XInputReroute = false;//true; // this is beta
 Game.Hook.XInputNames = [ "xinput1_3.dll" ];
-Game.Hook.RemoveTitleBar = true; // remove the 21 height from the size of the application
 
 Game.OnPlay.Callback(function () {
     var savePath = Context.GetFolder(Folder.Documents) + "\\My Games\\Borderlands 2\\WillowGame\\Config\\WillowEngine.ini";
