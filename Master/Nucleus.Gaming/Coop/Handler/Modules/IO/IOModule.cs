@@ -55,10 +55,11 @@ namespace Nucleus.Gaming.Coop.Modules {
         public string LinkedFolder { get { return linkFolder; } }
         public string LinkedWorkingDir { get { return linkWorkingDir; } }
 
+        public SymlinkGameData SymlinkData { get; private set; }
+
         public IOModule(PlayerInfo player)
             : base(player) {
         }
-
 
         public override void PrePlayPlayer( int index, HandlerContext context) {
             nucleusRootFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
@@ -158,15 +159,16 @@ namespace Nucleus.Gaming.Coop.Modules {
                     int exitCode;
                     FileUtil.CopyDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, true);
                 } else {
-                    //SymlinkGameData symData = new SymlinkGameData();
-                    //symData.SourcePath = rootFolder;
-                    //symData.DestinationPath = linkFolder;
-                    //symData.DirExclusions = dirExclusions.ToArray();
-                    //symData.FileExclusions = fileExclusionsArr;
-                    //symData.FileCopies = fileCopiesArr;
+                    SymlinkGameData symData = new SymlinkGameData();
+                    symData.SourcePath = rootFolder;
+                    symData.DestinationPath = linkFolder;
+                    symData.DirExclusions = dirExclusions.ToArray();
+                    symData.FileExclusions = fileExclusionsArr;
+                    symData.FileCopies = fileCopiesArr;
+                    SymlinkData = symData;
 
-                    int exitCode;
-                    WinDirectoryUtil.LinkDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, fileCopiesArr, true);
+                    //int exitCode;
+                    //WinDirectoryUtil.LinkDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, fileCopiesArr, true);
                 }
             } else {
                 linkedExePath = userGame.ExePath;

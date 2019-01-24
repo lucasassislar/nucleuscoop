@@ -41,8 +41,7 @@ namespace Nucleus.Gaming.Tools.GameStarter
             process.BeginOutputReadLine();
         }
 
-        public void BeginMutexExists(int processId, params string[] mutex)
-        {
+        public void BeginMutexExists(int processId, params string[] mutex) {
             data = new StartGameData();
             data.Task = GameStarterTask.QueryMutex;
 
@@ -62,6 +61,30 @@ namespace Nucleus.Gaming.Tools.GameStarter
             process = Process.Start(startInfo);
             process.OutputDataReceived += proc_OutputDataReceived;
             process.BeginOutputReadLine();
+        }
+
+        public void BeginSymlinkGames(SymlinkGameData[] games) {
+            data = new StartGameData();
+            data.Task = GameStarterTask.SymlinkFolders;
+
+            string[] argData = new string[games.Length];
+            for (int i = 0; i < games.Length; i++) {
+                argData[i] = JsonConvert.SerializeObject(games[i]);
+            }
+            data.Parameters = argData;
+
+            string startGamePath = GetStartGamePath();
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = startGamePath;
+            startInfo.Verb = "runas";
+
+            startInfo.Arguments = data.GetAsArguments();
+            startInfo.UseShellExecute = true;
+            startInfo.CreateNoWindow = true;
+
+            // cant read output of admin process
+
+            process = Process.Start(startInfo);
         }
 
         public void BeginStartGame(string pathToGame, string args, string workingDir = null)

@@ -62,8 +62,11 @@ namespace Nucleus.Gaming.Platform.Windows.IO
             }
         }
 
-        public static void LinkDirectory(string root, DirectoryInfo currentDir, string destination, out int exitCode, string[] dirExclusions, string[] fileExclusions, string[] fileCopyInstead, bool overrideSpecial = false)
+        public static void LinkDirectory(string root, DirectoryInfo currentDir, string destination, out int exitCode, 
+            string[] dirExclusions, string[] fileExclusions, string[] fileCopyInstead, bool overrideSpecial = false)
         {
+            Console.WriteLine($"Symlinking folder {root} to {destination}");
+
             exitCode = 1;
 
             bool special = overrideSpecial;

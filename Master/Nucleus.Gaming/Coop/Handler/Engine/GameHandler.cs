@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Nucleus.Gaming.Coop.Modules;
+using Nucleus.Gaming.Tools.GameStarter;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -94,6 +96,17 @@ namespace Nucleus.Gaming.Coop.Handler {
                     modules[j].PrePlayPlayer(i, context);
                 }
             }
+
+            // get all the SymlinkData from each players IOModule
+            // and start the StartGame application to symlink them
+            List<SymlinkGameData> symData = new List<SymlinkGameData>();
+            for (int i = 0; i < players.Count; i++) {
+                PlayerInfo player = players[i];
+                IOModule mod = GetModule<IOModule>(player);
+                SymlinkGameData data = mod.SymlinkData;
+                symData.Add(data);
+            }
+            StartGameUtil.SymlinkGames(symData.ToArray());
 
             for (int i = 0; i < players.Count; i++) {
                 PlayerInfo player = players[i];

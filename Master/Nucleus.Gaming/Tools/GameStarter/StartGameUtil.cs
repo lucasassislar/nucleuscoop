@@ -25,8 +25,7 @@ namespace Nucleus.Gaming.Tools.GameStarter
             return result;
         }
 
-        public static bool MutexExists(Process p, string mutex)
-        {
+        public static bool MutexExists(Process p, string mutex) {
             StartGameApp app = new StartGameApp();
             app.BeginMutexExists(p.Id, mutex);
             app.WaitForExit();
@@ -34,6 +33,12 @@ namespace Nucleus.Gaming.Tools.GameStarter
 
             bool result = bool.Parse(output);
             return result;
+        }
+
+        public static void SymlinkGames(SymlinkGameData[] games) {
+            StartGameApp app = new StartGameApp();
+            app.BeginSymlinkGames(games);
+            app.WaitForExit();
         }
 
         public static int StartGame(string pathToGame, string args, string workingDir = null)

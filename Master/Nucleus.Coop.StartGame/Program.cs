@@ -2,6 +2,7 @@
 using Nucleus;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Platform.Windows.IO;
 using Nucleus.Gaming.Tools.GameStarter;
 using Nucleus.Gaming.Windows;
 using System;
@@ -59,10 +60,6 @@ namespace StartGame {
             //    File.Delete(fileIdFile);
             //}
             //File.WriteAllText(fileIdFile, proc.Id.ToString());
-        }
-
-        static void SymlinkPlayers(PlayerInfo[] players) {
-
         }
 
         static void Main(string[] args) {
@@ -145,6 +142,15 @@ namespace StartGame {
                     case GameStarterTask.ListMonitors:
                         break;
                     case GameStarterTask.SymlinkFolders:
+                        for (int j = 0; j < data.Parameters.Length; j++) {
+                            string symData = data.Parameters[j];
+                            SymlinkGameData gameData = JsonConvert.DeserializeObject<SymlinkGameData>(symData);
+
+                            Console.WriteLine($"Symlink game instance {j + 1}");
+
+                            int exitCode;
+                            WinDirectoryUtil.LinkDirectory(gameData.SourcePath, new DirectoryInfo(gameData.SourcePath), gameData.DestinationPath, out exitCode, gameData.DirExclusions, gameData.FileExclusions, gameData.FileCopies, true);
+                        }
                         break;
                 }
             }
