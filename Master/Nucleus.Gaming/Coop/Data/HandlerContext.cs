@@ -11,11 +11,9 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace Nucleus.Gaming.Coop
-{
+namespace Nucleus.Gaming.Coop {
     [AppDomainShared]
-    public class HandlerContext
-    {
+    public class HandlerContext {
         private GameProfile profile;
 
         public PlayerInfo PlayerInfo;
@@ -65,17 +63,14 @@ namespace Nucleus.Gaming.Coop
 
         public bool bHasKeyboardPlayer;
         public string OverrideStartProcess { get; set; }
-       
+
 
         public Dictionary<string, object> Options { get; set; }
 
         [JsonIgnore]
-        public int Width
-        {
-            get
-            {
-                switch (DPIHandling)
-                {
+        public int Width {
+            get {
+                switch (DPIHandling) {
                     case DPIHandling.Scaled:
                         return (int)((PlayerInfo.MonitorBounds.Width * DPIManager.Scale) + 0.5);
                     case DPIHandling.InvScaled:
@@ -88,12 +83,9 @@ namespace Nucleus.Gaming.Coop
         }
 
         [JsonIgnore]
-        public int Height
-        {
-            get
-            {
-                switch (DPIHandling)
-                {
+        public int Height {
+            get {
+                switch (DPIHandling) {
                     case DPIHandling.Scaled:
                         return (int)((PlayerInfo.MonitorBounds.Height * DPIManager.Scale) + 0.5);
                     case DPIHandling.InvScaled:
@@ -106,12 +98,10 @@ namespace Nucleus.Gaming.Coop
         }
 
         [JsonConstructor]
-        private HandlerContext()
-        {
+        private HandlerContext() {
         }
 
-        public HandlerContext(GameProfile prof, PlayerInfo info, bool hasKeyboard)
-        {
+        public HandlerContext(GameProfile prof, PlayerInfo info, bool hasKeyboard) {
             profile = prof;
             PlayerInfo = info;
 
@@ -123,55 +113,49 @@ namespace Nucleus.Gaming.Coop
             return bHasKeyboardPlayer;
         }
 
-        public void SetProcessToStart(string procName)
-        {
+        public void SetProcessToStart(string procName) {
             OverrideStartProcess = procName;
         }
 
-
-
-        public string CombinePath(string path1, string path2)
-        {
+        /// <summary>
+        /// Combines two strings into a path
+        /// </summary>
+        /// <param name="path1"></param>
+        /// <param name="path2"></param>
+        /// <returns></returns>
+        public string CombinePath(string path1, string path2) {
             if (string.IsNullOrEmpty(path1) ||
-                string.IsNullOrEmpty(path2))
-            {
+                string.IsNullOrEmpty(path2)) {
                 System.Diagnostics.Debugger.Break();
                 throw new NotImplementedException();
             }
             return Path.Combine(path1, path2);
         }
 
-        public void CopyFile(string fileSource, string fileDestination, bool overwrite)
-        {
+        public void CopyFile(string fileSource, string fileDestination, bool overwrite) {
             File.Copy(fileSource, fileDestination, overwrite);
         }
 
-        public string GetFolder(Folder folder)
-        {
+        public string GetFolder(Folder folder) {
             return AdditionalData[folder.ToString()];
         }
 
-        public void WriteTextFile(string path, string[] lines)
-        {
-            if (File.Exists(path))
-            {
+        public void WriteTextFile(string path, string[] lines) {
+            if (File.Exists(path)) {
                 File.Delete(path);
             }
             File.WriteAllLines(path, lines);
         }
 
-        public SaveInfo NewSaveInfo(string section, string key, string value)
-        {
+        public SaveInfo NewSaveInfo(string section, string key, string value) {
             return new SaveInfo(section, key, value);
         }
 
-        public SaveInfo NewScrSaveInfo(string key, params string[] values)
-        {
+        public SaveInfo NewScrSaveInfo(string key, params string[] values) {
             SaveInfo info = new SaveInfo();
             info.Add("Key", key);
             info.Add("Parameters", values.Length.ToString());
-            for (int i = 0; i < values.Length; i++)
-            {
+            for (int i = 0; i < values.Length; i++) {
                 string paramKey = "Param" + (i + 1);
                 info.Add(paramKey, values[i]);
             }
@@ -179,50 +163,51 @@ namespace Nucleus.Gaming.Coop
             return info;
         }
 
-        public void ModifySaveFile(string installSavePath, string saveFullPath, SaveType type, params SaveInfo[] info)
-        {
+        public void ModifySaveFile(string installSavePath, string saveFullPath, SaveType type, params SaveInfo[] info) {
             // this needs to be dynamic someday
-            switch (type)
-            {
-                case SaveType.CFG:
-                    {
-                        SourceCfgFile cfg = new SourceCfgFile(installSavePath);
-                        for (int j = 0; j < info.Length; j++)
-                        {
-                            SaveInfo save = info[j];
-                            cfg.ChangeProperty(save);
-                        }
-                        cfg.Save(saveFullPath);
+            switch (type) {
+                case SaveType.CFG: {
+                    SourceCfgFile cfg = new SourceCfgFile(installSavePath);
+                    for (int j = 0; j < info.Length; j++) {
+                        SaveInfo save = info[j];
+                        cfg.ChangeProperty(save);
                     }
-                    break;
-                case SaveType.INI:
-                    {
-                        if (!installSavePath.Equals(saveFullPath))
-                        {
-                            File.Copy(installSavePath, saveFullPath);
+                    cfg.Save(saveFullPath);
+                }
+                break;
+                case SaveType.INI: {
+                    if (!installSavePath.Equals(saveFullPath)) {
+                        File.Copy(installSavePath, saveFullPath);
+                    }
+                    IniFile file = new IniFile(saveFullPath);
+                    if (info.Length > 0 && string.IsNullOrWhiteSpace(info[0]["Section"])) {
+                        file.InitializeSectionless();
+
+                        for (int j = 0; j < info.Length; j++) {
+                            SaveInfo save = info[j];
+                            file.IniWriteValue(save["Key"], save["Value"]);
                         }
-                        IniFile file = new IniFile(saveFullPath);
-                        for (int j = 0; j < info.Length; j++)
-                        {
+
+                        file.SaveSectionless();
+                    } else {
+                        for (int j = 0; j < info.Length; j++) {
                             SaveInfo save = info[j];
                             file.IniWriteValue(save["Section"], save["Key"], save["Value"]);
                         }
                     }
-                    break;
-                case SaveType.SCR:
-                    {
-                        if (!installSavePath.Equals(saveFullPath))
-                        {
-                            File.Copy(installSavePath, saveFullPath);
-                        }
-                        ScrConfigFile file = new ScrConfigFile(saveFullPath);
-                        for (int j = 0; j < info.Length; j++)
-                        {
-                            SaveInfo save = info[j];
-                            file.ChangeProperty(save);
-                        }
+                }
+                break;
+                case SaveType.SCR: {
+                    if (!installSavePath.Equals(saveFullPath)) {
+                        File.Copy(installSavePath, saveFullPath);
                     }
-                    break;
+                    ScrConfigFile file = new ScrConfigFile(saveFullPath);
+                    for (int j = 0; j < info.Length; j++) {
+                        SaveInfo save = info[j];
+                        file.ChangeProperty(save);
+                    }
+                }
+                break;
                 default:
                     throw new NotImplementedException();
             }
@@ -232,27 +217,20 @@ namespace Nucleus.Gaming.Coop
         /// Extracts the SmartSteamEmu and returns the folder its on
         /// </summary>
         /// <returns></returns>
-        public bool ExtractZip(string zipPath, string outputFolder)
-        {
-            try
-            {
+        public bool ExtractZip(string zipPath, string outputFolder) {
+            try {
                 Directory.CreateDirectory(outputFolder);
 
                 string path = Path.Combine(PackageFolder, "assets", zipPath);
 
-                using (FileStream stream = File.OpenRead(path))
-                {
-                    using (ZipFile zip1 = ZipFile.Read(stream))
-                    {
-                        foreach (ZipEntry e in zip1)
-                        {
+                using (FileStream stream = File.OpenRead(path)) {
+                    using (ZipFile zip1 = ZipFile.Read(stream)) {
+                        foreach (ZipEntry e in zip1) {
                             e.Extract(outputFolder, ExtractExistingFileAction.OverwriteSilently);
                         }
                     }
                 }
-            }
-            catch
-            {
+            } catch {
                 return false;
             }
             return true;
@@ -262,22 +240,18 @@ namespace Nucleus.Gaming.Coop
             Log.WriteLine(str);
         }
 
-        public void PatchFile(string originalFile, string patchedFile, byte[] patchFind, byte[] patchReplace)
-        {
+        public void PatchFile(string originalFile, string patchedFile, byte[] patchFind, byte[] patchReplace) {
             // Read file bytes.
             byte[] fileContent = File.ReadAllBytes(originalFile);
 
             int patchCount = 0;
             // Detect and patch file.
-            for (int p = 0; p < fileContent.Length; p++)
-            {
+            for (int p = 0; p < fileContent.Length; p++) {
                 if (p + patchFind.Length > fileContent.Length)
                     continue;
                 var toContinue = false;
-                for (int i = 0; i < patchFind.Length; i++)
-                {
-                    if (patchFind[i] != fileContent[p + i])
-                    {
+                for (int i = 0; i < patchFind.Length; i++) {
+                    if (patchFind[i] != fileContent[p + i]) {
                         toContinue = true;
                         break;
                     }
@@ -285,21 +259,16 @@ namespace Nucleus.Gaming.Coop
                 if (toContinue) continue;
 
                 patchCount++;
-                if (patchCount > 1)
-                {
+                if (patchCount > 1) {
                     Log.WriteLine($"PatchFind pattern is not unique in {originalFile}");
-                }
-                else
-                {
-                    for (int w = 0; w < patchReplace.Length; w++)
-                    {
+                } else {
+                    for (int w = 0; w < patchReplace.Length; w++) {
                         fileContent[p + w] = patchReplace[w];
                     }
                 }
             }
 
-            if (patchCount == 0)
-            {
+            if (patchCount == 0) {
                 Log.WriteLine("PatchFind pattern was not found in " + originalFile);
             }
 
@@ -309,29 +278,25 @@ namespace Nucleus.Gaming.Coop
 
         //XPath syntax
         //https://www.w3schools.com/xml/xpath_syntax.asp
-        public void ChangeXmlAttributeValue(string path, string xpath, string attributeName, string attributeValue)
-        {
+        public void ChangeXmlAttributeValue(string path, string xpath, string attributeName, string attributeValue) {
             path = Environment.ExpandEnvironmentVariables(path);
 
             var doc = new XmlDocument();
             doc.Load(path);
             var nodes = doc.SelectNodes(xpath);
-            foreach (XmlNode node in nodes)
-            {
+            foreach (XmlNode node in nodes) {
                 node.Attributes[attributeName].Value = attributeValue;
             }
             doc.Save(path);
         }
 
-        public void ChangeXmlNodeValue(string path, string xpath, string nodeValue)
-        {
+        public void ChangeXmlNodeValue(string path, string xpath, string nodeValue) {
             path = Environment.ExpandEnvironmentVariables(path);
 
             var doc = new XmlDocument();
             doc.Load(path);
             var nodes = doc.SelectNodes(xpath);
-            foreach (XmlNode node in nodes)
-            {
+            foreach (XmlNode node in nodes) {
                 node.Value = nodeValue;
             }
             doc.Save(path);

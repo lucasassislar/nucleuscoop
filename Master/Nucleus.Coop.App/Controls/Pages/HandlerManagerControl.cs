@@ -38,6 +38,11 @@ namespace Nucleus.Coop.App.Controls {
             if (!designMode) {
                 LoadInstalled();
             }
+
+            list_left.HorizontalScroll.Maximum = 0;
+            list_left.AutoScroll = false;
+            list_left.VerticalScroll.Visible = false;
+            list_left.AutoScroll = true;
         }
 
         public override void UserLeft() {

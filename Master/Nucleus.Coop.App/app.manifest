@@ -16,8 +16,8 @@
             If you want to utilize File and Registry Virtualization for backward 
             compatibility then delete the requestedExecutionLevel node.//requireAdministrator
         -->
-        <requestedExecutionLevel level="requireAdministrator"/>
-        <!-- <requestedExecutionLevel level="asInvoker"/> -->
+        <!--<requestedExecutionLevel level="requireAdministrator"/>-->
+        <requestedExecutionLevel level="asInvoker"/>
       </requestedPrivileges>
     </security>
   </trustInfo>

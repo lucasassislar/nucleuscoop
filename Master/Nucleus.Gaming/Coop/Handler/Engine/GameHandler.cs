@@ -13,8 +13,6 @@ namespace Nucleus.Gaming.Coop.Handler {
         private GameProfile profile;
         private HandlerDataManager handlerManager;
 
-        private List<HandlerModule> modules;
-
         /// <summary>
         /// Action callback when the game session has ended
         /// </summary>
@@ -25,7 +23,8 @@ namespace Nucleus.Gaming.Coop.Handler {
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetModule<T>() {
+        public T GetModule<T>(PlayerInfo p) {
+            var modules = p.Modules;
             for (int i = 0; i < modules.Count; i++) {
                 object module = modules[i];
                 if (module is T) {
@@ -35,32 +34,17 @@ namespace Nucleus.Gaming.Coop.Handler {
             return default(T);
         }
 
+        private bool hasKeyboardPlayer;
+
         public bool Initialize(HandlerDataManager handlerManager, UserGameInfo userGameInfo, GameProfile profile) {
             this.handlerManager = handlerManager;
             this.userGame = userGameInfo;
             this.profile = profile;
 
-            modules = new List<HandlerModule>();
-            foreach (ModuleInfo info in GameManager.Instance.ModuleManager.Modules) {
-                if (info.IsNeeded(handlerManager.HandlerData)) {
-                    modules.Add((HandlerModule)Activator.CreateInstance(info.ModuleType));
-                }
-            }
-
-            // order modules
-            modules = modules.OrderBy(c => c.Order).ToList();
-
-            for (int i = 0; i < modules.Count; i++) {
-                modules[i].Initialize(this, handlerManager.HandlerData, userGameInfo, profile);
-            }
-
-            return true;
-        }
-
-        public RequestResult<string> Play() {
             List<PlayerInfo> players = profile.PlayerData;
+
             // if there's a keyboard player, re-order play list
-            bool hasKeyboardPlayer = players.Any(c => c.IsKeyboardPlayer);
+            hasKeyboardPlayer = players.Any(c => c.IsKeyboardPlayer);
             if (hasKeyboardPlayer) {
                 if (handlerManager.HandlerData.KeyboardPlayerFirst) {
                     players.Sort((x, y) => y.IsKeyboardPlayer.CompareTo(x.IsKeyboardPlayer));
@@ -69,32 +53,71 @@ namespace Nucleus.Gaming.Coop.Handler {
                 }
             }
 
+            // create modules for each player
+            for (int i = 0; i < players.Count; i++) {
+                PlayerInfo player = players[i];
+                List<HandlerModule> modules = player.Modules;
+                foreach (ModuleInfo info in GameManager.Instance.ModuleManager.Modules) {
+                    if (info.IsNeeded(handlerManager.HandlerData)) {
+                        modules.Add((HandlerModule)Activator.CreateInstance(info.ModuleType, new object[] { player }));
+                    }
+                }
+
+                // order modules
+                player.Modules.Sort((x, y) => x.Order.CompareTo(y.Order));
+                for (int j = 0; j < modules.Count; j++) {
+                    modules[j].Initialize(this, handlerManager.HandlerData, userGameInfo, profile);
+                }
+            }
+
+            return true;
+        }
+
+        public RequestResult<string> Play() {
+            List<PlayerInfo> players = profile.PlayerData;
             for (int i = 0; i < players.Count; i++) {
                 players[i].PlayerID = i;
             }
             RequestResult<String> result = new RequestResult<String>();
 
-            for (int i = 0; i < modules.Count; i++) {
-                modules[i].PrePlay();
-            }
-
+            List<HandlerContext> contexts = new List<HandlerContext>();
             for (int i = 0; i < players.Count; i++) {
                 PlayerInfo player = players[i];
 
                 HandlerContext context = handlerManager.HandlerData.CreateContext(profile, player, hasKeyboardPlayer);
+                contexts.Add(context);
+
                 context.PlayerID = player.PlayerID;
 
+                List<HandlerModule> modules = player.Modules;
                 for (int j = 0; j < modules.Count; j++) {
-                    modules[j].PrePlayPlayer(player, i, context);
+                    modules[j].PrePlayPlayer(i, context);
                 }
+            }
 
+            for (int i = 0; i < players.Count; i++) {
+                PlayerInfo player = players[i];
+                HandlerContext context = contexts[i];
                 handlerManager.Play(context, player);
 
+                List<HandlerModule> modules = player.Modules;
                 for (int j = 0; j < modules.Count; j++) {
-                    modules[j].PlayPlayer(player, i, context);
+                    modules[j].PlayPlayer(i, context);
                 }
 
                 Thread.Sleep(TimeSpan.FromMilliseconds(handlerManager.HandlerData.PauseBetweenStarts));
+
+                if (handlerManager.HandlerData.WaitFullWindowLoad) {
+                    IGameProcessModule procModule = GetModule<IGameProcessModule>(player);
+                    for (; ; ) {
+                        Thread.Sleep(100);
+
+                        // check for window status
+                        if (procModule.HasWindowSetup(player)) {
+                            break;
+                        }
+                    }
+                }
             }
 
             return result;
@@ -105,10 +128,10 @@ namespace Nucleus.Gaming.Coop.Handler {
             for (int i = 0; i < players.Count; i++) {
                 PlayerInfo player = players[i];
 
-            }
-
-            for (int j = 0; j < modules.Count; j++) {
-                modules[j].Tick(delayMs);
+                List<HandlerModule> modules = player.Modules;
+                for (int j = 0; j < modules.Count; j++) {
+                    modules[j].Tick(delayMs);
+                }
             }
         }
 

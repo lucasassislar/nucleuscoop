@@ -17,7 +17,7 @@ using WindowScrape.Constants;
 using WindowScrape.Types;
 
 namespace Nucleus.Gaming.Platform.Windows {
-    public class GameProcessModule : HandlerModule {
+    public class WindowsGameProcessModule : HandlerModule, IGameProcessModule {
         private const float HWndInterval = 10000;
 
         private UserGameInfo userGame;
@@ -25,27 +25,33 @@ namespace Nucleus.Gaming.Platform.Windows {
         private HandlerData handlerData;
         private List<Process> attached;
         private GameHandler handler;
+        private string actualExe;
+
+        private int exited;
+        private double timer;
 
         public override int Order { get { return 50; } }
+
+        public WindowsGameProcessModule(PlayerInfo player)
+            : base(player) {
+        }
 
         public override bool Initialize(GameHandler handler, HandlerData handlerData, UserGameInfo game, GameProfile profile) {
             this.handler = handler;
             this.userGame = game;
             this.profile = profile;
             this.handlerData = handlerData;
+            actualExe = Path.GetFileNameWithoutExtension(game.ExePath);
 
             attached = new List<Process>();
 
             return true;
         }
 
-        public override void PrePlay() {
+        public override void PrePlayPlayer(int index, HandlerContext context) {
             if (handlerData.ForceFinishOnPlay) {
-                ProcessUtil.ForceKill(Path.GetFileNameWithoutExtension(handlerData.ExecutableName.ToLower()));
+                ProcessUtil.ForceKill(actualExe.ToLower());
             }
-        }
-
-        public override void PrePlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context) {
         }
 
         public static bool IsNeeded(HandlerData data) {
@@ -56,9 +62,9 @@ namespace Nucleus.Gaming.Platform.Windows {
 #endif
         }
 
-        public override void PlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context) {
+        public override void PlayPlayer(int index, HandlerContext context) {
             Process proc;
-            IOModule ioModule = handler.GetModule<IOModule>();
+            IOModule ioModule = handler.GetModule<IOModule>(Player);
 
             string startArgs = context.StartArguments;
 
@@ -69,12 +75,7 @@ namespace Nucleus.Gaming.Platform.Windows {
             }
 
             if (context.KillMutex?.Length > 0) {
-                //DirectoryInfo exeFolderDir = new DirectoryInfo(Path.GetDirectoryName(ioModule.ExePath));
-                //DirectoryInfo linkedFolderDir = new DirectoryInfo(ioModule.LinkedFolder);
-
-                //string exePath = Path.Combine(exeFolderDir.GetRelativePath(ioModule.NucleusRootFolder), Path.GetFileName(ioModule.ExePath));
-                //string exeRoot = linkedFolderDir.GetRelativePath(ioModule.NucleusRootFolder);
-                int processId = StartGameUtil.StartGame(ioModule.LinkedExePath, startArgs, ioModule.LinkedWorkingDir);
+                int processId = StartGameUtil.StartGame(startingApp, startArgs, ioModule.LinkedWorkingDir);
                 proc = Process.GetProcessById(processId);
             } else {
                 ProcessStartInfo startInfo = new ProcessStartInfo();
@@ -115,8 +116,8 @@ namespace Nucleus.Gaming.Platform.Windows {
 
             ProcessInfo data = new ProcessInfo(proc);
 
-            Rectangle playerBounds = playerInfo.MonitorBounds;
-            UserScreen owner = playerInfo.Owner;
+            Rectangle playerBounds = Player.MonitorBounds;
+            UserScreen owner = Player.Owner;
 
             int width = playerBounds.Width;
             int height = playerBounds.Height;
@@ -124,11 +125,18 @@ namespace Nucleus.Gaming.Platform.Windows {
             data.Position = new Point(playerBounds.X, playerBounds.Y);
             data.Size = new Size(playerBounds.Width, playerBounds.Height);
             data.KilledMutexes = context.KillMutex?.Length == 0;
-            playerInfo.ProcessData = data;
+            Player.ProcessData = data;
         }
 
-        private int exited;
-        private double timer;
+        public bool HasWindowSetup(PlayerInfo info) {
+            ProcessInfo data = info.ProcessData;
+            if (data.Setted) {
+                return true;
+            }
+            return false;
+        }
+
+
 
         public override void Tick(double delayMs) {
             exited = 0;

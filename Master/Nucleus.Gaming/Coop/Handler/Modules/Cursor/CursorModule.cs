@@ -58,7 +58,8 @@ namespace Nucleus.Gaming.Coop.Modules {
         /// </summary>
         public override int Order { get { return 60; } }
 
-        public CursorModule() {
+        public CursorModule(PlayerInfo player)
+            : base(player) {
             llMouseProc = llMouseHookCallback;
             winEventProc = EventCallback;
         }
@@ -82,10 +83,7 @@ namespace Nucleus.Gaming.Coop.Modules {
             return true;
         }
 
-        public override void PrePlay() {
-        }
-
-        public override void PrePlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context) {
+        public override void PrePlayPlayer(int index, HandlerContext context) {
 
         }
 
@@ -214,9 +212,9 @@ namespace Nucleus.Gaming.Coop.Modules {
             NativeMethods.SetForegroundWindow(processHandle);
         }
 
-        public override void PlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context) {
+        public override void PlayPlayer(int index, HandlerContext context) {
             // not working?
-            if (playerInfo.IsKeyboardPlayer) {
+            if (Player.IsKeyboardPlayer) {
                 StartListeningForWindowChanges();
             }
 

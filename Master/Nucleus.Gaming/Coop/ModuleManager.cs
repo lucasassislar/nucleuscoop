@@ -35,7 +35,7 @@ namespace Nucleus.Gaming.Coop
 
             modules.Add(new ModuleInfo(CursorModule.IsNeeded, typeof(CursorModule)));
             modules.Add(new ModuleInfo(MutexModule.IsNeeded, typeof(MutexModule)));
-            modules.Add(new ModuleInfo(GameProcessModule.IsNeeded, typeof(GameProcessModule)));
+            modules.Add(new ModuleInfo(WindowsGameProcessModule.IsNeeded, typeof(WindowsGameProcessModule)));
             modules.Add(new ModuleInfo(IOModule.IsNeeded, typeof(IOModule)));
             modules.Add(new ModuleInfo(XInputHandlerModule.IsNeeded, typeof(XInputHandlerModule)));
         }

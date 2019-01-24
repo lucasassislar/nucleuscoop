@@ -13,6 +13,9 @@ namespace Nucleus.Gaming.Coop
     [AppDomainShared]
     public class PlayerInfo
     {
+        [JsonIgnore]
+        public List<HandlerModule> Modules { get; private set; } = new List<HandlerModule>();
+
         public UserScreen Owner;
 
         public int PlayerID;

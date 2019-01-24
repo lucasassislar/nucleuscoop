@@ -81,7 +81,14 @@ namespace Nucleus.Gaming.Tools.GameStarter
             startInfo.RedirectStandardOutput = true;
             startInfo.UseShellExecute = false;
 
-            process = Process.Start(startInfo);
+            if (string.IsNullOrEmpty(workingDir)) {
+                startInfo.WorkingDirectory = Path.GetDirectoryName(pathToGame);
+            } else {
+                startInfo.WorkingDirectory = workingDir;
+            }
+
+            //process = Process.Start(startInfo);
+            process = ProcessUtil.RunAsDesktopUser(startInfo);
             process.OutputDataReceived += proc_OutputDataReceived;
             process.BeginOutputReadLine();
         }

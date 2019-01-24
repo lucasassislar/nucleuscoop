@@ -11,6 +11,7 @@ namespace Nucleus.Gaming.Tools.GameStarter
         KillMutex,
         FindProcessId,
         QueryMutex,
-        ListMonitors
+        ListMonitors,
+        SymlinkFolders
     }
 }

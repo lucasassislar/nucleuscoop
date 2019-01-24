@@ -84,6 +84,7 @@
     <Compile Include="Coop\Data\Save\SaveInfo.cs" />
     <Compile Include="Coop\Data\UserProfileOptions.cs" />
     <None Include="Coop\Interop\DomainWebApiConnection.cs" />
+    <Compile Include="Coop\Handler\Modules\Process\IGameProcessModule.cs" />
     <Compile Include="Coop\Interop\HandlerDataEngine.cs" />
     <Compile Include="Coop\HandlerDataManager.cs" />
     <Compile Include="Coop\Handler\Modules\IO\IOModule.cs" />
@@ -184,7 +185,7 @@
     <Compile Include="Platform\Windows\Interop\Shell32\RegistryUtil.cs" />
     <Compile Include="Platform\Windows\IO\WinDirectoryUtil.cs" />
     <Compile Include="Platform\Windows\LockBitmap.cs" />
-    <Compile Include="Platform\Windows\Modules\GameProcessModule.cs" />
+    <Compile Include="Platform\Windows\Modules\WindowsGameProcessModule.cs" />
     <Compile Include="Platform\Windows\IO\MFT\FileNameAndParentFrn.cs" />
     <Compile Include="Platform\Windows\IO\MFT\MFTReader.cs" />
     <Compile Include="Platform\Windows\Interop\Gdi32\Gdi32Interop.cs" />
@@ -201,6 +202,7 @@
     <Compile Include="Coop\Data\UserProfile.cs" />
     <Compile Include="Coop\Data\UserScreen.cs" />
     <Compile Include="Coop\Data\UserScreenType.cs" />
+    <Compile Include="Tools\GameStarter\SymlinkGameData.cs" />
     <Compile Include="Util\ThreadUtil.cs" />
     <None Include="Coop\Handler\Engine\GenericGameHandler.cs" />
     <Compile Include="Coop\Data\Save\SaveType.cs" />

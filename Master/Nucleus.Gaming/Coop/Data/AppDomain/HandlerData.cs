@@ -12,8 +12,7 @@ namespace Nucleus.Gaming.Coop
     /// <summary>
     /// All information the handler needs to handle a game
     /// </summary>
-    public class HandlerData
-    {
+    public class HandlerData {
         public GameHookData Hook { get; set; } = new GameHookData();
         public List<GameOption> Options { get; set; } = new List<GameOption>();
 
@@ -29,6 +28,8 @@ namespace Nucleus.Gaming.Coop
         /// If Nucleus should search and close all game instances before starting a new play instance.
         /// </summary>
         public bool ForceFinishOnPlay { get; set; } = true;
+
+        public bool WaitFullWindowLoad { get; set; } = true;
 
         /// <summary>
         /// The interval in milliseconds the Handler should be updated at. 

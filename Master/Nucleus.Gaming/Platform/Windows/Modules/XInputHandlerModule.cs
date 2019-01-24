@@ -23,6 +23,10 @@ namespace Nucleus.Gaming.Platform.Windows {
 
         public override int Order { get { return 20; } }
 
+        public XInputHandlerModule(PlayerInfo player)
+            : base(player) {
+        }
+
         public override bool Initialize(GameHandler handler, HandlerData handlerData, UserGameInfo game, GameProfile profile) {
             this.handler = handler;
             this.userGame = game;
@@ -31,18 +35,15 @@ namespace Nucleus.Gaming.Platform.Windows {
             return true;
         }
 
-        public override void PrePlay() {
+        public override void PrePlayPlayer(int index, HandlerContext context) {
         }
 
-        public override void PrePlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context) {
-        }
-
-        public override void PlayPlayer(PlayerInfo playerInfo, int index, HandlerContext context) {
+        public override void PlayPlayer(int index, HandlerContext context) {
             if (!context.Hook.CustomDllEnabled) {
                 return;
             }
 
-            IOModule ioModule = handler.GetModule<IOModule>();
+            IOModule ioModule = handler.GetModule<IOModule>(Player);
 
             byte[] xdata = Properties.Resources.xinput1_3;
             if (context.Hook.XInputNames == null) {
@@ -59,7 +60,7 @@ namespace Nucleus.Gaming.Platform.Windows {
                 }
             }
 
-            Rectangle playerBounds = playerInfo.MonitorBounds;
+            Rectangle playerBounds = Player.MonitorBounds;
 
             string ncoopIni = Path.Combine(ioModule.LinkedWorkingDir, "ncoop.ini");
             using (Stream str = File.OpenWrite(ncoopIni)) {
@@ -82,13 +83,13 @@ namespace Nucleus.Gaming.Platform.Windows {
 
             x360.IniWriteValue("Options", "FixResolution", (true).ToString(CultureInfo.InvariantCulture));
             x360.IniWriteValue("Options", "FixPosition", (true).ToString(CultureInfo.InvariantCulture));
-            x360.IniWriteValue("Options", "ClipMouse", playerInfo.IsKeyboardPlayer.ToString(CultureInfo.InvariantCulture)); //context.Hook.ClipMouse
+            x360.IniWriteValue("Options", "ClipMouse", Player.IsKeyboardPlayer.ToString(CultureInfo.InvariantCulture)); //context.Hook.ClipMouse
 
             x360.IniWriteValue("Options", "RerouteInput", context.Hook.XInputReroute.ToString(CultureInfo.InvariantCulture));
-            x360.IniWriteValue("Options", "RerouteJoystickTemplate", JoystickDatabase.GetID(playerInfo.GamepadProductGuid.ToString()).ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "RerouteJoystickTemplate", JoystickDatabase.GetID(Player.GamepadProductGuid.ToString()).ToString(CultureInfo.InvariantCulture));
 
-            x360.IniWriteValue("Options", "EnableMKBInput", playerInfo.IsKeyboardPlayer.ToString(CultureInfo.InvariantCulture));
-            x360.IniWriteValue("Options", "EnableMKBInput", playerInfo.IsKeyboardPlayer.ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "EnableMKBInput", Player.IsKeyboardPlayer.ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "EnableMKBInput", Player.IsKeyboardPlayer.ToString(CultureInfo.InvariantCulture));
 
             // Windows events
             //x360.IniWriteValue("Options", "BlockInputEvents", context.Hook.BlockInputEvents.ToString(CultureInfo.InvariantCulture));
@@ -97,11 +98,11 @@ namespace Nucleus.Gaming.Platform.Windows {
 
             // xinput
             x360.IniWriteValue("Options", "XInputEnabled", context.Hook.XInputEnabled.ToString(CultureInfo.InvariantCulture));
-            x360.IniWriteValue("Options", "XInputPlayerID", playerInfo.GamepadId.ToString(CultureInfo.InvariantCulture));
+            x360.IniWriteValue("Options", "XInputPlayerID", Player.GamepadId.ToString(CultureInfo.InvariantCulture));
 
             // dinput
             x360.IniWriteValue("Options", "DInputEnabled", context.Hook.DInputEnabled.ToString(CultureInfo.InvariantCulture));
-            x360.IniWriteValue("Options", "DInputGuid", playerInfo.GamepadGuid.ToString().ToUpper());
+            x360.IniWriteValue("Options", "DInputGuid", Player.GamepadGuid.ToString().ToUpper());
             x360.IniWriteValue("Options", "DInputForceDisable", context.Hook.DInputForceDisable.ToString());
         }
 
