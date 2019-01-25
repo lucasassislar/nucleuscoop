@@ -283,25 +283,29 @@ namespace Nucleus.Gaming.App.Controls {
             }
 
             screensArea = new RectangleF(10, 50 + Height * 0.2f + 10, Width - 20, Height * 0.5f);
-            if (totalBounds.Width > totalBounds.Height) {
+
+            float actualHeight = totalBounds.Height;
+            float actualWidth = totalBounds.Width;
+
+            if (actualWidth > actualHeight) {
                 // horizontal monitor setup
-                scale = screensArea.Width / (float)totalBounds.Width;
+                scale = screensArea.Width / actualWidth;
                 if (totalBounds.Height * scale > screensArea.Height) {
-                    scale = screensArea.Height / (float)totalBounds.Height;
+                    scale = screensArea.Height / actualHeight;
                 }
             } else {
                 // vertical monitor setup
-                scale = screensArea.Height / (float)totalBounds.Height;
+                scale = screensArea.Height / actualHeight;
                 if (totalBounds.Width * scale > screensArea.Width) {
-                    scale = screensArea.Width / (float)totalBounds.Width;
+                    scale = screensArea.Width / actualWidth;
                 }
             }
 
             Rectangle scaledBounds = RectangleUtil.Scale(totalBounds, scale);
             scaledBounds.X = (int)screensArea.X;
             scaledBounds.Y = (int)screensArea.Y;
-            //scaledBounds = RectangleUtil.Center(scaledBounds, RectangleUtil.Float(0, this.Height * 0.25f, this.Width, this.Height * 0.7f));
 
+            int minX = 0;
             int minY = 0;
             for (int i = 0; i < screens.Length; i++) {
                 UserScreen screen = screens[i];
@@ -310,16 +314,19 @@ namespace Nucleus.Gaming.App.Controls {
                 Rectangle uiBounds = new Rectangle(bounds.X, bounds.Y + scaledBounds.Y, bounds.Width, bounds.Height);
                 screen.UIBounds = uiBounds;
 
-                minY = Math.Min(minY, uiBounds.X);
+                minX = Math.Min(minX, bounds.X);
+                minY = Math.Min(minY, bounds.Y);
             }
 
             // remove negative monitors
+            minX = -minX;
             minY = -minY;
             for (int i = 0; i < screens.Length; i++) {
                 UserScreen screen = screens[i];
 
                 Rectangle uiBounds = screen.UIBounds;
-                uiBounds.X += minY + scaledBounds.X;
+                uiBounds.X += minX + scaledBounds.X;
+                uiBounds.Y += minY;
                 screen.UIBounds = uiBounds;
                 screen.SwapTypeBounds = RectangleUtil.Float(uiBounds.X, uiBounds.Y, uiBounds.Width * 0.1f, uiBounds.Width * 0.1f);
             }
