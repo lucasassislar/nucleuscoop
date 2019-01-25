@@ -110,8 +110,8 @@ namespace Nucleus.Gaming.Tools.GameStarter
                 startInfo.WorkingDirectory = workingDir;
             }
 
-            //process = Process.Start(startInfo);
-            process = ProcessUtil.RunAsDesktopUser(startInfo);
+            process = Process.Start(startInfo);
+            //process = ProcessUtil.RunAsDesktopUser(startInfo);
             process.OutputDataReceived += proc_OutputDataReceived;
             process.BeginOutputReadLine();
         }

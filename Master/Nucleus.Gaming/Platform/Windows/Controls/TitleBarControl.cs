@@ -189,18 +189,22 @@ namespace Nucleus.Gaming.Platform.Windows.Controls {
                         var ox = parent.Location.X;
                         var width = parent.Width;
                         parent.WindowState = FormWindowState.Normal;
+
                         // update the drag start point to be relative
                         // scale parent location x over the original size
                         var nwidth = parent.Width;
                         float factor = nwidth / (float)width;
                         int newX = (int)(factor * ox);
 
+                        parent.Location = new Point(
+                            parent.Location.X - dragStartPoint.X + e.X,
+                            parent.Location.Y - dragStartPoint.Y + e.Y);
                         dragStartPoint = new Point(parent.Location.X + newX, dragStartPoint.Y);
+                    } else {
+                        parent.Location = new Point(
+                            parent.Location.X - dragStartPoint.X + e.X,
+                            parent.Location.Y - dragStartPoint.Y + e.Y);
                     }
-
-                    parent.Location = new Point(
-                        parent.Location.X - dragStartPoint.X + e.X,
-                        parent.Location.Y - dragStartPoint.Y + e.Y);
                     this.Update();
                 }
             }
