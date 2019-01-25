@@ -187,7 +187,7 @@ namespace Nucleus.Gaming {
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool CloseHandle(IntPtr hObject);
-               
+
         [DllImport("user32.dll")]
         private static extern IntPtr GetShellWindow();
 
@@ -202,7 +202,7 @@ namespace Nucleus.Gaming {
 
         [DllImport("advapi32", SetLastError = true, CharSet = CharSet.Unicode)]
         private static extern bool CreateProcessWithTokenW(IntPtr hToken, int dwLogonFlags, string lpApplicationName, string lpCommandLine, int dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, [In] ref STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
-               
+
         public static Process RunOrphanProcess(string path, string arguments = "") {
             ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
             psi.FileName = @"cmd";
@@ -227,22 +227,17 @@ namespace Nucleus.Gaming {
         }
 
         public static bool KillMutex(Process process, string mutexName) {
-            // 4 tries
-            for (int i = 1; i < 4; i++) {
-                Console.WriteLine("Loop " + i);
-                var handles = Win32Processes.GetHandles(process, "Mutant", "\\Sessions\\", mutexName);
-                if (handles.Count == 0) {
-                    continue;
-                }
+            var handles = Win32Processes.GetHandles(process, "Mutant", "\\Sessions\\", mutexName);
+            if (handles.Count == 0) {
+                return false;
+            }
 
-                foreach (var handle in handles) {
-                    IntPtr ipHandle = IntPtr.Zero;
-                    if (!Win32API.DuplicateHandle(Process.GetProcessById(handle.ProcessID).Handle, handle.Handle, Win32API.GetCurrentProcess(), out ipHandle, 0, false, Win32API.DUPLICATE_CLOSE_SOURCE)) {
-                        Console.WriteLine("DuplicateHandle() failed, error = {0}", Marshal.GetLastWin32Error());
-                    }
-
-                    return true;
+            foreach (Win32API.SYSTEM_HANDLE_INFORMATION handle in handles) {
+                IntPtr ipHandle = IntPtr.Zero;
+                if (!Win32API.DuplicateHandle(Process.GetProcessById(handle.ProcessID).Handle, (IntPtr)handle.Handle, Win32API.GetCurrentProcess(), out ipHandle, 0, false, Win32API.DUPLICATE_CLOSE_SOURCE)) {
+                    Console.WriteLine("DuplicateHandle() failed, error = {0}", Marshal.GetLastWin32Error());
                 }
+                return true;
             }
 
             return false;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -6,33 +7,53 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Nucleus.Gaming.Tools.GameStarter
-{
+namespace Nucleus.Gaming.Tools.GameStarter {
     /// <summary>
     /// Util class for executing and reading output from the Nucleus.Coop.StartGame application
     /// </summary>
-    public static class StartGameUtil
-    {
-        public static bool KillMutex(Process p, params string[] mutex)
-        {
+    public static class StartGameUtil {
+        public static StartGameData BuildScanKillMutexData(string gameName, int instances, params string[] mutex) {
+            StartGameData data = new StartGameData();
+            data.Task = GameStarterTask.ScanKillMutex;
+            string[] parameters = new string[instances];
+            for (int i = 0; i < instances; i++) {
+                ScanMutexData d = new ScanMutexData();
+                d.ProcessName = gameName;
+                d.Mutexes = mutex;
+
+                parameters[i] = JsonConvert.SerializeObject(d);
+            }
+            data.Parameters = parameters;
+            return data;
+        }
+
+        public static StartGameData BuildSymlinkGameData(SymlinkGameData[] games) {
+            StartGameData data = new StartGameData();
+            data.Task = GameStarterTask.SymlinkFolders;
+            string[] argData = new string[games.Length];
+            for (int i = 0; i < games.Length; i++) {
+                argData[i] = JsonConvert.SerializeObject(games[i]);
+            }
+            data.Parameters = argData;
+            return data;
+        }
+
+        public static StartGameData BuildMultipleTaskData(StartGameData[] tasks) {
+            StartGameData data = new StartGameData();
+            data.Task = GameStarterTask.MultipleTasks;
+            string[] argData = new string[tasks.Length];
+            for (int i = 0; i < tasks.Length; i++) {
+                argData[i] = JsonConvert.SerializeObject(tasks[i]);
+            }
+            data.Parameters = argData;
+            return data;
+        }
+
+
+        public static void KillMutex(Process p, params string[] mutex) {
             StartGameApp app = new StartGameApp();
             app.BeginKillMutex(p.Id, mutex);
             app.WaitForExit();
-
-            string output = app.GetOutputData();
-
-            bool result = bool.Parse(output);
-            return result;
-        }
-
-        public static bool MutexExists(Process p, string mutex) {
-            StartGameApp app = new StartGameApp();
-            app.BeginMutexExists(p.Id, mutex);
-            app.WaitForExit();
-            string output = app.GetOutputData();
-
-            bool result = bool.Parse(output);
-            return result;
         }
 
         public static void SymlinkGames(SymlinkGameData[] games) {
@@ -41,22 +62,69 @@ namespace Nucleus.Gaming.Tools.GameStarter
             app.WaitForExit();
         }
 
-        public static int StartGame(string pathToGame, string args, string workingDir = null)
-        {
-            //string folder = Path.GetDirectoryName(pathToGame);
-            //string fileIdFile = Path.Combine(folder, "app.id");
-            //if (File.Exists(fileIdFile)) {
-            //    File.Delete(fileIdFile);
-            //}
+        public static void ScanMutex(SymlinkGameData[] games) {
+            StartGameApp app = new StartGameApp();
+            app.BeginSymlinkGames(games);
+            app.WaitForExit();
+        }
+
+        public static void RunPreBuiltData(StartGameData data, bool admin) {
+            StartGameApp app = new StartGameApp();
+            app.RunStartGame(data, admin);
+            app.WaitForExit();
+        }
+
+        public static void RunMultipleTasks(StartGameData[] data, bool admin) {
+            ClearStartData();
+
+            StartGameApp app = new StartGameApp();
+            StartGameData final = BuildMultipleTaskData(data);
+            app.RunStartGame(final, admin);
+        }
+
+
+        public static string GetStartDataPath() {
+            string folder = Path.GetDirectoryName(GetStartGamePath());
+            return Path.Combine(folder, "startgame.data");
+        }
+
+        public static string GetStartDataGamePath(string gameExePath) {
+            string folder = Path.GetDirectoryName(gameExePath);
+            return Path.Combine(folder, "startgame.data");
+        }
+
+        private static string ClearStartData() {
+            string dataFile = GetStartDataPath();
+            if (File.Exists(dataFile)) {
+                File.Delete(dataFile);
+            }
+            return dataFile;
+        }
+
+        public static int StartGame(string pathToGame, string args, string workingDir = null) {
+            string dataFile = GetStartDataGamePath(pathToGame);
+            if (File.Exists(dataFile)) {
+                File.Delete(dataFile);
+            }
 
             StartGameApp app = new StartGameApp();
             app.BeginStartGame(pathToGame, args, workingDir);
             app.WaitForExit();
 
-            //string appId = File.ReadAllText(fileIdFile);
-            //return int.Parse(appId);
+            string appId = File.ReadAllText(dataFile);
+            return int.Parse(appId);
 
-            return app.GetOutputAsProcessId();
+            //return app.GetOutputAsProcessId();
+        }
+
+        public static string GetStartGamePath() {
+            string startLoc = Assembly.GetEntryAssembly().Location;
+
+            if (Path.GetFileNameWithoutExtension(startLoc).ToLower() == "startgame") {
+                return startLoc;
+            } else {
+                return Path.Combine(AssemblyUtil.GetStartFolder(), "bin", "StartGame.exe");
+            }
         }
     }
 }

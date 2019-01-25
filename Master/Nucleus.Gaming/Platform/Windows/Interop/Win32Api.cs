@@ -5,10 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Nucleus.Gaming.Interop
-{
-    public class Win32API
-    {
+namespace Nucleus.Gaming.Interop {
+    public class Win32API {
         [DllImport("ntdll.dll")]
         public static extern int NtQueryObject(IntPtr ObjectHandle, int
             ObjectInformationClass, IntPtr ObjectInformation, int ObjectInformationLength,
@@ -34,14 +32,18 @@ namespace Nucleus.Gaming.Interop
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool DuplicateHandle(IntPtr hSourceProcessHandle,
-           ushort hSourceHandle, IntPtr hTargetProcessHandle, out IntPtr lpTargetHandle,
-           uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, uint dwOptions);
+            IntPtr hSourceHandle, IntPtr hTargetProcessHandle, out IntPtr lpTargetHandle,
+            uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, uint dwOptions);
+
+        //public static extern bool DuplicateHandle(IntPtr hSourceProcessHandle,
+        //   ushort hSourceHandle, IntPtr hTargetProcessHandle, out IntPtr lpTargetHandle,
+        //   uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, uint dwOptions);
+
 
         [DllImport("kernel32.dll")]
         public static extern IntPtr GetCurrentProcess();
 
-        public enum ObjectInformationClass : int
-        {
+        public enum ObjectInformationClass : int {
             ObjectBasicInformation = 0,
             ObjectNameInformation = 1,
             ObjectTypeInformation = 2,
@@ -50,8 +52,7 @@ namespace Nucleus.Gaming.Interop
         }
 
         [Flags]
-        public enum ProcessAccessFlags : uint
-        {
+        public enum ProcessAccessFlags : uint {
             All = 0x001F0FFF,
             Terminate = 0x00000001,
             CreateThread = 0x00000002,
@@ -65,8 +66,7 @@ namespace Nucleus.Gaming.Interop
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct OBJECT_BASIC_INFORMATION
-        { // Information Class 0
+        public struct OBJECT_BASIC_INFORMATION { // Information Class 0
             public int Attributes;
             public int GrantedAccess;
             public int HandleCount;
@@ -83,8 +83,7 @@ namespace Nucleus.Gaming.Interop
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct OBJECT_TYPE_INFORMATION
-        { // Information Class 2
+        public struct OBJECT_TYPE_INFORMATION { // Information Class 2
             public UNICODE_STRING Name;
             public int ObjectCount;
             public int HandleCount;
@@ -109,22 +108,19 @@ namespace Nucleus.Gaming.Interop
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct OBJECT_NAME_INFORMATION
-        { // Information Class 1
+        public struct OBJECT_NAME_INFORMATION { // Information Class 1
             public UNICODE_STRING Name;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct UNICODE_STRING
-        {
+        public struct UNICODE_STRING {
             public ushort Length;
             public ushort MaximumLength;
             public IntPtr Buffer;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct GENERIC_MAPPING
-        {
+        public struct GENERIC_MAPPING {
             public int GenericRead;
             public int GenericWrite;
             public int GenericExecute;
@@ -132,8 +128,7 @@ namespace Nucleus.Gaming.Interop
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct SYSTEM_HANDLE_INFORMATION
-        { 
+        public struct SYSTEM_HANDLE_INFORMATION {
             // Information Class 16
             public int ProcessID;
             public byte ObjectTypeNumber;
@@ -149,13 +144,11 @@ namespace Nucleus.Gaming.Interop
         public const int DUPLICATE_CLOSE_SOURCE = 0x1;
     }
 
-    public class Win32Processes
-    {
+    public class Win32Processes {
         const int CNST_SYSTEM_HANDLE_INFORMATION = 16;
         const uint STATUS_INFO_LENGTH_MISMATCH = 0xc0000004;
 
-        public static string getObjectTypeName(Win32API.SYSTEM_HANDLE_INFORMATION shHandle, Process process)
-        {
+        public static string getObjectTypeName(Win32API.SYSTEM_HANDLE_INFORMATION shHandle, Process process) {
             IntPtr m_ipProcessHwnd = Win32API.OpenProcess(Win32API.ProcessAccessFlags.All, false, process.Id);
             IntPtr ipHandle = IntPtr.Zero;
             var objBasic = new Win32API.OBJECT_BASIC_INFORMATION();
@@ -168,7 +161,7 @@ namespace Nucleus.Gaming.Interop
             int nReturn = 0;
             IntPtr ipTemp = IntPtr.Zero;
 
-            if (!Win32API.DuplicateHandle(m_ipProcessHwnd, shHandle.Handle,
+            if (!Win32API.DuplicateHandle(m_ipProcessHwnd, (IntPtr)shHandle.Handle,
                                           Win32API.GetCurrentProcess(), out ipHandle,
                                           0, false, Win32API.DUPLICATE_SAME_ACCESS))
                 return null;
@@ -184,19 +177,15 @@ namespace Nucleus.Gaming.Interop
             while ((uint)(nReturn = Win32API.NtQueryObject(
                 ipHandle, (int)Win32API.ObjectInformationClass.ObjectTypeInformation, ipObjectType,
                   nLength, ref nLength)) ==
-                Win32API.STATUS_INFO_LENGTH_MISMATCH)
-            {
+                Win32API.STATUS_INFO_LENGTH_MISMATCH) {
                 Marshal.FreeHGlobal(ipObjectType);
                 ipObjectType = Marshal.AllocHGlobal(nLength);
             }
 
             objObjectType = (Win32API.OBJECT_TYPE_INFORMATION)Marshal.PtrToStructure(ipObjectType, objObjectType.GetType());
-            if (Is64Bits())
-            {
+            if (Is64Bits()) {
                 ipTemp = new IntPtr(Convert.ToInt64(objObjectType.Name.Buffer.ToString(), 10) >> 32);
-            }
-            else
-            {
+            } else {
                 ipTemp = objObjectType.Name.Buffer;
             }
 
@@ -206,8 +195,7 @@ namespace Nucleus.Gaming.Interop
         }
 
 
-        public static string getObjectName(Win32API.SYSTEM_HANDLE_INFORMATION shHandle, Process process)
-        {
+        public static string getObjectName(Win32API.SYSTEM_HANDLE_INFORMATION shHandle, Process process) {
             IntPtr m_ipProcessHwnd = Win32API.OpenProcess(Win32API.ProcessAccessFlags.All, false, process.Id);
             IntPtr ipHandle = IntPtr.Zero;
             var objBasic = new Win32API.OBJECT_BASIC_INFORMATION();
@@ -220,7 +208,7 @@ namespace Nucleus.Gaming.Interop
             int nReturn = 0;
             IntPtr ipTemp = IntPtr.Zero;
 
-            if (!Win32API.DuplicateHandle(m_ipProcessHwnd, shHandle.Handle, Win32API.GetCurrentProcess(),
+            if (!Win32API.DuplicateHandle(m_ipProcessHwnd, (IntPtr)shHandle.Handle, Win32API.GetCurrentProcess(),
                                           out ipHandle, 0, false, Win32API.DUPLICATE_SAME_ACCESS))
                 return null;
 
@@ -237,41 +225,31 @@ namespace Nucleus.Gaming.Interop
             while ((uint)(nReturn = Win32API.NtQueryObject(
                      ipHandle, (int)Win32API.ObjectInformationClass.ObjectNameInformation,
                      ipObjectName, nLength, ref nLength))
-                   == Win32API.STATUS_INFO_LENGTH_MISMATCH)
-            {
+                   == Win32API.STATUS_INFO_LENGTH_MISMATCH) {
                 Marshal.FreeHGlobal(ipObjectName);
                 ipObjectName = Marshal.AllocHGlobal(nLength);
             }
             objObjectName = (Win32API.OBJECT_NAME_INFORMATION)Marshal.PtrToStructure(ipObjectName, objObjectName.GetType());
 
-            if (Is64Bits())
-            {
+            if (Is64Bits()) {
                 ipTemp = new IntPtr(Convert.ToInt64(objObjectName.Name.Buffer.ToString(), 10) >> 32);
-            }
-            else
-            {
+            } else {
                 ipTemp = objObjectName.Name.Buffer;
             }
 
-            if (ipTemp != IntPtr.Zero)
-            {
+            if (ipTemp != IntPtr.Zero) {
 
                 byte[] baTemp2 = new byte[nLength];
-                try
-                {
+                try {
                     Marshal.Copy(ipTemp, baTemp2, 0, nLength);
 
                     strObjectName = Marshal.PtrToStringUni(Is64Bits() ?
                                                            new IntPtr(ipTemp.ToInt64()) :
                                                            new IntPtr(ipTemp.ToInt32()));
                     return strObjectName;
-                }
-                catch (AccessViolationException)
-                {
+                } catch (AccessViolationException) {
                     return null;
-                }
-                finally
-                {
+                } finally {
                     Marshal.FreeHGlobal(ipObjectName);
                     Win32API.CloseHandle(ipHandle);
                 }
@@ -279,9 +257,8 @@ namespace Nucleus.Gaming.Interop
             return null;
         }
 
-        public static List<Win32API.SYSTEM_HANDLE_INFORMATION> GetHandles(Process process, string IN_strObjectTypeName, string IN_strObjectName,
-            string inclusiveName)
-        {
+        public static List<Win32API.SYSTEM_HANDLE_INFORMATION> GetHandles(Process process, string IN_strObjectTypeName, 
+            string IN_strObjectName, string inclusiveName) {
             uint nStatus;
             int nHandleInfoSize = 0x10000;
             IntPtr ipHandlePointer = Marshal.AllocHGlobal(nHandleInfoSize);
@@ -289,8 +266,7 @@ namespace Nucleus.Gaming.Interop
             IntPtr ipHandle = IntPtr.Zero;
 
             while ((nStatus = Win32API.NtQuerySystemInformation(CNST_SYSTEM_HANDLE_INFORMATION, ipHandlePointer,
-                                                                nHandleInfoSize, ref nLength)) == STATUS_INFO_LENGTH_MISMATCH)
-            {
+                                                                nHandleInfoSize, ref nLength)) == STATUS_INFO_LENGTH_MISMATCH) {
                 nHandleInfoSize = nLength;
                 Marshal.FreeHGlobal(ipHandlePointer);
                 ipHandlePointer = Marshal.AllocHGlobal(nLength);
@@ -300,13 +276,10 @@ namespace Nucleus.Gaming.Interop
             Marshal.Copy(ipHandlePointer, baTemp, 0, nLength);
 
             long lHandleCount = 0;
-            if (Is64Bits())
-            {
+            if (Is64Bits()) {
                 lHandleCount = Marshal.ReadInt64(ipHandlePointer);
                 ipHandle = new IntPtr(ipHandlePointer.ToInt64() + 8);
-            }
-            else
-            {
+            } else {
                 lHandleCount = Marshal.ReadInt32(ipHandlePointer);
                 ipHandle = new IntPtr(ipHandlePointer.ToInt32() + 4);
             }
@@ -314,42 +287,34 @@ namespace Nucleus.Gaming.Interop
             Win32API.SYSTEM_HANDLE_INFORMATION shHandle;
             List<Win32API.SYSTEM_HANDLE_INFORMATION> lstHandles = new List<Win32API.SYSTEM_HANDLE_INFORMATION>();
 
-            for (long lIndex = 0; lIndex < lHandleCount; lIndex++)
-            {
+            for (long lIndex = 0; lIndex < lHandleCount; lIndex++) {
                 shHandle = new Win32API.SYSTEM_HANDLE_INFORMATION();
-                if (Is64Bits())
-                {
+                if (Is64Bits()) {
                     shHandle = (Win32API.SYSTEM_HANDLE_INFORMATION)Marshal.PtrToStructure(ipHandle, shHandle.GetType());
                     ipHandle = new IntPtr(ipHandle.ToInt64() + Marshal.SizeOf(shHandle) + 8);
-                }
-                else
-                {
+                } else {
                     ipHandle = new IntPtr(ipHandle.ToInt64() + Marshal.SizeOf(shHandle));
                     shHandle = (Win32API.SYSTEM_HANDLE_INFORMATION)Marshal.PtrToStructure(ipHandle, shHandle.GetType());
                 }
 
-                if (process != null)
-                {
-                    if (shHandle.ProcessID != process.Id) continue;
+                if (process != null) {
+                    if (shHandle.ProcessID != process.Id) {
+                        continue;
+                    }
                 }
 
                 string strObjectTypeName = "";
-                if (IN_strObjectTypeName != null)
-                {
+                if (IN_strObjectTypeName != null) {
                     strObjectTypeName = getObjectTypeName(shHandle, Process.GetProcessById(shHandle.ProcessID));
                     if (strObjectTypeName != IN_strObjectTypeName) continue;
                 }
 
                 string strObjectName = "";
-                if (IN_strObjectName != null)
-                {
+                if (IN_strObjectName != null) {
                     strObjectName = getObjectName(shHandle, Process.GetProcessById(shHandle.ProcessID));
                     //if (strObjectName != IN_strObjectName) continue;
-                    if (strObjectName != null && strObjectName.Contains(IN_strObjectName))
-                    {
-                    }
-                    else
-                    {
+                    if (strObjectName != null && strObjectName.Contains(IN_strObjectName)) {
+                    } else {
                         continue;
                     }
                 }
@@ -359,28 +324,24 @@ namespace Nucleus.Gaming.Interop
                 string strObjectName2 = getObjectName(shHandle, proc);
                 //Console.WriteLine("Win32Api: {0}   {1}   {2}", shHandle.ProcessID, strObjectTypeName2, strObjectName2);
 
-                if (strObjectName2.Contains(inclusiveName))
-                {
+                if (strObjectName2.Contains(inclusiveName)) {
                     lstHandles.Add(shHandle);
                 }
             }
             return lstHandles;
         }
 
-        public static bool Is64Bits()
-        {
+        public static bool Is64Bits() {
             return Environment.Is64BitProcess;
 
-            int size = Marshal.SizeOf(typeof(IntPtr)) ;
-            return size  == 8 ? true : false;
+            int size = Marshal.SizeOf(typeof(IntPtr));
+            return size == 8 ? true : false;
         }
     }
 
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            
+    class Program {
+        static void Main(string[] args) {
+
         }
     }
 }

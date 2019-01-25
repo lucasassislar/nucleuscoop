@@ -202,7 +202,8 @@
     <Compile Include="Coop\Data\UserProfile.cs" />
     <Compile Include="Coop\Data\UserScreen.cs" />
     <Compile Include="Coop\Data\UserScreenType.cs" />
-    <Compile Include="Tools\GameStarter\SymlinkGameData.cs" />
+    <Compile Include="Tools\GameStarter\Data\ScanMutexData.cs" />
+    <Compile Include="Tools\GameStarter\Data\SymlinkGameData.cs" />
     <Compile Include="Util\ThreadUtil.cs" />
     <None Include="Coop\Handler\Engine\GenericGameHandler.cs" />
     <Compile Include="Coop\Data\Save\SaveType.cs" />
@@ -236,7 +237,7 @@
     <Compile Include="Coop\Package\PackageManager.cs" />
     <Compile Include="RequestResult.cs" />
     <Compile Include="Tools\GameStarter\StartGameApp.cs" />
-    <Compile Include="Tools\GameStarter\StartGameData.cs" />
+    <Compile Include="Tools\GameStarter\Data\StartGameData.cs" />
     <Compile Include="Tools\GameStarter\GameStarterTask.cs" />
     <Compile Include="Util\ObjectUtil.cs" />
     <Compile Include="Util\RectangleUtil.cs" />

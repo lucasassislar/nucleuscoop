@@ -2,6 +2,7 @@
 using Nucleus.Gaming.Tools.GameStarter;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -14,6 +15,7 @@ namespace Nucleus.Gaming.Coop.Handler {
         private UserGameInfo userGame;
         private GameProfile profile;
         private HandlerDataManager handlerManager;
+        private bool hasKeyboardPlayer;
 
         /// <summary>
         /// Action callback when the game session has ended
@@ -36,7 +38,6 @@ namespace Nucleus.Gaming.Coop.Handler {
             return default(T);
         }
 
-        private bool hasKeyboardPlayer;
 
         public bool Initialize(HandlerDataManager handlerManager, UserGameInfo userGameInfo, GameProfile profile) {
             this.handlerManager = handlerManager;
@@ -106,7 +107,37 @@ namespace Nucleus.Gaming.Coop.Handler {
                 SymlinkGameData data = mod.SymlinkData;
                 symData.Add(data);
             }
-            StartGameUtil.SymlinkGames(symData.ToArray());
+            StartGameData symStartData = StartGameUtil.BuildSymlinkGameData(symData.ToArray());
+
+            // check if we need to kill mutexes
+            bool killingMutexes = false;
+            if (handlerManager.HandlerData.KillMutex?.Length > 0) {
+                // need to also kill mutexes
+                killingMutexes = true;
+                StartGameData scanKillData = StartGameUtil.BuildScanKillMutexData(Path.GetFileNameWithoutExtension(userGame.ExePath), players.Count, handlerManager.HandlerData.KillMutex);
+                StartGameUtil.RunMultipleTasks(new StartGameData[] { symStartData, scanKillData }, true);
+
+                // wait for confirmation file that the folders were symlinked
+                // (RunMultipleTasks doesnt wait for process to finish)
+                string dataFile = StartGameUtil.GetStartDataPath();
+                for (; ; ) {
+                    if (File.Exists(dataFile)) {
+                        try {
+                            string txt = File.ReadAllText(dataFile);
+                            bool res;
+                            if (bool.TryParse(txt, out res)) {
+                                break;
+                            }
+                        } catch {
+                        }
+                    }
+                    Thread.Sleep(250);
+                }
+                File.Delete(dataFile);
+            } else {
+                // just symlink the folders
+                StartGameUtil.RunPreBuiltData(symStartData, true);
+            }
 
             for (int i = 0; i < players.Count; i++) {
                 PlayerInfo player = players[i];
@@ -120,8 +151,8 @@ namespace Nucleus.Gaming.Coop.Handler {
 
                 Thread.Sleep(TimeSpan.FromMilliseconds(handlerManager.HandlerData.PauseBetweenStarts));
 
+                IGameProcessModule procModule = GetModule<IGameProcessModule>(player);
                 if (handlerManager.HandlerData.WaitFullWindowLoad) {
-                    IGameProcessModule procModule = GetModule<IGameProcessModule>(player);
                     for (; ; ) {
                         Thread.Sleep(100);
 
@@ -130,6 +161,25 @@ namespace Nucleus.Gaming.Coop.Handler {
                             break;
                         }
                     }
+                }
+
+                if (killingMutexes) {
+                    // wait for StartGame confirmation that mutexes were killed
+                    string dataFile = StartGameUtil.GetStartDataPath();
+                    for (; ; ) {
+                        if (File.Exists(dataFile)) {
+                            try {
+                                string txt = File.ReadAllText(dataFile);
+                                bool res;
+                                if (bool.TryParse(txt, out res)) {
+                                    break;
+                                }
+                            } catch {
+                            }
+                        }
+                        Thread.Sleep(250);
+                    }
+                    File.Delete(dataFile);
                 }
             }
 
