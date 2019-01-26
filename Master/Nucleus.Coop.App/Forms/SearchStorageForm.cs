@@ -16,25 +16,7 @@ using System.Windows.Forms;
 
 namespace Nucleus.Coop.App.Forms {
     public partial class SearchStorageForm : BaseForm {
-        public struct SearchDriveInfo {
-            public DriveInfo Drive { get; private set; }
-            public string Info { get; private set; }
-
-            public SearchDriveInfo(DriveInfo drive) {
-                Drive = drive;
-                Info = "";
-            }
-
-            public void SetInfo(string info) {
-                Info = info;
-            }
-
-            public override string ToString() {
-                return Info;
-            }
-        }
-
-        private List<SearchDriveInfo> drivesToSearch;
+        private List<SearchStorageInfo> drivesToSearch;
         private float progress;
         private float lastProgress;
         private bool searching;
@@ -57,7 +39,7 @@ namespace Nucleus.Coop.App.Forms {
                     continue;
                 }
 
-                SearchDriveInfo d = new SearchDriveInfo(drive);
+                SearchStorageInfo d = new SearchStorageInfo(drive);
 
                 if (drive.IsReady) {
                     if (drive.DriveFormat != "NTFS") {
@@ -113,11 +95,11 @@ namespace Nucleus.Coop.App.Forms {
             searching = true;
             drivesFinishedSearching = 0;
 
-            drivesToSearch = new List<SearchDriveInfo>();
+            drivesToSearch = new List<SearchStorageInfo>();
             CheckedListBox checkedBox = list_storage;
 
             for (int i = 0; i < checkedBox.CheckedItems.Count; i++) {
-                SearchDriveInfo info = (SearchDriveInfo)checkedBox.CheckedItems[i];
+                SearchStorageInfo info = (SearchStorageInfo)checkedBox.CheckedItems[i];
                 drivesToSearch.Add(info);
             }
 
@@ -152,7 +134,7 @@ namespace Nucleus.Coop.App.Forms {
 
         private void SearchDrive(object state) {
             int driveIndex = (int)state;
-            SearchDriveInfo info = drivesToSearch[driveIndex];
+            SearchStorageInfo info = drivesToSearch[driveIndex];
             if (!info.Drive.IsReady) {
                 drivesFinishedSearching++;
                 return;

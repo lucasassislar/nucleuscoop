@@ -1,19 +1,24 @@
 ﻿using Newtonsoft.Json;
 using Nucleus;
+using Nucleus.Coop.StartGame.Properties;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Diagnostics;
 using Nucleus.Gaming.Platform.Windows.IO;
+using Nucleus.Gaming.Platform.Windows.IO.MFT;
 using Nucleus.Gaming.Tools.GameStarter;
 using Nucleus.Gaming.Windows;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace StartGame {
     class Program {
@@ -61,7 +66,7 @@ namespace StartGame {
         }
 
         static void QueryMutex(string procId, string[] mutexes) {
-            ConsoleU.WriteLine($"Process ID {procId} request to be queried for mutexes", Palette.Wait);
+            Log.WriteLine($"Process ID {procId} request to be queried for mutexes", Palette.Wait);
             proc = Process.GetProcessById(int.Parse(procId));
 
             ConsoleU.WriteLine($"Trying to query for any mutex's existance", Palette.Wait);
@@ -73,7 +78,7 @@ namespace StartGame {
                 ConsoleU.WriteLine($"{prefix}Trying to scan if mutex exists: {m}", Palette.Feedback);
 
                 bool exists = ProcessUtil.MutexExists(proc, m);
-                Console.WriteLine(exists);
+                Log.WriteLine(exists);
             }
             Thread.Sleep(250);
 
@@ -91,9 +96,11 @@ namespace StartGame {
             File.WriteAllText(dataFile, data);
         }
 
+
+        [STAThread]
         static void Main(string[] args) {
             if (args.Length == 0) {
-                ConsoleU.WriteLine("Invalid usage! Need arguments to proceed!", Palette.Error);
+                Log.WriteLine("Invalid usage! Need arguments to proceed!", Palette.Error);
                 return;
             }
 
@@ -101,10 +108,40 @@ namespace StartGame {
             // all the data about monitors inside the application
             User32Util.SetProcessDpiAwareness(ProcessDPIAwareness.ProcessPerMonitorDPIAware);
 
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            NotifyIcon notifyIcon = new NotifyIcon();
+            ContextMenu contextMenu = new ContextMenu();
+
+            MenuItem exitMenuItem = new MenuItem();
+            contextMenu.MenuItems.AddRange(new MenuItem[] { exitMenuItem });
+            exitMenuItem.Index = 0;
+            exitMenuItem.Text = "Exit";
+            exitMenuItem.Click += new EventHandler(exitClick);
+
+            notifyIcon.Icon = Resources.icon;
+            notifyIcon.Text = "Nucleus Coop GameTasks";
+            notifyIcon.ContextMenu = contextMenu;
+            notifyIcon.Visible = true;
+
             string base64 = Encoding.UTF8.GetString(Convert.FromBase64String(args[0]));
             StartGameData data = JsonConvert.DeserializeObject<StartGameData>(base64);
 
+            ThreadPool.QueueUserWorkItem(ExecuteTaskOnThread, data);
+
+            Application.Run();
+            notifyIcon.Visible = false;
+        }
+
+        private static void exitClick(object Sender, EventArgs e) {
+            Application.Exit();
+        }
+
+        private static void ExecuteTaskOnThread(object state) {
+            StartGameData data = (StartGameData)state;
             ExecuteTask(data);
+
+            Application.Exit();
         }
 
         private static void ExecuteTask(StartGameData data) {
@@ -119,7 +156,7 @@ namespace StartGame {
                 }
                 break;
                 case GameStarterTask.KillMutex: {
-                    Console.WriteLine($"Kill Mutex Task");
+                    Log.WriteLine($"Kill Mutex Task");
                     string procId = data.Parameters[0];
                     string[] mutexes = new string[data.Parameters.Length - 1];
                     for (int j = 1; j < data.Parameters.Length; j++) {
@@ -131,14 +168,14 @@ namespace StartGame {
                 }
                 break;
                 case GameStarterTask.ScanKillMutex: {
-                    Console.WriteLine($"Scan Kill Mutex");
+                    Log.WriteLine($"Scan Kill Mutex");
 
                     List<int> processIds = new List<int>();
 
                     for (int j = 0; j < data.Parameters.Length; j++) {
                         string scanMutexDataRaw = data.Parameters[j];
                         ScanMutexData scanMutex = JsonConvert.DeserializeObject<ScanMutexData>(scanMutexDataRaw);
-                        Console.WriteLine($"Kill Mutex for process {scanMutex.ProcessName}");
+                        Log.WriteLine($"Kill Mutex for process {scanMutex.ProcessName}");
 
                         for (; ; ) {
                             Process[] procs = Process.GetProcessesByName(scanMutex.ProcessName);
@@ -163,7 +200,7 @@ namespace StartGame {
                                 }
 
                                 if (killedMutexes) {
-                                    Console.WriteLine($"Killed all mutexes for process {scanMutex.ProcessName}");
+                                    Log.WriteLine($"Killed all mutexes for process {scanMutex.ProcessName}");
                                     WriteToDataFile(Assembly.GetEntryAssembly().Location, true.ToString());
                                     break;
                                 }
@@ -173,12 +210,12 @@ namespace StartGame {
                 }
                 break;
                 case GameStarterTask.MultipleTasks: {
-                    Console.WriteLine($"Multiple tasks");
+                    Log.WriteLine($"Multiple tasks");
                     for (int j = 0; j < data.Parameters.Length; j++) {
                         string taskDataRaw = data.Parameters[j];
                         StartGameData taskData = JsonConvert.DeserializeObject<StartGameData>(taskDataRaw);
 
-                        Console.WriteLine($"Executing task {j + 1}");
+                        Log.WriteLine($"Executing task {j + 1}");
                         ExecuteTask(taskData);
                     }
                 }
@@ -194,10 +231,55 @@ namespace StartGame {
                 break;
                 case GameStarterTask.ListMonitors:
                     break;
+                case GameStarterTask.ScanGames: {
+                    // initialize game manager to read available handlers
+                    GameManager gameManager = new GameManager();
+
+                    List<string> games = new List<string>();
+                    for (int j = 0; j < data.Parameters.Length; j++) {
+                        string driveName = data.Parameters[j];
+                        //SearchStorageInfo info = JsonConvert.DeserializeObject<SearchStorageInfo>(storageData);
+                        DriveInfo drive = new DriveInfo(driveName);
+
+                        if (!drive.IsReady) {
+                            continue;
+                        }
+
+                        Log.WriteLine($"> Searching drive {drive.Name} for game executables");
+
+                        Dictionary<ulong, FileNameAndParentFrn> allExes = new Dictionary<ulong, FileNameAndParentFrn>();
+                        MFTReader mft = new MFTReader();
+                        mft.Drive = drive.RootDirectory.FullName;
+
+                        // TODO: search only for specific games?
+                        mft.EnumerateVolume(out allExes, new string[] { ".exe" });
+
+                        foreach (KeyValuePair<UInt64, FileNameAndParentFrn> entry in allExes) {
+                            FileNameAndParentFrn file = (FileNameAndParentFrn)entry.Value;
+
+                            string name = file.Name;
+                            string lower = name.ToLower();
+
+                            string path = mft.GetFullPath(file);
+                            if (path.Contains("$Recycle.Bin") ||
+                                path.Contains(@"\Instance")) {
+                                // noope
+                                continue;
+                            }
+
+                            if (GameManager.Instance.AnyGame(lower)) {
+                                games.Add(path);
+                            }
+                        }
+                    }
+
+                    WriteToDataFile(Assembly.GetEntryAssembly().Location, JsonConvert.SerializeObject(games));
+                }
+                break;
                 case GameStarterTask.SymlinkFolders:
                     for (int j = 0; j < data.Parameters.Length; j++) {
                         string symData = data.Parameters[j];
-                        Console.WriteLine($"Symlink game instance {j + 1}");
+                        Log.WriteLine($"Symlink game instance {j + 1}");
 
                         SymlinkGameData gameData = JsonConvert.DeserializeObject<SymlinkGameData>(symData);
                         int exitCode;

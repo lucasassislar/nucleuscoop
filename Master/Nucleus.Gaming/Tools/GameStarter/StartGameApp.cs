@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Nucleus.Gaming.Coop;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -67,6 +68,11 @@ namespace Nucleus.Gaming.Tools.GameStarter {
 
         public void BeginSymlinkGames(SymlinkGameData[] games) {
             data = StartGameUtil.BuildSymlinkGameData(games);
+            RunStartGame(data, true);
+        }
+
+        public void BeginScanGames(SearchStorageInfo[] storage) {
+            data = StartGameUtil.BuildScanGamesData(storage);
             RunStartGame(data, true);
         }
 

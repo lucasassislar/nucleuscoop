@@ -228,58 +228,24 @@ namespace Nucleus.Gaming.Coop {
             return null;
         }
 
-        /// <summary>
-        /// Extracts the SmartSteamEmu and returns the folder its on
-        /// </summary>
-        /// <returns></returns>
-        //public string ExtractSteamEmu(string outputFolder = null)
-        //{
-        //    string steamEmu;
-
-        //    if (string.IsNullOrEmpty(outputFolder))
-        //    {
-        //        string app = GetAppDataPath();
-        //        steamEmu = Path.Combine(app, "SteamEmu");
-        //    }
-        //    else
-        //    {
-        //        steamEmu = outputFolder;
-        //    }
-
-        //    try
-        //    {
-        //        //if (!Directory.Exists(steamEmu))
-        //        {
-        //            Log.WriteLine("Extracting SmartSteamEmu");
-
-        //            Directory.CreateDirectory(steamEmu);
-        //            using (MemoryStream stream = new MemoryStream(Resources.SmartSteamEmu))
-        //            {
-        //                using (ZipFile zip1 = ZipFile.Read(stream))
-        //                {
-        //                    foreach (ZipEntry e in zip1)
-        //                    {
-        //                        e.Extract(steamEmu, ExtractExistingFileAction.OverwriteSilently);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch
-        //    {
-        //        Log.WriteLine("Extraction of SmartSteamEmu failed");
-        //        return string.Empty;
-        //    }
-
-        //    return steamEmu;
-        //}
-
         #region Initialize
+
+        public static bool IsGameTasksApp() {
+            string entryApp = Assembly.GetEntryAssembly().Location;
+            return entryApp.ToLower().Contains("startgame");
+        }
 
         public static string GetAppDataPath() {
 #if ALPHA
-            string local = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            return Path.Combine(local, "data");
+            string entryApp = Assembly.GetEntryAssembly().Location;
+            string local = Path.GetDirectoryName(entryApp);
+
+            if (IsGameTasksApp()) {
+                // game tasks application, move to correct folder
+                return Path.Combine(local, "..", "data");
+            } else {
+                return Path.Combine(local, "data");
+            }
 #else
             string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             return Path.Combine(appData, "Nucleus Coop");
@@ -301,15 +267,6 @@ namespace Nucleus.Gaming.Coop {
         protected string GetUserProfilePath() {
             return Path.Combine(GetAppDataPath(), "userprofile.json");
         }
-
-        //public int Compare(UserGameInfo x, UserGameInfo y)
-        //{
-        //    if (x.Game == null || y.Game == null)
-        //    {
-        //        return 0;
-        //    }
-        //    return x.Game.GameName.CompareTo(y.Game.GameName);
-        //}
 
         public void BeginBackup(HandlerData game) {
             string appData = GetAppDataPath();

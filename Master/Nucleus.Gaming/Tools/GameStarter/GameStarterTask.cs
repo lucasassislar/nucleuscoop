@@ -19,6 +19,8 @@ namespace Nucleus.Gaming.Tools.GameStarter {
         // symlink the folders (ADMIN)
         SymlinkFolders,
 
+        // search the users storage for game's executables (ADMIN)
+        ScanGames,
 
         // several game starter tasks
         MultipleTasks,

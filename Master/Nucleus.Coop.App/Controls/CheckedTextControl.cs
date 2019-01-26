@@ -12,13 +12,10 @@ using Nucleus.Gaming.Package;
 using Nucleus.Gaming.Platform.Windows.Controls;
 
 namespace Nucleus.Gaming.Coop {
+    public class CheckedTextControl : UserControl, IDynamicSized, IRadioControl {
+        public object SharedData { get; set; }
 
-    public class GameControl : UserControl, IDynamicSized, IRadioControl {
-        public UserGameInfo UserGameInfo { get; private set; }
-        public List<UserGameInfo> UserGames { get; private set; }
-        public GameHandlerBaseMetadata HandlerMetadata { get; private set; }
-
-        private PictureBox picture;
+        private SizeableCheckbox checkbox;
         private Label title;
         public string TitleText { get; protected set; }
 
@@ -27,25 +24,19 @@ namespace Nucleus.Gaming.Coop {
         public Color ColorMouseOver { get; set; } = Color.FromArgb(54, 57, 63);
         public bool EnableClicking { get; set; } = true;
 
-        public bool UseCheckbox { get; set; }
-
-        public GameControl() {
-            picture = new PictureBox();
-            picture.SizeMode = PictureBoxSizeMode.StretchImage;
+        public CheckedTextControl() {
+            checkbox = new SizeableCheckbox();
 
             title = new Label();
+            checkbox = new SizeableCheckbox();
 
             BackColor = ColorUnselected;
             Size = new Size(200, 52);
 
-            Controls.Add(picture);
+            Controls.Add(checkbox);
             Controls.Add(title);
 
             DPIManager.Register(this);
-        }
-
-        ~GameControl() {
-            DPIManager.Unregister(this);
         }
 
         public void UpdateTitleText(string titleText) {
@@ -53,33 +44,9 @@ namespace Nucleus.Gaming.Coop {
             title.Text = titleText;
         }
 
-        public void SetUserGame(UserGameInfo userGame) {
-            UserGameInfo = userGame;
-            if (userGame == null) {
-                title.Text = "No games";
-            } else {
-                title.Text = GameManager.Instance.MetadataManager.GetGameName(userGame.GameID);
-            }
-            TitleText = title.Text;
-        }
-
-        public void SetUserGameExe(UserGameInfo userGame) {
-            UserGameInfo = userGame;
-            title.Text = userGame.ExePath;
-            TitleText = title.Text;
-        }
-
-        public void SetUserGames(List<UserGameInfo> userGames) {
-            UserGames = userGames;
-            string gameTitle = GameManager.Instance.MetadataManager.GetGameName(userGames[0].GameID);
-            title.Text = gameTitle;
-            TitleText = gameTitle;
-        }
-
-        public void SetHandlerMetadata(GameHandlerBaseMetadata metadata) {
-            HandlerMetadata = metadata;
-            title.Text = metadata.Title;
-            TitleText = title.Text;
+        public bool Checked {
+            get { return checkbox.Checked; }
+            set { checkbox.Checked = value; }
         }
 
         public void UpdateSize(float scale) {
@@ -93,13 +60,13 @@ namespace Nucleus.Gaming.Coop {
             int border = DPIManager.Adjust(8, scale);
             int dborder = border * 2;
 
-            picture.Location = new Point(12, 11);
-            picture.Size = new Size(30, 30);
+            checkbox.Location = new Point(12, 11);
+            checkbox.Size = new Size(30, 30);
 
             Height = DPIManager.Adjust(52, scale);
 
             Size labelSize = TextRenderer.MeasureText(TitleText, title.Font);
-            float reservedSpaceLabel = this.Width - picture.Width;
+            float reservedSpaceLabel = this.Width - checkbox.Width;
 
             if (labelSize.Width > reservedSpaceLabel) {
                 // make text smaller
@@ -115,7 +82,7 @@ namespace Nucleus.Gaming.Coop {
             float height = this.Height / 2.0f;
             float lheight = labelSize.Height / 2.0f;
 
-            title.Location = new Point(picture.Width + picture.Left + border, (int)(height - lheight));
+            title.Location = new Point(checkbox.Width + checkbox.Left + border, (int)(height - lheight));
 
             ResumeLayout();
         }
@@ -144,11 +111,6 @@ namespace Nucleus.Gaming.Coop {
 
         private void C_Click(object sender, EventArgs e) {
             OnClick(e);
-        }
-
-        public Image Image {
-            get { return this.picture.Image; }
-            set { this.picture.Image = value; }
         }
 
         public override string ToString() {

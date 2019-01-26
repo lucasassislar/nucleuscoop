@@ -70,7 +70,7 @@
     <AssemblyOriginatorKeyFile>SplitKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TestDebug|AnyCPU'">
     <OutputPath>bin\TestDebug\</OutputPath>
@@ -105,6 +105,9 @@
     </Compile>
     <Compile Include="Controls\BaseControl.Designer.cs">
       <DependentUpon>BaseControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CheckedTextControl.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\Pages\BasePageControl.cs">
       <SubType>UserControl</SubType>
@@ -297,9 +300,9 @@
       <Project>{6bacfb45-eedc-4371-9377-013d534ac83c}</Project>
       <Name>Nucleus.Coop.AppPostBuild</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Nucleus.Coop.StartGame\Nucleus.Coop.StartGame.csproj">
+    <ProjectReference Include="..\Nucleus.Coop.StartGame\Nucleus.Coop.GameTasks.csproj">
       <Project>{91298ada-5999-41d4-8a7b-51f28094ab5b}</Project>
-      <Name>Nucleus.Coop.StartGame</Name>
+      <Name>Nucleus.Coop.GameTasks</Name>
     </ProjectReference>
     <ProjectReference Include="..\Nucleus.Gaming\Nucleus.Gaming.csproj">
       <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
@@ -480,7 +483,6 @@
     <None Include="config.json" />
     <None Include="games\550-Left4Dead2\game.js" />
     <Content Include="Guidelines.txt" />
-    <Content Include="icon.ico" />
     <None Include="Resources\4players.png" />
     <None Include="Resources\16players.png" />
     <None Include="Resources\fullscreen.png" />

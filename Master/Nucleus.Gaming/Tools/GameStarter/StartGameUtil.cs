@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Nucleus.Gaming.Coop;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -49,26 +50,57 @@ namespace Nucleus.Gaming.Tools.GameStarter {
             return data;
         }
 
+        public static StartGameData BuildScanGamesData(SearchStorageInfo[] storage) {
+            StartGameData data = new StartGameData();
+            data.Task = GameStarterTask.ScanGames;
+            string[] argData = new string[storage.Length];
+            for (int i = 0; i < storage.Length; i++) {
+                argData[i] = storage[i].Drive.Name;
+            }
+            data.Parameters = argData;
+            return data;
+        }
+
 
         public static void KillMutex(Process p, params string[] mutex) {
+            ClearStartData();
+
             StartGameApp app = new StartGameApp();
             app.BeginKillMutex(p.Id, mutex);
             app.WaitForExit();
         }
 
         public static void SymlinkGames(SymlinkGameData[] games) {
+            ClearStartData();
+
             StartGameApp app = new StartGameApp();
             app.BeginSymlinkGames(games);
             app.WaitForExit();
         }
 
         public static void ScanMutex(SymlinkGameData[] games) {
+            ClearStartData();
+
             StartGameApp app = new StartGameApp();
             app.BeginSymlinkGames(games);
             app.WaitForExit();
         }
 
+        public static string[] ScanGames(SearchStorageInfo[] storage) {
+            ClearStartData();
+
+            StartGameApp app = new StartGameApp();
+            app.BeginScanGames(storage);
+            app.WaitForExit();
+
+            string dataPath = StartGameUtil.GetStartDataPath();
+            string data = File.ReadAllText(dataPath);
+            return JsonConvert.DeserializeObject<string[]>(data);
+        }
+
         public static void RunPreBuiltData(StartGameData data, bool admin) {
+            ClearStartData();
+
             StartGameApp app = new StartGameApp();
             app.RunStartGame(data, admin);
             app.WaitForExit();
@@ -113,8 +145,6 @@ namespace Nucleus.Gaming.Tools.GameStarter {
 
             string appId = File.ReadAllText(dataFile);
             return int.Parse(appId);
-
-            //return app.GetOutputAsProcessId();
         }
 
         public static string GetStartGamePath() {

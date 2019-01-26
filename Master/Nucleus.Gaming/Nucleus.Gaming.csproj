@@ -89,6 +89,7 @@
     <Compile Include="Coop\HandlerDataManager.cs" />
     <Compile Include="Coop\Handler\Modules\IO\IOModule.cs" />
     <Compile Include="Coop\ModuleManager.cs" />
+    <Compile Include="Coop\SearchStorageInfo.cs" />
     <Compile Include="IO\ScrConfigFile.cs" />
     <Compile Include="Platform\Windows\BaseForm.cs">
       <SubType>Form</SubType>
@@ -101,12 +102,6 @@
     </Compile>
     <Compile Include="Platform\Windows\Controls\ControlListBox.cs">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Platform\Windows\Controls\CoolCheckbox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Platform\Windows\Controls\CoolCheckbox.Designer.cs">
-      <DependentUpon>CoolCheckbox.cs</DependentUpon>
     </Compile>
     <Compile Include="Platform\Windows\Controls\CoolListControl.cs">
       <SubType>UserControl</SubType>
@@ -268,9 +263,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Platform\Windows\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Platform\Windows\Controls\CoolCheckbox.resx">
-      <DependentUpon>CoolCheckbox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Platform\Windows\Controls\PictureButton.resx">
       <DependentUpon>PictureButton.cs</DependentUpon>

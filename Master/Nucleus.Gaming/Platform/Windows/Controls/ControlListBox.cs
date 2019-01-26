@@ -164,7 +164,13 @@ namespace Nucleus.Gaming.Platform.Windows.Controls {
             OnClick(sender);
         }
 
+        public bool CanSelectControls { get; set; } = true;
+
         private void OnClick(object sender) {
+            if (!CanSelectControls) {
+                return;
+            }
+
             Control parent = (Control)sender;
             if (parent is TransparentControl) {
                 parent = parent.Parent;
