@@ -41,7 +41,7 @@ namespace Nucleus.Gaming.Diagnostics {
                 Directory.CreateDirectory(Path.GetDirectoryName(logPath));
 
                 logStream = new FileStream(GetLogPath(), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-                logStream.Position = logStream.Length; // keep writing from where we left
+                logStream.Position = logStream.Length; // keep writing from where we left of
 
                 writer = new StreamWriter(logStream);
                 consoleLevel = OutputLevel.Low;

@@ -28,7 +28,6 @@ namespace Nucleus.Coop.App.Forms {
         private GameRunningOverlay overlay;
 
         private AppPage appPage = AppPage.None;
-        private bool noGamesPresent;
 
         protected override Size DefaultSize {
             get {
@@ -154,7 +153,6 @@ namespace Nucleus.Coop.App.Forms {
                 }
 
                 if (ordered.Count() == 0) {
-                    noGamesPresent = true;
                     appPage = AppPage.NoGamesInstalled;
                     GameControl con = new GameControl();
                     con.Click += Con_Click;
@@ -169,6 +167,7 @@ namespace Nucleus.Coop.App.Forms {
             DPIManager.ForceUpdate();
 
             UpdatePage();
+            list_games.UpdateSizes();
 
             gameManager.User.Save();
 
@@ -180,12 +179,6 @@ namespace Nucleus.Coop.App.Forms {
         }
 
         public GameControl NewUserGame(List<UserGameInfo> games) {
-            if (noGamesPresent) {
-                noGamesPresent = false;
-                RefreshGames();
-                return null;
-            }
-
             // get all Repository Game Infos
             GameControl con = new GameControl();
             con.SetUserGames(games);

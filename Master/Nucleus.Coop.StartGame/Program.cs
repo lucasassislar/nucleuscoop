@@ -268,6 +268,7 @@ namespace StartGame {
                             }
 
                             if (GameManager.Instance.AnyGame(lower)) {
+                                Log.WriteLine($"Found game at path: {path}");
                                 games.Add(path);
                             }
                         }
