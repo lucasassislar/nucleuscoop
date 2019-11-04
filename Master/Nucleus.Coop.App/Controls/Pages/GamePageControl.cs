@@ -79,7 +79,7 @@ namespace Nucleus.Coop.App.Controls {
                 mainForm.BrowserBtns.OnBrowse += BrowserBtns_OnBrowse;
             }
 
-            currentHandlers = GameManager.Instance.RepoManager.GetInstalledHandlers(gameId);
+            currentHandlers = GameManager.Instance.PackageManager.GetInstalledHandlers(gameId);
             if (currentHandlers.Length == 0) {
                 // uninstalled package perhaps?
                 return;
@@ -127,7 +127,7 @@ namespace Nucleus.Coop.App.Controls {
             }
 
             selectedHandler = metadataSelected;
-            handlerDataManager = GameManager.Instance.RepoManager.ReadHandlerDataFromInstalledPackage(selectedHandler);
+            handlerDataManager = GameManager.Instance.PackageManager.ReadHandlerDataFromInstalledPackage(selectedHandler);
             handlerData = handlerDataManager.HandlerData;
 
             BrowserBtns.SetPlayButtonState(false);

@@ -10,49 +10,29 @@ namespace Nucleus.Gaming.Coop
     [AppDomainShared]
     public class UserScreen
     {
-        private Rectangle uiBounds;
-        private Rectangle swapTypeRect;
-        private UserScreenType type;
-        private Rectangle monitorBounds;
+        public Rectangle SwapTypeBounds { get; set; }
 
-        public Rectangle SwapTypeBounds
-        {
-            get { return swapTypeRect; }
-            set { swapTypeRect = value; }
-        }
+        public Rectangle UIBounds { get; set; }
 
-        public Rectangle UIBounds
-        {
-            get { return uiBounds; }
-            set { uiBounds = value; }
-        }
+        public UserScreenType Type { get; set; }
 
-        public UserScreenType Type
-        {
-            get { return type; }
-            set { type = value; }
-        }
-
-        public Rectangle MonitorBounds
-        {
-            get { return monitorBounds; }
-            set { monitorBounds = value; }
-        }
+        public Rectangle MonitorBounds { get; set; }
 
         private UserScreen()
         {
 
         }
+
         public UserScreen(Rectangle display)
         {
-            this.monitorBounds = display;
+            this.MonitorBounds = display;
 
-            type = UserScreenType.FullScreen;
+            Type = UserScreenType.FullScreen;
         }
 
         public int GetPlayerCount()
         {
-            switch (type)
+            switch (Type)
             {
                 case UserScreenType.DualHorizontal:
                 case UserScreenType.DualVertical:
@@ -68,22 +48,22 @@ namespace Nucleus.Gaming.Coop
 
         public bool IsFullscreen()
         {
-            return type == UserScreenType.FullScreen;
+            return Type == UserScreenType.FullScreen;
         }
 
         public bool IsDualHorizontal()
         {
-            return type == UserScreenType.DualHorizontal;
+            return Type == UserScreenType.DualHorizontal;
         }
 
         public bool IsDualVertical()
         {
-            return type == UserScreenType.DualVertical;
+            return Type == UserScreenType.DualVertical;
         }
 
         public bool IsFourPlayers()
         {
-            return type == UserScreenType.FourPlayers;
+            return Type == UserScreenType.FourPlayers;
         }
     }
 }

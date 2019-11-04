@@ -206,6 +206,7 @@ namespace Nucleus.Gaming.Coop {
                         SaveInfo save = info[j];
                         file.ChangeProperty(save);
                     }
+                    file.Save();
                 }
                 break;
                 default:

@@ -47,10 +47,10 @@ namespace TempBuilder
             }
 #else
             Console.WriteLine($"To Delete {files.Count}");
-            for (int i = 0; i < toDelete.Count; i++)
+            for (int i = 0; i < debugFiles.Count; i++)
             {
-                FileInfo file = toDelete[i];
-                string prefix = $"({i + 1}/{toDelete.Count}) ";
+                FileInfo file = debugFiles[i];
+                string prefix = $"({i + 1}/{debugFiles.Count}) ";
                 Console.WriteLine(prefix + $"Deleting {file.Name}");
 
                 file.Delete();

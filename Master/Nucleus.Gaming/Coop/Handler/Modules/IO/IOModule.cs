@@ -28,32 +28,20 @@ namespace Nucleus.Gaming.Coop.Modules {
             return true;
         }
 
-        private string nucleusRootFolder;
-        private string tempDir;
-        private string exeFolder;
-        private string rootFolder;
-        private string workingFolder;
-
-        public string NucleusRootFolder { get { return nucleusRootFolder; } }
-
+        public string NucleusRootFolder { get; private set; }
 
         /// <summary>
         /// Path to the current game instance (to be changed)
         /// </summary>
-        public string TempDir { get { return tempDir; } }
+        public string TempDir { get; private set; }
 
+        public string ExeFolder { get; private set; }
+        public string RootFolder { get; private set; }
+        public string WorkingFolder { get; private set; }
 
-        public string ExeFolder { get { return exeFolder; } }
-        public string RootFolder { get { return rootFolder; } }
-        public string WorkingFolder { get { return workingFolder; } }
-
-        private string linkedExePath;
-        private string linkFolder;
-        private string linkWorkingDir;
-
-        public string LinkedExePath { get { return linkedExePath; } }
-        public string LinkedFolder { get { return linkFolder; } }
-        public string LinkedWorkingDir { get { return linkWorkingDir; } }
+        public string LinkedExePath { get; private set; }
+        public string LinkedFolder { get; private set; }
+        public string LinkedWorkingDir { get; private set; }
 
         public SymlinkGameData SymlinkData { get; private set; }
 
@@ -62,20 +50,20 @@ namespace Nucleus.Gaming.Coop.Modules {
         }
 
         public override void PrePlayPlayer( int index, HandlerContext context) {
-            nucleusRootFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            NucleusRootFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
-            tempDir = GameManager.GetTempFolder(handlerData);
+            TempDir = GameManager.GetTempFolder(handlerData);
 
-            exeFolder = Path.GetDirectoryName(userGame.ExePath);
-            rootFolder = exeFolder;
-            workingFolder = exeFolder;
+            ExeFolder = Path.GetDirectoryName(userGame.ExePath);
+            RootFolder = ExeFolder;
+            WorkingFolder = ExeFolder;
 
             if (!string.IsNullOrEmpty(handlerData.ExecutablePath)) {
-                rootFolder = StringUtil.ReplaceCaseInsensitive(exeFolder, handlerData.ExecutablePath.ToLower(), "");
+                RootFolder = StringUtil.ReplaceCaseInsensitive(ExeFolder, handlerData.ExecutablePath.ToLower(), "");
             }
             if (!string.IsNullOrEmpty(handlerData.WorkingFolder)) {
-                rootFolder = StringUtil.ReplaceCaseInsensitive(exeFolder, handlerData.WorkingFolder.ToLower(), "");
-                workingFolder = Path.Combine(exeFolder, handlerData.WorkingFolder.ToLower());
+                RootFolder = StringUtil.ReplaceCaseInsensitive(ExeFolder, handlerData.WorkingFolder.ToLower(), "");
+                WorkingFolder = Path.Combine(ExeFolder, handlerData.WorkingFolder.ToLower());
             }
 
             if (handlerData.SymlinkGame || handlerData.HardcopyGame) {
@@ -84,38 +72,38 @@ namespace Nucleus.Gaming.Coop.Modules {
                 List<string> fileCopies = new List<string>();
 
                 // symlink the game folder (and not the bin folder, if we have one)
-                linkFolder = Path.Combine(tempDir, "Instance" + index);
+                LinkedFolder = Path.Combine(TempDir, "Instance" + index);
 
                 try {
-                    if (Directory.Exists(linkFolder)) {
-                        Directory.Delete(linkFolder, true);
+                    if (Directory.Exists(LinkedFolder)) {
+                        Directory.Delete(LinkedFolder, true);
                     }
                 } catch { }
 
-                Directory.CreateDirectory(linkFolder);
+                Directory.CreateDirectory(LinkedFolder);
 
-                linkWorkingDir = linkFolder;
+                LinkedWorkingDir = LinkedFolder;
 
                 if (string.IsNullOrEmpty(handlerData.ExecutablePath)) {
-                    linkedExePath = Path.Combine(linkWorkingDir, Path.GetFileName(this.userGame.ExePath));
+                    LinkedExePath = Path.Combine(LinkedWorkingDir, Path.GetFileName(this.userGame.ExePath));
                     if (!string.IsNullOrEmpty(handlerData.WorkingFolder)) {
-                        linkWorkingDir = Path.Combine(linkFolder, handlerData.WorkingFolder);
+                        LinkedWorkingDir = Path.Combine(LinkedFolder, handlerData.WorkingFolder);
                         dirExclusions.Add(handlerData.WorkingFolder);
                     }
                 } else {
                     dirExclusions.Add(handlerData.ExecutablePath);
-                    linkedExePath = Path.Combine(linkWorkingDir, handlerData.ExecutablePath, Path.GetFileName(this.userGame.ExePath));
+                    LinkedExePath = Path.Combine(LinkedWorkingDir, handlerData.ExecutablePath, Path.GetFileName(this.userGame.ExePath));
 
                     if (!string.IsNullOrEmpty(handlerData.WorkingFolder)) {
-                        linkWorkingDir = Path.Combine(linkFolder, handlerData.WorkingFolder);
+                        LinkedWorkingDir = Path.Combine(LinkedFolder, handlerData.WorkingFolder);
                         dirExclusions.Add(handlerData.WorkingFolder);
                     } else {
-                        linkWorkingDir = Path.Combine(linkFolder, handlerData.ExecutablePath);
+                        LinkedWorkingDir = Path.Combine(LinkedFolder, handlerData.ExecutablePath);
                     }
                 }
 
                 // some games have save files inside their game folder, so we need to access them inside the loop
-                handlerData.RegisterAdditional(Folder.InstancedGameFolder.ToString(), linkFolder);
+                handlerData.RegisterAdditional(Folder.InstancedGameFolder.ToString(), LinkedFolder);
 
                 if (handlerData.Hook.CustomDllEnabled) {
                     fileExclusions.Add("xinput1_3.dll");
@@ -157,29 +145,29 @@ namespace Nucleus.Gaming.Coop.Modules {
                 if (handlerData.HardcopyGame) {
                     // copy the directory
                     int exitCode;
-                    FileUtil.CopyDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, true);
+                    FileUtil.CopyDirectory(RootFolder, new DirectoryInfo(RootFolder), LinkedFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, true);
                 } else {
                     SymlinkGameData symData = new SymlinkGameData();
-                    symData.SourcePath = rootFolder;
-                    symData.DestinationPath = linkFolder;
+                    symData.SourcePath = RootFolder;
+                    symData.DestinationPath = LinkedFolder;
                     symData.DirExclusions = dirExclusions.ToArray();
                     symData.FileExclusions = fileExclusionsArr;
                     symData.FileCopies = fileCopiesArr;
                     SymlinkData = symData;
 
                     //int exitCode;
-                    //WinDirectoryUtil.LinkDirectory(rootFolder, new DirectoryInfo(rootFolder), linkFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, fileCopiesArr, true);
+                    //WinDirectoryUtil.LinkDirectory(RootFolder, new DirectoryInfo(RootFolder), LinkedFolder, out exitCode, dirExclusions.ToArray(), fileExclusionsArr, fileCopiesArr, true);
                 }
             } else {
-                linkedExePath = userGame.ExePath;
-                linkWorkingDir = rootFolder;
-                linkFolder = workingFolder;
+                LinkedExePath = userGame.ExePath;
+                LinkedWorkingDir = RootFolder;
+                LinkedFolder = WorkingFolder;
             }
 
-            context.InstancedExePath = linkedExePath;
-            context.InstallFolder = exeFolder;
-            context.InstanceFolder = linkFolder;
-            context.InstancedWorkingPath = linkWorkingDir;
+            context.InstancedExePath = LinkedExePath;
+            context.InstallFolder = ExeFolder;
+            context.InstanceFolder = LinkedFolder;
+            context.InstancedWorkingPath = LinkedWorkingDir;
         }
 
         public static bool IsNeeded(HandlerData data) {

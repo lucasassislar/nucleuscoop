@@ -70,7 +70,7 @@ namespace Nucleus.Gaming.App.Controls {
         private Timer gamepadTimer;
 
         private int testDinputPlayers = -1;// 16;
-        private int testXinputPlayers = -1;// 16;
+        private int testXinputPlayers = 3;// 16;
 
         public PositionsControl() {
             Initialize();

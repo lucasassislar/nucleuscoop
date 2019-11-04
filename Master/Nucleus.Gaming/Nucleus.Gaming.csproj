@@ -78,6 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Coop\BackupManager.cs" />
     <Compile Include="Coop\Data\AppDomain\AppDomainSharedAttribute.cs" />
     <Compile Include="Coop\Data\CallbackData.cs" />
     <Compile Include="Coop\Data\HandlerTools.cs" />
@@ -140,11 +141,9 @@
     <Compile Include="Platform\Windows\Controls\TextMessageBox.Designer.cs">
       <DependentUpon>TextMessageBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Coop\CoopConfigInfo.cs" />
     <Compile Include="Coop\GameNameManager.cs" />
     <Compile Include="Coop\Handler\Engine\GameHandler.cs" />
     <Compile Include="Coop\HandlerModule.cs" />
-    <Compile Include="Coop\UserInstalledHandler.cs" />
     <Compile Include="Diagnostics\OutputLevel.cs" />
     <Compile Include="Platform\Windows\Controls\TitleBarControl.cs">
       <SubType>UserControl</SubType>
@@ -192,7 +191,6 @@
     <Compile Include="IO\Content\ContentManager.cs" />
     <Compile Include="Diagnostics\ILogNode.cs" />
     <Compile Include="IO\SourceCfgFile.cs" />
-    <Compile Include="Coop\IGameHandler.cs" />
     <Compile Include="Coop\Data\UserGameInfo.cs" />
     <Compile Include="Coop\Data\UserProfile.cs" />
     <Compile Include="Coop\Data\UserScreen.cs" />
@@ -200,7 +198,6 @@
     <Compile Include="Tools\GameStarter\Data\ScanMutexData.cs" />
     <Compile Include="Tools\GameStarter\Data\SymlinkGameData.cs" />
     <Compile Include="Util\ThreadUtil.cs" />
-    <None Include="Coop\Handler\Engine\GenericGameHandler.cs" />
     <Compile Include="Coop\Data\Save\SaveType.cs" />
     <Compile Include="Coop\Data\Folder.cs" />
     <Compile Include="Platform\Windows\Interop\Shell32\Shell32.cs" />

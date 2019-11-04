@@ -6,58 +6,47 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Nucleus.Gaming.IO
-{
+namespace Nucleus.Gaming.IO {
     /// <summary>
     /// Reads and modifies parameters in a SCR configuration
     /// file (*.scr) Dying Light
     /// </summary>
-    public class ScrConfigFile
-    {
+    public class ScrConfigFile {
         protected string path;
         protected string rawData;
         protected string backupData;
         private List<SaveInfo> infos;
 
-        public string RawData
-        {
+        public string RawData {
             get { return rawData; }
         }
 
-        public ScrConfigFile(string filePath)
-        {
+        public ScrConfigFile(string filePath) {
             path = filePath;
             infos = new List<SaveInfo>();
 
-            if (File.Exists(path))
-            {
+            if (File.Exists(path)) {
                 rawData = File.ReadAllText(path);
                 backupData = string.Copy(rawData);
 
                 Parse(backupData);
-            }
-            else
-            {
+            } else {
                 rawData = "";
                 backupData = "";
             }
         }
 
-        private void Parse(string data)
-        {
+        private void Parse(string data) {
             string[] lines = data.Split('\n');
 
-            for (int i = 0; i < lines.Length; i++)
-            {
+            for (int i = 0; i < lines.Length; i++) {
                 string line = lines[i];
-                if (line.StartsWith("!"))
-                {
+                if (line.StartsWith("!")) {
                     continue;
                 }
 
                 int nextParen = line.IndexOf('(');
-                if (nextParen == -1)
-                {
+                if (nextParen == -1) {
                     continue;
                 }
 
@@ -71,8 +60,7 @@ namespace Nucleus.Gaming.IO
                 string[] parameters = sub.Split(',');
 
                 info.Add("Parameters", parameters.Length.ToString());
-                for (int j = 0; j < parameters.Length; j++)
-                {
+                for (int j = 0; j < parameters.Length; j++) {
                     info.Add("Param" + (j + 1), parameters[j]);
                 }
 
@@ -83,40 +71,39 @@ namespace Nucleus.Gaming.IO
         /// <summary>
         /// Flushes all changes to disk
         /// </summary>
-        public void Save(string newPath = "")
-        {
-            if (string.IsNullOrEmpty(newPath))
-            {
+        public void Save(string newPath = "") {
+            if (string.IsNullOrEmpty(newPath)) {
                 newPath = path;
             }
 
-            if (File.Exists(newPath))
-            {
+            if (File.Exists(newPath)) {
                 File.Delete(newPath);
             }
 
-            using (Stream str = File.OpenWrite(newPath))
-            {
-                using (StreamWriter writer = new StreamWriter(str))
-                {
-                    foreach (var info in infos)
-                    {
-                        string line = $"{info["Key"]}(";
+            using (Stream str = File.OpenWrite(newPath)) {
+                using (StreamWriter writer = new StreamWriter(str)) {
+                    writer.Write(rawData);
 
-                        string parameters = info["Paremeters"];
-                        int total = int.Parse(parameters);
-                        for (int i = 0; i < total; i++)
-                        {
-                            line += info["Param" + (i + 1)];
-                            if (i != 0)
-                            {
-                                line += ",";
-                            }
-                        }
-                        line += ")";
+                    //foreach (var info in infos) {
+                    //    string line = $"{info["Key"]}(";
 
-                        writer.WriteLine(line);
-                    }
+                    //    string parameters = info["Parameters"];
+                    //    int total = int.Parse(parameters);
+                    //    for (int i = 0; i < total; i++) {
+                    //        string strValue = info["Param" + (i + 1)];
+                    //        if (strValue.ToLower().Contains("false")) {
+                    //            line = "!" + line;
+                    //        } else {
+                    //            line += strValue;
+                    //            if (i != total - 1) {
+                    //                line += ",";
+                    //            }
+                    //        }
+                    //    }
+                    //    line += ")";
+
+                    //    writer.WriteLine(line);
+                    //}
 
                     writer.Flush();
                     writer.Close();
@@ -127,65 +114,70 @@ namespace Nucleus.Gaming.IO
         /// <summary>
         /// Reverts the data to the initially read data
         /// </summary>
-        public void RevertToBackup()
-        {
+        public void RevertToBackup() {
             rawData = string.Copy(backupData);
         }
 
-        public void ChangeProperty(SaveInfo source)
-        {
+        public void ChangeProperty(SaveInfo source) {
             string key = source["Key"];
 
             string parameters = source["Parameters"];
             int total = int.Parse(parameters);
 
-            SaveInfo info = infos.FirstOrDefault(c => c["Key"] == key);
-            if (info == null)
-            {
-                info = new SaveInfo();
-                info.Add("Key", key);
-                info.Add("Paremeters", parameters);
-                for (int i = 0; i < total; i++)
-                {
-                    string paramKey = "Param" + (i + 1);
-                    info.Add(paramKey, source[paramKey]);
+            bool remove = false;
+
+            string actualValue = "(";
+            for (int i = 0; i < total; i++) {
+                string paramKey = "Param" + (i + 1);
+                string paramData = source[paramKey];
+                if (paramData.Contains("false")) {
+                    remove = true;
+                } else {
+                    actualValue += paramData;
+                    if (i != total - 1) {
+                        actualValue += ",";
+                    }
                 }
             }
-            else
-            {
-                for (int i = 0; i < total; i++)
-                {
-                    string paramKey = "Param" + (i + 1);
-                    info[paramKey] = source[paramKey];
+            actualValue += ")";
+
+            int start;
+            int end;
+            int keyPos = GetPosition(key, out start, out end);
+            if (keyPos != -1) {
+                if (remove) {
+                    rawData = rawData.Insert(keyPos, "!");
+                } else {
+                    rawData = rawData.Remove(start, end - start);
+                    rawData = rawData.Insert(start, actualValue);
+                }
+            } else {
+                int why = -1;
+            }
+        }
+
+        public int GetPosition(string propName, out int start, out int end) {
+            start = -1;
+            end = -1;
+
+            int keyPos = 0;
+            for (; ; ) {
+                keyPos = rawData.IndexOf(propName, keyPos + 1);
+                if (keyPos == -1 || 
+                    keyPos == 0 || 
+                    rawData[keyPos - 1] != '!') {
+                    break;
                 }
             }
-            //int start;
-            //int end;
-            //if (GetPosition(rawData, propertyName, out start, out end))
-            //{
-            //    rawData = rawData.Remove(start, end - start);
-            //    rawData = rawData.Insert(start, value);
+            if (keyPos == -1 ||
+                keyPos > 0 && rawData[keyPos - 1] == '!') {
+                return -1;
+            }
 
-            //    return true;
-            //}
-            //else
-            //{
-            //    // search for the section name
-            //    if (GetPosition(rawData, section, out start, out end))
-            //    {
-            //        // write the property
+            start = rawData.IndexOf('(', keyPos);
+            end = rawData.IndexOf(')', start) + 1;
 
-            //    }
-            //    else
-            //    {
-            //        // write section
-            //        rawData += section + "{ }";
-
-            //        // now write the property
-            //        ChangeProperty(section, propertyName, value);
-            //    }
-            //}
-            //return false;
+            return keyPos;
         }
     }
 }

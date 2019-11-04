@@ -127,6 +127,7 @@
             this.list_games.AutoScroll = true;
             this.list_games.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
             this.list_games.Border = 1;
+            this.list_games.CanSelectControls = true;
             this.list_games.Location = new System.Drawing.Point(0, 21);
             this.list_games.Margin = new System.Windows.Forms.Padding(0);
             this.list_games.Name = "list_games";

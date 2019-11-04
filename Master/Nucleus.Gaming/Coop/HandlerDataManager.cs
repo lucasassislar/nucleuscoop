@@ -11,26 +11,14 @@ namespace Nucleus.Gaming.Coop
 {
     public class HandlerDataManager : IDisposable
     {
-        private HandlerDataEngine jsEngine;
-        private HandlerData handlerData;
         private GameHandlerMetadata handlerMetadata;
-        private ContentManager content;
         private bool isDisposed;
 
-        public HandlerData HandlerData
-        {
-            get { return handlerData; }
-        }
+        public HandlerData HandlerData { get; private set; }
 
-        public HandlerDataEngine Engine
-        {
-            get { return jsEngine; }
-        }
+        public HandlerDataEngine Engine { get; private set; }
 
-        public ContentManager Content
-        {
-            get { return content; }
-        }
+        public ContentManager Content { get; private set; }
 
         public HandlerDataManager(GameHandlerMetadata metadata, string jsCode)
         {
@@ -49,13 +37,13 @@ namespace Nucleus.Gaming.Coop
         {
             this.handlerMetadata = metadata;
 
-            jsEngine = new HandlerDataEngine(metadata, jsCode);
+            Engine = new HandlerDataEngine(metadata, jsCode);
 
-            string handlerStr = jsEngine.Initialize();
-            handlerData = JsonConvert.DeserializeObject<HandlerData>(handlerStr);
+            string handlerStr = Engine.Initialize();
+            HandlerData = JsonConvert.DeserializeObject<HandlerData>(handlerStr);
 
-            // content manager is shared withing the same game
-            content = new ContentManager(metadata, handlerData);
+            // content manager is shared within the same game
+            Content = new ContentManager(metadata, HandlerData);
         }
 
         public void Dispose()
@@ -66,15 +54,15 @@ namespace Nucleus.Gaming.Coop
             }
             isDisposed = true;
 
-            jsEngine.Dispose();
+            Engine.Dispose();
 
-            content.Dispose();
+            Content.Dispose();
         }
 
         public void Play(HandlerContext context, PlayerInfo player)
         {
             // ugly solution
-            context.PackageFolder = content.PackageFolder;
+            context.PackageFolder = Content.PackageFolder;
             string contextData = Engine.Play(context, player);
 
             JsonConvert.PopulateObject(contextData, context);

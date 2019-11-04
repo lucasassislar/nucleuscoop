@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Nucleus.Gaming.Coop {
+    /// <summary>
+    /// 
+    /// </summary>
     public struct SearchStorageInfo {
         public DriveInfo Drive { get; private set; }
         public string Info { get; private set; }

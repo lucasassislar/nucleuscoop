@@ -19,31 +19,43 @@ namespace Nucleus.Gaming.Coop {
     /// and how to support it
     /// </summary>
     public class GameManager {
-        private static GameManager instance;
+        /// <summary>
+        /// Result Error message from last play's session
+        /// </summary>
+        public string Error { get; private set; }
 
-        private UserProfile user;
-        private List<BackupFile> backupFiles;
-        private string error;
-        private PackageManager repoManager;
-
-        private GameMetadataManager metadataManager;
-        private ModuleManager moduleManager;
-
-        public string Error { get { return error; } }
-        public ModuleManager ModuleManager { get { return moduleManager; } }
+        /// <summary>
+        /// A reference to the manager of modules (modules handle a part of splitscreen initialization)
+        /// </summary>
+        public ModuleManager ModuleManager { get; private set; }
 
         /// <summary>
         /// Manages getting the name of games
         /// </summary>
-        public GameMetadataManager MetadataManager { get { return metadataManager; } }
+        public GameMetadataManager MetadataManager { get; private set; }
 
-        public UserProfile User { get { return user; } }
-        public PackageManager RepoManager { get { return repoManager; } }
+        /// <summary>
+        /// The current user's (the one using the software) options
+        /// </summary>
+        public UserProfile User { get; private set; }
 
-        public static GameManager Instance { get { return instance; } }
+        /// <summary>
+        /// Package Manager installs and uninstalls packages
+        /// </summary>
+        public PackageManager PackageManager { get; private set; }
+
+        /// <summary>
+        /// Manages backing up game files/save data before modifying it for a play session
+        /// </summary>
+        public BackupManager BackupManager { get; private set; }
+
+        /// <summary>
+        /// Singleton reference
+        /// </summary>
+        public static GameManager Instance { get; private set; }
 
         public GameManager() {
-            instance = this;
+            Instance = this;
             Initialize();
         }
 
@@ -52,7 +64,7 @@ namespace Nucleus.Gaming.Coop {
         /// </summary>
         /// <returns></returns>
         public IOrderedEnumerable<KeyValuePair<string, List<UserGameInfo>>> GetInstalledGamesOrdered() {
-            List<UserGameInfo> games = user.Games;
+            List<UserGameInfo> games = User.Games;
             Dictionary<string, List<UserGameInfo>> allGames = new Dictionary<string, List<UserGameInfo>>();
 
             for (int i = 0; i < games.Count; i++) {
@@ -80,7 +92,7 @@ namespace Nucleus.Gaming.Coop {
         /// <param name="gameExe"></param>
         /// <returns></returns>
         public bool AnyGame(string gameExe) {
-            return user.InstalledHandlers.Any(c => string.Equals(c.ExeName.ToLower(), gameExe, StringComparison.OrdinalIgnoreCase) ||
+            return User.InstalledHandlers.Any(c => string.Equals(c.ExeName.ToLower(), gameExe, StringComparison.OrdinalIgnoreCase) ||
                                                     string.Equals(c.ExeName.ToLower() + ".exe", gameExe, StringComparison.OrdinalIgnoreCase));
         }
 
@@ -94,7 +106,7 @@ namespace Nucleus.Gaming.Coop {
             string fileName = Path.GetFileName(exePath).ToLower();
             string dir = Path.GetDirectoryName(exePath);
 
-            var possibilities = user.InstalledHandlers.Where(c => string.Equals(c.ExeName, fileName, StringComparison.OrdinalIgnoreCase));
+            var possibilities = User.InstalledHandlers.Where(c => string.Equals(c.ExeName, fileName, StringComparison.OrdinalIgnoreCase));
 
             foreach (GameHandlerMetadata game in possibilities) {
                 // check if the Context matches
@@ -132,7 +144,7 @@ namespace Nucleus.Gaming.Coop {
             string fileName = Path.GetFileName(exePath).ToLower();
             string dir = Path.GetDirectoryName(exePath);
 
-            var possibilities = user.InstalledHandlers.Where(c => string.Equals(c.ExeName.ToLower(), fileName, StringComparison.OrdinalIgnoreCase)
+            var possibilities = User.InstalledHandlers.Where(c => string.Equals(c.ExeName.ToLower(), fileName, StringComparison.OrdinalIgnoreCase)
                                                                     || string.Equals(c.ExeName.ToLower() + ".exe", fileName, StringComparison.OrdinalIgnoreCase));
             List<GameHandlerMetadata> games = new List<GameHandlerMetadata>();
 
@@ -171,15 +183,15 @@ namespace Nucleus.Gaming.Coop {
             string lower = exePath.ToLower();
             string dir = Path.GetDirectoryName(exePath);
 
-            if (user.Games.Any(c => c.ExePath.ToLower() == lower)) {
+            if (User.Games.Any(c => c.ExePath.ToLower() == lower)) {
                 return null;
             }
 
             Log.WriteLine($"Added game: {metadata.Title}, on path: {exePath}");
             UserGameInfo uinfo = new UserGameInfo();
             uinfo.InitializeDefault(metadata, exePath);
-            user.Games.Add(uinfo);
-            user.Save();
+            User.Games.Add(uinfo);
+            User.Save();
 
             return uinfo;
 
@@ -212,15 +224,15 @@ namespace Nucleus.Gaming.Coop {
                 }
 
                 if (notAdd ||
-                    user.Games.Any(c => c.ExePath.ToLower() == lower)) {
+                    User.Games.Any(c => c.ExePath.ToLower() == lower)) {
                     continue;
                 }
 
                 Log.WriteLine($"Found game: {metadata.Title}, on path: {exePath}");
                 UserGameInfo uinfo = new UserGameInfo();
                 uinfo.InitializeDefault(metadata, exePath);
-                user.Games.Add(uinfo);
-                user.Save();
+                User.Games.Add(uinfo);
+                User.Save();
 
                 return uinfo;
             }
@@ -268,77 +280,29 @@ namespace Nucleus.Gaming.Coop {
             return Path.Combine(GetAppDataPath(), "userprofile.json");
         }
 
-        public void BeginBackup(HandlerData game) {
-            string appData = GetAppDataPath();
-            string gamePath = Path.Combine(appData, game.GameID);
-            Directory.CreateDirectory(gamePath);
-
-            backupFiles = new List<BackupFile>();
-        }
-
         public static string GetTempFolder(HandlerData game) {
             string appData = GetAppDataPath();
             return Path.Combine(appData, "temp", game.GameID);
         }
-
 
         public static string GetTempFolder(string gameId) {
             string appData = GetAppDataPath();
             return Path.Combine(appData, gameId);
         }
 
-        public BackupFile BackupFile(HandlerData game, string path) {
-            string appData = GetAppDataPath();
-            string gamePath = Path.Combine(appData, game.GameID);
-            string destination = Path.Combine(gamePath, Path.GetFileName(path));
-
-            if (!File.Exists(path)) {
-                if (File.Exists(destination)) {
-                    // we fucked up and the backup exists? maybe, so restore
-                    File.Copy(destination, path);
-                }
-            } else {
-                if (File.Exists(destination)) {
-                    File.Delete(destination);
-                }
-                File.Copy(path, destination);
-            }
-
-            BackupFile bkp = new BackupFile(path, destination);
-            backupFiles.Add(bkp);
-
-            return bkp;
-        }
-
-        public void ExecuteBackup(HandlerData game) {
-            // we didnt backup anything
-            if (backupFiles == null) {
-                return;
-            }
-
-            string appData = GetAppDataPath();
-            string gamePath = Path.Combine(appData, game.GameID);
-
-            for (int i = 0; i < backupFiles.Count; i++) {
-                BackupFile bkp = backupFiles[i];
-                if (File.Exists(bkp.BackupPath)) {
-                    File.Delete(bkp.Source);
-                    File.Move(bkp.BackupPath, bkp.Source);
-                }
-            }
-        }
+       
 
         private void LoadUser() {
             string userProfile = GetUserProfilePath();
 
             if (File.Exists(userProfile)) {
                 try {
-                    user = new UserProfile(userProfile);
-                    user.Load();
+                    User = new UserProfile(userProfile);
+                    User.Load();
 
-                    if (user.Games == null || user.InstalledHandlers == null) {
+                    if (User.Games == null || User.InstalledHandlers == null) {
                         // json doesn't save empty lists, and user didn't add any game
-                        user.InitializeDefault();
+                        User.InitializeDefault();
                     } else {
                         // delete invalid games
                         // we will rebuild the gamedb later, so commented for now
@@ -362,14 +326,14 @@ namespace Nucleus.Gaming.Coop {
 
             DirectoryInfo[] installedHandlers = dir.GetDirectories();
 
-            user.InstalledHandlers = new List<GameHandlerMetadata>();
+            User.InstalledHandlers = new List<GameHandlerMetadata>();
             for (int i = 0; i < installedHandlers.Length; i++) {
                 DirectoryInfo handlerDir = installedHandlers[i];
 
                 // read the game's json
-                string metadataPath = Path.Combine(handlerDir.FullName, repoManager.InfoFileName + repoManager.JsonFormat);
-                GameHandlerMetadata metadata = repoManager.ReadMetadataFromFile(metadataPath);
-                user.InstalledHandlers.Add(metadata);
+                string metadataPath = Path.Combine(handlerDir.FullName, PackageManager.InfoFileName + PackageManager.JsonFormat);
+                GameHandlerMetadata metadata = PackageManager.ReadMetadataFromFile(metadataPath);
+                User.InstalledHandlers.Add(metadata);
             }
 
             //if (installedHandlers.Length == 0)
@@ -377,7 +341,7 @@ namespace Nucleus.Gaming.Coop {
             //    user.Games.Clear(); // TODO: better clear
             //}
 
-            user.Save();
+            User.Save();
         }
 
         private void makeDefaultUserFile() {
@@ -387,14 +351,14 @@ namespace Nucleus.Gaming.Coop {
                 Directory.CreateDirectory(split);
             }
 
-            user = new UserProfile(userProfile);
-            user.InitializeDefault();
+            User = new UserProfile(userProfile);
+            User.InitializeDefault();
 
-            user.Save(userProfile);
+            User.Save(userProfile);
         }
 
         private void Initialize() {
-            metadataManager = new GameMetadataManager();
+            MetadataManager = new GameMetadataManager();
 
             string appData = GetAppDataPath();
             Directory.CreateDirectory(appData);
@@ -403,8 +367,9 @@ namespace Nucleus.Gaming.Coop {
             Directory.CreateDirectory(GetInstalledPackagePath());
             Directory.CreateDirectory(GetPackageTmpPath());
 
-            repoManager = new PackageManager();
-            moduleManager = new ModuleManager();
+            PackageManager = new PackageManager();
+            ModuleManager = new ModuleManager();
+            BackupManager = new BackupManager();
 
             LoadUser();
 
@@ -416,7 +381,7 @@ namespace Nucleus.Gaming.Coop {
         public void Play(GameHandler handler) {
             // Start the Play method in another thread, so the
             // handler can update while it's still loading
-            error = null;
+            Error = null;
             ThreadPool.QueueUserWorkItem(play, handler);
         }
 
@@ -425,12 +390,12 @@ namespace Nucleus.Gaming.Coop {
             try {
                 ((GameHandler)state).Play();
             } catch (Exception ex) {
-                error = ex.Message;
+                Error = ex.Message;
                 try {
                     // try to save the exception
                     Log.Instance.LogExceptionFile(ex);
                 } catch {
-                    error = "We failed so hard we failed while trying to record the reason we failed initially. Sorry.";
+                    Error = "We failed so hard we failed while trying to record the reason we failed initially. Sorry.";
                     return;
                 }
             }

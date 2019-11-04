@@ -11,19 +11,17 @@ namespace Nucleus.Gaming.Coop {
     /// <summary>
     /// Manager that extracts information from handler metadata's 
     /// and stores the game's metadata
+    /// This exists because Nucleus Coop does not know the name of the games, this data comes from game packages
     /// </summary>
     public class GameMetadataManager {
-        private Dictionary<string, string> gameNames;
-        private Dictionary<string, Bitmap> gameIcons;
-
-        public Dictionary<string, string> GameNames { get { return gameNames; } }
-        public Dictionary<string, Bitmap> GameIcons { get { return gameIcons; } }
-
         private Dictionary<string, List<Action<Bitmap>>> callbacks;
 
+        public Dictionary<string, string> GameNames { get; private set; }
+        public Dictionary<string, Bitmap> GameIcons { get; private set; }
+
         public GameMetadataManager() {
-            gameNames = new Dictionary<string, string>();
-            gameIcons = new Dictionary<string, Bitmap>();
+            GameNames = new Dictionary<string, string>();
+            GameIcons = new Dictionary<string, Bitmap>();
             callbacks = new Dictionary<string, List<Action<Bitmap>>>();
         }
 
@@ -50,7 +48,7 @@ namespace Nucleus.Gaming.Coop {
 
         public void GetIcon(UserGameInfo game, Action<Bitmap> callback) {
             Bitmap icon;
-            if (gameIcons.TryGetValue(game.GameID, out icon)) {
+            if (GameIcons.TryGetValue(game.GameID, out icon)) {
                 callback(icon);
             } else {
                 // extract icon from exe file
@@ -70,16 +68,16 @@ namespace Nucleus.Gaming.Coop {
 
         public bool UpdateNaming(GameHandlerMetadata info) {
             // TODO: better logic so repositories can agree on game name
-            if (gameNames.ContainsKey(info.GameID)) {
+            if (GameNames.ContainsKey(info.GameID)) {
                 return false;
             }
-            gameNames.Add(info.GameID, info.GameTitle);
+            GameNames.Add(info.GameID, info.GameTitle);
             return true;
         }
 
         public string GetGameName(string gameId) {
             string gameName;
-            if (gameNames.TryGetValue(gameId, out gameName)) {
+            if (GameNames.TryGetValue(gameId, out gameName)) {
                 return gameName;
             }
             return "Unknown";

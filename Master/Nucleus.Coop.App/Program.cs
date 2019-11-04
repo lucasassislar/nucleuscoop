@@ -52,7 +52,6 @@ namespace Nucleus.Coop
             Application.Run(form);
         }
 
-#if DEBUG
         private static void ThreadExceptionEventHandler(object sender, ThreadExceptionEventArgs e)
         {
             System.Diagnostics.Debugger.Break();
@@ -62,7 +61,6 @@ namespace Nucleus.Coop
         {
             System.Diagnostics.Debugger.Break();
         }
-#endif
     }
 
 

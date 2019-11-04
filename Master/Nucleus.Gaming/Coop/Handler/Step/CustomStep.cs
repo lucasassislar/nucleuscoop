@@ -12,6 +12,7 @@ namespace Nucleus.Gaming.Coop.Handler
     public class CustomStep
     {
         public GameOption Option;
+
         public string Title;
 
         public bool Required;

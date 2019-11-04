@@ -182,10 +182,6 @@ namespace Nucleus.Gaming.Package {
             }
         }
 
-        public GameHandlerMetadata ReadInfoFromInstalledHandler(UserInstalledHandler handler) {
-            return ReadInfoFromPackageFile(handler.PackagePath);
-        }
-
         public GameHandlerMetadata ReadMetadataFromFile(string metadataPath) {
             using (Stream str = File.OpenRead(metadataPath)) {
                 using (StreamReader reader = new StreamReader(str)) {

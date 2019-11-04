@@ -76,7 +76,7 @@ namespace Nucleus.Coop.App.Forms {
                     if (extension.ToLower().EndsWith("nc")) {
                         // try installing the package in the arguments if user allows it
                         if (MessageBox.Show("Would you like to install " + argument + "?", "Question", MessageBoxButtons.YesNo) == DialogResult.Yes) {
-                            gameManager.RepoManager.InstallPackage(argument);
+                            gameManager.PackageManager.InstallPackage(argument);
                         }
                     }
                 }

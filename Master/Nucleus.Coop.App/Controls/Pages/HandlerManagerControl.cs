@@ -323,7 +323,7 @@ namespace Nucleus.Coop.App.Controls {
                 if (open.ShowDialog() == DialogResult.OK) {
                     string[] paths = open.FileNames;
                     for (int i = 0; i < paths.Length; i++) {
-                        GameManager.Instance.RepoManager.InstallPackage(paths[i]);
+                        GameManager.Instance.PackageManager.InstallPackage(paths[i]);
                     }
                     LoadInstalled();
                 }

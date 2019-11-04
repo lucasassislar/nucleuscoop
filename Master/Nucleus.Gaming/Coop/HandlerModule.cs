@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 
 namespace Nucleus.Gaming.Coop {
+    /// <summary>
+    /// Represents all a Handler Module needs to implement to be able to be used by the engine
+    /// </summary>
     public abstract class HandlerModule {
         public abstract int Order { get; }
 
