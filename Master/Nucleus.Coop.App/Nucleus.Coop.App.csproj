@@ -100,156 +100,147 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\BaseControl.cs">
+    <Compile Include="Codebase\Controls\BaseControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\BaseControl.Designer.cs">
+    <Compile Include="Codebase\Controls\BaseControl.Designer.cs">
       <DependentUpon>BaseControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CheckedTextControl.cs">
+    <Compile Include="Codebase\Controls\CheckedTextControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Pages\BasePageControl.cs">
+    <Compile Include="Codebase\Controls\Pages\BasePageControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Pages\BasePageControl.Designer.cs">
+    <Compile Include="Codebase\Controls\Pages\BasePageControl.Designer.cs">
       <DependentUpon>BasePageControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CTabControl.cs">
+    <Compile Include="Codebase\Controls\CTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\GameControl.cs">
+    <Compile Include="Codebase\Controls\GameControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\GameNameControl.cs">
+    <Compile Include="Codebase\Controls\GameNameControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\GamePageBrowserControl.cs">
+    <Compile Include="Codebase\Controls\GamePageBrowserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\GamePageBrowserControl.Designer.cs">
+    <Compile Include="Codebase\Controls\GamePageBrowserControl.Designer.cs">
       <DependentUpon>GamePageBrowserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\GameRunningOverlay.cs">
+    <Compile Include="Codebase\Controls\GameRunningOverlay.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\GameRunningOverlay.Designer.cs">
+    <Compile Include="Codebase\Controls\GameRunningOverlay.Designer.cs">
       <DependentUpon>GameRunningOverlay.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Pages\SelectGameFolderPageControl.cs">
+    <Compile Include="Codebase\Controls\Pages\SelectGameFolderPageControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Pages\SelectGameFolderPageControl.Designer.cs">
+    <Compile Include="Codebase\Controls\Pages\SelectGameFolderPageControl.Designer.cs">
       <DependentUpon>SelectGameFolderPageControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TitleSeparator.cs">
+    <Compile Include="Codebase\Controls\TitleSeparator.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\TitleSeparator.Designer.cs">
+    <Compile Include="Codebase\Controls\TitleSeparator.Designer.cs">
       <DependentUpon>TitleSeparator.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\HandlerControl.cs">
+    <Compile Include="Codebase\Controls\HandlerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Pages\GamePageControl.cs">
+    <Compile Include="Codebase\Controls\Pages\GamePageControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Pages\GamePageControl.Designer.cs">
+    <Compile Include="Codebase\Controls\Pages\GamePageControl.Designer.cs">
       <DependentUpon>GamePageControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Pages\HandlerManagerControl.cs">
+    <Compile Include="Codebase\Controls\Pages\HandlerManagerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Pages\HandlerManagerControl.Designer.cs">
+    <Compile Include="Codebase\Controls\Pages\HandlerManagerControl.Designer.cs">
       <DependentUpon>HandlerManagerControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\HorizontalLineControl.cs">
+    <Compile Include="Codebase\Controls\HorizontalLineControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\HorizontalLineControl.Designer.cs">
+    <Compile Include="Codebase\Controls\HorizontalLineControl.Designer.cs">
       <DependentUpon>HorizontalLineControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\JSUserInputControl.cs">
+    <Compile Include="Codebase\Controls\JSUserInputControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\NCTextBox.cs">
+    <Compile Include="Codebase\Controls\NCTextBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Pages\NoGamesInstalledPage.cs">
+    <Compile Include="Codebase\Controls\Pages\NoGamesInstalledPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Pages\NoGamesInstalledPage.Designer.cs">
+    <Compile Include="Codebase\Controls\Pages\NoGamesInstalledPage.Designer.cs">
       <DependentUpon>NoGamesInstalledPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Steps\PlayerCountControl.cs">
+    <Compile Include="Codebase\Controls\Steps\PlayerCountControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Steps\PlayerCountControl.Designer.cs">
+    <Compile Include="Codebase\Controls\Steps\PlayerCountControl.Designer.cs">
       <DependentUpon>PlayerCountControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Steps\PlayerOptionsControl.cs">
+    <Compile Include="Codebase\Controls\Steps\PlayerOptionsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Steps\PositionsControl.cs">
+    <Compile Include="Codebase\Controls\Steps\PositionsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Steps\UserInputControl.cs">
+    <Compile Include="Codebase\Controls\Steps\UserInputControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="src\AppPage.cs" />
-    <Compile Include="src\EventCapture.cs" />
+    <Compile Include="Codebase\AppPage.cs" />
+    <Compile Include="Codebase\EventCapture.cs" />
     <None Include="app.nuspec" />
-    <Compile Include="Forms\GameList.cs">
+    <Compile Include="Codebase\Forms\GameList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\GameList.Designer.cs">
+    <Compile Include="Codebase\Forms\GameList.Designer.cs">
       <DependentUpon>GameList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\MainForm.cs">
+    <Compile Include="Codebase\Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\MainForm.Designer.cs">
+    <Compile Include="Codebase\Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\SearchStorageForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\SearchStorageForm.Designer.cs">
-      <DependentUpon>SearchStorageForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <EmbeddedResource Include="Controls\Pages\BasePageControl.resx">
+    <EmbeddedResource Include="Codebase\Controls\Pages\BasePageControl.resx">
       <DependentUpon>BasePageControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\GamePageBrowserControl.resx">
+    <EmbeddedResource Include="Codebase\Controls\GamePageBrowserControl.resx">
       <DependentUpon>GamePageBrowserControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\GameRunningOverlay.resx">
+    <EmbeddedResource Include="Codebase\Controls\GameRunningOverlay.resx">
       <DependentUpon>GameRunningOverlay.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Pages\GamePageControl.resx">
+    <EmbeddedResource Include="Codebase\Controls\Pages\GamePageControl.resx">
       <DependentUpon>GamePageControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Pages\HandlerManagerControl.resx">
+    <EmbeddedResource Include="Codebase\Controls\Pages\HandlerManagerControl.resx">
       <DependentUpon>HandlerManagerControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Pages\NoGamesInstalledPage.resx">
+    <EmbeddedResource Include="Codebase\Controls\Pages\NoGamesInstalledPage.resx">
       <DependentUpon>NoGamesInstalledPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Pages\SelectGameFolderPageControl.resx">
+    <EmbeddedResource Include="Codebase\Controls\Pages\SelectGameFolderPageControl.resx">
       <DependentUpon>SelectGameFolderPageControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Steps\PlayerCountControl.resx">
+    <EmbeddedResource Include="Codebase\Controls\Steps\PlayerCountControl.resx">
       <DependentUpon>PlayerCountControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\GameList.resx">
+    <EmbeddedResource Include="Codebase\Forms\GameList.resx">
       <DependentUpon>GameList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MainForm.resx">
+    <EmbeddedResource Include="Codebase\Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SearchStorageForm.resx">
-      <DependentUpon>SearchStorageForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -307,6 +298,10 @@
     <ProjectReference Include="..\Nucleus.Coop.StartGame\Nucleus.Coop.GameTasks.csproj">
       <Project>{91298ada-5999-41d4-8a7b-51f28094ab5b}</Project>
       <Name>Nucleus.Coop.GameTasks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SplitScreenMe.Core\SplitScreenMe.Core.csproj">
+      <Project>{19a2a705-349a-48f7-9516-728620b15c9c}</Project>
+      <Name>SplitScreenMe.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

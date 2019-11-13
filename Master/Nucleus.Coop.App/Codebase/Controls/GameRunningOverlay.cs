@@ -1,0 +1,38 @@
+﻿using System;
+using System.Windows.Forms;
+
+namespace Nucleus.Coop.App.Controls {
+    public partial class GameRunningOverlay : UserControl {
+        public event Action OnStop;
+
+        private Form parent;
+
+        public GameRunningOverlay() {
+            InitializeComponent();
+        }
+
+        public void EnableOverlay(Form parent) {
+            parent.Controls.Add(this);
+            this.Dock = DockStyle.Fill;
+            this.BringToFront();
+
+            this.parent = parent;
+        }
+
+
+        public void DisableOverlay() {
+            this.parent.Controls.Remove(this);
+            this.parent = null;
+        }
+
+        private void GameRunningOverlay_SizeChanged(object sender, EventArgs e) {
+            btn_Stop.Left = (this.DisplayRectangle.Width / 2) - (btn_Stop.Width / 2);
+            btn_Stop.Top = (this.DisplayRectangle.Height / 2) - (btn_Stop.Height / 2);
+        }
+
+        private void btn_Stop_Click(object sender, EventArgs e) {
+            DisableOverlay();
+            OnStop?.Invoke();
+        }
+    }
+}

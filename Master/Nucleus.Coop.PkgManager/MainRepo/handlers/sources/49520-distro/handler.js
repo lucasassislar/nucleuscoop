@@ -32,7 +32,7 @@ Game.Hook.ForceFocusWindowRegex = "Borderlands 2";
 Game.Hook.DInputEnabled = false;
 Game.Hook.XInputEnabled = true;
 Game.Hook.XInputReroute = false;//true; // this is beta
-Game.Hook.XInputNames = [ "xinput1_3.dll" ];
+Game.Hook.XInputNames = ["xinput1_3.dll"];
 
 Game.OnPlay.Callback(function () {
     var savePath = Context.GetFolder(Folder.Documents) + "\\My Games\\Borderlands 2\\WillowGame\\Config\\WillowEngine.ini";
@@ -42,21 +42,15 @@ Game.OnPlay.Callback(function () {
         Context.NewSaveInfo("SystemSettings", "ResY", Context.Height),
         Context.NewSaveInfo("SystemSettings", "Fullscreen", false),
         Context.NewSaveInfo("Engine.Engine", "bPauseOnLossOfFocus", false),
-        Context.NewSaveInfo("WillowGame.WillowGameEngine", "bPauseLostFocusWindowed", false),
         Context.NewSaveInfo("Engine.Engine", "bMuteAudioWhenNotInFocus", false),
         Context.NewSaveInfo("Engine.Engine", "bPauseOnLossOfFocus", false),
+        Context.NewSaveInfo("WillowGame.WillowGameEngine", "bPauseLostFocusWindowed", false),
         Context.NewSaveInfo("WillowGame.WillowGameEngine", "bMuteAudioWhenNotInFocus", false),
     ]);
 
     var playerStr = "saveid" + Context.PlayerID;
     if (Context.IsKeyboardPlayer) {
         Context.StartArguments = "-windowed -AlwaysFocus -NoController -SaveDataId=" + Context.Options[playerStr];
-
-        // allow keyboard control
-        Context.LockMouse = true;
-        Context.Hook.BlockKeyboardEvents = false;
-        Context.Hook.BlockMouseEvents = false;
-        Context.Hook.BlockInputEvents = false;
     }
     else {
         Context.StartArguments = "-windowed -AlwaysFocus -SaveDataId=" + Context.Options[playerStr];
