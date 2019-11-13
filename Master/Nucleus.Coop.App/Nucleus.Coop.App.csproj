@@ -296,6 +296,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Submodules\nucleusgaming\Nucleus.Gaming\Nucleus.Gaming\Nucleus.Gaming.csproj">
+      <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
+      <Name>Nucleus.Gaming</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nucleus.Coop.AppPostBuild\Nucleus.Coop.AppPostBuild.csproj">
       <Project>{6bacfb45-eedc-4371-9377-013d534ac83c}</Project>
       <Name>Nucleus.Coop.AppPostBuild</Name>
@@ -303,10 +307,6 @@
     <ProjectReference Include="..\Nucleus.Coop.StartGame\Nucleus.Coop.GameTasks.csproj">
       <Project>{91298ada-5999-41d4-8a7b-51f28094ab5b}</Project>
       <Name>Nucleus.Coop.GameTasks</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Nucleus.Gaming\Nucleus.Gaming.csproj">
-      <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
-      <Name>Nucleus.Gaming</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

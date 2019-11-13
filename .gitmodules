@@ -1,3 +1,6 @@
 [submodule "Submodules/x360ce"]
 	path = Submodules/x360ce
 	url = https://github.com/lucasassislar/x360ce
+[submodule "Submodules/nucleusgaming"]
+	path = Submodules/nucleusgaming
+	url = https://github.com/lucasassislar/nucleusgaming

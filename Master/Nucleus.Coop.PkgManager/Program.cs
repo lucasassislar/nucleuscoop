@@ -72,10 +72,10 @@ namespace Nucleus.Coop.PkgManager
             {
                 DirectoryInfo dir = dirs[i];
 
-                if (dir.Name.Contains("239140")) // ignore dying light, unfinished
-                {
-                    continue;
-                }
+                //if (dir.Name.Contains("239140")) // ignore dying light, unfinished
+                //{
+                //    continue;
+                //}
 
                 // read handler data
                 string handlerPath = Path.Combine(dir.FullName, "info.json");
