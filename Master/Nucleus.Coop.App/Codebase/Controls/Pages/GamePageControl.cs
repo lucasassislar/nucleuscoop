@@ -160,8 +160,7 @@ namespace Nucleus.Coop.App.Controls {
             BrowserBtns.SetPreviousButtonState(step > 0);
             if (step >= stepsList.Count) {
                 return;
-            }
-            else if (step >= 2) {
+            } else if (step >= 2) {
                 // Custom steps
                 List<CustomStep> customSteps = handlerData.CustomSteps;
                 int customStepIndex = step - 2;

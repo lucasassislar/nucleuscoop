@@ -1,18 +1,12 @@
-﻿using Nucleus.Gaming;
-using Nucleus.Gaming.Properties;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using Nucleus.Coop.App.Properties;
+using Nucleus.Gaming.Coop;
 using SlimDX.DirectInput;
 using SlimDX.XInput;
-using Nucleus.Gaming.Coop;
-using Nucleus.Coop.App.Properties;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace Nucleus.Gaming.App.Controls {
     public class PositionsControl : UserInputControl {

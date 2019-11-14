@@ -31,20 +31,19 @@ namespace Nucleus.Coop.App.Controls {
             bool designMode = (LicenseManager.UsageMode == LicenseUsageMode.Designtime);
 
             this.Title = "Settings";
-            //this.Image = Resources.nucleus;
             this.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "⚙");
-
-            if (!designMode) {
-                LoadInstalled();
-            }
 
             list_left.HorizontalScroll.Maximum = 0;
             list_left.AutoScroll = false;
             list_left.VerticalScroll.Visible = false;
-            list_left.AutoScroll = true;
+            list_left.VerticalScrollEnabled = false;
 
             panel_disks.Visible = false;
             list_storage.CanSelectControls = false;
+
+            if (!designMode) {
+                LoadInstalled();
+            }
         }
 
         public override void UserLeft() {
@@ -104,7 +103,6 @@ namespace Nucleus.Coop.App.Controls {
             GameControl installFile = new GameControl();
             installFile.Width = list_left.Width;
             installFile.UpdateTitleText("Install handler from file");
-            //installFile.Image = Resources.nucleus;
             installFile.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "🔍");
             installFile.Click += InstallFile_Click;
             list_left.Controls.Add(installFile);

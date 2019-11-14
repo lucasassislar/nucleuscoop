@@ -134,6 +134,7 @@
             // 
             // list_installedGames
             // 
+            this.list_installedGames.BackColor = System.Drawing.Color.Transparent;
             this.list_installedGames.Border = 1;
             this.list_installedGames.CanSelectControls = true;
             this.list_installedGames.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -142,6 +143,7 @@
             this.list_installedGames.Offset = new System.Drawing.Size(0, 0);
             this.list_installedGames.Size = new System.Drawing.Size(507, 571);
             this.list_installedGames.TabIndex = 0;
+            this.list_installedGames.VerticalScrollEnabled = true;
             // 
             // panel_disks
             // 
@@ -160,7 +162,7 @@
             this.list_storage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.list_storage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(63)))));
+            this.list_storage.BackColor = System.Drawing.Color.Transparent;
             this.list_storage.Border = 0;
             this.list_storage.CanSelectControls = true;
             this.list_storage.Location = new System.Drawing.Point(0, 0);
@@ -168,6 +170,7 @@
             this.list_storage.Offset = new System.Drawing.Size(0, 0);
             this.list_storage.Size = new System.Drawing.Size(508, 520);
             this.list_storage.TabIndex = 10;
+            this.list_storage.VerticalScrollEnabled = true;
             // 
             // btn_search
             // 
@@ -185,15 +188,15 @@
             // 
             this.list_left.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.list_left.AutoScroll = true;
-            this.list_left.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
+            this.list_left.BackColor = System.Drawing.Color.Transparent;
             this.list_left.Border = 2;
             this.list_left.CanSelectControls = true;
-            this.list_left.Location = new System.Drawing.Point(1, 0);
+            this.list_left.Location = new System.Drawing.Point(0, 0);
             this.list_left.Name = "list_left";
             this.list_left.Offset = new System.Drawing.Size(0, 0);
             this.list_left.Size = new System.Drawing.Size(272, 629);
             this.list_left.TabIndex = 4;
+            this.list_left.VerticalScrollEnabled = true;
             // 
             // HandlerManagerControl
             // 

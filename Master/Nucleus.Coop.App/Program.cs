@@ -1,20 +1,14 @@
-﻿using Nucleus.Gaming;
+﻿using Nucleus.Coop.App.Forms;
+using Nucleus.Gaming;
+using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Diagnostics;
 using Nucleus.Gaming.Windows;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using Nucleus.Gaming.Coop;
 using System.Threading;
-using Nucleus.Coop.App.Forms;
-using Nucleus.Gaming.Coop.Interop;
+using System.Windows.Forms;
 
-namespace Nucleus.Coop
-{
-    static class Program
-    {
+namespace Nucleus.Coop {
+    static class Program {
         [STAThread]
         static void Main(string[] args) {
             new Log(true);
@@ -45,20 +39,17 @@ namespace Nucleus.Coop
             StartMainForm(args, gameManager);
         }
 
-        private static void StartMainForm(string[] args, GameManager gameManager)
-        {
+        private static void StartMainForm(string[] args, GameManager gameManager) {
             MainForm form = new MainForm(args, gameManager);
 
             Application.Run(form);
         }
 
-        private static void ThreadExceptionEventHandler(object sender, ThreadExceptionEventArgs e)
-        {
+        private static void ThreadExceptionEventHandler(object sender, ThreadExceptionEventArgs e) {
             System.Diagnostics.Debugger.Break();
         }
 
-        private static void UnhandledExceptionEventHandler(object sender, UnhandledExceptionEventArgs e)
-        {
+        private static void UnhandledExceptionEventHandler(object sender, UnhandledExceptionEventArgs e) {
             System.Diagnostics.Debugger.Break();
         }
     }
