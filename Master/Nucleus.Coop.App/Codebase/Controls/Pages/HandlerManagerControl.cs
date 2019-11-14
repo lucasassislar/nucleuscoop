@@ -69,6 +69,39 @@ namespace Nucleus.Coop.App.Controls {
             //line.LineHeight = 1;
             //line.LineColor = Color.FromArgb(255, 41, 45, 47);
 
+            TitleSeparator appSettings = new TitleSeparator();
+            appSettings.SetTitle("APP SETTINGS");
+            appSettings.Height = 20;
+            this.list_left.Controls.Add(appSettings);
+
+            GameControl hotkeySettings = new GameControl();
+            hotkeySettings.Width = list_left.Width;
+            hotkeySettings.UpdateTitleText("Hotkeys");
+            hotkeySettings.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "☒");
+            //hotkeySettings.Click += InstallGame_Click;
+            list_left.Controls.Add(hotkeySettings);
+
+            GameControl controllerSettings = new GameControl();
+            controllerSettings.Width = list_left.Width;
+            controllerSettings.UpdateTitleText("Controllers");
+            controllerSettings.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "🎮");
+            //controllerSettings.Click += InstallGame_Click;
+            list_left.Controls.Add(controllerSettings);
+
+            GameControl customPositionLayoutSettings = new GameControl();
+            customPositionLayoutSettings.Width = list_left.Width;
+            customPositionLayoutSettings.UpdateTitleText("Custom Position Layout");
+            customPositionLayoutSettings.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "📁");
+            //controllerSettings.Click += InstallGame_Click;
+            list_left.Controls.Add(customPositionLayoutSettings);
+
+            GameControl miscelaneousSettings = new GameControl();
+            miscelaneousSettings.Width = list_left.Width;
+            miscelaneousSettings.UpdateTitleText("Miscelaneous");
+            miscelaneousSettings.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "⛏");
+            //controllerSettings.Click += InstallGame_Click;
+            list_left.Controls.Add(miscelaneousSettings);
+
             TitleSeparator gamesSep = new TitleSeparator();
             gamesSep.SetTitle("GAMES");
             gamesSep.Height = 20;
