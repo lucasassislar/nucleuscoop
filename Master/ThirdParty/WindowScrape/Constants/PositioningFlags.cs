@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace WindowScrape.Constants
-{
+namespace WindowScrape.Constants {
     [Flags]
-    public enum PositioningFlags : uint
-    {
+    public enum PositioningFlags : uint {
         SWP_NOSIZE = 0x0001,
         SWP_NOMOVE = 0x0002,
         SWP_NOZORDER = 0x0004,

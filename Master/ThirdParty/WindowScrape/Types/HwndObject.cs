@@ -2,19 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using WindowScrape.Constants;
 using WindowScrape.Static;
 using Point = System.Drawing.Point;
 
-namespace WindowScrape.Types
-{
+namespace WindowScrape.Types {
     /// <summary>
     /// Allows the searching, navigation, and manipulation of Hwnd objects.
     /// </summary>
-    public class HwndObject
-    {
+    public class HwndObject {
         /// <summary>
         /// The windows handle to this object.
         /// </summary>
@@ -24,8 +20,7 @@ namespace WindowScrape.Types
         /// The registered class name (if any) of this object.
         /// </summary>
         [JsonIgnore]
-        public string ClassName
-        {
+        public string ClassName {
             get { return HwndInterface.GetHwndClassName(NativePtr); }
         }
 
@@ -33,8 +28,7 @@ namespace WindowScrape.Types
         /// The title of this object - Setting this will only effect window title-bar text.
         /// </summary>
         [JsonIgnore]
-        public string Title
-        {
+        public string Title {
             get { return HwndInterface.GetHwndTitle(NativePtr); }
             set { HwndInterface.SetHwndTitle(NativePtr, value); }
         }
@@ -43,8 +37,7 @@ namespace WindowScrape.Types
         /// The text of this item - setting this will only effect controls and only with appropriate access/privacy
         /// </summary>
         [JsonIgnore]
-        public string Text
-        {
+        public string Text {
             get { return HwndInterface.GetHwndText(NativePtr); }
             set { HwndInterface.SetHwndText(NativePtr, value); }
         }
@@ -53,17 +46,12 @@ namespace WindowScrape.Types
         /// The location of this Hwnd Object.
         /// </summary>
         [JsonIgnore]
-        public Point Location
-        {
+        public Point Location {
             get { return HwndInterface.GetHwndPos(NativePtr); }
-            set
-            {
-                if (TopMost)
-                {
+            set {
+                if (TopMost) {
                     HwndInterface.SetHwndPosTopMost(NativePtr, (int)value.X, (int)value.Y);
-                }
-                else
-                {
+                } else {
                     HwndInterface.SetHwndPos(NativePtr, (int)value.X, (int)value.Y);
                 }
             }
@@ -72,18 +60,13 @@ namespace WindowScrape.Types
         private bool isTopMost;
 
         [JsonIgnore]
-        public bool TopMost
-        {
+        public bool TopMost {
             get { return isTopMost; }
-            set
-            {
+            set {
                 isTopMost = value;
-                if (value)
-                {
+                if (value) {
                     HwndInterface.MakeTopMost(NativePtr);
-                }
-                else
-                {
+                } else {
                     throw new NotImplementedException();
                 }
             }
@@ -93,17 +76,12 @@ namespace WindowScrape.Types
         /// The size of this Hwnd Object.
         /// </summary>
         [JsonIgnore]
-        public Size Size
-        {
+        public Size Size {
             get { return HwndInterface.GetHwndSize(NativePtr); }
-            set
-            {
-                if (TopMost)
-                {
+            set {
+                if (TopMost) {
                     HwndInterface.SetHwndSizeTopMost(NativePtr, (int)value.Width, (int)value.Height);
-                }
-                else
-                {
+                } else {
                     HwndInterface.SetHwndSize(NativePtr, (int)value.Width, (int)value.Height);
                 }
             }
@@ -113,8 +91,7 @@ namespace WindowScrape.Types
         /// Retrieves all top-level Hwnd Objects.
         /// </summary>
         /// <returns></returns>
-        public static List<HwndObject> GetWindows()
-        {
+        public static List<HwndObject> GetWindows() {
             var result = new List<HwndObject>();
             foreach (var hwnd in HwndInterface.EnumHwnds())
                 result.Add(new HwndObject(hwnd));
@@ -126,8 +103,7 @@ namespace WindowScrape.Types
         /// </summary>
         /// <param name="title"></param>
         /// <returns></returns>
-        public static HwndObject GetWindowByTitle(string title)
-        {
+        public static HwndObject GetWindowByTitle(string title) {
             return new HwndObject(HwndInterface.GetHwndFromTitle(title));
         }
 
@@ -135,8 +111,7 @@ namespace WindowScrape.Types
         /// Initialized a new HwndObject.
         /// </summary>
         /// <param name="hwnd"></param>
-        public HwndObject(IntPtr hwnd)
-        {
+        public HwndObject(IntPtr hwnd) {
             NativePtr = hwnd;
         }
 
@@ -146,8 +121,7 @@ namespace WindowScrape.Types
         /// <param name="msg"></param>
         /// <param name="param1"></param>
         /// <param name="param2"></param>
-        public void SendMessage(WM msg, uint param1, string param2)
-        {
+        public void SendMessage(WM msg, uint param1, string param2) {
             HwndInterface.SendMessage(NativePtr, msg, param1, param2);
         }
 
@@ -157,8 +131,7 @@ namespace WindowScrape.Types
         /// <param name="msg"></param>
         /// <param name="param1"></param>
         /// <param name="param2"></param>
-        public void SendMessage(WM msg, uint param1, uint param2)
-        {
+        public void SendMessage(WM msg, uint param1, uint param2) {
             HwndInterface.SendMessage(NativePtr, msg, param1, param2);
         }
 
@@ -168,8 +141,7 @@ namespace WindowScrape.Types
         /// <param name="msg"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-        public string GetMessageString(WM msg, uint param)
-        {
+        public string GetMessageString(WM msg, uint param) {
             return HwndInterface.GetMessageString(NativePtr, msg, param);
         }
         /// <summary>
@@ -177,16 +149,14 @@ namespace WindowScrape.Types
         /// </summary>
         /// <param name="msg"></param>
         /// <returns></returns>
-        public int GetMessageInt(WM msg)
-        {
+        public int GetMessageInt(WM msg) {
             return HwndInterface.GetMessageInt(NativePtr, msg);
         }
 
         /// <summary>
         /// Simulates a user-click on this object.
         /// </summary>
-        public void Click()
-        {
+        public void Click() {
             HwndInterface.ClickHwnd(NativePtr);
         }
 
@@ -194,8 +164,7 @@ namespace WindowScrape.Types
         /// Seeks a parent for this Hwnd Object (if any).
         /// </summary>
         /// <returns></returns>
-        public HwndObject GetParent()
-        {
+        public HwndObject GetParent() {
             return new HwndObject(HwndInterface.GetHwndParent(NativePtr));
         }
 
@@ -203,8 +172,7 @@ namespace WindowScrape.Types
         /// Seeks all children of this Hwnd Object.
         /// </summary>
         /// <returns></returns>
-        public List<HwndObject> GetChildren()
-        {
+        public List<HwndObject> GetChildren() {
             var result = new List<HwndObject>();
             foreach (var hwnd in HwndInterface.EnumChildren(NativePtr))
                 result.Add(new HwndObject(hwnd));
@@ -217,19 +185,16 @@ namespace WindowScrape.Types
         /// <param name="cls"></param>
         /// <param name="title"></param>
         /// <returns></returns>
-        public HwndObject GetChild(string cls, string title)
-        {
+        public HwndObject GetChild(string cls, string title) {
             var hwnd = HwndInterface.GetHwndChild(NativePtr, cls, title);
             return new HwndObject(hwnd);
         }
 
-        public bool MoveWindow(Point location, Size size)
-        {
+        public bool MoveWindow(Point location, Size size) {
             return HwndInterface.MoveWindow(NativePtr, location.X, location.Y, size.Width, size.Height);
         }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             var pt = Location;
             var sz = Size;
             var result =

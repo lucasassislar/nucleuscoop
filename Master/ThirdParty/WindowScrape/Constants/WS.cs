@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace WindowScrape.Constants
-{
-    public enum WindowLongFlags : int
-    {
+﻿namespace WindowScrape.Constants {
+    public enum WindowLongFlags : int {
         GWL_EXSTYLE = -20,
         GWLP_HINSTANCE = -6,
         GWLP_HWNDPARENT = -8,

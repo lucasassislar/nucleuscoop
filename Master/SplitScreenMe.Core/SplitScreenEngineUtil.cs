@@ -1,14 +1,9 @@
 ﻿using Microsoft.Win32;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Windows.Interop;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SplitScreenMe.Core {
     public static class SplitScreenEngineUtil {

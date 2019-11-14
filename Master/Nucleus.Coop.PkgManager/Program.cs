@@ -1,18 +1,13 @@
 ﻿using Ionic.Zip;
 using Newtonsoft.Json;
-using Nucleus.Gaming;
-using Nucleus.Gaming.Package;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Windows.Forms;
 
-namespace Nucleus.Coop.PkgManager
-{
-    public class Infos
-    {
+namespace Nucleus.Coop.PkgManager {
+    public class Infos {
         public GameHandlerMetadata Metadata;
         public string RootFolder;
     }
@@ -20,14 +15,12 @@ namespace Nucleus.Coop.PkgManager
     /// <summary>
     /// Generates a dynamic website based on the available handlers
     /// </summary>
-    static class Program
-    {
+    static class Program {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
-        {
+        static void Main() {
             string rootDir = AssemblyUtil.GetStartFolder();
             string output = Path.Combine(rootDir, "output");
             string toBuild = "..\\..\\MainRepo\\handlers\\sources";
@@ -38,16 +31,14 @@ namespace Nucleus.Coop.PkgManager
             BuildDir(output, toBuild);
         }
 
-        private static void BuildDir(string output, string toBuild)
-        {
+        private static void BuildDir(string output, string toBuild) {
             string infosFolder = Path.Combine(output, "infos");
             string pkgsFolder = Path.Combine(output, "handlers");
 
             string indexPagePath = Path.Combine(output, "index.html");
             string indexData = "<html><head><link rel='stylesheet' href='bootstrap.css'><link rel='stylesheet' href='style.css'></head><body>";
 
-            if (Directory.Exists(output))
-            {
+            if (Directory.Exists(output)) {
                 Directory.Delete(output, true);
             }
 
@@ -68,8 +59,7 @@ namespace Nucleus.Coop.PkgManager
 
             List<Infos> infos = new List<Infos>();
 
-            for (int i = 0; i < dirs.Length; i++)
-            {
+            for (int i = 0; i < dirs.Length; i++) {
                 DirectoryInfo dir = dirs[i];
 
                 //if (dir.Name.Contains("239140")) // ignore dying light, unfinished
@@ -81,8 +71,7 @@ namespace Nucleus.Coop.PkgManager
                 string handlerPath = Path.Combine(dir.FullName, "info.json");
                 string handlerData = File.ReadAllText(handlerPath);
                 GameHandlerMetadata metadata = JsonConvert.DeserializeObject<GameHandlerMetadata>(handlerData);
-                if (metadata.GameID.ToLower().StartsWith("debug"))
-                {
+                if (metadata.GameID.ToLower().StartsWith("debug")) {
                     continue;
                 }
 
@@ -92,23 +81,18 @@ namespace Nucleus.Coop.PkgManager
                 infos.Add(new Infos() { Metadata = metadata, RootFolder = dir.FullName });
 
                 string firstPic = Path.Combine(dir.FullName, "header.jpg");
-                if (!File.Exists(firstPic))
-                {
+                if (!File.Exists(firstPic)) {
                     // see if steam has a header pic
                     string headerUrl = string.Format("https://steamcdn-a.opskins.media/steam/apps/{0}/header.jpg", metadata.GameID);
 
-                    try
-                    {
-                        using (WebClient client = new WebClient())
-                        {
+                    try {
+                        using (WebClient client = new WebClient()) {
                             client.DownloadFile(headerUrl, firstPic);
                         }
-                    }
-                    catch { }
+                    } catch { }
                 }
 
-                using (var file = new ZipFile())
-                {
+                using (var file = new ZipFile()) {
                     file.AddDirectory(dir.FullName);
                     file.CompressionLevel = Ionic.Zlib.CompressionLevel.BestCompression;
 
@@ -120,8 +104,7 @@ namespace Nucleus.Coop.PkgManager
 
             indexData += "<div id='grid'>";
 
-            foreach (Infos info in newInfos)
-            {
+            foreach (Infos info in newInfos) {
                 GameHandlerMetadata metadata = info.Metadata;
 
                 // write info file
@@ -136,8 +119,7 @@ namespace Nucleus.Coop.PkgManager
                 File.WriteAllText(infoFile, metadataSerialized);
 
                 string firstPic = Path.Combine(info.RootFolder, "header.jpg");
-                if (File.Exists(firstPic))
-                {
+                if (File.Exists(firstPic)) {
                     string destHeaderScreenshot = Path.Combine(infoFolder, "header.jpg");
                     Directory.CreateDirectory(Path.GetDirectoryName(destHeaderScreenshot));
                     File.Copy(firstPic, destHeaderScreenshot);

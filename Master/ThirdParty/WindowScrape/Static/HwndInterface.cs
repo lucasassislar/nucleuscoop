@@ -1,170 +1,137 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using WindowScrape.Constants;
 using WindowScrape.Types;
 
-namespace WindowScrape.Static
-{
-    public static class HwndInterface
-    {
+namespace WindowScrape.Static {
+    public static class HwndInterface {
         #region Windows
-        public static List<IntPtr> EnumHwnds()
-        {
+        public static List<IntPtr> EnumHwnds() {
             var parent = IntPtr.Zero;
             return EnumChildren(parent);
         }
 
-        public static IntPtr GetHwnd(string windowText, string className)
-        {
+        public static IntPtr GetHwnd(string windowText, string className) {
             return (IntPtr)FindWindow(className, windowText);
         }
 
-        public static IntPtr GetHwndFromTitle(string windowText)
-        {
+        public static IntPtr GetHwndFromTitle(string windowText) {
             return (IntPtr)FindWindow(null, windowText);
         }
 
-        public static IntPtr GetHwndFromClass(string className)
-        {
+        public static IntPtr GetHwndFromClass(string className) {
             return (IntPtr)FindWindow(className, null);
         }
 
-        public static bool ActivateWindow(IntPtr hwnd)
-        {
+        public static bool ActivateWindow(IntPtr hwnd) {
             return SetForegroundWindow(hwnd);
         }
 
-        public static bool MinimizeWindow(IntPtr hwnd)
-        {
+        public static bool MinimizeWindow(IntPtr hwnd) {
             return CloseWindow(hwnd);
         }
         #endregion
 
         #region Hwnd Attributes
-        public static string GetHwndClassName(IntPtr hwnd)
-        {
+        public static string GetHwndClassName(IntPtr hwnd) {
             var result = new StringBuilder(256);
             GetClassName(hwnd, result, result.MaxCapacity);
             return result.ToString();
         }
-        public static int GetHwndTitleLength(IntPtr hwnd)
-        {
+        public static int GetHwndTitleLength(IntPtr hwnd) {
             return GetWindowTextLength(hwnd);
         }
-        public static string GetHwndTitle(IntPtr hwnd)
-        {
+        public static string GetHwndTitle(IntPtr hwnd) {
             var length = GetHwndTitleLength(hwnd);
             var result = new StringBuilder(length + 1);
             GetWindowText(hwnd, result, result.Capacity);
             return result.ToString();
         }
-        public static bool SetHwndTitle(IntPtr hwnd, string text)
-        {
+        public static bool SetHwndTitle(IntPtr hwnd, string text) {
             return SetWindowText(hwnd, text);
         }
-        public static string GetHwndText(IntPtr hwnd)
-        {
+        public static string GetHwndText(IntPtr hwnd) {
             var len = (int)SendMessage(hwnd, (UInt32)WM.GETTEXTLENGTH, 0, 0) + 1;
             var sb = new StringBuilder(len);
             SendMessage(hwnd, (UInt32)WM.GETTEXT, (uint)len, sb);
             return sb.ToString();
         }
-        public static void SetHwndText(IntPtr hwnd, string text)
-        {
+        public static void SetHwndText(IntPtr hwnd, string text) {
             SendMessage(hwnd, (UInt32)WM.SETTEXT, 0, text);
         }
-        public static bool SetHwndPos(IntPtr hwnd, int x, int y)
-        {
+        public static bool SetHwndPos(IntPtr hwnd, int x, int y) {
             return SetWindowPos(hwnd, IntPtr.Zero, x, y, 0, 0, (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOZORDER));
         }
-        public static bool SetHwndPosTopMost(IntPtr hwnd, int x, int y)
-        {
+        public static bool SetHwndPosTopMost(IntPtr hwnd, int x, int y) {
             return SetWindowPos(hwnd, new IntPtr(-1), x, y, 0, 0, (uint)PositioningFlags.SWP_NOSIZE);
         }
-        public static Point GetHwndPos(IntPtr hwnd)
-        {
+        public static Point GetHwndPos(IntPtr hwnd) {
             var rect = new RECT();
             GetWindowRect(hwnd, out rect);
             var result = new Point(rect.Left, rect.Top);
             return result;
         }
-        public static bool SetHwndSize(IntPtr hwnd, int w, int h)
-        {
+        public static bool SetHwndSize(IntPtr hwnd, int w, int h) {
             return SetWindowPos(hwnd, IntPtr.Zero, 0, 0, w, h, (uint)(PositioningFlags.SWP_NOMOVE | PositioningFlags.SWP_NOZORDER));
         }
-        public static bool SetHwndSizeTopMost(IntPtr hWnd, int w, int h)
-        {
+        public static bool SetHwndSizeTopMost(IntPtr hWnd, int w, int h) {
             return SetWindowPos(hWnd, new IntPtr(-1), 0, 0, w, h, (uint)PositioningFlags.SWP_NOMOVE);
         }
 
-        public static bool MakeTopMost(IntPtr hWnd)
-        {
+        public static bool MakeTopMost(IntPtr hWnd) {
             return SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, (uint)(PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOMOVE));
         }
 
-        public static Size GetHwndSize(IntPtr hwnd)
-        {
+        public static Size GetHwndSize(IntPtr hwnd) {
             var rect = new RECT();
             GetWindowRect(hwnd, out rect);
             var result = new Size(rect.Right - rect.Left, rect.Bottom - rect.Top);
             return result;
         }
 
-        public static bool MoveWindow(IntPtr hWnd, int x, int y, int w, int h)
-        {
+        public static bool MoveWindow(IntPtr hWnd, int x, int y, int w, int h) {
             return MoveWindow(hWnd, x, y, w, h, true);
         }
 
         #endregion
 
         #region Hwnd Functions
-        public static List<IntPtr> EnumChildren(IntPtr hwnd)
-        {
+        public static List<IntPtr> EnumChildren(IntPtr hwnd) {
             var child = IntPtr.Zero;
             var results = new List<IntPtr>();
-            do
-            {
+            do {
                 child = FindWindowEx(hwnd, child, null, null);
                 if (child != IntPtr.Zero) results.Add(child);
             } while (child != IntPtr.Zero);
             return results;
         }
-        public static IntPtr GetHwndChild(IntPtr hwnd, string clsName, string ctrlText)
-        {
+        public static IntPtr GetHwndChild(IntPtr hwnd, string clsName, string ctrlText) {
             return FindWindowEx(hwnd, IntPtr.Zero, clsName, ctrlText);
         }
-        public static IntPtr GetHwndParent(IntPtr hwnd)
-        {
+        public static IntPtr GetHwndParent(IntPtr hwnd) {
             return GetParent(hwnd);
         }
-        public static int SendMessage(IntPtr hwnd, WM msg, uint param1, uint param2)
-        {
-            return (int)SendMessage(hwnd, (uint) msg, param1, param2);
-        }
-        public static int SendMessage(IntPtr hwnd, WM msg, uint param1, string param2)
-        {
+        public static int SendMessage(IntPtr hwnd, WM msg, uint param1, uint param2) {
             return (int)SendMessage(hwnd, (uint)msg, param1, param2);
         }
-        public static string GetMessageString(IntPtr hwnd, WM msg, uint param)
-        {
+        public static int SendMessage(IntPtr hwnd, WM msg, uint param1, string param2) {
+            return (int)SendMessage(hwnd, (uint)msg, param1, param2);
+        }
+        public static string GetMessageString(IntPtr hwnd, WM msg, uint param) {
             var sb = new StringBuilder(65536);
-            SendMessage(hwnd, (uint) msg, param, sb);
+            SendMessage(hwnd, (uint)msg, param, sb);
             return sb.ToString();
         }
-        public static int GetMessageInt(IntPtr hwnd, WM msg)
-        {
-            return (int) SendMessage(hwnd, (uint) msg, 0, 0);
+        public static int GetMessageInt(IntPtr hwnd, WM msg) {
+            return (int)SendMessage(hwnd, (uint)msg, 0, 0);
         }
-        public static void ClickHwnd(IntPtr hwnd)
-        {
+        public static void ClickHwnd(IntPtr hwnd) {
             SendMessage(hwnd, (uint)WM.BN_CLICKED, IntPtr.Zero, IntPtr.Zero);
         }
-        public static Point GetTitleBarSize(IntPtr hwnd)
-        {
+        public static Point GetTitleBarSize(IntPtr hwnd) {
             RECT rcClient, rcWind;
             GetClientRect(hwnd, out rcClient);
             GetWindowRect(hwnd, out rcWind);

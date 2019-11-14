@@ -1,30 +1,22 @@
-﻿using Jint;
-using Jint.Runtime.Interop;
+﻿using Jint.Runtime.Interop;
 using Newtonsoft.Json;
 using Nucleus.Gaming.Package;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
-namespace Nucleus.Gaming.Coop.Engine
-{
+namespace Nucleus.Gaming.Coop.Engine {
     [Serializable]
-    public class AppDomainEngine
-    {
+    public class AppDomainEngine {
         private Jint.Engine engine;
         private HandlerData hData;
 
         private GameHandlerMetadata gameMetadata;
 
-        public AppDomainEngine()
-        {
+        public AppDomainEngine() {
 
         }
 
-        public void Import(string path)
-        {
+        public void Import(string path) {
             // TODO: IO Manager
             string folderPath = PackageManager.GetAssetsFolder(gameMetadata);
             string fullPath = Path.Combine(folderPath, path);
@@ -33,8 +25,7 @@ namespace Nucleus.Gaming.Coop.Engine
             engine.Execute(jsCode);
         }
 
-        public string Initialize(string metadata, string metadataRootfolder, string jsCode)
-        {
+        public string Initialize(string metadata, string metadataRootfolder, string jsCode) {
             hData = new HandlerData();
 
             engine = new Jint.Engine();
@@ -55,8 +46,7 @@ namespace Nucleus.Gaming.Coop.Engine
             return JsonConvert.SerializeObject(hData);
         }
 
-        public string Play(string contextData, string playerInfo)
-        {
+        public string Play(string contextData, string playerInfo) {
             HandlerContext context = JsonConvert.DeserializeObject<HandlerContext>(contextData);
             PlayerInfo player = JsonConvert.DeserializeObject<PlayerInfo>(playerInfo);
 

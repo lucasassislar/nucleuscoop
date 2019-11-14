@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
-namespace TempBuilder
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
+namespace TempBuilder {
+    class Program {
+        static void Main(string[] args) {
             string directory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
             DirectoryInfo dirInfo = new DirectoryInfo(directory);
@@ -32,15 +28,13 @@ namespace TempBuilder
 
 #if DEBUG
             Console.WriteLine($"Debug Files {files.Count}");
-            for (int i = 0; i < debugFiles.Count; i++)
-            {
+            for (int i = 0; i < debugFiles.Count; i++) {
                 FileInfo file = debugFiles[i];
                 string prefix = $"({i + 1}/{debugFiles.Count}) ";
                 Console.WriteLine(prefix + $"Moving {file.Name}");
 
                 string fileDestination = Path.Combine(binDir, file.Name);
-                if (File.Exists(fileDestination))
-                {
+                if (File.Exists(fileDestination)) {
                     File.Delete(fileDestination);
                 }
                 file.MoveTo(fileDestination);
@@ -58,15 +52,13 @@ namespace TempBuilder
 #endif
 
             Console.WriteLine($"Files {files.Count}");
-            for (int i = 0; i < files.Count; i++)
-            {
+            for (int i = 0; i < files.Count; i++) {
                 FileInfo file = files[i];
                 string prefix = $"({i + 1}/{files.Count}) ";
                 Console.WriteLine(prefix + $"Moving {file.Name}");
 
                 string destination = Path.Combine(binDir, file.Name);
-                if (File.Exists(destination))
-                {
+                if (File.Exists(destination)) {
                     File.Delete(destination);
                 }
 
