@@ -1,0 +1,8 @@
+title: Nucleus Coop
+description: "PC Splitscreen Gaming "
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-midnight
+
+gems:
+  - jekyll-mentions
