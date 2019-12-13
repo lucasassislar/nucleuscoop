@@ -1,6 +1,7 @@
 ﻿using Jint.Runtime.Interop;
 using Newtonsoft.Json;
 using Nucleus.Gaming.Package;
+using SplitScreenMe.Core;
 using System;
 using System.IO;
 
@@ -13,7 +14,6 @@ namespace Nucleus.Gaming.Coop.Engine {
         private GameHandlerMetadata gameMetadata;
 
         public AppDomainEngine() {
-
         }
 
         public void Import(string path) {

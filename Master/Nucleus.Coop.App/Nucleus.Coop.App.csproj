@@ -375,6 +375,7 @@
     <None Include="Resources\not_found_white.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\splitscreen-me-2.png" />
     <None Include="Resources\nucleus.png" />
     <None Include="Resources\vertical.png" />
     <None Include="Resources\keyboard.png" />

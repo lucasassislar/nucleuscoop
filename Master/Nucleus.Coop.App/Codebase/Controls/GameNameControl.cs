@@ -1,5 +1,6 @@
 ﻿using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
+using SplitScreenMe.Core;
 using System.Drawing;
 using System.Windows.Forms;
 

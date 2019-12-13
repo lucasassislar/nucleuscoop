@@ -3,6 +3,7 @@ using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Diagnostics;
 using Nucleus.Gaming.Windows;
+using SplitScreenMe.Core;
 using System;
 using System.Threading;
 using System.Windows.Forms;

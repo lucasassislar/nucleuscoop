@@ -2,6 +2,7 @@
 using Nucleus.Gaming.Coop;
 using SlimDX.DirectInput;
 using SlimDX.XInput;
+using SplitScreenMe.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

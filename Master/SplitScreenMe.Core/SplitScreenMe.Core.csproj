@@ -32,8 +32,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetZip, Version=1.13.4.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.13.4\lib\net40\DotNetZip.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
+      <HintPath>..\packages\SlimDX.4.0.13.44\lib\NET40\SlimDX.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,14 +53,83 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Coop\BackupManager.cs" />
+    <Compile Include="Coop\Data\AppDomain\HandlerData.cs" />
+    <Compile Include="Coop\Data\CallbackData.cs" />
+    <Compile Include="Coop\Data\DynamicAttribute.cs" />
+    <Compile Include="Coop\Data\Folder.cs" />
+    <Compile Include="Coop\Data\GameHookData.cs" />
+    <Compile Include="Coop\Data\GameOption.cs" />
+    <Compile Include="Coop\Data\GameOptionValue.cs" />
+    <Compile Include="Coop\Data\GameProfile.cs" />
+    <Compile Include="Coop\Data\HandlerContext.cs" />
+    <Compile Include="Coop\Data\HandlerTools.cs" />
+    <Compile Include="Coop\Data\IO\BackupFile.cs" />
+    <Compile Include="Coop\Data\KeyboardPlayer.cs" />
+    <Compile Include="Coop\Data\PlayerInfo.cs" />
+    <Compile Include="Coop\Data\Save\SaveInfo.cs" />
+    <Compile Include="Coop\Data\Save\SaveType.cs" />
+    <Compile Include="Coop\Data\UserGameInfo.cs" />
+    <Compile Include="Coop\Data\UserProfile.cs" />
+    <Compile Include="Coop\Data\UserProfileOptions.cs" />
+    <Compile Include="Coop\GameManager.cs" />
+    <Compile Include="Coop\GameNameManager.cs" />
+    <Compile Include="Coop\HandlerDataManager.cs" />
+    <Compile Include="Coop\HandlerModule.cs" />
+    <Compile Include="Coop\Handler\Engine\GameHandler.cs" />
+    <Compile Include="Coop\Handler\JoystickDatabase.cs" />
+    <None Include="Coop\Handler\Modules\Cursor\CursorBarrier.cs" />
+    <None Include="Coop\Handler\Modules\Cursor\CursorBarrierLower.cs" />
+    <None Include="Coop\Handler\Modules\Cursor\CursorBarrierUpper.cs" />
+    <None Include="Coop\Handler\Modules\Cursor\CursorModule.cs" />
+    <None Include="Coop\Handler\Modules\Cursor\NativeMethods.cs" />
+    <Compile Include="Coop\Handler\Modules\IO\IOModule.cs" />
+    <Compile Include="Coop\Handler\Modules\Process\IGameProcessModule.cs" />
+    <Compile Include="Coop\Handler\ProcessInfo.cs" />
+    <Compile Include="Coop\Handler\Step\CustomStep.cs" />
+    <Compile Include="Coop\Handler\Step\CustomStepType.cs" />
+    <Compile Include="Coop\Handler\UserInfo.cs" />
+    <None Include="Coop\Interop\DomainWebApiConnection.cs" />
+    <Compile Include="Coop\Interop\HandlerDataEngine.cs" />
+    <Compile Include="Coop\IO\Content\ContentManager.cs" />
+    <Compile Include="Coop\IO\ScrConfigFile.cs" />
+    <Compile Include="Coop\IO\SourceCfgFile.cs" />
+    <Compile Include="Coop\ModuleManager.cs" />
+    <Compile Include="Coop\Package\GameHandlerBaseMetadata.cs" />
+    <Compile Include="Coop\Package\GameHandlerMetadata.cs" />
+    <Compile Include="Coop\Package\PackageManager.cs" />
+    <Compile Include="Platform\Windows\Modules\MutexModule.cs" />
+    <Compile Include="Platform\Windows\Modules\WindowsGameProcessModule.cs" />
+    <Compile Include="Platform\Windows\Modules\XInputHandlerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SplitScreenEngineUtil.cs" />
+    <None Include="packages.config" />
+    <None Include="Resources\ncoop.ini" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Submodules\nucleusgaming\Nucleus.Gaming\Nucleus.Gaming\Nucleus.Gaming.csproj">
       <Project>{223DBDAE-E362-452C-9455-F518D002B154}</Project>
       <Name>Nucleus.Gaming</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Coop\Data\GameHookInfo.cs.d.ts">
+      <DependentUpon>GameHookData.cs</DependentUpon>
+    </TypeScriptCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\xinput1_3.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

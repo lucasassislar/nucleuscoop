@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json.Linq;
 using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Coop.Handler;
 using Nucleus.Gaming.Platform.Windows.Controls;
 using Nucleus.Gaming.Windows.Controls;
+using SplitScreenMe.Core;
+using SplitScreenMe.Core.Handler;
 using System;
 using System.Collections;
 using System.Collections.Generic;

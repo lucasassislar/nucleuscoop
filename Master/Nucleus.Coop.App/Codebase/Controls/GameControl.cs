@@ -2,6 +2,7 @@
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Package;
 using Nucleus.Gaming.Platform.Windows.Controls;
+using SplitScreenMe.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

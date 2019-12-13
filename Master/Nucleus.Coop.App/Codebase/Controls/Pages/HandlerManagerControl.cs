@@ -5,6 +5,7 @@ using Nucleus.Gaming.Diagnostics;
 using Nucleus.Gaming.Package;
 using Nucleus.Gaming.Platform.Windows;
 using Nucleus.Gaming.Tools.GameStarter;
+using SplitScreenMe.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

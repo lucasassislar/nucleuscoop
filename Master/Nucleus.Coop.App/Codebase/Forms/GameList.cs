@@ -1,6 +1,7 @@
 ﻿using Nucleus.Coop.App.Controls;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Package;
+using SplitScreenMe.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

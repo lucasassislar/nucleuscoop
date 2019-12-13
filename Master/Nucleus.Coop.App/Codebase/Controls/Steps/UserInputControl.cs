@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SplitScreenMe.Core;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 

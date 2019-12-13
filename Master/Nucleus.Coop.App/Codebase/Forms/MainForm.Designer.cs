@@ -52,12 +52,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.titleBarControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(34)))), ((int)(((byte)(37)))));
             this.titleBarControl.EnableMaximize = true;
-            this.titleBarControl.Icon = global::Nucleus.Coop.App.Properties.Resources.nucleus;
+            this.titleBarControl.Icon = global::Nucleus.Coop.App.Properties.Resources.splitscreenme;
             this.titleBarControl.Location = new System.Drawing.Point(0, 0);
             this.titleBarControl.Margin = new System.Windows.Forms.Padding(0);
             this.titleBarControl.Name = "titleBarControl";
             this.titleBarControl.ShowIcon = false;
             this.titleBarControl.Size = new System.Drawing.Size(1007, 21);
+            this.titleBarControl.StripWidth = 30;
             this.titleBarControl.TabIndex = 24;
             // 
             // panel_formContent
@@ -134,6 +135,7 @@
             this.list_games.Offset = new System.Drawing.Size(0, 2);
             this.list_games.Size = new System.Drawing.Size(272, 640);
             this.list_games.TabIndex = 3;
+            this.list_games.VerticalScrollEnabled = true;
             // 
             // panel_allPages
             // 
@@ -163,7 +165,6 @@
             this.selectGameFolderPageControl.RequiredTitleBarWidth = 0;
             this.selectGameFolderPageControl.Size = new System.Drawing.Size(735, 585);
             this.selectGameFolderPageControl.TabIndex = 4;
-            this.selectGameFolderPageControl.SelectedGame += new System.Action<Nucleus.Gaming.Coop.UserGameInfo>(this.selectGameFolderPageControl_SelectedGame);
             // 
             // gamePageControl
             // 

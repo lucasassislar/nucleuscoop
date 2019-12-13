@@ -1,5 +1,5 @@
 ﻿using Microsoft.Win32;
-using Nucleus.Gaming.Coop;
+using SplitScreenMe.Core;
 using Nucleus.Gaming.Windows.Interop;
 using System.Diagnostics;
 using System.IO;

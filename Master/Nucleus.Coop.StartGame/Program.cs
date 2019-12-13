@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
 using Nucleus.Coop.StartGame.Properties;
 using Nucleus.Gaming;
-using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Diagnostics;
 using Nucleus.Gaming.Platform.Windows.IO;
 using Nucleus.Gaming.Platform.Windows.IO.MFT;
 using Nucleus.Gaming.Tools.GameStarter;
 using Nucleus.Gaming.Windows;
+using SplitScreenMe.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

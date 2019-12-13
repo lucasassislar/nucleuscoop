@@ -42,7 +42,7 @@ namespace Nucleus.Coop.App.Forms {
             overlay = new GameRunningOverlay();
             overlay.OnStop += Overlay_OnStop;
 
-            this.titleBarControl.Text = $"Nucleus Coop v{Globals.Version}";
+            this.titleBarControl.Text = $"SplitScreenMe v{Globals.Version}";
 
             controls = new Dictionary<string, GameControl>();
 
@@ -89,7 +89,8 @@ namespace Nucleus.Coop.App.Forms {
                 pkgManagerBtn = new GameControl();
                 pkgManagerBtn.Width = list_games.Width;
                 pkgManagerBtn.UpdateTitleText("Settings");
-                pkgManagerBtn.Image = Properties.Resources.nucleus;
+                //pkgManagerBtn.Image = Properties.Resources.nucleus;
+                pkgManagerBtn.Image = Properties.Resources.splitscreenme;
                 //pkgManagerBtn.Image = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "⚙");
                 pkgManagerBtn.Click += PkgManagerBtn_Click;
                 this.list_games.Controls.Add(pkgManagerBtn);
@@ -103,6 +104,7 @@ namespace Nucleus.Coop.App.Forms {
 
                 TitleSeparator sep = new TitleSeparator();
                 sep.SetTitle("GAMES");
+                sep.Height = 20;
                 this.list_games.Controls.Add(sep);
 
                 var ordered = gameManager.GetInstalledGamesOrdered();
