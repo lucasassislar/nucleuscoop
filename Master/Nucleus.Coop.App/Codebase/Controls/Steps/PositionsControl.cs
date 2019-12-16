@@ -494,6 +494,22 @@ namespace Nucleus.Gaming.App.Controls {
             lightWhitePen = new Pen(lightWhite);
 
             RemoveFlicker();
+
+            //IList<DeviceInstance> devices = dinput.GetDevices(DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly);
+            //for (int i = 0; i < devices.Count; i++) {
+            //    DeviceInstance device = devices[i];
+            //    Joystick gamePad = new Joystick(dinput, device.InstanceGuid);
+            //    string hid = gamePad.Properties.InterfacePath;
+            //    int start = hid.IndexOf("hid#");
+            //    int end = hid.LastIndexOf("#{");
+            //    string fhid = hid.Substring(start, end - start).Replace('#', '\\').ToUpper();
+            //    controllerGuids[i].Text = fhid;
+            //    if (ini.IniReadValue("ControllerMapping", fhid) != "") {
+            //        controllerNicks[i].Text = ini.IniReadValue("ControllerMapping", fhid);
+            //    }
+            //    gamePad.Dispose();
+            //}
+            //dinput.Dispose();
         }
 
         private void GamepadTimer_Tick(object sender, EventArgs e) {

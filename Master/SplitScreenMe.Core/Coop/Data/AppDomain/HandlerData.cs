@@ -115,6 +115,11 @@ namespace SplitScreenMe.Core {
         public string[] KillMutex { get; set; }
 
         /// <summary>
+        /// If the engine should rename and not kill the mutexes on the KillMutex list
+        /// </summary>
+        public bool RenameNotKillMutex { get; set; }
+
+        /// <summary>
         /// If the game needs to go through a launcher before opening, the name of the launcher's executable.
         /// </summary>
         public string LauncherExe { get; set; }

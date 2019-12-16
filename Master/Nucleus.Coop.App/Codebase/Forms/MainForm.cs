@@ -1,13 +1,17 @@
 ﻿using Nucleus.Coop.App.Controls;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
+using Nucleus.Gaming.Platform.Windows.Interop;
+using Nucleus.Gaming.Util;
 using Nucleus.Gaming.Windows;
 using Nucleus.Gaming.Windows.Interop;
 using SplitScreenMe.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace Nucleus.Coop.App.Forms {
     /// <summary>
@@ -30,7 +34,15 @@ namespace Nucleus.Coop.App.Forms {
         public GamePageBrowserControl BrowserBtns { get { return gamePageBrowserControl; } }
         public GameControl Selected { get; private set; }
 
+        private Thread handlerThread;
+        private bool TopMostToggle = true;
+
         public MainForm(string[] args, GameManager gameManager) {
+            if (ApplicationUtil.OnlyOneInstance()) {
+                this.Close();
+                return;
+            }
+
             this.gameManager = gameManager;
             MainForm.Instance = this;
 

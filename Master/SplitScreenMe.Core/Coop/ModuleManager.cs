@@ -2,7 +2,6 @@
 using Nucleus.Gaming.Platform.Windows;
 using System;
 using System.Collections.Generic;
-using SplitScreen.Platform.Windows;
 
 namespace SplitScreenMe.Core {
     /// <summary>
@@ -29,7 +28,7 @@ namespace SplitScreenMe.Core {
             Modules = new List<ModuleInfo>();
 
             //Modules.Add(new ModuleInfo(CursorModule.IsNeeded, typeof(CursorModule)));
-            Modules.Add(new ModuleInfo(MutexModule.IsNeeded, typeof(MutexModule)));
+            //Modules.Add(new ModuleInfo(MutexModule.IsNeeded, typeof(MutexModule)));
             Modules.Add(new ModuleInfo(WindowsGameProcessModule.IsNeeded, typeof(WindowsGameProcessModule)));
             Modules.Add(new ModuleInfo(IOModule.IsNeeded, typeof(IOModule)));
             Modules.Add(new ModuleInfo(XInputHandlerModule.IsNeeded, typeof(XInputHandlerModule)));

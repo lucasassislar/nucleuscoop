@@ -38,7 +38,6 @@ namespace SplitScreenMe.Core.Handler {
             return default(T);
         }
 
-
         public bool Initialize(HandlerDataManager handlerManager, UserGameInfo userGameInfo, GameProfile profile) {
             this.handlerManager = handlerManager;
             this.userGame = userGameInfo;

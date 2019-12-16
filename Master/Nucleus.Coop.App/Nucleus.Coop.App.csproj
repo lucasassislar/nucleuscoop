@@ -157,11 +157,11 @@
     <Compile Include="Codebase\Controls\Pages\GamePageControl.Designer.cs">
       <DependentUpon>GamePageControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Codebase\Controls\Pages\HandlerManagerControl.cs">
+    <Compile Include="Codebase\Controls\Pages\SettingsPageControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Codebase\Controls\Pages\HandlerManagerControl.Designer.cs">
-      <DependentUpon>HandlerManagerControl.cs</DependentUpon>
+    <Compile Include="Codebase\Controls\Pages\SettingsPageControl.Designer.cs">
+      <DependentUpon>SettingsPageControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Codebase\Controls\HorizontalLineControl.cs">
       <SubType>UserControl</SubType>
@@ -224,8 +224,8 @@
     <EmbeddedResource Include="Codebase\Controls\Pages\GamePageControl.resx">
       <DependentUpon>GamePageControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Codebase\Controls\Pages\HandlerManagerControl.resx">
-      <DependentUpon>HandlerManagerControl.cs</DependentUpon>
+    <EmbeddedResource Include="Codebase\Controls\Pages\SettingsPageControl.resx">
+      <DependentUpon>SettingsPageControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Codebase\Controls\Pages\NoGamesInstalledPage.resx">
       <DependentUpon>NoGamesInstalledPage.cs</DependentUpon>
@@ -478,6 +478,9 @@
     <None Include="games\DontStarveTogether\steam_api.dll" />
     <None Include="config.json" />
     <None Include="games\550-Left4Dead2\game.js" />
+    <None Include="bin\SplitScreenMe.Engine.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Guidelines.txt" />
     <None Include="Resources\4players.png" />
     <None Include="Resources\16players.png" />
@@ -488,10 +491,6 @@
     <Content Include="Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Nucleus.Gaming.Coop.Engine\bin\Debug\Nucleus.Gaming.Coop.Engine.dll" Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-      <Link>bin\Nucleus.Gaming.Coop.Engine.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\Nucleus.Gaming.Coop.Engine\bin\Debug\Jint.dll" Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
       <Link>bin\Jint.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -502,10 +501,6 @@
     </None>
     <None Include="..\Nucleus.Gaming.Coop.Engine\bin\Release\Jint.dll" Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
       <Link>bin\Jint.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\Nucleus.Gaming.Coop.Api\bin\Debug\Nucleus.Gaming.Coop.Api.dll" Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-      <Link>bin\Nucleus.Gaming.Coop.Api.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\Nucleus.Gaming.Coop.Api\bin\Release\Nucleus.Gaming.Coop.Api.dll" Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">

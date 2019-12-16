@@ -7,8 +7,8 @@
     <ProjectGuid>{DBDD15A4-5580-4324-9FEB-2D4B985E8D43}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Nucleus.Gaming.Coop.Engine</RootNamespace>
-    <AssemblyName>Nucleus.Gaming.Coop.Engine</AssemblyName>
+    <RootNamespace>SplitScreenMe.Engine</RootNamespace>
+    <AssemblyName>SplitScreenMe.Engine</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

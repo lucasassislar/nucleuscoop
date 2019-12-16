@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nucleus.Coop.AppPostBuild",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nucleus.Coop.GameTasks", "Nucleus.Coop.StartGame\Nucleus.Coop.GameTasks.csproj", "{91298ADA-5999-41D4-8A7B-51F28094AB5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nucleus.Gaming.Coop.Engine", "Nucleus.Gaming.Coop.Engine\Nucleus.Gaming.Coop.Engine.csproj", "{DBDD15A4-5580-4324-9FEB-2D4B985E8D43}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplitScreenMe.Engine", "Nucleus.Gaming.Coop.Engine\SplitScreenMe.Engine.csproj", "{DBDD15A4-5580-4324-9FEB-2D4B985E8D43}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nucleus.Gaming", "..\Submodules\nucleusgaming\Nucleus.Gaming\Nucleus.Gaming\Nucleus.Gaming.csproj", "{223DBDAE-E362-452C-9455-F518D002B154}"
 EndProject

@@ -11,6 +11,8 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using WindowScrape.Types;
+using Nucleus.Gaming.Diagnostics;
+using Nucleus.Gaming.Util;
 
 namespace Nucleus.Gaming.Platform.Windows {
     public class WindowsGameProcessModule : HandlerModule, IGameProcessModule {
@@ -25,12 +27,16 @@ namespace Nucleus.Gaming.Platform.Windows {
 
         private int exited;
         private double timer;
+        private List<int> attachedIds;
 
         public override int Order { get { return 50; } }
 
         public WindowsGameProcessModule(PlayerInfo player)
             : base(player) {
         }
+
+        private bool gameIs64;
+        private string garch;
 
         public override bool Initialize(GameHandler handler, HandlerData handlerData, UserGameInfo game, GameProfile profile) {
             this.handler = handler;
@@ -40,13 +46,20 @@ namespace Nucleus.Gaming.Platform.Windows {
             actualExe = Path.GetFileNameWithoutExtension(game.ExePath);
 
             attached = new List<Process>();
+            attachedIds = new List<int>() { 0 };
+
+            garch = "x86";
+            if (AssemblyUtil.Is64Bit(userGame.ExePath) == true) {
+                gameIs64 = true;
+                garch = "x64";
+            }
 
             return true;
         }
 
         public override void PrePlayPlayer(int index, HandlerContext context) {
             if (handlerData.ForceFinishOnPlay) {
-                ProcessUtil.ForceKill(actualExe.ToLower());
+                ForceFinish(context);
             }
         }
 
@@ -76,7 +89,6 @@ namespace Nucleus.Gaming.Platform.Windows {
             } else {
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = startingApp;
-                //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 startInfo.Arguments = startArgs;
                 startInfo.UseShellExecute = true;
                 startInfo.WorkingDirectory = Path.GetDirectoryName(ioModule.LinkedExePath);
@@ -132,8 +144,6 @@ namespace Nucleus.Gaming.Platform.Windows {
             return false;
         }
 
-
-
         public override void Tick(double delayMs) {
             exited = 0;
             timer += delayMs;
@@ -168,49 +178,6 @@ namespace Nucleus.Gaming.Platform.Windows {
                             continue;
                         }
 
-                        //data.HWnd.TopMost = true;
-                        //if (data.Status == 2) {
-                        //    uint lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE);
-                        //    lStyle = lStyle & ~User32_WS.WS_CAPTION;
-                        //    lStyle = lStyle & ~User32_WS.WS_THICKFRAME;
-                        //    lStyle = lStyle & ~User32_WS.WS_MINIMIZE;
-                        //    lStyle = lStyle & ~User32_WS.WS_MAXIMIZE;
-                        //    lStyle = lStyle & ~User32_WS.WS_SYSMENU;
-                        //    User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_STYLE, lStyle);
-
-                        //    lStyle = User32Interop.GetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_EXSTYLE);
-                        //    lStyle = lStyle & ~User32_WS.WS_EX_DLGMODALFRAME;
-                        //    lStyle = lStyle & ~User32_WS.WS_EX_CLIENTEDGE;
-                        //    lStyle = lStyle & ~User32_WS.WS_EX_STATICEDGE;
-                        //    User32Interop.SetWindowLong(data.HWnd.NativePtr, User32_WS.GWL_EXSTYLE, lStyle);
-                        //    User32Interop.SetWindowPos(data.HWnd.NativePtr, IntPtr.Zero, 0, 0, 0, 0, (uint)(PositioningFlags.SWP_FRAMECHANGED | PositioningFlags.SWP_NOMOVE | PositioningFlags.SWP_NOSIZE | PositioningFlags.SWP_NOZORDER | PositioningFlags.SWP_NOOWNERZORDER));
-                        //    //User32Interop.SetForegroundWindow(data.HWnd.NativePtr);
-
-                        //    data.Finished = true;
-                        //    Debug.WriteLine("State 2");
-
-                        //    if (i == players.Count - 1 && handlerData.Hook.ClipMouse) {
-                        //        //last screen setuped
-                        //        cursorModule?.SetActiveWindow();
-                        //    }
-                        //} else if (data.Status == 1) {
-                        //    data.HWnd.Location = data.Position;
-                        //    data.Status++;
-                        //    Debug.WriteLine("State 1");
-
-                        //    if (handlerData.Hook.ClipMouse) {
-                        //        if (p.IsKeyboardPlayer) {
-                        //            cursorModule?.Setup(data.Process, p.MonitorBounds);
-                        //        } else {
-                        //            cursorModule?.AddOtherGameHandle(data.Process.MainWindowHandle);
-                        //        }
-                        //    }
-                        //} else if (data.Status == 0) {
-                        //    data.HWnd.Size = data.Size;
-
-                        //    data.Status++;
-                        //    Debug.WriteLine("State 0");
-                        //}
                     } else {
                         data.Process.Refresh();
 
@@ -312,6 +279,26 @@ namespace Nucleus.Gaming.Platform.Windows {
             if (exited == players.Count) {
                 handler.End();
             }
+        }
+
+        private void ForceFinish(HandlerContext context) {
+            // search for game instances left behind
+            try {
+                Process[] procs = Process.GetProcesses();
+
+                foreach (Process proc in procs) {
+                    try {
+                        if (proc.ProcessName.ToLower() == Path.GetFileNameWithoutExtension(context.ExecutableName.ToLower()) || 
+                            (proc.Id != 0 && attachedIds.Contains(proc.Id)) || 
+                            new Regex(handlerData.Hook.ForceFocusWindowRegex).IsMatch(proc.MainWindowTitle)) {
+                            Log.WriteLine(string.Format("Killing process {0} (pid {1})", proc.ProcessName, proc.Id));
+                            proc.Kill();
+                        }
+                    } catch {
+
+                    }
+                }
+            } catch { }
         }
     }
 }

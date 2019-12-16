@@ -19,7 +19,7 @@ namespace SplitScreenMe.Core.Interop {
         private string jsCode;
 
         public static string GetLibraryPath() {
-            return Path.Combine(AssemblyUtil.GetStartFolder(), "bin", "SplitScreenMe.Core.Engine.dll");
+            return Path.Combine(AssemblyUtil.GetStartFolder(), "bin", "SplitScreenMe.Engine.dll");
         }
 
         public HandlerDataEngine(GameHandlerMetadata metadata, string jsCode) {
@@ -27,7 +27,6 @@ namespace SplitScreenMe.Core.Interop {
             this.jsCode = jsCode;
 
             string tempPath = GameManager.GetTempFolder(metadata.GameID);
-
             Assembly platform = Assembly.GetExecutingAssembly();
 
             Evidence evidence = new Evidence();
@@ -48,7 +47,7 @@ namespace SplitScreenMe.Core.Interop {
             byte[] engineData = File.ReadAllBytes(enginePath);
             domain.Load(engineData);
 
-            ObjectHandle jsobj = domain.CreateInstance("SplitScreenMe.Core.Engine", "SplitScreenMe.Core.Engine.AppDomainEngine");
+            ObjectHandle jsobj = domain.CreateInstance("SplitScreenMe.Engine", "SplitScreenMe.Engine.AppDomainEngine");
             jsEngine = jsobj.Unwrap();
             // TODO: strong typing on dynamic object (cache the fields/use reflection)
         }

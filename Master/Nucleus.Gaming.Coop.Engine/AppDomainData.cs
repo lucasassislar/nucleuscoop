@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nucleus.Gaming.Coop.Engine {
+namespace SplitScreenMe.Engine {
     [Serializable]
     public class AppDomainData {
         public string Data { get; set; }

@@ -1,11 +1,12 @@
 ﻿using Jint.Runtime.Interop;
 using Newtonsoft.Json;
+using Nucleus.Gaming;
 using Nucleus.Gaming.Package;
 using SplitScreenMe.Core;
 using System;
 using System.IO;
 
-namespace Nucleus.Gaming.Coop.Engine {
+namespace SplitScreenMe.Engine {
     [Serializable]
     public class AppDomainEngine {
         private Jint.Engine engine;

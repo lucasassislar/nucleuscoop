@@ -61,6 +61,28 @@ namespace StartGame {
             }
         }
 
+        static void RenameMutex(string procId, string[] mutexes) {
+            ConsoleU.WriteLine($"Process ID {procId} request to rename mutexes", Palette.Wait);
+            proc = Process.GetProcessById(int.Parse(procId));
+
+            ConsoleU.WriteLine($"Trying to rename mutexes {mutexes.Length} mutexes", Palette.Wait);
+            for (int j = 0; j < mutexes.Length; j++) {
+                string m = mutexes[j];
+                string prefix = $"({j + 1}/{mutexes.Length}) ";
+                ConsoleU.WriteLine(prefix + "Trying to rename mutex: " + m, Palette.Feedback);
+
+                for (; ; ) {
+                    if (ProcessUtil.RenameMutex(proc, m)) {
+                        ConsoleU.WriteLine($"{prefix}Mutex rename {m}", Palette.Success);
+                        break;
+                    } else {
+                        ConsoleU.WriteLine($"{prefix}Mutex {m} could not be rename", Palette.Error);
+                    }
+                    Thread.Sleep(250);
+                }
+            }
+        }
+
         static void QueryMutex(string procId, string[] mutexes) {
             Log.WriteLine($"Process ID {procId} request to be queried for mutexes", Palette.Wait);
             proc = Process.GetProcessById(int.Parse(procId));
@@ -163,6 +185,18 @@ namespace StartGame {
                     WriteToDataFile(Assembly.GetEntryAssembly().Location, true.ToString());
                 }
                 break;
+                case GameStarterTask.RenameMutex: {
+                    Log.WriteLine($"Rename Mutex Task");
+                    string procId = data.Parameters[0];
+                    string[] mutexes = new string[data.Parameters.Length - 1];
+                    for (int j = 1; j < data.Parameters.Length; j++) {
+                        string m = data.Parameters[j];
+                        mutexes[j - 1] = m;
+                    }
+                    KillMutex(procId, mutexes);
+                    WriteToDataFile(Assembly.GetEntryAssembly().Location, true.ToString());
+                }
+                break;
                 case GameStarterTask.ScanKillMutex: {
                     Log.WriteLine($"Scan Kill Mutex");
 
@@ -188,7 +222,11 @@ namespace StartGame {
 
                                     // start other process, as the mutexes are only truly killed
                                     // when the process is ended
-                                    StartGameUtil.KillMutex(p, scanMutex.Mutexes);
+                                    if (scanMutex.ShouldRename) {
+                                        StartGameUtil.RenameMutex(p, scanMutex.Mutexes);
+                                    } else {
+                                        StartGameUtil.KillMutex(p, scanMutex.Mutexes);
+                                    }
                                     //KillMutex(p.Id.ToString(), scanMutex.Mutexes);
                                     processIds.Add(p.Id);
                                     killedMutexes = true;

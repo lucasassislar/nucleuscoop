@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -27,9 +27,12 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetZip, Version=1.13.4.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
@@ -98,7 +101,7 @@
     <Compile Include="Coop\Package\GameHandlerBaseMetadata.cs" />
     <Compile Include="Coop\Package\GameHandlerMetadata.cs" />
     <Compile Include="Coop\Package\PackageManager.cs" />
-    <Compile Include="Platform\Windows\Modules\MutexModule.cs" />
+    <Compile Include="Coop\Util\EasyHookInterop.cs" />
     <Compile Include="Platform\Windows\Modules\WindowsGameProcessModule.cs" />
     <Compile Include="Platform\Windows\Modules\XInputHandlerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

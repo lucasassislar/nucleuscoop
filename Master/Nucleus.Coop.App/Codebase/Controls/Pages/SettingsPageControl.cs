@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -305,13 +306,11 @@ namespace Nucleus.Coop.App.Controls {
                     string path = open.FileName;
 
                     List<GameHandlerMetadata> allGames = gm.User.InstalledHandlers;
+                    var availableHandlers = allGames.Where(c => c.ExeName.ToLowerInvariant() == Path.GetFileNameWithoutExtension(open.FileName).ToLowerInvariant());
 
-                    GameList list = new GameList(allGames);
-                    DPIManager.ForceUpdate();
-
-                    if (list.ShowDialog() == DialogResult.OK) {
-                        GameHandlerMetadata selected = list.Selected;
-                        UserGameInfo game = gm.TryAddGame(path, list.Selected);
+                    if (availableHandlers.Count() == 1) {
+                        GameHandlerMetadata first = availableHandlers.First();
+                        UserGameInfo game = gm.TryAddGame(path, first);
 
                         if (game == null) {
                             MessageBox.Show("Game already in your library!");
@@ -319,7 +318,14 @@ namespace Nucleus.Coop.App.Controls {
                             MessageBox.Show("Game accepted as ID " + game.GameID);
                             MainForm.Instance.RefreshGames();
                         }
+                    } else {
+                        throw new NotImplementedException();
                     }
+
+                    //GameList list = new GameList(allGames);
+                    //DPIManager.ForceUpdate();
+                    //if (list.ShowDialog() == DialogResult.OK) {
+                    //}
                 }
             }
         }
