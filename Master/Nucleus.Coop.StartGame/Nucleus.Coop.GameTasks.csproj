@@ -83,9 +83,9 @@
     <None Include="Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Submodules\nucleusgaming\Nucleus.Gaming\Nucleus.Gaming\Nucleus.Gaming.csproj">
-      <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
-      <Name>Nucleus.Gaming</Name>
+    <ProjectReference Include="..\..\Submodules\nucleusgaming\Nucleus.Gaming\Nucleus.Gaming\NucleusDotNet.NETFramework.csproj">
+      <Project>{223DBDAE-E362-452C-9455-F518D002B154}</Project>
+      <Name>NucleusDotNet.NETFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\SplitScreenMe.Core\SplitScreenMe.Core.csproj">
       <Project>{19A2A705-349A-48F7-9516-728620B15C9C}</Project>

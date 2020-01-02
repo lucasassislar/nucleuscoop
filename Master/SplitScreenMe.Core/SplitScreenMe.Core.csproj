@@ -115,12 +115,6 @@
     <None Include="Resources\ncoop.ini" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Submodules\nucleusgaming\Nucleus.Gaming\Nucleus.Gaming\Nucleus.Gaming.csproj">
-      <Project>{223DBDAE-E362-452C-9455-F518D002B154}</Project>
-      <Name>Nucleus.Gaming</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <TypeScriptCompile Include="Coop\Data\GameHookInfo.cs.d.ts">
       <DependentUpon>GameHookData.cs</DependentUpon>
     </TypeScriptCompile>
@@ -133,6 +127,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\xinput1_3.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Submodules\nucleusgaming\Nucleus.Gaming\Nucleus.Gaming\NucleusDotNet.NETFramework.csproj">
+      <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
+      <Name>NucleusDotNet.NETFramework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,8 +1,9 @@
 ﻿using Nucleus.Coop.App.Forms;
+using Nucleus.Diagnostics;
+using Nucleus.DPI;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Diagnostics;
-using Nucleus.Gaming.Windows;
+using Nucleus.Platform.Windows;
 using SplitScreenMe.Core;
 using System;
 using System.Threading;

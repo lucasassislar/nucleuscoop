@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
+using Nucleus;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Package;
-using Nucleus.Gaming.Util;
 using System;
 using System.IO;
 using System.Reflection;

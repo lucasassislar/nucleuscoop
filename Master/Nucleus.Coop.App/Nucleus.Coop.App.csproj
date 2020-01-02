@@ -287,9 +287,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Submodules\nucleusgaming\Nucleus.Gaming\Nucleus.Gaming\Nucleus.Gaming.csproj">
+    <ProjectReference Include="..\..\Submodules\nucleusgaming\Nucleus.Gaming\Nucleus.Gaming\NucleusDotNet.NETFramework.csproj">
       <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
-      <Name>Nucleus.Gaming</Name>
+      <Name>NucleusDotNet.NETFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Nucleus.Coop.AppPostBuild\Nucleus.Coop.AppPostBuild.csproj">
       <Project>{6bacfb45-eedc-4371-9377-013d534ac83c}</Project>

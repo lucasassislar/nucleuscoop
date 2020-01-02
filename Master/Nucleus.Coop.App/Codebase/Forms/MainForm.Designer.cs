@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.titleBarControl = new Nucleus.Gaming.Platform.Windows.Controls.TitleBarControl();
+            this.titleBarControl = new Nucleus.Platform.Windows.Controls.TitleBarControl();
             this.panel_formContent = new System.Windows.Forms.Panel();
             this.panel_pageTitle = new System.Windows.Forms.Panel();
             this.panel_bottomLine = new System.Windows.Forms.Panel();
             this.gamePageBrowserControl = new Nucleus.Coop.App.Controls.GamePageBrowserControl();
             this.gameNameControl = new Nucleus.Coop.App.Controls.GameNameControl();
-            this.list_games = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
+            this.list_games = new Nucleus.Platform.Windows.Controls.ControlListBox();
             this.panel_allPages = new System.Windows.Forms.Panel();
             this.selectGameFolderPageControl = new Nucleus.Coop.App.Controls.Pages.SelectGameFolderPageControl();
             this.gamePageControl = new Nucleus.Coop.App.Controls.GamePageControl();
@@ -230,8 +230,8 @@
         }
 
         #endregion
-        private Gaming.Platform.Windows.Controls.ControlListBox list_games;
-        private Gaming.Platform.Windows.Controls.TitleBarControl titleBarControl;
+        private Platform.Windows.Controls.ControlListBox list_games;
+        private Platform.Windows.Controls.TitleBarControl titleBarControl;
         private Controls.GameNameControl gameNameControl;
         private System.Windows.Forms.Panel panel_pageTitle;
         private Controls.HandlerManagerControl handlerManagerControl;

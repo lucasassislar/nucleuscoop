@@ -1,4 +1,4 @@
-﻿using Nucleus.Gaming.Util;
+﻿using Nucleus;
 using SplitScreenMe.Core.IO;
 using System.Collections.Generic;
 using System.IO;

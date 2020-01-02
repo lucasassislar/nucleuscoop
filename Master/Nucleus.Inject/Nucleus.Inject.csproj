@@ -73,10 +73,6 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Submodules\nucleusgaming\Nucleus.Gaming\Nucleus.Gaming\Nucleus.Gaming.csproj">
-      <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
-      <Name>Nucleus.Gaming</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SplitScreenMe.Core\SplitScreenMe.Core.csproj">
       <Project>{19a2a705-349a-48f7-9516-728620b15c9c}</Project>
       <Name>SplitScreenMe.Core</Name>

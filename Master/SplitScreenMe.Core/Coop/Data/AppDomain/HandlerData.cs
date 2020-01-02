@@ -1,4 +1,6 @@
 ﻿using Microsoft.Win32;
+using Nucleus;
+using Nucleus.DPI;
 using Nucleus.Gaming;
 using SplitScreenMe.Core.Handler;
 using System;

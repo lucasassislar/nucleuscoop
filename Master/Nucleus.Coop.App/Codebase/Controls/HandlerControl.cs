@@ -1,6 +1,7 @@
-﻿using Nucleus.Gaming;
+﻿using Nucleus.DPI;
+using Nucleus.Gaming;
 using Nucleus.Gaming.Package;
-using Nucleus.Gaming.Platform.Windows.Controls;
+using Nucleus.Platform.Windows.Controls;
 using System;
 using System.Drawing;
 using System.Windows.Forms;

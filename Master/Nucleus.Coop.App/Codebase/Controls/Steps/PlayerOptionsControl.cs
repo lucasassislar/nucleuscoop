@@ -1,6 +1,6 @@
 ﻿using Nucleus.Gaming.Platform.Windows;
-using Nucleus.Gaming.Platform.Windows.Controls;
-using Nucleus.Gaming.Windows.Controls;
+using Nucleus.Platform.Windows;
+using Nucleus.Platform.Windows.Controls;
 using SplitScreenMe.Core;
 using System;
 using System.Collections;

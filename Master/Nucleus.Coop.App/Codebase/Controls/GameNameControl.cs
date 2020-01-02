@@ -1,4 +1,5 @@
-﻿using Nucleus.Gaming;
+﻿using Nucleus.DPI;
+using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
 using SplitScreenMe.Core;
 using System.Drawing;

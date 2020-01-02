@@ -1,9 +1,11 @@
 ﻿using Ionic.Zip;
 using Newtonsoft.Json;
+using Nucleus;
+using Nucleus.Diagnostics;
+using Nucleus.DPI;
 using Nucleus.Gaming;
-using Nucleus.Gaming.Diagnostics;
 using Nucleus.Gaming.IO;
-using Nucleus.Gaming.Platform.Windows.Interop;
+using Nucleus.Platform.Windows.Interop;
 using System;
 using System.Collections.Generic;
 using System.IO;

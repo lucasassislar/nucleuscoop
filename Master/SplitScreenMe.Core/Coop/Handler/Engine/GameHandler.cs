@@ -1,11 +1,12 @@
 ﻿using SplitScreenMe.Core.Modules;
-using Nucleus.Gaming.Tools.GameStarter;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using Nucleus.Gaming;
+using Nucleus;
+using Nucleus.Tools.GameStarter;
 
 namespace SplitScreenMe.Core.Handler {
     /// <summary>

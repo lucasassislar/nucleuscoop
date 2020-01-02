@@ -1,10 +1,5 @@
 ﻿using Nucleus.Coop.App.Forms;
-using Nucleus.Gaming;
-using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Diagnostics;
 using Nucleus.Gaming.Package;
-using Nucleus.Gaming.Platform.Windows;
-using Nucleus.Gaming.Tools.GameStarter;
 using SplitScreenMe.Core;
 using System;
 using System.Collections.Generic;
@@ -14,6 +9,11 @@ using System.Linq;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using Nucleus.Platform.Windows;
+using Nucleus.DPI;
+using Nucleus.IO;
+using Nucleus.Tools.GameStarter;
+using Nucleus.Diagnostics;
 
 namespace Nucleus.Coop.App.Controls {
     public partial class HandlerManagerControl : BasePageControl {

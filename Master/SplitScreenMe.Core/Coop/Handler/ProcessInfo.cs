@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
+using Nucleus.WindowScrape;
 using SplitScreenMe.Core;
 using System.Diagnostics;
 using System.Drawing;
-using WindowScrape.Types;
 
 namespace Nucleus.Gaming {
     [AppDomainShared]

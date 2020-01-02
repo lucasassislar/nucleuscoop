@@ -28,7 +28,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameList));
-            this.listGames = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
+            this.listGames = new Nucleus.Platform.Windows.Controls.ControlListBox();
             this.btnOk = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -77,7 +77,7 @@
 
         #endregion
 
-        private Gaming.Platform.Windows.Controls.ControlListBox listGames;
+        private Platform.Windows.Controls.ControlListBox listGames;
         private System.Windows.Forms.Button btnOk;
     }
 }

@@ -23,7 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.list_gameFolders = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
+            this.list_gameFolders = new Nucleus.Platform.Windows.Controls.ControlListBox();
             this.SuspendLayout();
             // 
             // list_gameFolders
@@ -48,6 +48,6 @@
 
         #endregion
 
-        private Gaming.Platform.Windows.Controls.ControlListBox list_gameFolders;
+        private Platform.Windows.Controls.ControlListBox list_gameFolders;
     }
 }

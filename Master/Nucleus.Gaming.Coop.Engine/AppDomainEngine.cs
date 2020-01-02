@@ -1,5 +1,6 @@
 ﻿using Jint.Runtime.Interop;
 using Newtonsoft.Json;
+using Nucleus.DPI;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Package;
 using SplitScreenMe.Core;

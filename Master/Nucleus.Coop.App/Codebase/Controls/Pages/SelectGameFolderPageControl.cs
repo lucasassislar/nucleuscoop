@@ -1,6 +1,8 @@
-﻿using Nucleus.Gaming;
+﻿using Nucleus.DPI;
+using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Platform.Windows;
+using Nucleus.Platform.Windows;
 using SplitScreenMe.Core;
 using System;
 using System.Collections.Generic;

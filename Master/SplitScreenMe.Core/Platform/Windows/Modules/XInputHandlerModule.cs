@@ -1,11 +1,11 @@
 ﻿using SplitScreenMe.Core;
 using SplitScreenMe.Core.Handler;
 using SplitScreenMe.Core.Modules;
-using Nucleus.Gaming.Platform.Windows.Interop;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using SplitScreenMe.Core.Properties;
+using Nucleus.Platform.Windows.Interop;
 
 namespace Nucleus.Gaming.Platform.Windows {
     /// <summary>

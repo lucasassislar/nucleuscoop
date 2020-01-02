@@ -1,8 +1,10 @@
-﻿using SplitScreenMe.Core;
+﻿using Nucleus.Diagnostics;
+using Nucleus.Platform.Windows;
+using Nucleus.Tools.GameStarter;
+using Nucleus.WindowScrape;
+using SplitScreenMe.Core;
 using SplitScreenMe.Core.Handler;
 using SplitScreenMe.Core.Modules;
-using Nucleus.Gaming.Tools.GameStarter;
-using Nucleus.Gaming.Windows;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,9 +12,6 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
-using WindowScrape.Types;
-using Nucleus.Gaming.Diagnostics;
-using Nucleus.Gaming.Util;
 
 namespace Nucleus.Gaming.Platform.Windows {
     public class WindowsGameProcessModule : HandlerModule, IGameProcessModule {

@@ -1,11 +1,11 @@
 ﻿using Nucleus.Coop.App.Forms;
-using Nucleus.Gaming;
+using Nucleus.DPI;
 using Nucleus.Gaming.App.Controls;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Controls;
 using Nucleus.Gaming.Package;
-using Nucleus.Gaming.Platform.Windows;
-using Nucleus.Gaming.Platform.Windows.Controls;
+using Nucleus.Platform.Windows;
+using Nucleus.Platform.Windows.Controls;
 using SplitScreenMe.Core;
 using SplitScreenMe.Core.Handler;
 using System;

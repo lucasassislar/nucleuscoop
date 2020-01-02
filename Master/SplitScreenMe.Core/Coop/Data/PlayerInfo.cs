@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Nucleus;
 using Nucleus.Gaming;
 using SlimDX.DirectInput;
 using System;

@@ -36,11 +36,11 @@
             this.panel_gameData = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.panel_installedGames = new System.Windows.Forms.Panel();
-            this.list_installedGames = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
+            this.list_installedGames = new Nucleus.Platform.Windows.Controls.ControlListBox();
             this.panel_disks = new System.Windows.Forms.Panel();
-            this.list_storage = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
+            this.list_storage = new Nucleus.Platform.Windows.Controls.ControlListBox();
             this.btn_search = new System.Windows.Forms.Button();
-            this.list_left = new Nucleus.Gaming.Platform.Windows.Controls.ControlListBox();
+            this.list_left = new Nucleus.Platform.Windows.Controls.ControlListBox();
             this.panel_gameData.SuspendLayout();
             this.panel_installedGames.SuspendLayout();
             this.panel_disks.SuspendLayout();
@@ -218,7 +218,8 @@
         }
 
         #endregion
-        private Gaming.Platform.Windows.Controls.ControlListBox list_left;
+
+        private Platform.Windows.Controls.ControlListBox list_left;
         private System.Windows.Forms.Label label_developer;
         private System.Windows.Forms.Label label_version;
         private System.Windows.Forms.Panel panel_titleSizeReference;
@@ -226,10 +227,10 @@
         private System.Windows.Forms.Button btn_uninstall;
         private System.Windows.Forms.Panel panel_gameData;
         private System.Windows.Forms.Panel panel_installedGames;
-        private Gaming.Platform.Windows.Controls.ControlListBox list_installedGames;
+        private Platform.Windows.Controls.ControlListBox list_installedGames;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel_disks;
         private System.Windows.Forms.Button btn_search;
-        private Gaming.Platform.Windows.Controls.ControlListBox list_storage;
+        private Platform.Windows.Controls.ControlListBox list_storage;
     }
 }

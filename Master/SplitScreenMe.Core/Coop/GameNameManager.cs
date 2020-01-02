@@ -1,5 +1,5 @@
 ﻿using Nucleus.Gaming.Package;
-using Nucleus.Gaming.Windows.Interop;
+using Nucleus.Platform.Windows.Interop;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

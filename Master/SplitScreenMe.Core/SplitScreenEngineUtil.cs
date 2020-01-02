@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
+using Nucleus.Platform.Windows.Interop;
 using SplitScreenMe.Core;
-using Nucleus.Gaming.Windows.Interop;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
