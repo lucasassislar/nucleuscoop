@@ -4,7 +4,15 @@ Nucleus Co-Op is a tool for Windows that allows split-screen play on many games 
 Its purpose is to make it as easy as possible for the average user to play games locally.
 Essentially, Nucleus opens multiple instances of the same game with sym-linked files, each with its own customized version of xinput libraries that will only answer to ony specific gamepad instance.
 
-Support its development by donating to my Patreon! https://www.patreon.com/distro
+Support its development by donating! 
+
+Patreon: https://www.patreon.com/distro
+Bitcoin: 37UABQVXTsy1qsu2RTyYGJ5qAN24jtM5vm
+Ethereum: 0x6fd82824cfdEDAF489e55aF67Ec1E8232813AAD3
+Litecoin: LZ6uPb6QjzxtYd3KgVWoNdezQVwTi6hsh5
+Bitcoin Cash: 1EQFkXUKPB9RLA8BpiFKkPAfqrz6dNyyBy
+
+Any amount is welcome!
 
 Subscribe to our subreddit: https://www.reddit.com/r/nucleuscoop/
 
