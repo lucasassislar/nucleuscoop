@@ -79,7 +79,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -287,6 +287,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\zerofox\nucleuscoop\Master\NucleusGaming\Nucleus.Gaming.ZeroFox.csproj">
+      <Project>{667ad7df-9369-4226-ae51-ae568b97de35}</Project>
+      <Name>Nucleus.Gaming.ZeroFox</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Submodules\nucleusgaming\Nucleus.Gaming\Nucleus.Gaming\NucleusDotNet.NETFramework.csproj">
       <Project>{223dbdae-e362-452c-9455-f518d002b154}</Project>
       <Name>NucleusDotNet.NETFramework</Name>
@@ -299,9 +303,9 @@
       <Project>{91298ada-5999-41d4-8a7b-51f28094ab5b}</Project>
       <Name>Nucleus.Coop.GameTasks</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SplitScreenMe.Core\SplitScreenMe.Core.csproj">
-      <Project>{19a2a705-349a-48f7-9516-728620b15c9c}</Project>
-      <Name>SplitScreenMe.Core</Name>
+    <ProjectReference Include="..\SplitScreenMe.Intermediary\SplitScreenMe.Intermediary.csproj">
+      <Project>{a3b29f83-2087-43da-baf0-f8b9367c96b2}</Project>
+      <Name>SplitScreenMe.Intermediary</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -478,9 +482,7 @@
     <None Include="games\DontStarveTogether\steam_api.dll" />
     <None Include="config.json" />
     <None Include="games\550-Left4Dead2\game.js" />
-    <None Include="bin\SplitScreenMe.Engine.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Content Include="bin\SplitScreenMe.Engine.dll" />
     <Content Include="Guidelines.txt" />
     <None Include="Resources\4players.png" />
     <None Include="Resources\16players.png" />

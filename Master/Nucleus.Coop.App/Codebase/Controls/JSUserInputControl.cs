@@ -2,23 +2,25 @@
 using Nucleus.Gaming.Coop;
 using Nucleus.Platform.Windows.Controls;
 using SplitScreenMe.Core;
-using SplitScreenMe.Core.Handler;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
+#if false
+using SplitScreenMe.Core.Handler;
+#endif
+
 namespace Nucleus.Gaming.App.Controls {
     public class JSUserInputControl : UserInputControl {
         public override bool CanProceed {
             get { return canProceed; }
         }
+
+#if false
         public override string Title {
             get { return CustomStep.Title; }
-        }
-        public override bool CanPlay {
-            get { return canPlay; }
         }
         public HandlerDataManager DataManager {
             get { return dataManager; }
@@ -27,6 +29,12 @@ namespace Nucleus.Gaming.App.Controls {
 
         // TODO: why is this a field
         public CustomStep CustomStep;
+        private HandlerDataManager dataManager;
+#endif
+
+        public override bool CanPlay {
+            get { return canPlay; }
+        }
 
         private bool canProceed;
         private bool canPlay;
@@ -34,7 +42,6 @@ namespace Nucleus.Gaming.App.Controls {
         private Font nameFont;
         private Font detailsFont;
         private IList collection;
-        private HandlerDataManager dataManager;
 
         public JSUserInputControl() {
             nameFont = new Font("Segoe UI", 24);
@@ -45,11 +52,13 @@ namespace Nucleus.Gaming.App.Controls {
             return expando.ContainsKey(key);
         }
 
-        public override void Initialize(HandlerData handlerData, UserGameInfo game, GameProfile profile) {
-            base.Initialize(handlerData, game, profile);
+        //public override void Initialize(HandlerData handlerData, UserGameInfo game, GameProfile profile) {
+        public override void Initialize(UserGameInfo game, GameProfile profile) {
+            base.Initialize(game, profile);
 
             Controls.Clear();
 
+#if false
             // grab the CustomStep and extract what we have to show from it
             GameOption option = CustomStep.Option;
 
@@ -113,12 +122,15 @@ namespace Nucleus.Gaming.App.Controls {
                 }
             } else {
             }
+#endif
         }
 
         private void List_SelectedChanged(Control selected) {
             if (selected is CoolListControl) {
                 CoolListControl list = (CoolListControl)selected;
+#if false
                 profile.Options[CustomStep.Option.Key] = list.Data;
+#endif
 
                 canProceed = true;
                 CanPlayUpdated(true, true);

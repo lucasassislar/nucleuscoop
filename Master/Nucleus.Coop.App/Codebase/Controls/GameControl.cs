@@ -1,19 +1,24 @@
 ﻿using Nucleus.DPI;
 using Nucleus.Gaming;
 using Nucleus.Gaming.Coop;
-using Nucleus.Gaming.Package;
 using Nucleus.Platform.Windows.Controls;
 using SplitScreenMe.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+#if false
+using Nucleus.Gaming.Package;
+#endif
 
 namespace Nucleus.Coop.App.Controls {
     public class GameControl : UserControl, IDynamicSized, IRadioControl {
         public UserGameInfo UserGameInfo { get; private set; }
         public List<UserGameInfo> UserGames { get; private set; }
+
+#if false
         public GameHandlerBaseMetadata HandlerMetadata { get; private set; }
+#endif
 
         public Color ColorSelected { get; set; } = Color.FromArgb(66, 70, 77);
         public Color ColorUnselected { get; set; } = Color.FromArgb(47, 49, 54);
@@ -38,11 +43,11 @@ namespace Nucleus.Coop.App.Controls {
             Controls.Add(picture);
             Controls.Add(title);
 
-            DPIManager.Register(this);
+            DPI.DPIManager.Register(this);
         }
 
         ~GameControl() {
-            DPIManager.Unregister(this);
+            DPI.DPIManager.Unregister(this);
         }
 
         public void UpdateTitleText(string titleText) {
@@ -55,7 +60,7 @@ namespace Nucleus.Coop.App.Controls {
             if (userGame == null) {
                 title.Text = "No games";
             } else {
-                title.Text = GameManager.Instance.MetadataManager.GetGameName(userGame.GameID);
+                //title.Text = GameManager.Instance.MetadataManager.GetGameName(userGame.GameID);
             }
             TitleText = title.Text;
         }
@@ -68,32 +73,32 @@ namespace Nucleus.Coop.App.Controls {
 
         public void SetUserGames(List<UserGameInfo> userGames) {
             UserGames = userGames;
-            string gameTitle = GameManager.Instance.MetadataManager.GetGameName(userGames[0].GameID);
-            title.Text = gameTitle;
-            TitleText = gameTitle;
+            //string gameTitle = GameManager.Instance.MetadataManager.GetGameName(userGames[0].GameID);
+            //title.Text = gameTitle;
+            //TitleText = gameTitle;
         }
 
-        public void SetHandlerMetadata(GameHandlerBaseMetadata metadata) {
-            HandlerMetadata = metadata;
-            title.Text = metadata.Title;
-            TitleText = title.Text;
-        }
+        //public void SetHandlerMetadata(GameHandlerBaseMetadata metadata) {
+        //    HandlerMetadata = metadata;
+        //    title.Text = metadata.Title;
+        //    TitleText = title.Text;
+        //}
 
         public void UpdateSize(float scale) {
             if (IsDisposed) {
-                DPIManager.Unregister(this);
+                DPI.DPIManager.Unregister(this);
                 return;
             }
 
             SuspendLayout();
 
-            int border = DPIManager.Adjust(8, scale);
+            int border = DPI.DPIManager.Adjust(8, scale);
             int dborder = border * 2;
 
             picture.Location = new Point(12, 11);
             picture.Size = new Size(30, 30);
 
-            Height = DPIManager.Adjust(52, scale);
+            Height = DPI.DPIManager.Adjust(52, scale);
 
             Size labelSize = TextRenderer.MeasureText(TitleText, title.Font);
             float reservedSpaceLabel = this.Width - picture.Width;
@@ -128,7 +133,7 @@ namespace Nucleus.Coop.App.Controls {
 
         protected override void OnSizeChanged(EventArgs e) {
             base.OnSizeChanged(e);
-            UpdateSize(DPIManager.Scale);
+            UpdateSize(DPI.DPIManager.Scale);
         }
 
         private void C_MouseEnter(object sender, EventArgs e) {

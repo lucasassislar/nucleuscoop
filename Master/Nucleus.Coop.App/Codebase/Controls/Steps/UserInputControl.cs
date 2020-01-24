@@ -15,7 +15,8 @@ namespace Nucleus.Gaming.Coop {
 
         protected GameProfile profile;
         protected UserGameInfo game;
-        protected HandlerData handlerData;
+
+        //protected HandlerData handlerData;
 
         public UserInputControl() {
             AutoScaleMode = AutoScaleMode.None;
@@ -27,8 +28,8 @@ namespace Nucleus.Gaming.Coop {
             Font = new Font("Segoe UI", 12, GraphicsUnit.Point);
         }
 
-        public virtual void Initialize(HandlerData handlerData, UserGameInfo game, GameProfile profile) {
-            this.handlerData = handlerData;
+        public virtual void Initialize(UserGameInfo game, GameProfile profile) {
+            //this.handlerData = handlerData;
             this.profile = profile;
             this.game = game;
         }

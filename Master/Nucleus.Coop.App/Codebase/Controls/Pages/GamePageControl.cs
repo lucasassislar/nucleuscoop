@@ -3,17 +3,20 @@ using Nucleus.DPI;
 using Nucleus.Gaming.App.Controls;
 using Nucleus.Gaming.Coop;
 using Nucleus.Gaming.Coop.Controls;
-using Nucleus.Gaming.Package;
 using Nucleus.Platform.Windows;
 using Nucleus.Platform.Windows.Controls;
 using SplitScreenMe.Core;
-using SplitScreenMe.Core.Handler;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
+
+#if false
+using SplitScreenMe.Core.Handler;
+using Nucleus.Gaming.Package;
+#endif
 
 namespace Nucleus.Coop.App.Controls {
     public partial class GamePageControl : BasePageControl {
@@ -31,10 +34,15 @@ namespace Nucleus.Coop.App.Controls {
         private int currentStepIndex;
         private UserGameInfo userGame;
         private ControlListBox list_handlers;
+
+#if false
         private GameHandler handler;
         private HandlerDataManager handlerDataManager;
         private GameHandlerMetadata selectedHandler;
         private HandlerData handlerData;
+        private GameHandlerMetadata[] currentHandlers;
+#endif
+
         private Thread handlerThread;
 
         private GameProfile currentProfile;
@@ -43,8 +51,6 @@ namespace Nucleus.Coop.App.Controls {
         private JSUserInputControl jsControl;
         private PositionsControl positionsControl;
         private PlayerOptionsControl optionsControl;
-
-        private GameHandlerMetadata[] currentHandlers;
 
         private MainForm mainForm;
         private GamePageBrowserControl BrowserBtns { get { return mainForm.BrowserBtns; } }
@@ -68,6 +74,8 @@ namespace Nucleus.Coop.App.Controls {
             this.userGame = userGame;
 
             panel_steps.Controls.Clear();
+
+#if false
             string gameId = userGame.GameID;
 
             if (mainForm == null) {
@@ -92,25 +100,28 @@ namespace Nucleus.Coop.App.Controls {
                 list_handlers.Left = 1;
                 list_handlers.Controls.Clear();
 
-                for (var i = 0; i < currentHandlers.Length; i++) {
-                    GameHandlerMetadata metadata = currentHandlers[i];
+                //TODO fix
+                //for (var i = 0; i < currentHandlers.Length; i++) {
+                //    GameHandlerMetadata metadata = currentHandlers[i];
 
-                    GameControl handlerControl = new GameControl();
-                    handlerControl.Width = list_handlers.Width;
-                    handlerControl.Click += HandlerControl_Click;
+                //    GameControl handlerControl = new GameControl();
+                //    handlerControl.Width = list_handlers.Width;
+                //    handlerControl.Click += HandlerControl_Click;
 
-                    handlerControl.SetHandlerMetadata(metadata);
-                    list_handlers.Controls.Add(handlerControl);
-                }
+                //    handlerControl.SetHandlerMetadata(metadata);
+                //    list_handlers.Controls.Add(handlerControl);
+                //}
             } else {
                 // create first step
                 SetupSteps(currentHandlers[0]);
                 GoToStep(0);
             }
+#endif
 
             DPIManager.ForceUpdate();
         }
 
+#if false
         private void SetupSteps(GameHandlerMetadata metadataSelected) {
             KillCurrentStep();
 
@@ -140,16 +151,23 @@ namespace Nucleus.Coop.App.Controls {
 
             MainForm.Instance.ChangeGameInfo(userGame);
         }
+#endif
 
         private void HandlerControl_Click(object sender, EventArgs e) {
             GameControl handlerControl = (GameControl)sender;
+#if false
             SetupSteps((GameHandlerMetadata)handlerControl.HandlerMetadata);
+#endif
             GoToStep(0);
         }
 
         private bool DoesntNeedOptions() {
+            return false;
+
+#if false
             // TODO better if too sleepy
             return currentProfile.Options.Count == handlerData.CustomSteps.Count;
+#endif
         }
 
         private void GoToStep(int step) {
@@ -163,6 +181,7 @@ namespace Nucleus.Coop.App.Controls {
                 return;
             } else if (step >= 2) {
                 // Custom steps
+#if false
                 List<CustomStep> customSteps = handlerData.CustomSteps;
                 int customStepIndex = step - 2;
                 CustomStep customStep = customSteps[0];
@@ -174,6 +193,7 @@ namespace Nucleus.Coop.App.Controls {
                     BrowserBtns.SetPlayButtonState(true);
                     return;
                 }
+#endif
             }
 
             KillCurrentStep();
@@ -183,7 +203,9 @@ namespace Nucleus.Coop.App.Controls {
             currentStep.Size = panel_steps.Size;
             currentStep.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
 
+#if false
             currentStep.Initialize(handlerData, userGame, currentProfile);
+#endif
 
             BrowserBtns.SetNextButtonState(currentStep.CanProceed && step != stepsList.Count - 1);
 
@@ -232,6 +254,7 @@ namespace Nucleus.Coop.App.Controls {
             } else if (play) {
                 //this.overlay.EnableOverlay(this);
 
+#if false
                 handler = new GameHandler();
                 handler.Initialize(handlerDataManager, userGame, GameProfile.CleanClone(currentProfile));
                 handler.Ended += handler_Ended;
@@ -241,22 +264,26 @@ namespace Nucleus.Coop.App.Controls {
                     handlerThread = new Thread(UpdateGameManager);
                     handlerThread.Start();
                 }
+#endif
                 //WindowState = FormWindowState.Minimized;
             }
         }
 
         private void handler_Ended() {
+#if false
             handler = null;
             if (handlerThread != null) {
                 handlerThread.Abort();
                 handlerThread = null;
             }
+#endif
         }
 
         private void UpdateGameManager(object state) {
             for (; ; )
             {
                 try {
+#if false
                     if (GameManager.Instance == null || handler == null || this.IsDisposed) {
                         break;
                     }
@@ -270,6 +297,7 @@ namespace Nucleus.Coop.App.Controls {
 
                     handler.Tick(handlerData.HandlerInterval);
                     Thread.Sleep(TimeSpan.FromMilliseconds(handlerData.HandlerInterval));
+#endif
                 } catch (ThreadAbortException) {
                     return;
                 } catch { }

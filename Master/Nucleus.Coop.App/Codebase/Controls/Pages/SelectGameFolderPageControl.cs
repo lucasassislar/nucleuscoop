@@ -33,7 +33,7 @@ namespace Nucleus.Coop.App.Controls.Pages {
                 list_gameFolders.Controls.Add(gameFolder);
             }
 
-            DPIManager.ForceUpdate();
+            DPI.DPIManager.ForceUpdate();
         }
 
         private void GameFolder_Click(object sender, EventArgs e) {

@@ -54,7 +54,7 @@ namespace Nucleus.Coop.App.Forms {
             overlay = new GameRunningOverlay();
             overlay.OnStop += Overlay_OnStop;
 
-            this.titleBarControl.Text = $"SplitScreenMe v{Globals.Version}";
+            this.titleBarControl.Text = $"SplitScreenMe RC{Globals.Version}";
 
             controls = new Dictionary<string, GameControl>();
 
@@ -63,10 +63,10 @@ namespace Nucleus.Coop.App.Forms {
             list_games.AutoScroll = false;
 
             // check for arguments
-            SplitScreenEngineUtil.HandleArguments(args);
+            //SplitScreenEngineUtil.HandleArguments(args);
 
             // update register if needed
-            SplitScreenEngineUtil.HandleRegisterUpdates();
+            //SplitScreenEngineUtil.HandleRegisterUpdates();
         }
 
         protected override void OnResize(EventArgs e) {
@@ -98,6 +98,7 @@ namespace Nucleus.Coop.App.Forms {
                 controls.Clear();
 
                 // make menu before games
+#if false
                 pkgManagerBtn = new GameControl();
                 pkgManagerBtn.Width = list_games.Width;
                 pkgManagerBtn.UpdateTitleText("Settings");
@@ -132,26 +133,30 @@ namespace Nucleus.Coop.App.Forms {
                     con.UpdateTitleText("No games");
                     this.list_games.Controls.Add(con);
                 }
+#endif
             }
 
             // TODO: double-calling fixes some issues but is non-optimal
-            DPIManager.ForceUpdate();
-            DPIManager.ForceUpdate();
+            DPI.DPIManager.ForceUpdate();
+            DPI.DPIManager.ForceUpdate();
 
             UpdatePage();
             list_games.UpdateSizes();
 
+#if false
             gameManager.User.Save();
+#endif
 
             // auto-click pkg manager to not open with nothing selected
             PkgManagerBtn_Click(pkgManagerBtn, EventArgs.Empty);
-            pkgManagerBtn.RadioSelected();
+            pkgManagerBtn?.RadioSelected();
 
             refreshingGames = false;
         }
 
         public GameControl NewUserGame(List<UserGameInfo> games) {
             // get all Repository Game Infos
+#if false
             GameControl con = new GameControl();
             con.SetUserGames(games);
             con.Width = list_games.Width;
@@ -165,12 +170,15 @@ namespace Nucleus.Coop.App.Forms {
 
 
             return con;
+#endif
+            throw new NotImplementedException();
         }
 
         private void Game_Click(object sender, EventArgs e) {
             GameControl gameCon = (GameControl)sender;
             Selected = gameCon;
 
+#if false
             var games = gameCon.UserGames;
             if (games.Count > 1) {
                 // if there's more than 1 of the same game,
@@ -181,6 +189,7 @@ namespace Nucleus.Coop.App.Forms {
                 appPage = AppPage.GameHandler;
                 gamePageControl.ChangeSelectedGame(games[0]);
             }
+#endif
 
             UpdatePage();
         }
@@ -314,7 +323,7 @@ namespace Nucleus.Coop.App.Forms {
             base.OnShown(e);
             RefreshGames();
 
-            DPIManager.ForceUpdate();
+            DPI.DPIManager.ForceUpdate();
         }
 
         private void GetIcon(object state) {
@@ -327,11 +336,13 @@ namespace Nucleus.Coop.App.Forms {
 
             lock (controls) {
                 GameControl control;
+#if false
                 if (controls.TryGetValue(game.GameID, out control)) {
                     control.Invoke((Action)delegate () {
                         control.Image = game.Icon;
                     });
                 }
+#endif
             }
         }
 

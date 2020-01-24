@@ -32,8 +32,8 @@ namespace Nucleus.Gaming.Coop.Controls {
             detailsFont = new Font("Segoe UI", 12);
         }
 
-        public override void Initialize(HandlerData handlerData, UserGameInfo game, GameProfile profile) {
-            base.Initialize(handlerData, game, profile);
+        public override void Initialize(UserGameInfo game, GameProfile profile) {
+            base.Initialize(game, profile);
 
             this.Controls.Clear();
 
@@ -43,6 +43,7 @@ namespace Nucleus.Gaming.Coop.Controls {
             list = new ControlListBox();
             list.Size = this.Size;
 
+#if false
             List<GameOption> options = handlerData.Options;
             Dictionary<string, object> vals = profile.Options;
             for (int j = 0; j < options.Count; j++) {
@@ -78,7 +79,8 @@ namespace Nucleus.Gaming.Coop.Controls {
                         value = (Enum)val;
                         values = Enum.GetValues(value.GetType());
                         defaultValue = opt.DefaultValue;
-                    } else {
+                    }
+                    else {
                         values = opt.GetCollection();
                         value = values[0];
                         defaultValue = opt.DefaultValue;
@@ -92,7 +94,8 @@ namespace Nucleus.Gaming.Coop.Controls {
                         box.SelectedIndex = box.Items.IndexOf(defaultValue);
                         if (box.SelectedIndex == -1)
                             box.SelectedIndex = box.Items.IndexOf(value);
-                    } else
+                    }
+                    else
                         box.SelectedIndex = box.Items.IndexOf(value);
 
                     box.Width = wid;
@@ -106,7 +109,8 @@ namespace Nucleus.Gaming.Coop.Controls {
                     box.Tag = opt;
                     box.SelectedValueChanged += box_SelectedValueChanged;
                     ChangeOption(box.Tag, box.SelectedItem);
-                } else if (opt.Value is bool) {
+                }
+                else if (opt.Value is bool) {
                     SizeableCheckbox box = new SizeableCheckbox();
                     int border = 10;
 
@@ -121,7 +125,8 @@ namespace Nucleus.Gaming.Coop.Controls {
                     box.Tag = opt;
                     box.CheckedChanged += box_CheckedChanged;
                     ChangeOption(box.Tag, box.Checked);
-                } else if (opt.Value is int || opt.Value is double) {
+                }
+                else if (opt.Value is int || opt.Value is double) {
                     NumericUpDown num = new NumericUpDown();
                     int border = 10;
 
@@ -142,7 +147,8 @@ namespace Nucleus.Gaming.Coop.Controls {
                     num.Tag = opt;
                     num.ValueChanged += num_ValueChanged;
                     ChangeOption(num.Tag, num.Value);
-                } else if (opt.Value is GameOptionValue) {
+                }
+                else if (opt.Value is GameOptionValue) {
                     ComboBox box = new ComboBox();
                     int border = 10;
 
@@ -176,6 +182,7 @@ namespace Nucleus.Gaming.Coop.Controls {
                 bottomLine.BackColor = Color.FromArgb(35, 39, 42);
                 cool.Controls.Add(bottomLine);
             }
+#endif
 
             this.Controls.Add(list);
             list.UpdateSizes();

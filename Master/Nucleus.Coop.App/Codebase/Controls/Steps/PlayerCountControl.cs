@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using UserInputControl = Nucleus.Gaming.UserInputControl;
 
 namespace Nucleus.Gaming.Coop {
     public partial class PlayerCountControl : UserInputControl {
@@ -25,12 +26,14 @@ namespace Nucleus.Gaming.Coop {
             InitializeComponent();
         }
 
-        public override void Initialize(HandlerData handlerData, UserGameInfo game, GameProfile profile) {
-            base.Initialize(handlerData, game, profile);
+        //public override void Initialize(HandlerData handlerData, UserGameInfo game, GameProfile profile) {
+        public override void Initialize(UserGameInfo game, GameProfile profile) {
+            base.Initialize(game, profile);
 
             this.Controls.Clear();
             canProceed = false;
 
+#if false
             int maxPlayers = handlerData.MaxPlayers;
             int half = (int)Math.Round(maxPlayers / 2.0);
             int width = Size.Width / half;
@@ -65,6 +68,7 @@ namespace Nucleus.Gaming.Coop {
                 bot.Add(btn);
                 this.Controls.Add(btn);
             }
+#endif
         }
 
         protected override void OnSizeChanged(EventArgs e) {

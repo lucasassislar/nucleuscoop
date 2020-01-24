@@ -1,5 +1,4 @@
 ﻿using Nucleus.Coop.App.Forms;
-using Nucleus.Gaming.Package;
 using SplitScreenMe.Core;
 using System;
 using System.Collections.Generic;
@@ -14,12 +13,20 @@ using Nucleus.DPI;
 using Nucleus.IO;
 using Nucleus.Tools.GameStarter;
 using Nucleus.Diagnostics;
+using Nucleus.Gaming;
+
+#if false
+using Nucleus.Gaming.Package;
+#endif
 
 namespace Nucleus.Coop.App.Controls {
     public partial class HandlerManagerControl : BasePageControl {
         public override int RequiredTitleBarWidth { get { return titleBarWidth; } set { } }
 
+#if false
         private GameHandlerBaseMetadata currentMetadata;
+#endif
+
         private Bitmap interrobang;
         private int titleBarWidth;
         private GameControl listInstalled;
@@ -59,7 +66,6 @@ namespace Nucleus.Coop.App.Controls {
 
         private void LoadInstalled() {
             var gm = GameManager.Instance;
-            var handlers = gm.User.InstalledHandlers;
 
             interrobang = FormGraphicsUtil.BuildCharToBitmap(new Size(40, 40), 30, Color.FromArgb(240, 240, 240), "🗋");
             list_left.Controls.Clear();
@@ -142,6 +148,8 @@ namespace Nucleus.Coop.App.Controls {
             installFile.Click += InstallFile_Click;
             list_left.Controls.Add(installFile);
 
+#if false
+            var handlers = gm.User.InstalledHandlers;
             if (handlers.Count == 0) {
                 GameControl noAvailable = new GameControl();
                 noAvailable.Width = list_left.Width;
@@ -159,8 +167,9 @@ namespace Nucleus.Coop.App.Controls {
                     list_left.Controls.Add(gameHandler);
                 }
             }
+#endif
 
-            DPIManager.ForceUpdate();
+            DPI.DPIManager.ForceUpdate();
         }
 
         private void ResetPanels() {
@@ -182,6 +191,7 @@ namespace Nucleus.Coop.App.Controls {
             // force a collect?
             GC.Collect();
 
+#if false
             var installedGames = gm.GetInstalledGamesOrdered();
             foreach (var pair in installedGames) {
                 List<UserGameInfo> games = pair.Value;
@@ -206,9 +216,10 @@ namespace Nucleus.Coop.App.Controls {
                     this.list_installedGames.Controls.Add(con);
                 }
             }
+#endif
 
-            DPIManager.ForceUpdate();
-            DPIManager.ForceUpdate();
+            DPI.DPIManager.ForceUpdate();
+            DPI.DPIManager.ForceUpdate();
         }
 
         private void Installed_Game_Click(object sender, EventArgs e) {
@@ -221,7 +232,10 @@ namespace Nucleus.Coop.App.Controls {
             // delete game from user
             var gameInfo = gameHandler.UserGameInfo;
             gm.User.Games.Remove(gameInfo);
+
+#if false
             gm.User.Save();
+#endif
 
             // refresh installed games
             ListInstalled_Click(null, EventArgs.Empty);
@@ -292,8 +306,8 @@ namespace Nucleus.Coop.App.Controls {
                 }
             }
 
-            DPIManager.ForceUpdate();
-            DPIManager.ForceUpdate();
+            DPI.DPIManager.ForceUpdate();
+            DPI.DPIManager.ForceUpdate();
         }
 
         private void InstallGame_Click(object sender, EventArgs e) {
@@ -305,6 +319,7 @@ namespace Nucleus.Coop.App.Controls {
                 if (open.ShowDialog() == DialogResult.OK) {
                     string path = open.FileName;
 
+#if false
                     List<GameHandlerMetadata> allGames = gm.User.InstalledHandlers;
                     var availableHandlers = allGames.Where(c => c.ExeName.ToLowerInvariant() == Path.GetFileNameWithoutExtension(open.FileName).ToLowerInvariant());
 
@@ -321,6 +336,7 @@ namespace Nucleus.Coop.App.Controls {
                     } else {
                         throw new NotImplementedException();
                     }
+#endif
 
                     //GameList list = new GameList(allGames);
                     //DPIManager.ForceUpdate();
@@ -332,6 +348,8 @@ namespace Nucleus.Coop.App.Controls {
 
         private void GameHandler_Click(object sender, EventArgs e) {
             GameControl gameHandler = (GameControl)sender;
+
+#if false
             currentMetadata = gameHandler.HandlerMetadata;
             MainForm.Instance.ChangeTitle(currentMetadata.Title, gameHandler.Image);
 
@@ -342,6 +360,7 @@ namespace Nucleus.Coop.App.Controls {
             label_developer.Text = "Developer: " + currentMetadata.Dev;
             label_version.Text = currentMetadata.V.ToString();
             label_nukeVer.Text = "Nucleus " + currentMetadata.PlatV;
+#endif
         }
 
         private void InstallFile_Click(object sender, EventArgs e) {
@@ -352,10 +371,12 @@ namespace Nucleus.Coop.App.Controls {
                 open.Filter = "Nucleus Package Files|*.nc";
                 if (open.ShowDialog() == DialogResult.OK) {
                     string[] paths = open.FileNames;
+#if false
                     for (int i = 0; i < paths.Length; i++) {
                         GameManager.Instance.PackageManager.InstallPackage(paths[i]);
                     }
                     LoadInstalled();
+#endif
                 }
             }
         }
@@ -367,10 +388,12 @@ namespace Nucleus.Coop.App.Controls {
             label_version.Text = "0.0";
             label_nukeVer.Text = "Nucleus Version";
 
+#if false
             string path = PackageManager.GetBaseInstallPath(this.currentMetadata);
             Directory.Delete(path, true);
             GameManager.Instance.RebuildGameDb();
             LoadInstalled();
+#endif
         }
 
         private void btn_search_Click(object sender, EventArgs e) {
@@ -396,12 +419,15 @@ namespace Nucleus.Coop.App.Controls {
             bool shouldUpdate = false;
             for (int i = 0; i < result.Length; i++) {
                 string path = result[i];
+
+#if false
                 UserGameInfo uinfo = GameManager.Instance.TryAddGame(path);
 
                 if (uinfo != null) {
                     Log.WriteLine($"> Found new game ID {uinfo.GameID}");
                     shouldUpdate = true;
                 }
+#endif
             }
 
             if (shouldUpdate) {

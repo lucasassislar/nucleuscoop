@@ -18,19 +18,19 @@ namespace Nucleus.Coop {
             ThreadUtil.Initialize();
 
             // Add the event handler for handling UI thread exceptions to the event.
-            Application.ThreadException += new ThreadExceptionEventHandler(ThreadExceptionEventHandler);
+            //Application.ThreadException += new ThreadExceptionEventHandler(ThreadExceptionEventHandler);
 
             // Set the unhandled exception mode to force all Windows Forms errors
             // to go through our handler.
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 
             // Add the event handler for handling non-UI thread exceptions to the event. 
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledExceptionEventHandler);
+            //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledExceptionEventHandler);
 
             // initialize DPIManager BEFORE setting 
             // the application to be DPI aware,
             // or else Windows will give us pre-scaled monitor sizes
-            DPIManager.PreInitialize();
+            DPI.DPIManager.PreInitialize();
             User32Util.SetProcessDpiAwareness(ProcessDPIAwareness.ProcessPerMonitorDPIAware);
 
             Application.EnableVisualStyles();

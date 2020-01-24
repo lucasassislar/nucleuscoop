@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using UserScreen = Nucleus.Gaming.Coop.UserScreen;
+using UserScreenType = Nucleus.Gaming.Coop.UserScreenType;
 
 namespace Nucleus.Gaming.App.Controls {
     public class PositionsControl : UserInputControl {
@@ -56,7 +58,7 @@ namespace Nucleus.Gaming.App.Controls {
         private Pen lightWhitePen;
 
         // dinput
-        private DirectInput dinput;
+        //private DirectInput dinput;
         //private List<Joystick> dinputJoysticks;
 
         // xinput
@@ -77,8 +79,8 @@ namespace Nucleus.Gaming.App.Controls {
             gamepadTimer.Enabled = false;
         }
 
-        public override void Initialize(HandlerData handlerData, UserGameInfo game, GameProfile profile) {
-            base.Initialize(handlerData, game, profile);
+        public override void Initialize(UserGameInfo game, GameProfile profile) {
+            base.Initialize(game, profile);
 
             gamepadTimer.Enabled = true;
             UpdatePlayers();
@@ -95,10 +97,12 @@ namespace Nucleus.Gaming.App.Controls {
         protected override void Dispose(bool disposing) {
             base.Dispose(disposing);
 
+#if false
             if (dinput != null) {
                 dinput.Dispose();
                 dinput = null;
             }
+#endif
         }
 
         protected override void OnMouseDoubleClick(MouseEventArgs e) {
@@ -158,7 +162,7 @@ namespace Nucleus.Gaming.App.Controls {
                 for (int i = 0; i < screens.Length; i++) {
                     UserScreen screen = screens[i];
                     if (screen.SwapTypeBounds.Contains(e.Location)) {
-                        if (screen.Type == UserScreenType.SixteenPlayers) {
+                        if (screen.Type == Coop.UserScreenType.SixteenPlayers) {
                             screen.Type = 0;
                         } else {
                             screen.Type++;
@@ -210,7 +214,7 @@ namespace Nucleus.Gaming.App.Controls {
                             int halfHeight = screen.MonitorBounds.Height / 2;
 
                             Rectangle bounds = p.MonitorBounds;
-                            if (screen.Type == UserScreenType.FourPlayers) {
+                            if (screen.Type == Coop.UserScreenType.FourPlayers) {
                                 // check if the size is 1/4th of screen
                                 if (bounds.Width == halfWidth &&
                                     bounds.Height == halfHeight) {
@@ -389,19 +393,19 @@ namespace Nucleus.Gaming.App.Controls {
                 g.DrawRectangle(lightWhitePen, s.SwapTypeBounds);
 
                 switch (s.Type) {
-                    case UserScreenType.FullScreen:
+                    case Coop.UserScreenType.FullScreen:
                         g.DrawImage(Resources.fullscreen, s.SwapTypeBounds);
                         break;
-                    case UserScreenType.DualHorizontal:
+                    case Coop.UserScreenType.DualHorizontal:
                         g.DrawImage(Resources.horizontal, s.SwapTypeBounds);
                         break;
-                    case UserScreenType.DualVertical:
+                    case Coop.UserScreenType.DualVertical:
                         g.DrawImage(Resources.vertical, s.SwapTypeBounds);
                         break;
-                    case UserScreenType.FourPlayers:
+                    case Coop.UserScreenType.FourPlayers:
                         g.DrawImage(Resources._4players, s.SwapTypeBounds);
                         break;
-                    case UserScreenType.SixteenPlayers:
+                    case Coop.UserScreenType.SixteenPlayers:
                         g.DrawImage(Resources._16players, s.SwapTypeBounds);
                         break;
                 }
@@ -469,7 +473,8 @@ namespace Nucleus.Gaming.App.Controls {
         private void Initialize() {
             BackColor = Color.FromArgb(54, 57, 63);
 
-            dinput = new DirectInput();
+            //dinput = new DirectInput();
+
             //dinputJoysticks = new List<Joystick>();
             xinputControllers = new List<Controller>();
             for (int i = 0; i < 4; i++) {
@@ -488,7 +493,9 @@ namespace Nucleus.Gaming.App.Controls {
             genericImg = Resources.generic;
             keyboardImg = Resources.keyboard;
 
-            this.Image = Resources._4players;
+#if false
+            //this.Image = Resources._4players;
+#endif
 
             lightWhite = new SolidBrush(Color.FromArgb(240, 240, 240));
             lightWhitePen = new Pen(lightWhite);
@@ -516,6 +523,7 @@ namespace Nucleus.Gaming.App.Controls {
             List<PlayerInfo> data = profile.PlayerData;
             bool changed = false;
 
+#if false
             if (handlerData.Hook.DInputEnabled ||
                 handlerData.Hook.XInputReroute) {
                 IList<DeviceInstance> devices = dinput.GetDevices(SlimDX.DirectInput.DeviceType.Gamepad, DeviceEnumerationFlags.AttachedOnly);
@@ -632,6 +640,7 @@ namespace Nucleus.Gaming.App.Controls {
                     }
                 }
             }
+#endif
 
             if (changed) {
                 UpdatePlayers();
@@ -647,6 +656,7 @@ namespace Nucleus.Gaming.App.Controls {
         }
 
         private void UpdateScreens() {
+#if false
             if (screens == null) {
                 screens = ScreensUtil.AllScreens();
                 totalBounds = RectangleUtil.Union(screens);
@@ -720,6 +730,7 @@ namespace Nucleus.Gaming.App.Controls {
                 screen.UIBounds = uiBounds;
                 screen.SwapTypeBounds = RectangleUtil.Float(uiBounds.X, uiBounds.Y, uiBounds.Width * 0.1f, uiBounds.Width * 0.1f);
             }
+#endif
         }
 
         private void UpdatePlayers() {
@@ -735,6 +746,7 @@ namespace Nucleus.Gaming.App.Controls {
             }
 
             if (playerData.Count == 0) {
+#if false
                 if (handlerData.SupportsKeyboard) {
                     // add keyboard data
                     // TODO: add keyboard back (no support for Alpha 8)
@@ -742,6 +754,7 @@ namespace Nucleus.Gaming.App.Controls {
                     kbPlayer.IsKeyboardPlayer = true;
                     playerData.Add(kbPlayer);
                 }
+#endif
 
                 // make fake data if needed
                 if (testDinputPlayers != -1) {

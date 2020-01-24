@@ -15,8 +15,10 @@ namespace Nucleus.Coop.App.Controls {
             set {
                 if (gameInfo != value && value != null) {
                     picture.Image = value.Icon;
+#if false
                     title.Text = GameManager.Instance.MetadataManager.GetGameName(value.GameID);
-                    DPIManager.Update(this);
+#endif
+                    DPI.DPIManager.Update(this);
                 }
                 gameInfo = value;
             }
@@ -47,7 +49,7 @@ namespace Nucleus.Coop.App.Controls {
             Controls.Add(title);
 
             UpdateSize(1);
-            DPIManager.Register(this);
+            DPI.DPIManager.Register(this);
         }
 
         public void UpdateText(string txt) {
@@ -56,23 +58,23 @@ namespace Nucleus.Coop.App.Controls {
         }
 
         ~GameNameControl() {
-            DPIManager.Unregister(this);
+            DPI.DPIManager.Unregister(this);
         }
 
         public void UpdateSize(float scale) {
             if (IsDisposed) {
-                DPIManager.Unregister(this);
+                DPI.DPIManager.Unregister(this);
                 return;
             }
             lastScale = scale;
 
             SuspendLayout();
 
-            border = DPIManager.Adjust(5, scale);
+            border = DPI.DPIManager.Adjust(5, scale);
             int dborder = border * 2;
             picture.Location = new Point(border, border);
 
-            Height = DPIManager.Adjust(46, scale);
+            Height = DPI.DPIManager.Adjust(46, scale);
             picture.Size = new Size(Size.Height - dborder, Height - dborder);
 
             Width = picture.Width + dborder + title.Width;

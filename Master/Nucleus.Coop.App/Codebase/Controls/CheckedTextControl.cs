@@ -36,7 +36,7 @@ namespace Nucleus.Coop.App.Controls {
             Controls.Add(checkbox);
             Controls.Add(title);
 
-            DPIManager.Register(this);
+            DPI.DPIManager.Register(this);
         }
 
         public void UpdateTitleText(string titleText) {
@@ -46,19 +46,19 @@ namespace Nucleus.Coop.App.Controls {
 
         public void UpdateSize(float scale) {
             if (IsDisposed) {
-                DPIManager.Unregister(this);
+                DPI.DPIManager.Unregister(this);
                 return;
             }
 
             SuspendLayout();
 
-            int border = DPIManager.Adjust(8, scale);
+            int border = DPI.DPIManager.Adjust(8, scale);
             int dborder = border * 2;
 
             checkbox.Location = new Point(12, 11);
             checkbox.Size = new Size(30, 30);
 
-            Height = DPIManager.Adjust(52, scale);
+            Height = DPI.DPIManager.Adjust(52, scale);
 
             Size labelSize = TextRenderer.MeasureText(TitleText, title.Font);
             float reservedSpaceLabel = this.Width - checkbox.Width;
@@ -115,7 +115,7 @@ namespace Nucleus.Coop.App.Controls {
 
         protected override void OnSizeChanged(EventArgs e) {
             base.OnSizeChanged(e);
-            UpdateSize(DPIManager.Scale);
+            UpdateSize(DPI.DPIManager.Scale);
         }
 
         private void C_MouseEnter(object sender, EventArgs e) {

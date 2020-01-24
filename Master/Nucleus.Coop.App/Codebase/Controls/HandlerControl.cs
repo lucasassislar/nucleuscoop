@@ -1,17 +1,22 @@
 ﻿using Nucleus.DPI;
 using Nucleus.Gaming;
-using Nucleus.Gaming.Package;
 using Nucleus.Platform.Windows.Controls;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+#if false
+using Nucleus.Gaming.Package;
+#endif
 
 namespace Nucleus.Coop.App.Controls {
     /// <summary>
     /// 
     /// </summary>
     public class HandlerControl : UserControl, IDynamicSized, IRadioControl {
+#if false
         public GameHandlerMetadata Metadata { get; private set; }
+#endif
+
         public string TitleText { get; set; }
         public bool EnableClicking { get; set; } = true;
         public Color SelectedColor { get; set; } = Color.FromArgb(80, 80, 80);
@@ -26,18 +31,26 @@ namespace Nucleus.Coop.App.Controls {
         private PictureBox picture;
         private Label title;
 
+#if true
+        public HandlerControl() {
+#else
         public HandlerControl(GameHandlerMetadata metadata) {
             Metadata = metadata;
+#endif
 
             picture = new PictureBox();
             picture.SizeMode = PictureBoxSizeMode.StretchImage;
 
             title = new Label();
+
+#if false
             if (metadata == null) {
                 title.Text = "No handlers";
             } else {
                 title.Text = metadata.ToString();
             }
+#endif
+
             TitleText = title.Text;
 
             BackColor = Color.FromArgb(30, 30, 30);
@@ -46,28 +59,28 @@ namespace Nucleus.Coop.App.Controls {
             Controls.Add(picture);
             Controls.Add(title);
 
-            DPIManager.Register(this);
+            DPI.DPIManager.Register(this);
         }
 
         ~HandlerControl() {
-            DPIManager.Unregister(this);
+            DPI.DPIManager.Unregister(this);
         }
 
         public void UpdateSize(float scale) {
             if (IsDisposed) {
-                DPIManager.Unregister(this);
+                DPI.DPIManager.Unregister(this);
                 return;
             }
 
             SuspendLayout();
 
-            int border = DPIManager.Adjust(4, scale);
+            int border = DPI.DPIManager.Adjust(4, scale);
             int dborder = border * 2;
 
             picture.Location = new Point(border, border);
-            picture.Size = new Size(DPIManager.Adjust(44, scale), DPIManager.Adjust(44, scale));
+            picture.Size = new Size(DPI.DPIManager.Adjust(44, scale), DPI.DPIManager.Adjust(44, scale));
 
-            Height = DPIManager.Adjust(52, scale);
+            Height = DPI.DPIManager.Adjust(52, scale);
 
             Size labelSize = TextRenderer.MeasureText(TitleText, title.Font);
             float reservedSpaceLabel = this.Width - picture.Width;
@@ -124,7 +137,7 @@ namespace Nucleus.Coop.App.Controls {
 
         protected override void OnSizeChanged(EventArgs e) {
             base.OnSizeChanged(e);
-            UpdateSize(DPIManager.Scale);
+            UpdateSize(DPI.DPIManager.Scale);
         }
 
         private void C_MouseEnter(object sender, EventArgs e) {
